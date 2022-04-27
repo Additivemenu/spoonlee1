@@ -1,0 +1,69 @@
+
+table,th,td{
+    border: 1px dashed black;
+    border-collapse: collapse;
+    text-align:center;
+    font-style: italic;
+    font-weight: 100;
+
+}
+
+
+
+#mytable{
+    color: gold;
+}
+
+.mytable_class{
+    background: red;
+
+
+}
+
+/* ul.info li{
+    list-style: none;
+} */
+
+ul.info>li{
+    list-style: none;
+}
+
+/* ul.info>li li{
+    list-style:none;
+
+} */
+
+ul.info>li li:nth-child(3){
+    list-style:none;
+
+}
+
+ol li a{
+    text-decoration: none;
+
+
+}
+
+ol li a[target="_blank"]{
+   color:green;
+}
+
+ol li a[herf="https://github.com"]{
+    color:rgb(45, 45, 173);
+} /*hyperlink*/
+
+ol li a[href*="google"]{
+    color:yellow;
+} /*relevant*/
+
+ol li a[href^="https"]{
+    color:rgb(0, 255, 170);
+} /*head*/
+
+ol li a[href$=".com"]{
+    color:yellow;
+} /*end*/
+
+ol li a[href$=".com.au"][href^="https"]{
+    background:rgb(255, 0, 0);
+} /*intersection*/
