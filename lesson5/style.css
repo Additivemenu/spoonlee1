@@ -2,203 +2,39 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vw;
+  width: 100vw; /*vw: vision window width */
+  height: 100vh; /*vh: vision window height*/
 }
 
-.upper {
-  font-weight: bold;
-}
-
-.pseudo::first-letter {
-  font-weight: bold;
-  font-size: 32px;
-}
-
-.pseudo::first-line {
-  font-size: 24px;
-}
-
-.pseudo::selection {
-  background: pink;
-}
-
-.pseudo::before {
-  content: "...";
-  /* display: block;
-    width: 30px;
-    height: 10px;
-    background: red; */
-}
-
-.pseudo::after {
-  content: "***";
-}
-
-.block1 {
-  height: 300px;
-  /* min-width: 300px;
-    max-width: 1000px; */
-  width: 300px;
+.block5 {
+  width: 90%; /*follow html, body width & height, making mother block change with web window*/
+  height: 90%;
   background: red;
-  border: 3px dashed black;
+  border: 3px solid black;
   border-radius: 10px;
-  display: inline-block;
+
   position: relative;
-  /* left: 100px;
-  top: 100px;
-  right: 100px;
-  bottom: 100px; */
+  overflow: hidden; /*used to hide sub blocks which fall outside mother block */
 
+  display: flex; /*turn on FLexbox*/
+  flex-direction: row;
+  flex-wrap: wrap; 
+  /* making sub block flowable and maintain their size when mother block changes its shape */
+
+ 
+  /* justify-content: center; */
+  /* align-content: space-around; */
+  align-items: flex-start;
 }
 
-.block2 {
-    height: 500px;
-    /* min-width: 300px;
-      max-width: 1000px; */
-    width: 500px;
-    background: red;
-    border: 3px dashed black;
-    border-radius: 10px;
-    position: relative;
-
-  
-  }
-
-  .block2_sub {
-    height: 150px;
-    /* min-width: 300px;
-      max-width: 1000px; */
-    width: 150px;
-    border: 1px dashed gold;
-
-  }
-
-  .block2_sub:nth-child(1){
-    background: green;
-    position: relative;
-    left: 50px;
-    z-index: 2;
-  }
-
-  .block2_sub:nth-child(2){
-    background: blue;
-    position: absolute;
-    left: 30px;
-    top: 50px;
-    z-index: 1;
-  }
-
-  .block2_sub:nth-child(3){
-    background: purple;
-    position: relative;
-    top: 0px;
-    z-index: 0;
-  }
-
-
-    *{
-        box-sizing:border-box;
-
-    }
-
-  /* .block3 {
-    height: 500px; */
-    /* min-width: 300px;
-      max-width: 1000px; */
-    /* width: 500px;
-    background: red;
-    border: 3px dashed black;
-    border-radius: 10px;
-    position: relative;
-    margin: 50px;
-    font-size:40px;
-    padding:30px; */
-    /* left: 100px;
-    top: 100px;
-    right: 100px;
-    bottom: 100px; */
-  /* } */
-
-  /* .block4 {
-    height: 500px;
-    /* min-width: 300px;
-      max-width: 1000px; */
-    /* width: 500px;
-    background: red;
-    border: 3px dashed black;
-    border-radius: 10px;
-    position: relative;
-    margin: 80px;
-    margin-left: 20px;
-    margin-right:30px; */
-    /* left: 100px;
-    top: 100px;
-    right: 100px;
-    bottom: 100px; */
-  /* } */ 
-
-
-
-  .block5 {
-    height: 90%;
-    width: 90%;
-    background: red;
-    border: 3px dashed black;
-    border-radius: 10px;
-    position: relative;
-
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    flex-flow: wrap;
-    /* align-content: center;
-    justify-content: center; */
-    align-items: center;
-    
-  }
-
-  .block5_sub {
-    height: 100px;
-    width: 100px;
-    background: green;
-    border: 1px solid gold;
-    /* flex-grow:1; */
-  }
-
-  /* .block5_sub:nth-child(3){
-      flex-grow: 3;
-  }
-
-  .block5_sub:nth-child(5){
-    flex-shrink: 3;
+.block5_sub {
+  width: 100px;
+  height: 100px;
+  background: green;
+  border: 1px solid gold;
 }
-
-.block5_sub:nth-child(4){
-    flex-grow:2;
-    flex-shrink: 2;
-} */
 
 /* .block5_sub:nth-child(2){
-    align-self:flex-start;
-}  */
+  align-self: flex-start;
 
-.block5_sub:nth-child(2){
-    order: 5;
-    background: yellow;
-} 
-
-.block5_sub:nth-child(5){
-    order: -1;
-    background: yellow;
-} 
-
-.block5_sub:nth-child(1){
-    order: 9;
-    background: yellow;
-} 
-
-.block5_sub:nth-child(7){
-    order: -2;
-    background: yellow;
-} 
+} */
