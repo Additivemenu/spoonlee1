@@ -285,7 +285,7 @@
   console.log(true == 2);
   console.log(!2);
 }
-
+// ------------JS_lesson2--------------------
 {
   const roles = ["student", "teacher", "boss"];
 
@@ -320,12 +320,14 @@
     // index starts from 0
     console.log("1:", num, index);
   });
-  // identical to the above
+
+  // identical to the above--------------------
   for (let i = 0; i < newArrayNumber.length; i++) {
     console.log("2:", newArrayNumber[i]);
   }
 }
 
+//=========function============================
 {
   function func1() {
     console.log("hello world");
@@ -371,7 +373,7 @@
     return a + b; // skip over what is behind return
   }
 
-  //obj as input parameter
+  //obj as input parameter--------------------
   const obj = {
     // const only confines type of obj, cannot confine its content
     name: "Shawn",
@@ -382,20 +384,24 @@
     console.log("name:", obj.name);
     console.log("age:", obj.age);
 
-    (obj.name = "xueshuo"), (obj.age = 30);
+    obj.name = "xueshuo";
+    obj.age = 30;
   }
 
   func6(obj);
   console.log(obj);
+  //---------------------------------
   // function func6(obj) there is only 1 entrance
   // but there are two 'exit'
-  //return: a exit
-  // 复杂结构的传参，可以获得内容修改。缺点是更改了原始的数据。
+  // return: 出口之一，特点是产生新内容,同时不更改原始数据
+  // 复杂结构的传参: 出口之一, 特点是可以获得内容修改, 缺点是更改了原始的数据。
   //---------------------------------
 
-  //函数无法通过return以外的方式传出值, 与func6相对
   function func7({ name, age }) {
-    // this will create a new obj
+    // instead of usinng an obj as input parameter
+    // here we use elements of an obj as the input
+    // this will create a new, real obj, 没有使用"指针"引用
+    // 这种方式函数只能通过return来向外传递数据, 与func6相对
     name = "shawn";
     age = "20";
     return { name, age };
@@ -405,6 +411,7 @@
   console.log(newObj);
   console.log(obj);
 
+  //--------------------------
   const func8 = function () {
     console.log("func8");
   };
@@ -482,22 +489,60 @@
   console.log(contents);
 
   contents.forEach((node, index) => {
-    node.innerHTML = `content ${index}`
-  })
+    node.innerHTML = `content ${index}`;
+  });
   //
- // document.getElementById()
+  // document.getElementById()
   //document.getElementsByClassName()
 
+  // create element---
+  const div = document.createElement("div");
+  div.innerHTML = "<h1>click me</h1>";
+  // append span onto a node---
+  //contents[contents.length - 1].append(div)
+  //contents[contents.length - 1].appendChild(div)
 
+  const domBody = document.querySelector("body"); // note there is no '.' in front of body
+  domBody.appendChild(div);
+  // append over CSS: add a style to span we just added using JS
+  div.classList.add("active"); // note there is no '.' in front of active
+  div.classList.remove("active");
+  div.classList.toggle("active"); //toogle: switch
 
+  div.setAttribute("style", "cursor:pointer"); //
 
-
-  const span = document.createElement('span')
-  span.innerHTML = '<h1>click me</h1>'
-  //contents[contents.length - 1].append(span)
-  //contents[contents.length - 1].appendChild(span)
-
-  const domBody = document.querySelector("body")
-  domBody.appendChild(span)
-
+  div.addEventListener("click", () => {
+    // define click event
+    div.classList.toggle("active");
+  });
 }
+
+{
+  console.log("aaaaaaaaaaaa");
+  // practice: output a multiplication table-----------------------
+  for (let i = 1; i < 10; i++) {
+    for (let j = 1; j < i + 1; j++) {
+      console.log(`${i}*${j}=${i * j}`);
+    }
+  }
+} //----------------------------------------------------------------
+
+// practice: output a multiplication table-----------------------
+{
+ 
+  let str = "";
+
+  for (let i = 1; i < 10; i++) {
+    for (let j = 1; j <= i; j++) {
+      // console.log(i, j);
+      str += `${i}*${j}=${i * j} `;
+
+      if (i == j) {
+        str += "\n";
+      }
+    }
+  }
+
+  console.log(str);
+}
+//----------------------------------------------------------------
