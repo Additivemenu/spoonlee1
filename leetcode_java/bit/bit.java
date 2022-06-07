@@ -42,7 +42,26 @@ class bit{
         print(aa|bb);
         print(aa&bb);
         print(aa^bb); //XOR
+        //---------------------------------------------------------
+        System.out.println("=====move rightwards============");
+        int aaa = 1024;
+        print(aaa);
+        print(aaa>>1);  // signed move rightwards 
+        print(aaa>>>1); // unsigned move rightwards
+        System.out.println("=================");
+        int bbb = Integer.MIN_VALUE;
+        print(bbb);
+        print(bbb>>1); // signed move rightwards
+        print(bbb>>>1); // unsigned move rightwards
+        //----------------------------------------------------------
+        System.out.println("=================");
+        int cc =5;
+        int dd =-cc;
+        System.out.println(cc);
+        System.out.println(dd);
 
+        dd = (~cc+1);
+        System.out.println(dd);
 
     }
 
