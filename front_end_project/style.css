@@ -18,6 +18,10 @@
 
   --screen-pad-padding-top-bottom: 10px;
   --screen-pad-padding-left-right: 30px;
+
+  --footer-margin-right: 30px;
+  --footer-icon-width: 30px;
+  --footer-pad-icon-width:calc(var(--footer-icon-width)*5/6);
 }
 
 * {
@@ -61,7 +65,9 @@ body {
   align-items: center; /*only works if you cancel specifying "width: 100%" for main-structure first*/
 }
 
-.main-structure header {
+.main-structure header,
+.main-structure footer{ /*principle: don't make the wheel again, so we also define display: flex here for footer. 
+  Anything exclusive to footer will be defined afterwards */
   /*header inner layout */
   display: flex;
   justify-content: space-between;
@@ -94,13 +100,32 @@ body {
 .main-structure header,
 .main-structure .content,
 .main-structure footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   padding: var(--screen-desktop-padding-top-bottom)
-    var(--screen-desktop-padding-left-right); /*watch it: no comma between var()*/
+  var(--screen-desktop-padding-left-right); /*watch it: no comma between var()*/
 }
 
+.main-structure  footer{
+  justify-content: flex-start; /* we want a different layout for footer compared to header, so we define it here*/
+}
+
+.main-structure footer a:not(:last-child){ /*not last child:  exclude last child twitter when assign below properties*/
+  width: var(--footer-icon-width);
+  margin-right: var(--footer-margin-right); /*margin between icons*/
+
+}
+
+.main-structure  footer a img{
+  filter: invert(1);  /*invert the color of icons*/
+}
+
+/*====================================================================================*/
 @media (max-width: 1200px) {
   /*for response*/
-  /*if max-width < 1200px, then employ the below settings*/
+  /*if max-width falls below 1200px, then employ the below settings*/
 
   .main-structure {
     font-size: var(--main-pad-font-size);
@@ -120,5 +145,10 @@ body {
     ); /*menu-logo in nested in a block <div>, so we need to define width and height of the block <div>*/
     height: var(--header-toggle-width);
     background-size: var(--header-pad-toggole-width); /*set up the size of svg*/
+  }
+
+  .main-structure footer a img{
+    width: var(--footer-pad-icon-width);
+
   }
 }

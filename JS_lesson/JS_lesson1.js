@@ -429,8 +429,9 @@
   array.forEach(array_func4);
 }
 
-//----------------------------------
+//------define a function for obj----------------
 {
+  /**type1: */
   const radius = 1;
   const location = { x: 1, y: 2 };
   const isVisible = true;
@@ -439,6 +440,7 @@
   };
   draw();
 
+  /**type2: */
   const circle = {
     //notive it only confine the type of cirle, not its content
     radius: 1,
@@ -462,6 +464,7 @@
 }
 
 {
+  /**type3: hybrid */
   const radius = 1;
   const location = { x: 1, y: 2 };
   const isVisible = true;
@@ -477,8 +480,86 @@
   };
 
   circle2.draw();
+
+  /**JS lesson3 2h29min-*/
+  function createCircle(radius) {
+    return {
+      radius,
+      draw1() {
+        console.log(
+          "draw1",
+          radius,
+          this.radius
+        ); /**radius is from this obj's radius, which can be changed anytime */
+      },
+      draw2: function () {
+        console.log(
+          "draw2",
+          radius,
+          this.radius
+        ); /**radius is from function input, which cannot be changed after calling the function  */
+      },
+      draw3: () => {
+        console.log(
+          "draw3",
+          radius,
+          this.radius
+        ); /**this.radius here is undefined because arrow function cannot find this */
+      },
+    };
+  }
+
+  const circle4 = createCircle(5);
+  circle4.radius = 2;
+  console.log(circle4);
+  circle4.draw1();
+  circle4.draw2();
+  circle4.draw3();
+
+  const obj = {
+    a: 2,
+    b: 3,
+    change: function () {
+      a = 20;
+      this.b = 30;
+    },
+  };
+
+  obj.change();
+  console.log(obj);
+
+  function Circle5(radius) {
+    this.radius = radius;
+    this.draw1 = function () {
+      console.log("draw1", this.radius);
+    };
+    this.draw2 = () => {
+      console.log("draw2", this.radius);
+    };
+  }
+
+  const circle5 = new Circle5(4);
+  console.log(circle5);
+  circle5.draw1();
+  circle5.draw2();
+
+  /**class------------------------- */
+  class Car {
+    wheels = 4;
+    seats = 6;
+    drive() {}
+    stop() {}
+    fill() {}
+    pick(num) {
+      num > this.seats ? console.log("too many") : console.log("ok");
+    }
+  }
+
+  const car = new Car();
+  car.pick(10);
 }
 
+//=====JS lesson2: use JS to control HTML & CSS==================================
 {
   // get a single node
   const content = document.querySelector(".content");
@@ -517,32 +598,33 @@
   });
 }
 
-{
-  console.log("aaaaaaaaaaaa");
-  // practice: output a multiplication table-----------------------
-  for (let i = 1; i < 10; i++) {
-    for (let j = 1; j < i + 1; j++) {
-      console.log(`${i}*${j}=${i * j}`);
-    }
-  }
-} //----------------------------------------------------------------
+//===========practice===========================
+// {
+//   console.log("aaaaaaaaaaaa");
+//   // practice: output a multiplication table-----------------------
+//   for (let i = 1; i < 10; i++) {
+//     for (let j = 1; j < i + 1; j++) {
+//       console.log(`${i}*${j}=${i * j}`);
+//     }
+//   }
+// }
+//----------------------------------------------------------------
 
 // practice: output a multiplication table-----------------------
-{
- 
-  let str = "";
+// {
+//   let str = "";
 
-  for (let i = 1; i < 10; i++) {
-    for (let j = 1; j <= i; j++) {
-      // console.log(i, j);
-      str += `${i}*${j}=${i * j} `;
+//   for (let i = 1; i < 10; i++) {
+//     for (let j = 1; j <= i; j++) {
+//       // console.log(i, j);
+//       str += `${i}*${j}=${i * j} `;
 
-      if (i == j) {
-        str += "\n";
-      }
-    }
-  }
+//       if (i == j) {
+//         str += "\n";
+//       }
+//     }
+//   }
 
-  console.log(str);
-}
+//   console.log(str);
+// }
 //----------------------------------------------------------------

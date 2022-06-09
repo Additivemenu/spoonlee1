@@ -5,6 +5,8 @@
     --background-color: rgb(149, 69, 69);
     --font-color: white;
     --overlay-color: #03a9f4;
+
+    --menu-width: 300px; 
 }
 
 html,body{
@@ -31,6 +33,7 @@ html,body{
     background-color:var(--background-color);
     color: var(--font-color);
     z-index: 2;
+    transition: 0.5s;
 }
 
 .showcase header{  /*space bar means all header under showcase*/
@@ -44,8 +47,14 @@ html,body{
     justify-content: space-between;
     align-items: center;
     text-transform: uppercase;  /*captalize*/
+    transition: 0.5s;
+}
 
-
+.showcase.active{ /*watch: no space; it means only when showcase & active 
+    appears in html, then employ below settings; we will use js to control how to add 
+    active in html to activate below settings*/ 
+    right:var(--menu-width);
+    width: calc(100% - var(--menu-width));
 }
 
 .toggle{
@@ -59,6 +68,12 @@ html,body{
     cursor: pointer;
     filter: invert(1); /*invert the color of menu icon*/
 }
+
+.toggle.active{ /*when click menu, toggole to another state*/
+    background-image: url('./image/close.svg');
+
+}
+
 
 .showcase video{
     position: absolute;
@@ -157,12 +172,52 @@ html,body{
 .social li a:hover{
     transform: translateY(-10px);
     /* transition: 0.5s; */
+}
+
+
+.menu{
+    z-index: 1;  /*make sure header can cover menu*/
+    position: absolute;
+    top: 0;  /*回溯上一层定位，直到上一层position:absolute, position默认为static*/
+    right: 0; /*回溯上一层定位*/
+    
+    width: var(--menu-width);
+    height: 100%; /*回溯上一层定位*/
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
-/* .menu {
-    display: none;
-   
 
-    padding: 10px 30px;
-    
-  } */
+.menu ul{
+    list-style: none;
+    position: relative;
+
+}
+
+.menu ul li a{
+    text-decoration: none; /*hide the underlines*/
+    font-size: 24px;
+    color: var(--overlay-color);
+}
+
+@media(max-width: 798px){ 
+    /*if max-width falls below 798px, employ below settings*/
+    .showcase,
+    .showcase header{
+        padding: 40px;
+
+    }
+
+    .text h1{
+        font-size: 3rem;
+    }
+
+    .text h2{
+        font-size: 2rem;
+
+    }
+
+}
+
