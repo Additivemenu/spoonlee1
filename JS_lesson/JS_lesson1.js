@@ -557,6 +557,63 @@
 
   const car = new Car();
   car.pick(10);
+
+  //---------constructor-------------------
+  class CircleClass {
+    radius =
+      undefined; /* if you don't specify 'undefined', it is still undefined*/
+    constructor(radius) {
+      /**no arrow function form */
+      this.radius = radius;
+    }
+    draw1() {
+      console.log("draw1",radius,this.radius); /**radius is from this obj's radius, which can be changed anytime */
+    }
+    draw2 = function () {
+      console.log("draw2",radius,this.radius); /**radius is from function input, which cannot be changed after calling the function  */
+    };
+    draw3 = () => {
+      console.log("draw3",radius,this.radius); /**this.radius here is undefined because arrow function cannot find this */
+    };
+  }
+
+  const circle6 = new CircleClass(6);
+  const circle7 = new CircleClass(30);
+  const circle8 = new CircleClass(100);
+  circle6.draw1()  
+  circle6.draw2()
+  circle6.draw3()
+  
+  //------static ----------------------
+  class NewClass{
+    static total = 100  /**all instances will share this value */
+    borrow(){
+      NewClass.total-- /**WATCH we are not using this.total */
+      console.log(NewClass.total);
+    }
+    bringBack(){
+      NewClass.total++
+      console.log(NewClass.total);
+    }
+
+    static clean(){
+      NewClass.total = 0
+      console.log(NewClass.total);
+    }
+
+  }
+  const newClass = new NewClass()
+  const newClass2 = new NewClass()
+  const newClass3 = new NewClass()
+  const newClass4 = new NewClass()
+  
+  newClass.borrow()
+  newClass2.borrow()
+  newClass3.bringBack()
+  newClass4.bringBack()
+  
+  NewClass.clean() /**WATCH we are not using an instance to call clean */
+
 }
 
 //=====JS lesson2: use JS to control HTML & CSS==================================
