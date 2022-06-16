@@ -53,8 +53,8 @@ html,body{
 .showcase.active{ /*watch: no space; it means only when showcase & active 
     appears in html, then employ below settings; we will use js to control how to add 
     active in html to activate below settings*/ 
-    right:var(--menu-width);
-    width: calc(100% - var(--menu-width));
+    right:var(--menu-width); /**showcase至上一级position为absolute右边框的距离*/
+    width: calc(100% - var(--menu-width)); /**即新的showcase的宽度*/
 }
 
 .toggle{
@@ -176,7 +176,7 @@ html,body{
 
 
 .menu{
-    z-index: 1;  /*make sure header can cover menu*/
+    z-index: 1;  /*z-index: 1; make sure header can cover menu*/
     position: absolute;
     top: 0;  /*回溯上一层定位，直到上一层position:absolute, position默认为static*/
     right: 0; /*回溯上一层定位*/
