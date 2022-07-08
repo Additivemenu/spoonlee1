@@ -177,29 +177,29 @@ html,body{
 
 .menu{
     z-index: 1;  /*z-index: 1; make sure header can cover menu*/
-    position: absolute;
-    top: 0;  /*回溯上一层定位，直到上一层position:absolute, position默认为static*/
-    right: 0; /*回溯上一层定位*/
+    position: absolute; /*isolate .menu from the file flow, we can place menu wherever we want*/
+    top: 0;  /*回溯html上一层定位，直到那一层position:absolute,选取该层作为参考系, position默认为static*/
+    right: 0; /*回溯html上一层定位, 直到...*/
     
     width: var(--menu-width);
-    height: 100%; /*回溯上一层定位*/
+    height: 100%; /*回溯html上一层定位, 直到...*/
     
-    display: flex;
+    /**make menu list in the middle, but you need to define width & height first*/
+    display: flex; /*effective for elements under .menu */
     justify-content: center;
     align-items: center;
 
 }
 
 .menu ul{
-    list-style: none;
+    list-style: none; /*cancel the bullet points*/
     position: relative;
-
 }
 
 .menu ul li a{
     text-decoration: none; /*hide the underlines*/
     font-size: 24px;
-    color: var(--overlay-color);
+    color: var(--overlay-color); /*font color*/
 }
 
 @media(max-width: 798px){ 
