@@ -1,3 +1,7 @@
 {
-  "java.project.sourcePaths": ["leetcode_java/bit", "javaCore"]
+  "java.project.sourcePaths": [
+    "javaCore",
+    "algorithm_zuo/class2",
+    "algorithm_zuo/class3"
+  ]
 }
