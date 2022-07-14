@@ -1,8 +1,13 @@
 extension:  
 markdown allinone,  
 markdown preview enhanced
+
 沉浸式写作: `ctrl + k` 松开 `z`;退出双击`Esc`
+
 [其他人关于Markdown笔记](https://gitee.com/yerenping/Ye13/blob/master/other/Markdown-studay.md)
+
+[HelloJava](Src/helloJava.java)
+
 
 # 1.标题
 e.g.
