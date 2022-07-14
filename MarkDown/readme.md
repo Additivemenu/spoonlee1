@@ -1,3 +1,9 @@
+extension:  
+markdown allinone,  
+markdown preview enhanced
+沉浸式写作: `ctrl + k` 松开 `z`;退出双击`Esc`
+[其他人关于Markdown笔记](https://gitee.com/yerenping/Ye13/blob/master/other/Markdown-studay.md)
+
 # 1.标题
 e.g.
 # 一级标题
@@ -23,11 +29,11 @@ e.g.
 
 # 4.代码区块
 代码区块的建立是在每行加4个空格或者一个制表符
-    
+----
     void main(){
         printf("hello world!");
     }
-
+----
 # 5.强调
 在强调内容两侧加上*或者_  , 如  
 *斜体*, _斜体_  
@@ -36,6 +42,9 @@ e.g.
 
 
 # 7.分割线
+---
+OR
+***
 
 # 8.链接
 链接可以由两种格式构成: 行内式和参考式
@@ -49,8 +58,6 @@ e.g.
 # 9.图片
 与链接类似, 只需再在链接的基础上在前方加一个!
 ![](Src/R.jpg)
-![](R.jpg)
-
 # 10. 反斜杠\
 相当于反转义作用, 使一个符号变为普通符号
 # 11. 符号`
