@@ -102,6 +102,7 @@ Math.random()函数:
 Return一个落在[0,1)上的数, 散落概率均布在[0,1);即probability density function f = x, x属于[0,1)
 
 [code: mathRandom_Demo](class2/mathRandom_test.java)
+
 ![运行结果](Src/pic5.png)
 其中5个test:
 Test 4 和test 5相当于roll dice问题, roll一次只有两种结果, return值落在[0,x) （即中了）, 或落在[x,1)（即没中）,
@@ -118,6 +119,7 @@ Roll两次那就有4种事件: {1,2都中}, {1,2都不中},{1中,2不中}, {1不
 >>+ 方法一般化: 从a-b随机到c-d随机都可以通过这种方法做到
 
 [Code:Random_1to5Conversion](class2/Random_1to5conversion.java)
+
 ![运行结果](Src/pic6.png)
 ### P16 01不等概率随机到01等概率随机
 题目: f函数以p概率返回0, 以1-p概率返回1； 如果仅利用p函数等概率返回0或1?
@@ -125,6 +127,7 @@ Roll两次那就有4种事件: {1,2都中}, {1,2都不中},{1中,2不中}, {1不
 > 还是通过调用条件函数(题目给定的工具函数)来构造等概率事件(比如多次调用条件函数), 再做标记(返回0或1); 其实本质还是概率论里的roll dice问题
 
 [Code: 01UnevenTo01Even](class2/Random_01unevenTo01even.java)
+
 ![运行结果](Src/pic7.png)
 ### P17 对数器的使用
 对数器用来调Bug
