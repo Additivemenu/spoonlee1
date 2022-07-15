@@ -34,6 +34,7 @@
 
 算法的图形化理解
 如RNA转录一般
+
 ![](Src/pic2.png)
 
 [Code: bubbleSorting](class1/Code08_bubbleSort.java)
@@ -104,6 +105,7 @@ Return一个落在[0,1)上的数, 散落概率均布在[0,1);即probability dens
 [code: mathRandom_Demo](class2/mathRandom_test.java)
 
 ![运行结果](Src/pic5.png)
+
 其中5个test:
 Test 4 和test 5相当于roll dice问题, roll一次只有两种结果, return值落在[0,x) （即中了）, 或落在[x,1)（即没中）,
 Roll两次那就有4种事件: {1,2都中}, {1,2都不中},{1中,2不中}, {1不中, 2中}
