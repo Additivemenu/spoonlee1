@@ -1,0 +1,30 @@
+{
+
+	 "Main function": {
+	 	"prefix": "java temp",
+	 	"body": [
+	 		
+			"public static void main(String[] args)",
+			"{",
+			"System.out.println(); ",
+			"}",
+			
+	 	],
+	 	"description": "this is a java template"
+	},
+
+	"For loop": {
+		"prefix": "java loop",
+		"body": [
+			
+		   "for(int i; i < length; i++)",
+		   "{",
+		   " ",
+		   "}",
+		   
+		],
+		"description": "this is a java template"
+   }
+
+
+}
