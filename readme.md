@@ -9,6 +9,6 @@
 
 # Algorithm
 > 左程云算法全家桶
->>+ [新手班](Algorithm/dataStructureAlgo_zuo/beginner)
->>+ [体系学习班](Algorithm/dataStructureAlgo_zuo/Systematic)
->>+ [代表性题目](Algorithm/dataStructureAlgo_zuo/Leetcode_egs)
+>>+ [新手班](Algorithm/dataStructureAlgo_Zuo/beginner)
+>>+ [体系学习班](Algorithm/dataStructureAlgo_Zuo/Systematic)
+>>+ [代表性题目](Algorithm/dataStructureAlgo_Zuo/Leetcode_egs)

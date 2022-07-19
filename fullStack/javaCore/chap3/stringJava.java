@@ -28,6 +28,7 @@ public class stringJava {
 
         boolean stringEquals2 = man.equals("jerry24");
         System.out.println(stringEquals2); // true
+        
         // this is for section 3.6.9 demo code---------------------------------
         //构建一个空的字符串构造器
         System.out.println("---");
