@@ -24,7 +24,26 @@
 		   
 		],
 		"description": "this is a java template"
-   }
+   },
+   "SystemOutPrintln": {
+	"prefix": "prtln",
+	"body": [
+		
+	  "System.out.println($0);"
+	   
+	],
+	"description": "this is a java template"
+},
+
+"SystemOutPrint": {
+	"prefix": "prt",
+	"body": [
+		
+	  "System.out.print($0);"
+	   
+	],
+	"description": "this is a java template"
+},
 
 
 }

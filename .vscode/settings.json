@@ -1,7 +1,6 @@
 {
   "java.project.sourcePaths": [
-    "javaCore",
-    "algorithm_zuo/class2",
-    "algorithm_zuo/class3"
+    "Algorithm/dataStructureAlgo_Zuo/beginner/class3",
+    "fullStack/javaCore/chap3"
   ]
 }
