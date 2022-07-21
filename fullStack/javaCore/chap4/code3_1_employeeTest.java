@@ -31,12 +31,13 @@ public class code3_1_employeeTest {
 // define class
 class Employee{
     // this class includes 1 constructor and 4 methods
-    //set up access permission
+    
+    //set up access permission-----------------------------------
     private String name;
     private double salary;
     private LocalDate hireDay;
     
-    // define constructor
+    // define constructor-----------------------------------------
     public Employee(String n, double s, int year, int month, int day){ // remember these parameters are inputs, not actual class property
 
         //name = Objects.requireNonNullElse(n, "unknown"); // name might be null, 这里我们采用"宽容法"    
@@ -48,7 +49,7 @@ class Employee{
         salary = s;
         hireDay = LocalDate.of(year, month, day);
     }
-    // define methods
+    // define methods------------------------------------------
     public String getName(){
         return name;
     }
