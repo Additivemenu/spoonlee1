@@ -1,4 +1,5 @@
 _JavaCore I Java基础知识_
+先在这里做笔记, 然后据此再画Xmind,根据Xmind来做referencing, 以后遇到不理解的再返回教科书查看复习.
 
 + [阅读Java联机API文档](https://docs.oracle.com/en/java/javase/18/)  
 当使用的类不是定义在基本java.lang包中时， 一定要使用import指令导入相应的包  

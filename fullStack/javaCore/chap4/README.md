@@ -98,16 +98,16 @@ class ClassName{
 
 ```
 
-### 基于上面的demo分析(4.3.2- 4.3.8)
+### 基于上面[demo](code3_1_employeeTest.java)分析(4.3.2- 4.3.8)
 
-1. **概览**  
+### 1. 概览
 demo中包含两个类: Employee类和带有public修饰符的EmployeeTest类（包含了main方法）. 当编译这段source code时, 编译器将在目录下创建两个类文件: 1) EmployeeTest.class; 2) Employee.class. 在命令行中键入 javac EmployeeTest.java则会编译EmployeeTest及其用到的类
 
-2. **public与private修饰符**
+### 2. public与private修饰符
 + public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
 + private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
   
-3. **关于构造器**
+### 3. 关于构造器  
 demo中的Employee类的第二部分关于constructor的定义:
 ```java
     // define constructor-----------------------------------------
@@ -129,7 +129,7 @@ demo中的Employee类的第二部分关于constructor的定义:
 + 构造器可以有0个,1个或多个参数
 + 构造器可以没有返回值
 + **构造器总是伴随着new操作符一起调用**
-+ **注意:不要在构造器中定义与实例字段同名的局部变量**
++ **注意:不要在构造器中定义与实例字段同名的局部变量**  
  以防止这些局部变量遮蔽(shadow)同名的实例字段.例如以下构造器中声明了局部变量name和salary， 这与Employee类的实例字段重名了.
  ```Java
  public Employee(String n, double s, ...){
@@ -137,6 +137,52 @@ demo中的Employee类的第二部分关于constructor的定义:
  double salary = s; // error
 }
  ```
+### 4.使用var关键字声明局部变量
+在Java10中, 如果可以从变量的初始值推导出它们的类型, 那么可以用var关键字声明局部变量,而无需指定类型.  
+```java
+Employee haary = new Employee("Harry", 50000, 1989,10,1); //最标准写法
+var harry = new Employee("Harry", 50000, 1989,10,1); // 也可这样
+```
+不过我们一般不会对数值类型使用var, 如int, long或者double. 注意var关键字只能用于方法中的局部变量, 参数和字段的类型必须声明.
+
+### 5.关于使用null引用
+我们知道, 一个对象变量包含一个对象的引用, 或者包含一个特殊值null(表示没有引用任何对象). **定义一个类时, 最好事先清楚哪些字段可能为null**. 如果对一个null值应用一个方法, 则会产生一个NullPointerException异常. 有两种方式来address关于null值的使用:
++ "宽容型"方法: 把null参数转换为一个适当的null值(希望接收可有可无的值)
+```java
+public Employee(String n, double s, int year, int month, int day){
+    name =  Objects.requireNonNullElse(n,"unknown");
+    ...
+}
+```
++ "严格型"方法: 干脆直接拒绝null参数(不希望接收可有可无的值)
+此时如果用null名字构造了一个Employee对象, 就会产生NullPointerException异常.这种做法有两个好处: 1)异常报告会提供这问题的描述; 2)异常报告会准确指出问题所在的位置, 方便定位错误.
+ 
+```java
+public Employee(String n, double s, int year, int month, int day){
+    Objects.requireNonNull(n, "The name cannot be null");
+    name = n;
+    ...
+}
+```
+### 6.隐式参数与显示参数
+>+ 隐式(implicit)参数: 用关键词this指示隐式参数(Java中可写可不写), 隐式参数不会出现在方法声明中.
+>+ 显示(explicit)参数: 位于方法名后面括号中的数值, 显式地列在方法声明中
+
+### 7.封装的优点
+略
+
+## 4.3.2 其他碎碎念 
+### 1.基于类的访问权限
+一个方法可以访问所属类的所有对象的私有数据.
+
+### 2. 私有方法
+>+ 私有方法: 关键字private. 从程序设计者的角度来讲, 如果方法是私有的, 类的设计者就可以确信他不会用在别处, 可将其删去.
+>+ 公有方法: 关键字public. 程序设计这应意识到, public method不能随便删去, 因为可能会有其他代码依赖这个方法. 
+
+### 3. final实例字段
+>可以将实例字段定义为final, 这样的字段必须在构造对象时初始化， 且之后无法再修改这个字段.
+
+
 
 ## 4.4 静态字段与静态方法
 解释static修饰符的含义
