@@ -34,28 +34,53 @@
 > ```Java
 > Date birthday = new Date();
 > ```
->+ **注意一定要区分对象和对象变量!!!**
-> **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.
+
+> 注意事项
+>1. **注意一定要区分对象和对象变量!!!**
+>```JAVA
+>Date deadline;
+>```
+>例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.
+>2. **注意一定要初始化对象变量,才能对其使用各种方法**
+>不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
+>>+ 引用新构造的对象
+>>```JAVA
+>> deadline=new Date();
+>>```
+>>+ 引用已有的对象 
+>>两个对象变量将引用内存中的同一个对象
+>>```JAVA
+>> deadline=birthday;
+>>```
+>3. **new操作符返回值也是一个引用**
+>>```JAVA
+>> Date deadline = new Date();
+>>```
+>> 表达式new Date()构造了一个Date类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量deadline中.
+>4. **所有的Java对象都存储在堆中.当一个对象包含另一个对象变量时,它只是包含另一个堆对象的指针.**
 
 
-
-
+### 4.2.2 Java类库中的LocalDate类
 [Java_Date](code2_2_localdate.java)
+标准Java类库分别包含了两个类: 
++ 表示时间点的Date类
++ 用日历表示法表示日期的LocalDate类
 
+具体内容先跳过
 
-
-
-
-
+### 4.2.3 更改器方法与访问器方法
 [calender_demo](code2_3_demo.java)
 
+>重要概念
+>+ 更改器方法(mutator method): 更改对象状态的方法
+>+ 访问器方法(accessor method): 只访问对象而不修改对象状态的方法
 
-
-
+具体内容先跳过
 
 
 ## 4.3 用户自定义类
-[customize_class](code3_1_employeeTest.java)
+[employeeSalaryManagement](code3_1_employeeTest.java)
+
 在Java中, 最简单的类定义形式为:
 ```Java
 class ClassName{
@@ -71,6 +96,16 @@ class ClassName{
 }
 
 ```
+
+### 基于上面的demo分析(4.3.2- 4.3.8)
+>1. **概览**
+>demo中包含两个类: Employee类和带有public修饰符的EmployeeTest类（包含了main方法）. 当编译这段source code时, 编译器将在目录下创建两个类文件: 1) EmployeeTest.class; 2) Employee.class. 在命令行中键入 javac EmployeeTest.java则会编译EmployeeTest及其用到的类
+>2. **public与private修饰符**
+>>+ public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
+>>+ private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
+>3. **关于构造器**
+
+
 
 ## 4.4 静态字段与静态方法
 解释static修饰符的含义
