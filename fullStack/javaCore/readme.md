@@ -9,5 +9,7 @@ _JavaCore I Java基础知识_
 
 [chapter4](chap4/README.md)
 
+[chapter5](chap5/README.md)
+
 
 
