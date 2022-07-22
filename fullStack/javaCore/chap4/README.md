@@ -41,7 +41,8 @@
 >Date deadline;
 >```
 >例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.
->2. **注意一定要初始化对象变量,才能对其使用各种方法**
+
+>2. **注意一定要先初始化对象变量, 才能对其使用方法**
 >不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
 >>+ 引用新构造的对象
 >>```JAVA
@@ -98,14 +99,44 @@ class ClassName{
 ```
 
 ### 基于上面的demo分析(4.3.2- 4.3.8)
->1. **概览**
->demo中包含两个类: Employee类和带有public修饰符的EmployeeTest类（包含了main方法）. 当编译这段source code时, 编译器将在目录下创建两个类文件: 1) EmployeeTest.class; 2) Employee.class. 在命令行中键入 javac EmployeeTest.java则会编译EmployeeTest及其用到的类
->2. **public与private修饰符**
->>+ public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
->>+ private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
->3. **关于构造器**
 
+1. **概览**  
+demo中包含两个类: Employee类和带有public修饰符的EmployeeTest类（包含了main方法）. 当编译这段source code时, 编译器将在目录下创建两个类文件: 1) EmployeeTest.class; 2) Employee.class. 在命令行中键入 javac EmployeeTest.java则会编译EmployeeTest及其用到的类
 
+2. **public与private修饰符**
++ public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
++ private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
+  
+3. **关于构造器**
+demo中的Employee类的第二部分关于constructor的定义:
+```java
+    // define constructor-----------------------------------------
+    public Employee(String n, double s, int year, int month, int day){ // remember these parameters are inputs, not actual class property
+
+        //name = Objects.requireNonNullElse(n, "unknown"); // name might be null, 这里我们采用"宽容法"    
+        
+        //----"严格法"----------
+        Objects.requireNonNull(n, "the name cannot be null"); 
+        name = n;
+        //--------------
+        salary = s;
+        hireDay = LocalDate.of(year, month, day);
+    }
+```
+注意到:
++ 构造器与类名相同
++ 每个类可以有一个以上的构造器
++ 构造器可以有0个,1个或多个参数
++ 构造器可以没有返回值
++ **构造器总是伴随着new操作符一起调用**
++ **注意:不要在构造器中定义与实例字段同名的局部变量**
+ 以防止这些局部变量遮蔽(shadow)同名的实例字段.例如以下构造器中声明了局部变量name和salary， 这与Employee类的实例字段重名了.
+ ```Java
+ public Employee(String n, double s, ...){
+ String name = n //error
+ double salary = s; // error
+}
+ ```
 
 ## 4.4 静态字段与静态方法
 解释static修饰符的含义
