@@ -35,12 +35,13 @@
 > Date birthday = new Date();
 > ```
 
-> 注意事项
+> :full_moon:注意事项
 >1. **注意一定要区分对象和对象变量!!!**
 >```JAVA
 >Date deadline;
 >```
->例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.
+>例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.  
+>可以认为对象变量相当于C中的指针变量, 而对象相当于一个实实在在的数据（而不是地址值).
 
 >2. **注意一定要先初始化对象变量, 才能对其使用方法**
 >不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
@@ -240,21 +241,51 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
 + 注意并不是只要一个方法用到static field, 该方法就是static method--**是否要冠以一个method以static, 取决于该方法是否要用到instances的field(是否可以只依赖于类).** 比如demo中的setId方法用到了static field nextId, 但同时也要用到instances的id, 所以不是static method.
 
 + run public class staticTest的main method:  
-可见static class Employee的main method并未被执行
-![](Src/staticTestmain.png)
-
+可见static class Employee的main method并未被执行  
+```shell
+name=Tom, id=1, salary=40000.0
+name=Dick, id=2, salary=60000.0
+name=Harry, id=3, salary=65000.0
+Next available id = 4
+```
 + run static class Employee的main method:  
-可见只有static class Employee的main method被执行了
-![](Src/employeemain.png)
+可见只有static class Employee的main method被执行了  
 
+```shell
+Harry50000.0
+```
+## 4.5 :full_moon:方法参数
+[paramTest](code4_5_paramTest.java)
 
-## 4.5 方法参数
+Java程序设计语言对对象采用的不是按引用调用, 实际上, **对象引用是按值传递的.**
 
-
-
-
+>对demo总结（运行结果见代码注释）
+>+ 有两种类型的方法参数:
+>> 1) 基本数据类型(数字, boolean)
+>> 2) 对象引用
+>+ **Test1: 当基本数据类型作为方法参数时, 方法不能修改基本数据类型的参数(即数值型或布尔型).**  
+> 因为Java对于基本数据类型的参数是按值传递的. 方法会创建主函数中基本数据的副本, 然后在副本中计算, 方法调用结束后副本中的变量会被释放.
+>+ **Test2: 当对象引用作为方法参数时, 方法可以改变对象参数的状态.**
+> 因为对象是按照对象引用作为方法参数而被方法调用的. 方法同样会创建主函数中对象变量的副本(**对象变量就是对对象的引用**), 这样副本中的对象变量和主函数中的对象变量其实都引用(指向)了内存中的同一对象, 在副本中改变对象变量其实就在改变内存中的对象, 所以此时方法调用结束后对象的状态可以被改变.
+>+ **Test3: 当对象引用作为方法参数时, 方法不能让一个对象参数引用一个新的对象 (methods can't attach new objects to object parameters).**
+>test3的结果显示, swap方法只是交换了副本中的参数x和y, 并没有交换主函数中的我们想交换的对象变量a和b. 主函数中的对象变量a和b分别引用了内存中的对象A和B, a和b的值应该就是内存中对象a和b的地址, 现在想要使得对象变量a指向对象B, 对象变量b指向对象A, 需要交换的是对象变量a和b的值, 但是实际上swap方法创建的副本中对象变量x和y初始化得到的值是内存中的对象A和B的地址值, 交换x和y根本不会影响到主函数中对象变量a和b的值 (除非你用指针分别指向对象变量a和b, 再令指针指向的值互换, 不过这是C的思想了.)本质上还是因为Java是按值传递的(call by value).
 
 ## 4.6 对象构造
+### 4.6.1 重载
+
+### 4.6.2 默认字段初始化
+
+### 4.6.3 无参数的构造器
+
+### 4.6.4 显式字段的初始化
+
+### 4.6.5 参数名
+
+### 4.6.6 调用另一个构造器
+
+### 4.6.7 初始化块
+
+### 4.6.8 对象析构与finalize方法
 
 
 ## 4.7 包
