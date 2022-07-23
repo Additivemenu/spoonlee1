@@ -79,7 +79,7 @@
 具体内容先跳过
 
 
-## 4.3 用户自定义类
+## 4.3 :full_moon:用户自定义类
 [employeeSalaryManagement](code3_1_employeeTest.java)
 
 在Java中, 最简单的类定义形式为:
@@ -184,7 +184,7 @@ public Employee(String n, double s, int year, int month, int day){
 
 
 ## 4.4 静态字段与静态方法
-解释static修饰符的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关.** 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.
+解释static修饰符的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
 ### 4.4.1 静态字段
 >+ 如果将一个字段定义为**static**, **每个类**只有一个这样的字段;
 >+ 对于非静态的实例字段, **每个对象**都有一个自己的副本
@@ -199,7 +199,7 @@ class Employee{
 ```
 上面的代码表示, 每一个Employee对象都有一个自己的字段, 但这个类的所有实例都共享一个nextId字段. 例如, 如果有1000个Employee类对象, 则有1000个实例字段id, 分别对应每一个对象. 但是， 只有一个静态字段nextId.即使没有Employee对象, 静态字段nextId也存在(因此只要有static关键字, 那么你就可以无需对象便可访问字段).它属于类, 而不属于单个的对象. 这种静态字段一般用于类共享的信息(类似多线程中需要一个共享变量来递增id)
 
-有个代码例子???????没懂
+==有个代码例子???????没懂==
 
 ### 4.4.2 静态常量
 静态变量用的比较少, 但是静态常量却用得很多. 例如Math类中关于PI的定义:
@@ -211,7 +211,7 @@ public class math{
 ```
 在程序中用Math.PI来访问这个常量. 但如果这里省略关键字static, PI就变成了Math类的一个实例字段, 即需要一个Math类的对象来访问PI，且每一个Math对象都有一个自己的PI副本.
 
---另一个常使用的静态常量是System.out ???????回头看--
+==另一个常使用的静态常量是System.out ???????回头看==
 ### 4.4.3 静态方法
 >+ **静态方法是不在对象上执行的方法 (或认为是没有this参数的方法).**
 > 例如Math类的pow方法就是一个静态方法, 表达式 Math.pow(x,a)会计算x的a次幂. 在运算完成时, 它不使用任何Math对象(换言之,它没有隐式参数). 这种方法更像是面对过程中的普通函数.
@@ -222,16 +222,30 @@ public class math{
 >+ 方法不需要访问对象状态, 因为它需要的所有参数都通过显示参数提供.(e.g. Math.pow) 
 >+ 方法只需访问类的静态字段
 
-### 4.4.4 工厂方法
+### 4.4.4 工厂方法 
+使用静态工厂方法(factory method)来构建对象.
 
+已见过的工厂方法包括: LocalDate.now 和 LocalDate.of
+
+==NumberFormat类??????==
 
 
 
 ### 4.4.5 main方法
+main方法也是一个静态方法, 它不对任何对象进行操作. 每一个类都可以有一个main方法, 这是常用于对类进行单元测试的一个技巧.
 
+[staticTest](code4_4_staticTest.java)
 
++ **注意textbook中 class Employee前得也加上static, 否则无法在Employee类中定义static field or method**
++ 注意并不是只要一个方法用到static field, 该方法就是static method--**是否要冠以一个method以static, 取决于该方法是否要用到instances的field(是否可以只依赖于类).** 比如demo中的setId方法用到了static field nextId, 但同时也要用到instances的id, 所以不是static method.
 
++ run public class staticTest的main method:  
+可见static class Employee的main method并未被执行
+![](Src/staticTestmain.png)
 
++ run static class Employee的main method:  
+可见只有static class Employee的main method被执行了
+![](Src/employeemain.png)
 
 
 ## 4.5 方法参数

@@ -5,7 +5,7 @@
 
 > front end
 >>+ [HTML & CSS](fullStack/frontEnd/HTML_CSS/) 
->>+ [JS](fullStack/frontEnd/JS_lesson/JS_lesson)
+>>+ [JS](fullStack/frontEnd/JS_lesson/)
 >>+ [frontEnd_projects](fullStack/frontEnd/front_end_project/)
 
 # Algorithm
