@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.FormatterClosedException;
 // Java数组: 只能包含同一类型的元素, 长度一旦声明之后无法改变; 动态扩容用arrayList
 // Java声明数组: 元素类型[] 
 
