@@ -6,6 +6,8 @@ markdown preview enhanced
 
 [其他人关于Markdown笔记](https://gitee.com/yerenping/Ye13/blob/master/other/Markdown-studay.md)
 
+[MarkDown官方教程](https://markdown.com.cn/basic-syntax/horizontal-rules.html)
+
 [HelloJava](Src/helloJava.java)
 
 

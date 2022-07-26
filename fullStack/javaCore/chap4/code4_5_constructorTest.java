@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class code4_5_constructorTest{//================================================
+public class code4_5_constructorTest{//==============================================================================
 
     public static void main(String[] args)
     {
@@ -17,28 +17,28 @@ public class code4_5_constructorTest{//=========================================
          }
     }
 
-    static class Employee{//===========================================================
-        //----------------------------------------------------------------------------------------------
+    static class Employee{//========================================================================================
+        // step1: ----------------------------------------------------------------------------------------------
         private static int nextId;
 
         private int id;
         private String name = ""; //instance field initialization
         private double salary;
 
-        // static initialization block-------------------------------------------------------------------
+        // static initialization block: run only when the class is firstly called
         static{
             var generator = new Random(); // 构造一个新的随机数生成器
             //set nextId to a random number between 0 and 9999
-            nextId = generator.nextInt(10000); // return a random num between 0 to (n-1)
+            nextId = generator.nextInt(10000); // an API, return a random num between 0 to (n-1)
         }
 
-        //object initialization block
+        //object initialization block: run whenever a new object is constructed
         {
-            id = nextId;
-            nextId++;
+            id = nextId; // take shared static field (class field) 
+            nextId++; // id + 1
         }
 
-        // three overloaded constructors
+        // step2: three overloaded constructors -----------------------------------------------------------------
         public Employee(String n, double s){
             name = n;
             salary = s;
@@ -56,7 +56,7 @@ public class code4_5_constructorTest{//=========================================
             // id initialized in initialization block
         }
 
-        // methods ----------------------------------------------------------------------------------
+        // step3: methods ----------------------------------------------------------------------------------
         public String getName(){
             return name;
         }
