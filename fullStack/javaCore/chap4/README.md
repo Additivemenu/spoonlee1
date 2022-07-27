@@ -464,11 +464,77 @@ Java可以完成自动的垃圾回收, 不需要人工回收内存,所以Java不
 有些对象使用了内存之外的其他资源, 比如文件或使用了系统资源的另一个对象的句柄. 在这种情况下, 当资源不再需要时, 将其回收和再利用就非常重要. 如果一个资源一旦使用完就需要立即关闭, 那么应提供一个close方法来完成必要的清理工作. 可以在对象使用完时调用这个close方法(注意不要使用finalize方法完成清理, 它已被废弃.).
 
 ## 4.7 包
+Java允许使用包(package)来将类组织在一个集合中. 借助包我们可以方便地组织自己的代码, 并将自己的代码与别人提供的代码库分开管理.
+
+### 4.7.1 包名
+>+ **使用包的主要原因是确保类名的唯一性.**  
+> 假如两个程序员同时建立了Employee类, 只要将这些类放置在不同的包中就不会产生冲突. 事实上, 为了保证包名的绝对唯一性, 要用一个因特网域名(这显然是唯一的)以逆序的形式作为包名, 然后对不同的工程使用不同的子包.
+>+ **每一个包都是独立的类的集合**
+> 从编译器的角度来看, 嵌套的包之间没有任何关系. 例如java.util包与java.util.jar包之间毫无关系.
+### 4.7.2 类的导入
+> **一个类可以使用所属包中的所有类, 以及其他包中的公共类**, 对于后者, 我们有两种方法来访问:
+>>+ 使用完全限定名(fully qualified name)
+>> 即包名后面跟着类名(很繁琐), 例如:
+>> ```java
+>> java.time.LocalDate today = java.time.LocalDate.now();
+>> ```
+>>+ 使用import语句 
+>> 可以使用import语句导入一个特定的类或整个包
+>> ```java
+>> import java.time.*; // import all package
+>> import java.time.LocalDate; // import the specified class
+>>```
+
+> **注意!**
+> 在多数情况下, 可以用import导入你需要的包而不必过多考虑. 但如果发生命名冲突, 此时应注意包了. 例如, java.util和java.sql包都有Date类, 如果你同时导入这两个包:
+> ```java
+> import java.util.*;
+> import java.sql.*;
+> ```
+> 在程序使用Date类的时候, 就会出现编译错误:
+> ``` java
+> Date today; // error -- java.util.Date OR java.sql.Date?
+> ```
+> 此时有两种方式来指定你到底想用哪个包的类:
+>+ 增加一个特定的import语句
+>> ```java
+>> import java.util.*;
+>> import java.sql.*;
+>> import java.util.Date;
+>> ``` 
+>+ 在类名前加上完整的包名
+>> ```java
+>> var deadline = new java.util.Date();
+>> var today = new java.sql.Date();
+>> ``` 
+
+---
+
+在包中定位类是编译器(compiler)的工作. C++中与包类似的机制是命名空间(namespae)特性.
+
+### 4.7.3 静态导入
+
+### 4.7.4 在包中增加类
+
+### 4.7.5 包访问
+
+### 4.7.6 类路径
+
+### 4.7.7 设置类路径
+
+
 
 
 ## 4.8 JAR文件
 
 
+
+
+
 ## 4.9 文档注解
+
+
+
+
 
 ## 4.10 类设计技巧
