@@ -40,6 +40,8 @@ Consequently, a queue operates in a _"first-in-first-out" (FIFO)_ fashion (akin 
 Many important applications require selection of an items of the highest priority among a dynamically changing set of candidates. A data structure that seeks to satisfy the needs of such applications is called a **priority queue**, which is a collection of data items from a totally ordered universe(most often integer or real numbers).  
 The principal operations on a priority queue are _finding its largest element_, _deleting its largest element_, and _adding a new element_. Of course, a priority queue must be implemented so that the last two operations yield another priority queue. Straightforward implementations of this data structure can be based on either an array or a sorted array, but neither of these options yields the most efficient solution possible. A better implementation of a priority queue is based on an ingenious data structure called the **heap**.
 
+---
+
 ## 1.4.2 Graphs
 > <font size = 5>Definition</font>
 >
@@ -86,7 +88,27 @@ The principal operations on a priority queue are _finding its largest element_, 
 >+ Adjacency lists for a weighted graph have to include in their nodes not only the name of an **adjacent vertex**but also the weight of the corresponding edge.
 >![](Src/weighted%20graph.png)
 
+> <font size =5> Path </font>
+>+ A **path** from vertex u to vertex v of a graph G can be defined as ==a sequence of adjacent (connected by an edge) vertices== that starts with u and ends with v. 
+>>+ If all vertices of a path are distinct (截然不同的, 完全分开的), the path is said to be **simple**.
+>>+ The **length** of a path is the total number of vertices in the vertex sequence defining the path minus 1, which is the same as the number of edges in the path. 
+>>+ E.g., a,c,b,f is a simple path of length 3 from a to f in the graph in Fig 1.6a, whereas a,c,e,c,b,f is a path (not simple) of length 5 from a to f. 
+>>> ![](Src/graph.png)
+>
+>+ In the case of directed graph, we are usually interested in directed paths. **A directed path** is ==a sequence of vertices==  in which every consecutive pair of the vertices is connected ==by an edge== directed from the vertex listed first to the vertex listed next. E.g., a,c,e,f is a directed path from a to f in the graph in Fig.1.6b
 
+
+><font size =5>Connectivity and acyclicity</font>
+>+ A graph is said to be **connected** if for ==every pair== of its vertices u and v there is a path from u to v.  
+>>+ If we make a model of a connected graph by connecting some balls representing the graph's vertices with strings representing the edges, it will be a single piece;
+>>+ If a graph is not connected, such a model will consist of several connected pieces that are called connected components of the graph.
+>+ **A connected component** is a maximal (not expandable by including another vertex and an edge) connected $subgraph^2$ of a given graph. E.g., the graphs in Fig 1.6a and 1.8a are connected , whereas the graph in Fig1.9 is not, because there is no path, for example, from a to f. The graph in Fig 1.9 has two connected components with vertices {a,b,c,d,e} and {f,g,h,i}, respectively.
+>+ A **cycle** of a path of a positive length that starts and ends at the same vertex and does not traverse the same edge more than once. E.g., f,h,i,g,f is a cycle in the graph in Fig 1.9.
+>+ A graph with no cycles is said to be **acyclic**. 
+>
+>>![](Src/graph.png)
+>>![](Src/weighted%20graph.png)
+>>![](Src/Fig1_9%20not%20connected%20graph.png)
 ## 1.4.3 Trees
 
 
