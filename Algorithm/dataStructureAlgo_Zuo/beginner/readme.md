@@ -81,7 +81,7 @@ print(aa^bb); //XOR
 算法的图形化理解
 如RNA转录一般
 
-![](Src/pic2.png)
+![](Src/bubbleSort.PNG)
 
 [Code: bubbleSorting](class1/Code08_bubbleSort.java)
 >只需要关注bubbleSort即可, 其他和上面排序算法一样
@@ -96,7 +96,7 @@ print(aa^bb); //XOR
 >+	在以上的每次循环中, 相当于每次考虑一个新的元素来排序. 设这个新元素的index为i, 则从位置为i的slot上向左依次比较, 小的在左边，大的在右边, 直到比较到位置为0的slot上.
 
 算法图形化理解
-像吃东西似的, 一点一点消化…
+像吃东西似的, 一点一点消化… 也像抓牌似的, 把新抓到的牌查到已有的牌库中, 使手中的牌有序.
 ![](Src/pic3.jpg)
 
 [Code: insertSorting](class1/Code09_insertSort.java)
