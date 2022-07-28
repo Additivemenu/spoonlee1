@@ -41,17 +41,46 @@ Many important applications require selection of an items of the highest priorit
 The principal operations on a priority queue are _finding its largest element_, _deleting its largest element_, and _adding a new element_. Of course, a priority queue must be implemented so that the last two operations yield another priority queue. Straightforward implementations of this data structure can be based on either an array or a sorted array, but neither of these options yields the most efficient solution possible. A better implementation of a priority queue is based on an ingenious data structure called the **heap**.
 
 ## 1.4.2 Graphs
+> <font size = 5>Definition</font>
 > Formally, a **graph** G=<V,E> is defined by a pair of two sets: a finite nonempty set V of items called **vertices** and a set E of pairs of these items called **edges**(灵魂动了！！fluent的mesh).
 >+ **if these pairs of vertices are unordered**, i.e., a pair of vertices (u,v) is the same as the pair (v,u), we say that the vertices u and v are **adjacent** to each other and that they are connected by the **undirected edge** (u,v). We call the vertices u and v **endpoints** of the edge (u,v) and say that u and v are **incident** to this edge; we also say that the edge (u,v) is incident to its endpoints u and v. A graph G is called **undirected** if ==every== edge in it is undirected.
 >+ if a pair of vertices (u,v) is not the same as the pair (v,u), we say that the edge (u,v) is **directed** from the vertex u, called the edges's **tail**, to the vertex v, called the edge's **head**. We also say that the edge (u,v) leaves u and enters v. A graph whose ==every== edge is directed is called **directed**. Directed graphs are also called **digraphs**.  
 
-
+> <font size = 5>Labels for graph</font>
 > It is normally convenient to label vertices of a graph or a digraph with letters, integer numbers, if an application calls for it, character strings.
 >+ The graph depicted in Fig 1.6a has six vertices and eight undirected edges:
 > V = {a,b,c,d,e,f}, E = {(a,c), (a,d), (b,c), (b,f), (c,e), (d,e), (e,f)}.
 >+ The digraph depicted in Fig 1.6b has six vertices and eight directed edges:
 > V = {a,b,c,d,e,f}, E = {(a,c), (b,c), (b,f), (c,e),(d,a),(d,e), (e,c), (e,f)}.
 >![](Src/graph.png)
+
+><font size = 5> Sparsity of a graph </font>
+> We have the following inequality for the number of edges |E| possible in an undirected graph with |V| vertices and no loops (means disallow multiple edges between the same vertices of an undirected graph):
+> 
+>  $$0 <= |E| <= \frac{|V|(|V|-1)}{2}$$ 
+> 
+>+ A graph with every pair of its vertices connected by an edge is called **complete**. A standard notation for the complete graph with |V| vertices is K~|V|~. 
+>+ A graph with relatively few possible edges missing is called **dense**.
+>+ A graph with few edges relative to the number of its vertices is called **sparse**.
+
+> <font size = 5>Graph representation</font>
+> Graphs for computer algorithms are usually represented in one of two ways: the adjacency matrix and adjacency lists.
+>+ **The adjacency matrix** of a graph with n vertices is an n*n boolean matrix with one row and one column for each of the graph's vertices, in which the element in the ith row and jth column is equal to 1 if there is an edge from the ith vertex to the jth vertex, and equal to 0 if there is no such edge. e.g., the adjacency matrix for the graph of Fig 1.6a is as
+>![](Src/adjacency%20matrix.png)
+> note adjacency matrix of an undirected graph is always symmetric. 
+>+ **The adjacency lists** of a graph or a digraph is a collection of **linked lists**, one for each vertex, that contain all the vertices adjacent to the list's vertex (i.e. all the vertices connected to it by an edge). Usually, such lists start with a header identifying a vertex for which the list is compiled. e.g., the adjacency list of Fig 1.6a is as:
+> ![](Src/adjacency%20list.png)
+> In other words, adjacency lists indicate columns of the adjacency matrix that, for given vertex, contain 1's.
+>
+>If a graph is sparse, the adjacency list representation may use less space; the situation is exactly opposite for dense graphs.  
+
+> <font size = 5>Weighted Graph</font>
+>**Weighted graph** is a graph (digraph) with numbers assigned to its edges. These numbers are called **weights** or **costs**. 
+> An interest in such graphs is motivted by numerous real-world application, such as finding the shortest path between two points in a transportation or communication network or the traveling salesman problem mentioned earlier.
+>+ If a weighted graph is represented by its **adjacency matrix**, then its element A[i, j] will simply contain the weight of the edge from the ith to the jth vertex if there is such an edge and a special symbol, e.g., $\infty$, if there is no such edge. (such a matrix is called the weight matrix or cost matrix)
+>+ Adjacency lists for a weighted graph have to include in their nodes not only the name of an **adjacent vertex**but also the weight of the corresponding edge.
+>![](Src/weighted%20graph.png)
+
 
 ## 1.4.3 Trees
 
