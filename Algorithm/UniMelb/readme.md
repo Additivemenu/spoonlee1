@@ -43,13 +43,13 @@ The principal operations on a priority queue are _finding its largest element_, 
 ---
 
 ## 1.4.2 Graphs
-> <font size = 5>Definition</font>
+> ### Definition
 >
 > Formally, a **graph** G=<V,E> is defined by a pair of two sets: a finite nonempty set V of items called **vertices** and a set E of pairs of these items called **edges**(灵魂动了！！fluent的mesh).
 >+ **if these pairs of vertices are unordered**, i.e., a pair of vertices (u,v) is the same as the pair (v,u), we say that the vertices u and v are **adjacent** to each other and that they are connected by the **undirected edge** (u,v). We call the vertices u and v **endpoints** of the edge (u,v) and say that u and v are **incident** to this edge; we also say that the edge (u,v) is incident to its endpoints u and v. A graph G is called **undirected** if ==every== edge in it is undirected.
 >+ if a pair of vertices (u,v) is not the same as the pair (v,u), we say that the edge (u,v) is **directed** from the vertex u, called the edges's **tail**, to the vertex v, called the edge's **head**. We also say that the edge (u,v) leaves u and enters v. A graph whose ==every== edge is directed is called **directed**. Directed graphs are also called **digraphs**.  
 >
-> <font size = 5>Labels for graph</font>
+> ### Labels for graph
 > 
 > It is normally convenient to label vertices of a graph or a digraph with letters, integer numbers, if an application calls for it, character strings.
 >+ The graph depicted in Fig 1.6a has six vertices and eight undirected edges:
@@ -58,7 +58,7 @@ The principal operations on a priority queue are _finding its largest element_, 
 > V = {a,b,c,d,e,f}, E = {(a,c), (b,c), (b,f), (c,e),(d,a),(d,e), (e,c), (e,f)}.
 >![](Src/graph.png)
 
-><font size = 5> Sparsity of a graph </font>
+> ### Sparsity of a graph 
 >
 > We have the following inequality for the number of edges |E| possible in an undirected graph with |V| vertices and no loops (means disallow multiple edges between the same vertices of an undirected graph):
 > 
@@ -68,7 +68,7 @@ The principal operations on a priority queue are _finding its largest element_, 
 >+ A graph with relatively few possible edges missing is called **dense**.
 >+ A graph with few edges relative to the number of its vertices is called **sparse**.
 
-> <font size = 5>Graph representation</font>
+> ### Graph representation
 > 
 > Graphs for computer algorithms are usually represented in one of two ways: the adjacency matrix and adjacency lists.
 >+ **The adjacency matrix** of a graph with n vertices is an n*n boolean matrix with one row and one column for each of the graph's vertices, in which the element in the ith row and jth column is equal to 1 if there is an edge from the ith vertex to the jth vertex, and equal to 0 if there is no such edge. e.g., the adjacency matrix for the graph of Fig 1.6a is as
@@ -80,7 +80,7 @@ The principal operations on a priority queue are _finding its largest element_, 
 >
 >If a graph is sparse, the adjacency list representation may use less space; the situation is exactly opposite for dense graphs.  
 
-> <font size = 5>Weighted Graph</font>
+> ### Weighted Graph
 > 
 >**Weighted graph** is a graph (digraph) with numbers assigned to its edges. These numbers are called **weights** or **costs**. 
 > An interest in such graphs is motivted by numerous real-world application, such as finding the shortest path between two points in a transportation or communication network or the traveling salesman problem mentioned earlier.
@@ -88,7 +88,7 @@ The principal operations on a priority queue are _finding its largest element_, 
 >+ Adjacency lists for a weighted graph have to include in their nodes not only the name of an **adjacent vertex**but also the weight of the corresponding edge.
 >![](Src/weighted%20graph.png)
 
-> <font size =5> Path </font>
+> ### Path 
 >+ A **path** from vertex u to vertex v of a graph G can be defined as ==a sequence of adjacent (connected by an edge) vertices== that starts with u and ends with v. 
 >>+ If all vertices of a path are distinct (截然不同的, 完全分开的), the path is said to be **simple**.
 >>+ The **length** of a path is the total number of vertices in the vertex sequence defining the path minus 1, which is the same as the number of edges in the path. 
@@ -98,7 +98,7 @@ The principal operations on a priority queue are _finding its largest element_, 
 >+ In the case of directed graph, we are usually interested in directed paths. **A directed path** is ==a sequence of vertices==  in which every consecutive pair of the vertices is connected ==by an edge== directed from the vertex listed first to the vertex listed next. E.g., a,c,e,f is a directed path from a to f in the graph in Fig.1.6b
 
 
-><font size =5>Connectivity and acyclicity</font>
+>### Connectivity and acyclicity
 >+ A graph is said to be **connected** if for ==every pair== of its vertices u and v there is a path from u to v.  
 >>+ If we make a model of a connected graph by connecting some balls representing the graph's vertices with strings representing the edges, it will be a single piece;
 >>+ If a graph is not connected, such a model will consist of several connected pieces that are called connected components of the graph.
@@ -109,6 +109,8 @@ The principal operations on a priority queue are _finding its largest element_, 
 >>![](Src/graph.png)
 >>![](Src/weighted%20graph.png)
 >>![](Src/Fig1_9%20not%20connected%20graph.png)
+
+
 ## 1.4.3 Trees
 
 
