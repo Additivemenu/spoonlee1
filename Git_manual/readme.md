@@ -345,14 +345,12 @@ mac应该自带，没有的话，也像这样安装。
 ### 实例1：用Vscode在自定义文件中写下hello world， 然后用terminal指令将其上传至GitHub(2h46min-3h8min)
 
 - Windows用户在VScode中安装extention：Romote Development
-![](Src/remote%20development.png)
+![](Src/remote_deve.png)
 
   - 如果有reload required，需要点一下
 - 在Ubantu中做如下操作，与VScode连接，操作后直接跳转到VScode
 
-其中&quot;Code .&quot; //打开一个新的vscode，时刻记得 &quot;.&quot; 代表当前文件夹目录下
-
-![](RackMultipart20220731-1-op0ni1_html_28a87787c0ec7c80.png)
+![](Src/vscode.png)
 
 - VScode显示目前处于WSL：Ubantu，表示是从子系统打开的vscode.
 
