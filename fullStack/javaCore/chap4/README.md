@@ -525,10 +525,29 @@ import static java.lang.System.out; // you can use print directly in the code in
 ```
 
 ### 4.7.4 在包中增加类
+以下代码将主函数和用到的类分开了, 可以把用到的类集中放到一个包里再在主函数中import调用.
 
+[packageTest](code4_6_packageTest.java)
+[package_Employee](com/horstmann/corejava/Employee.java)
 
+要想将类放入包中, 就必须将包的名字放在源文件的开头, 即放在定义这个包中各个类的代码之前. 例如, 4-7demo的开头：
+
+```java
+package com.horstmann.corejava;
+public class Employee{
+    ...
+}
+```
+
+如果没有在源文件中放置package语句, 这个源文件中所有的类就属于无名包(unnamed package), 无名包没有包名.
+
+> 注意！ 编译器在编译源文件的时候不会检查目录结构
+> 这意味着, 如果所使用的类不在代码所声明的包中, 编译不会出错, 但是无法运行.
 
 ### 4.7.5 包访问
++ 被访问修饰符public标记的部分可以由任意类使用; 
++ 被private标记的部分只能由定义它们的类使用.
++ 如果没有指定public或private, 这个部分(类, 方法或变量)可以被同一个包中的所有方法访问.
 
 ### 4.7.6 类路径
 
