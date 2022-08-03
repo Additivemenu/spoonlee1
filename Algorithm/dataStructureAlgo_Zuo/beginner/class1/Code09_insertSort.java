@@ -1,26 +1,18 @@
 public class Code09_insertSort {
     
-    public static void swap(int[] arr, int i, int j){ // swap the value of arr[i] and arr[j]
-        int tmp = arr[j];
-        arr[j] = arr[i];
-        arr[i] = tmp; 
+    public static void main(String[] args){
+        int[] arr = {7, 1, 3, 5, 1, 6, 8, 1, 3, 5, 7, 5, 6};
+        printArray(arr);
+        insertSort1(arr);
+        printArray(arr);
+    } 
 
-    }
-    
-    public static void printArray(int[] arr){
-        for(int i=0; i<arr.length; i++){
-            System.out.print(arr[i]+" ");
-
-        }
-        System.out.println();
-
-    }
-
-    // insert sorting
+    // insert sorting---------------------------------------------------------
     public static void insertSort1(int[] arr){
         if(arr == null || arr.length < 2 ){  // boundary condition
             return;
         }
+
         // 0~0
         // 0~1
         // 0~2
@@ -45,13 +37,21 @@ public class Code09_insertSort {
 
     }
 
+    // swap the value of arr[i] and arr[j]
+    public static void swap(int[] arr, int i, int j){ 
+        int tmp = arr[j];
+        arr[j] = arr[i];
+        arr[i] = tmp; 
 
-    public static void main(String[] args){
-        int[] arr = {7, 1, 3, 5, 1, 6, 8, 1, 3, 5, 7, 5, 6};
-        printArray(arr);
-        insertSort1(arr);
-        printArray(arr);
-    } 
+    }
+    
+    public static void printArray(int[] arr){ //
+        for(int i=0; i<arr.length; i++){
+            System.out.print(arr[i]+" ");
 
+        }
+        System.out.println();
+
+    }
 
 }
