@@ -1,26 +1,35 @@
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; // collections API: defines a spectrum of operations on lists
 
 public class Code01_ReverseList {
 
 	// p1: define class =======================================================================
 	// class: single linked list-----------------------------------------
 	public static class Node {
+		// field
 		public int value;
-		public Node next;
-
+		public Node next; // date type is the same as class name, indicating next actually is a "pointer"
+		// then you would need following coding to make it behave like a linkedlist pointer
+		//------------------------------------
+		// Node first = new Node();
+		// Node second = new Node();
+		// first.next = second;
+		//-------------------------------------
+		
+		// constructor
 		public Node(int data) {
 			value = data;
 		}
 	}
 
 	// class: double linked list-------------------------------------------
-	public static class DoubleNode {
+	 public static class DoubleNode {
+		// field
 		public int value;
 		public DoubleNode last;
 		public DoubleNode next;
-
+		// Constructor
 		public DoubleNode(int data) {
 			value = data;
 		}
@@ -140,7 +149,7 @@ public class Code01_ReverseList {
 		return ans;
 	}
 
-	// for test
+	// for checking ------------------------------------------------------------------
 	public static boolean checkLinkedListReverse(List<Integer> origin, Node head) {
 		for (int i = origin.size() - 1; i >= 0; i--) {
 			if (!origin.get(i).equals(head.value)) {
@@ -161,7 +170,7 @@ public class Code01_ReverseList {
 		return ans;
 	}
 
-	// for test
+	// for checking--------------------------------------------------------------------
 	public static boolean checkDoubleListReverse(List<Integer> origin, DoubleNode head) {
 		DoubleNode end = null;
 		for (int i = origin.size() - 1; i >= 0; i--) {
