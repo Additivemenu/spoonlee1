@@ -1,5 +1,55 @@
 # Chapter 3 Java基本程序设计结构
 
+
+
+## 3.5 运算符
+### 3.5.1 算术运算符
+>+ 当参与/运算的两个操作数(operand)都是整数时, 表示整数除法; 否则表示浮点除法. 如 15/2=7, 15.0/2=7.5
+>+ 整数被0除将会产生一个异常, 而浮点数被0除将会得到无穷大或NaN结果.
+
+
+### 3.5.2 数学函数与常量
+
+### 3.5.3 :moon:数值类型之间的转换
+> 在二元运算中, 当混用两种类型的数值时(如a+b, a是int, b是float), 先将两个操作数化为同一类型再做计算, 优先级是 double > float > long > int (即有浮点就化浮点, 有精度高的结果就精度高), 如下:
+>+ 如果两个操作数中有一个是double型, 另一个也化为double型
+>+ 否则, 如果其中一个操作数是float型, 另一个操作数也化为float型
+>+ 否则，如果其中一个操作数是long型, 另一个操作数也化为long型
+>+ 否则, 两个操作数都将被转换为int型  
+
+![](Src/DataTypeConversion.jpg)
+
+
+### 3.5.4 强制类型转换
+
+### 3.5.5 结合赋值和运算符
+
+### 3.5.6 自增与自减运算符
+++x, --x 先加减后用
+x++, x-- 先用后加减
+
+### 3.5.7 关系与boolean运算符
+> 关系运算符
+> <, <=, >, >=
+> !=, ==
+> 返回true OR false
+> ```java
+> boolean result = (5!=4);// result = true
+> ```
+
+> boolean运算符
+> &&(AND), ||(OR), !(NOT)
+> 通过true, false的与或非关系返回true OR false
+> 短路方式求值: 如果第一个操作数足以确定表达式的值, 第二个操作数就不必计算了
+
+>三元运算符
+> ?:
+> 表达式: condition? expression1:expression2
+
+### 3.5.8 位运算符
+
+### 3.5.9 括号与运算符级别
+
 ## 3.6 字符串String
 [JavaString](stringJava.java)
 
@@ -76,7 +126,8 @@ String completedString = builder.toString();
 System.out.println(completedString);
 ```
 ## 3.7 输入输出
-
+aaa
+aaa
 
 
 
