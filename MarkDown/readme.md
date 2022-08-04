@@ -8,6 +8,8 @@ markdown preview enhanced
 
 [MarkDown官方教程](https://markdown.com.cn/basic-syntax/horizontal-rules.html)
 
+[W3school Markdown](https://www.w3schools.io/file/github-readme-image/)
+
 [HelloJava](Src/helloJava.java)
 
 
