@@ -1,5 +1,34 @@
 # Chapter 3 Java基本程序设计结构
 
+## 3.3 数据类型
+
+---
+以下来自UniMelb: Java
+[demo_overflow](overflow.java)
+
+---
+
+### 3.3.1 整型
+|类型 |存储需求  | 取值范围|
+--- | --- | ---|
+|byte|1 Bytes|-128~127 |
+|short|2 Bytes|-32768 ~ 32767 |
+|int|4 Bytes|-2 147 483 648 ~ 2 147 483 647 (刚超过20亿) |
+|long|8 Bytes|-9 223 372 036 854 775 808 ~ 9 223 372 036 854 775 807|
+
+### 3.3.2 浮点类型
+|类型 |存储需求  | 取值范围|
+--- | --- | ---|
+|float|4 Bytes|大约 $\pm$ 3.402 823 47E+38F (有效位为6~7位)|
+|double (更常用)|8 Bytes|大约 $\pm$ 1.797 693 134 862 315 70E+308 (有效位为15位)|
+
+
+### 3.3.3 Char类型
+
+### 3.3.4 Unicode和Char类型
+
+
+### 3.3.5 boolean类型
 
 
 ## 3.5 运算符
@@ -11,6 +40,8 @@
 ### 3.5.2 数学函数与常量
 
 ### 3.5.3 :moon:数值类型之间的转换
+Java has different integer types (byte, short, int, long) and different "floating point" types (float, double). These take up increasing amounts of storage (1, 2, 4, 8 bytes for integers, 4, 8 bytes for floating point), but can store larger ranges of numbers.
+
 > Widening conversion
 > 在二元运算中, 当混用两种类型的数值时(如a+b, a是int, b是float), 先将两个操作数化为同一类型再做计算, 优先级是 double > float > long > int (即有浮点就化浮点, 有精度高的结果就精度高), 如下:
 >+ 如果两个操作数中有一个是double型, 另一个也化为double型
@@ -37,7 +68,7 @@ public class Conversion {
     }
 }
 ```
-
+---
 
 ### 3.5.4 :moon:强制类型转换 (Typecasting)
 > narrowing conversion
@@ -82,7 +113,7 @@ public class Conversion {
     }
 }
 ```
-
+---
 
 ### 3.5.5 结合赋值和运算符
 
@@ -151,6 +182,7 @@ System.out.println ("With a char we get " + (chrJ + 1)); // With a char we get 7
 ```
 + [Java Doc for more String API](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
 
+---
 
 ### 3.6.1 子串
 ```Java
@@ -225,8 +257,24 @@ String completedString = builder.toString();
 
 System.out.println(completedString);
 ```
-## 3.7 输入输出
+## 3.7 :full_moon:输入输出
 ### 3.7.1 读取输入
+[inputTest](inputOutput.java)
+
+注意Scanner 类定义在java.util中. 当使用的类不是定义在基本java.lang包中时， 一定要使用import
+
+> 常用Scanner api:
+>+ keyboard.nextLine(): reads the entire line, including the newline character
+>+ keyboard.next(): reads in one word as a String
+>+ keyboard.nextInt(): reads in a number and converts it to int
+>+ keyboard.nextDouble(): reads in a number and converts it to double
+
+更多API见[Java Scanner API](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
+
+---
+UniMelb Java e.g.:
+
+---
 
 ### 3.7.2 格式化输出(Formatted output)
 
@@ -264,6 +312,58 @@ $9.99
 009.99
 ```
 ### 3.7.3 文件输入与输出
+aaa
+
+
+### 3.7.4 Command Line Input
+_this session is from UniMelb Java_
+
+```java
+public static void main(String[] args) {}
+```
+The variable args holds the values that a user provides when the program is executed.  e.g. [commandLineInput](commandLineInput.java):
+
+```java
+public class commandLineInput {
+    public static void main(String[] args) {
+        System.out.println("Hello " + args[0] + "!");
+    }
+}
+```
+type in following at terminal:
+```shell
+javac commandLineInput.java
+java commandLineInput abc
+```
+Results:
+```shell
+Hello abc!
+```
+
+You can add arguments to your program, which will be referred to by their index: args[0], args[1], ... **Each argument is treated as a string.** But you can convert the string input to int or a double, for example using:
+```java
+int argument = Integer.parseInt(args[0]);
+double arg0 = Double.parseDouble(args[0]);
+```
+
+e.g.
+
+```java
+public class Sum {
+    public static void main(String[] args) {
+
+        int firstNum = Integer.parseInt(args[0]);
+        int secondNum = Integer.parseInt(args[1]);
+        System.out.println("The result is:"+ (firstNum + secondNum));
+    }
+}
+```
+```shell
+java Sum 20 24
+```
+```shell
+The result is: 44
+```
 
 ## 3.10 数组Array
 ### 1. 数组声明
