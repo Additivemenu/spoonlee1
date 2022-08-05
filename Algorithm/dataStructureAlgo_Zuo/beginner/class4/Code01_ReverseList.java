@@ -9,7 +9,7 @@ public class Code01_ReverseList {
 	public static class Node {
 		// field
 		public int value;
-		public Node next; // date type is the same as class name, indicating next actually is a "pointer"
+		public Node next; // date type is the same as class name, indicating 'next' actually is a "pointer" (referencing)
 		// then you would need following coding to make it behave like a linkedlist pointer
 		//------------------------------------
 		// Node first = new Node();
@@ -36,8 +36,8 @@ public class Code01_ReverseList {
 	}
 
 	// p2: function ============================================================================
-	//-------------------------------------------------------------------
-	public static Node reverseLinkedList(Node head) {
+	//单链表反转------------------------------------------------------------------
+	public static Node reverseLinkedList(Node head) { // return a Node
 		Node pre = null;
 		Node next = null;
 		while (head != null) {
@@ -48,7 +48,7 @@ public class Code01_ReverseList {
 		}
 		return pre;
 	}
-	// --------------------------------------------------------------------------
+	// 双链表反转--------------------------------------------------------------------------
 	public static DoubleNode reverseDoubleList(DoubleNode head) {
 		DoubleNode pre = null;
 		DoubleNode next = null;
@@ -102,19 +102,26 @@ public class Code01_ReverseList {
 		return list.get(N - 1);
 	}
 
-	// 单链表对数器
+	// 单链表对数器------------------------------------------------------------
 	public static Node generateRandomLinkedList(int len, int value) {
 		int size = (int) (Math.random() * (len + 1));
+
 		if (size == 0) {
 			return null;
 		}
+
 		size--;
+
 		Node head = new Node((int) (Math.random() * (value + 1)));
-		Node pre = head;
+		Node pre = head; // pre as an intermediate Node variable 
+
+		// generate singular linkedlist
 		while (size != 0) {
-			Node cur = new Node((int) (Math.random() * (value + 1)));
-			pre.next = cur;
-			pre = cur;
+			Node cur = new Node((int) (Math.random() * (value + 1))); // generate a node with a random value
+
+			pre.next = cur; // 连接指针
+
+			pre = cur; // 换下一个
 			size--;
 		}
 		return head;

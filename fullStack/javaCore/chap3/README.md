@@ -238,8 +238,8 @@ if(str!=null && str.length() != 0 )
 记住不要使用char类型,太底层了.
 
 ### 3.6.7 String API
-见textbook， 略
 
+[Java Doc for more String API](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
 ### 3.6.8 阅读联机API文档
 + [阅读Java联机API文档](https://docs.oracle.com/en/java/javase/18/)  
 当使用的类不是定义在基本java.lang包中时， 一定要使用import指令导入相应的包. 例如读取System.in, 需要import java.util包, 来使用[Scanner类](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Scanner.html) , 你可以查看它的定义, method之类的说明
@@ -273,6 +273,21 @@ System.out.println(completedString);
 
 ---
 UniMelb Java e.g.:
+
+```java
+public static void main (String[] args) {
+    System.out.println ("Enter either  num1 + num2  or num1 * num2");
+    
+    Scanner keyBoard = new Scanner (System.in);
+
+    int firstNum = keyBoard.nextInt();
+    char operator = keyBoard.next().charAt(0); // get the first character of a String
+    int secondNum = keyBoard.nextInt();
+
+    int result = (operator=='+')?firstNum+secondNum:firstNum*secondNum;
+    System.out.println(result);
+}
+```
 
 ---
 
