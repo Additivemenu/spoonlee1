@@ -274,6 +274,12 @@ System.out.println(completedString);
 ---
 UniMelb Java e.g.:
 
+Write a calculator that will read a line like
+
+num1 + num2 or num1 * num2
+
+and output the sum in the first case, or the product in the second case.
+
 ```java
 public static void main (String[] args) {
     System.out.println ("Enter either  num1 + num2  or num1 * num2");
@@ -289,9 +295,81 @@ public static void main (String[] args) {
 }
 ```
 
+**It is also worth mentioning the use of nextLine() and nextInt (watchful when mixed use them!)**, see below quiz question: What are the values of x, s, and y after running the program below with the following parameters:
+
+```shell
+java IOTest
+8
+Test
+9
+```
+
+```java
+import java.util.scanner;
+
+class IOTest {
+  public static void main (String[] args) {
+    Scanner keyboard = new Scanner(System.in);
+    int x = keyboard.nextInt();
+    String s = keyboard.nextLine();
+    int y = keyboard.nextInt();
+  }
+}
+```
+
+The answer is miraculously:
+
+The following exception is thrown:
+```shell
+Exception in thread "main" java.util.InputMismatchException
+```
+
+In fact:
+
+x = 8 (there is a hidden newline "\n" when the input is provided but only the number is read in.
+
+s = "\n" (that hidden newline character makes it into the nextLine() method)
+
+y = "Test"  >  The String cannot be converted to int.
+
+>Tim, the lecturer answers:
+>In order to send your input to the Scanner input, you will need to hit 'enter', which produces a newline on your console, so technically the above input looks like this:
+>```shell
+>8\n
+>Test\n
+>9\n
+>```
+>The method nextInt() only parses the next number while >nextLine() parses the entire line.
+
+
 ---
 
 ### 3.7.2 格式化输出(Formatted output)
+
+---
+MelbUni: Java
+
+This so-called format-string is an ordinary string, but can contain format specifiers for each argument you pass in:
+```java
+double average = 5.0;
+System.out.printf("Average: %5.2f", average);
+```
+
+**A format specifier** begins with % and may have a number specifying how to format the next value in the list of arguments.  It ends with a letter specifying the type of the value:
+```java
+String formatString = "%X.Y";
+```
+
+> The X before the decimal point specifies the minimum number of characters to be printed.
+>+ The full number will be printed, even if it takes more characters than specified by X 
+>+ If X is omitted, the value will be printed in its minimum width 
+>+ If X is negative, the value will be left-justified, otherwise right-justified
+>+ If X starts with a zero, then the number will be padded with leading 0s (good if printing for a variable-width font, where the width of a space is different from the width of a digit); otherwise it will be padded with spaces
+
+>The Y after the decimal point specifies the number of digits of the value that are printed after the decimal point. If Y is omitted, Java decides how to format it. 
+
+
+---
 
 |转换符 |类型  | 示例|转换符 |类型  | 示例|
 --- | --- | ---| --- |---|---|
@@ -314,7 +392,7 @@ public class FormatPlay {
         System.out.printf("Right>>%9.4f<<", pi);
         System.out.printf(" Left >>%-9.4f<<%n", pi);
         System.out.printf("$%.2f%n", 9.99);
-        System.out.printf("%06.2f%n", 9.99);
+        System.out.printf("%06.2f%n", 9.99);//一共6个字符, 精度为小数点后2位
     } 
 }
 ```
