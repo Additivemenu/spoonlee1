@@ -357,7 +357,7 @@ System.out.printf("Average: %5.2f", average);
 
 **A format specifier** begins with % and may have a number specifying how to format the next value in the list of arguments.  It ends with a letter specifying the type of the value:
 ```java
-String formatString = "%X.Y";
+String formatString = "%X.Y"; // Syntax: x.y; where x= padding (width) and y= decimal places.
 ```
 
 > The X before the decimal point specifies the minimum number of characters to be printed.
