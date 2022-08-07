@@ -250,12 +250,12 @@ N次扩容时间复杂度为O(N), 均摊到一次扩容时间复杂度是O(1), �
 
 
 ### P24哈希表和有序表的使用
-> 哈希表
+> 哈希表 hashMap
 
 [Code: hashMapTreeMap](class3/Code05_HashMapTreeMap.java)
 
 + hashmap本质上就是一个(key, value)数据库
-+ 基本操作
++ 基本操作, 增删查改记录时间复杂度都是O(1), 但这个常数操作的实际时间比较长
   
 API | 注释
 ------ | ------
@@ -270,6 +270,10 @@ remove(key)   |   remove a record
   + Java非源生类key, 按引用传递
    例如HashMap(Node, Node), 自定义的Node类中一字段为String, key是Node{"金庸"}, value是Node{所有金庸小说的文本}, 那么这个HashMap记录的所占内存只是用来表示"金庸"和所有金庸小说文本的变量的内存, 即只是地址(引用)的内存  
 
+>有序表 treeMap
++  比hashMap功能强的地方在于其内部对于key排序了  
+   这点也要求key必须是可以排序的(Java源生类会定义好怎么排序, 自定义类的话如果想用treemap也得定义好怎么排序)
++ 但是增删查改的时间复杂度为O(logN), 这点不如hashMap
 
 ## Class4 单链表及其简单题目(上)
 ### P25 单链表与双链表
