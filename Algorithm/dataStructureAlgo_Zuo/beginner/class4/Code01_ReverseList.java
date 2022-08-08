@@ -40,6 +40,7 @@ public class Code01_ReverseList {
 	public static Node reverseLinkedList(Node head) { // return a Node
 		Node pre = null;
 		Node next = null;
+
 		while (head != null) {
 			next = head.next;
 			head.next = pre;
@@ -203,6 +204,16 @@ public class Code01_ReverseList {
 	
 	// main ================================================================================================
 	public static void main(String[] args) {
+
+		Node n1 = new Node(1);  // new 也是引用, 创建新的内存，并将这个引用返回给n1
+		n1.next = new Node(2);
+		n1.next.next = new Node(3);
+		reverseLinkedList(n1);
+		System.out.println(n1.value);
+
+
+
+		//
 		int len = 50;
 		int value = 100;
 		int testTime = 100000;

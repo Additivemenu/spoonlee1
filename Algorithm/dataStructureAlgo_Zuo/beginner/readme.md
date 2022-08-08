@@ -285,9 +285,16 @@ remove(key)   |   remove a record
 ### p26 单链表反转
 单链表反转是什么
 
+链表反转的两个关键点:
++ 新的head需指向原链表的尾部
++ 内部Node反转
+  
+> 注意!
 > JVM: 如果找不到被引用的内存元素(比如反转链表node， 但没有令head指向新的链表的head), 则释放它们(自动回收功能). 如下:  
-> head --> a --> b --> c --> d //可以通过head, 找到node a,b,c,d  
-> head --> a <-- b <-- c <-- d //无法通过head, 找到node b,c,d, 则释放b,c,d的内存
+>+ head --> a --> b --> c --> d --> null //可以通过head, 找到node a,b,c,d  
+>+ 如果只是内部Node反转: null <-- a <-- b <-- c <-- d, 而head仍指向node a, 则无法通过head, 找到node b,c,d, 那么JVM会释放b,c,d的内存 (JVM不可达)
+
+
 
 
 ## Class5 单链表及其简单题目(下)
