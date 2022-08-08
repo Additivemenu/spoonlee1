@@ -458,6 +458,84 @@ java Sum 20 24
 The result is: 44
 ```
 
+## 3.8 控制流程
+### 3.8.1 块作用域
+
+### 3.8.2 条件语句
+
+---
+
+> conditional operator
+
+UniMelb:Java
+
+可以使用conditional operator在函数的argument里, 而if else却不能做到.
+
+```java
+System.out.println(Math.sqrt(Math.sin(a > 0 ? a : -a)));
+```
+
+---
+
+### 3.8.3 循环
+
+
+### 3.8.4 确定循环
+
+
+### 3.8.5 多重选择: switch语句
+
+---
+
+UniMelb Java
+
+```java
+switch (Controlling_Expression)
+{
+  case Case_Label_1:
+           Statement_Sequence_1
+           break;
+  case Case_Label_2:
+           Statement_Sequence_2
+           break;
+  case Case_Label_n:
+           Statement_Sequence_n
+           break;
+  default:
+}
+
+```
+
+> 注意!
++ Beware that the controlling expression must evaluate to a char, int, short, byte or String (or an enumerated type, which we will see later).  Note that it cannot be a long.
++ The optional default label is usually used last. If no case label matches, then the only statements executed are those following the default label (if there is one).
++ Each sequence of statements should be followed by a break statement, which tells the program execution to continue after the switch block. If you don't add a break statement, the next case label will be evaluated. 
+  + Advanced:  The only time it is appropriate not to have a break statement is if there are multiple cases that should run the same code, as in the following example.  Note that the "fall-through" only applies when there is no code.  Whenever there is code, there is a break.
+
+    ```java
+    class Main {
+        static public void main (String[] args) {
+            int a = 1;
+            switch (a) {
+                case 1:
+                case 3: 
+                case 5:
+                case 7:
+                case 9:
+                    System.out.println("odd, single digit");
+                    break;
+                default :
+                    System.out.println("even or multi-digit");
+                    break;
+            }
+        }
+    }
+    ```
+---
+
+### 3.8.6 中断控制流程的语句
+
+
 ## 3.10 数组Array
 ### 1. 数组声明
 [arrayAnnouncing](arrayJava.java)

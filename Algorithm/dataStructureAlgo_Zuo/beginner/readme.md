@@ -267,11 +267,11 @@ remove(key)   |   remove a record
 + 关于key的传递
   + Java源生类key, 按值传递 
   例如HashMap(String, String), key是"金庸", value是所有金庸小说的文本, 那么这个HashMap记录的所占内存是"金庸"+所有金庸小说的文本所占的内存 
-  + Java非源生类key, 按引用传递
+  + Java非源生类key, 按引用传递  
    例如HashMap(Node, Node), 自定义的Node类中一字段为String, key是Node{"金庸"}, value是Node{所有金庸小说的文本}, 那么这个HashMap记录的所占内存只是用来表示"金庸"和所有金庸小说文本的变量的内存, 即只是地址(引用)的内存  
 
 >有序表 treeMap
-+  比hashMap功能强的地方在于其内部对于key排序了  
++  比hashMap功能强的地方在于其内部对于key排序了    
    这点也要求key必须是可以排序的(Java源生类会定义好怎么排序, 自定义类的话如果想用treemap也得定义好怎么排序)
 + 但是增删查改的时间复杂度为O(logN), 这点不如hashMap
 
