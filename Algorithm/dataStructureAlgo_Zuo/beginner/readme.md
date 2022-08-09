@@ -294,7 +294,7 @@ remove(key)   |   remove a record
 >+ head --> a --> b --> c --> d --> null //可以通过head, 找到node a,b,c,d  
 >+ 如果只是内部Node反转: null <-- a <-- b <-- c <-- d, 而head仍指向node a, 则无法通过head, 找到node b,c,d, 那么JVM会释放b,c,d的内存 (JVM不可达)
 
-[一个简单的手动反转单链表的例子](class4/reverseLinkedList_Practice.java)
+[一个简单的手动反转单链表的例子](class4/reverseLinkedList_Practice.java )
 
 Results:
    ```shell
