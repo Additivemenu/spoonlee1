@@ -38,17 +38,24 @@ public class Code01_ReverseList {
 	// p2: function ============================================================================
 	//单链表反转------------------------------------------------------------------
 	public static Node reverseLinkedList(Node head) { // return a Node
-		Node pre = null;
-		Node next = null;
 
-		while (head != null) {
-			next = head.next;
-			head.next = pre;
-			pre = head;
-			head = next;
+		Node pre = null; // also a pointer
+		Node next = null; // also a pointer, to record the next node before we change head
+
+		while (head != null) { // loop over node, 这里用到了3个指针: pre, head, next
+
+			next = head.next; // 记录原链表下一个node
+
+			head.next = pre; // 反转链表操作: 当前Node的next指针指向原链表中上一个node
+
+			pre = head; // pre 走向当前node
+
+			head = next; // head 走向下一个node
 		}
-		return pre;
+		//记得最后一定要return原链表尾node作为新链表的head
+		return pre; // when head is null, pre is the last node of original linkedlist, which is also the head of new linked list
 	}
+
 	// 双链表反转--------------------------------------------------------------------------
 	public static DoubleNode reverseDoubleList(DoubleNode head) {
 		DoubleNode pre = null;
@@ -205,15 +212,13 @@ public class Code01_ReverseList {
 	// main ================================================================================================
 	public static void main(String[] args) {
 
-		Node n1 = new Node(1);  // new 也是引用, 创建新的内存，并将这个引用返回给n1
-		n1.next = new Node(2);
-		n1.next.next = new Node(3);
-		reverseLinkedList(n1);
-		System.out.println(n1.value);
+		//Node n1 = new Node(1);  // 表达式new Node()构造了一个Node类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量n1中.
+		//n1.next = new Node(2);  // Java中任何的对象变量都是对对象的引用而不是真的对象, 把n1.next看作指针, new Node(2)是新建对象的地址
+		//n1.next.next = new Node(3); // n1.next是n2的地址, 同时也是一个引用内存中对象的对象变量(也就是n2), 所以n1.next.next就是n2.next
+		//reverseLinkedList(n1);
+		//System.out.println(n1.value);
 
-
-
-		//
+		// 用对数器进行大规模测试--------------------------------------------------------
 		int len = 50;
 		int value = 100;
 		int testTime = 100000;
