@@ -553,8 +553,8 @@ switch (Controlling_Expression)
 
 When loop statements are nested, any break or continue statement applies to the innermost, containing loop statement.
 
-> label break
-> 
+**1. label break**
+ 
 There is a type of break statement that, when used in nested loops, can end any containing loop, not just the innermost loop. To achieve this, we use a labeled break statement. If an enclosing loop statement is labelled with an Identifier, the following version of the break statement will exit the labelled loop, even if it is not the innermost enclosing loop: 
 ```java
 break someIdentifier;
@@ -566,8 +566,8 @@ someIdentifier:
 ```
 [Demo: label break](labelBreak.java)
 
-> The exit Statement
-> 
+**2. The exit Statement**
+ 
 A break statement will end a loop or switch statement, but will not end the program. The exit method will immediately end the program as soon as it is invoked: 
 
 ```java

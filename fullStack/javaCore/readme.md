@@ -29,3 +29,27 @@ File>preferences>configure snippet编辑自定义模板代码
 
 
 
+
+--- 
+
+# debugging
+
+**1. Tracing Variables**
+
+**2. Using Assertions**
+
+An assertion is a sentence that says (asserts) something about the state of a program. An assertion must be either true or false, and should be true if a program is working properly. Assertions can be placed in a program as comments:
+
+```java
+assert Boolean_Expression;
+```
+
+If assertion checking is turned on and the Boolean_Expression evaluates to false, the program terminates and outputs an assertion failed error message. Otherwise, the program finishes execution normally.
+
+[Demo: assertTest](assertTesting.java)
+
+By default, all programs run with assertion checks turned off. That is why you must explicitly enable assertion checking by typing the following in terminal:
+
+```shell
+$ java -enableassertions assertTesting
+```
