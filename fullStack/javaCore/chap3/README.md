@@ -269,6 +269,8 @@ System.out.println(completedString);
 >+ keyboard.nextInt(): reads in a number and converts it to int
 >+ keyboard.nextDouble(): reads in a number and converts it to double
 
+记得用完后close Scanner
+
 更多API见[Java Scanner API](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
 
 ---
@@ -457,6 +459,12 @@ java Sum 20 24
 ```shell
 The result is: 44
 ```
+
+> Note: Command line arguments are usually delimited (ie separated) by spaces. By putting double quotation marks around an argument, we indicate that the spaces are a part of the single argument.
+> ``` shell
+> $ java SimpleCalculator "meaning of life"
+> 42
+> ```
 
 ## 3.8 控制流程
 ### 3.8.1 块作用域

@@ -1,4 +1,9 @@
 
+
+
+
+---
+
 # 1.4 Fundamental Data Structure
 ## 1.4.1 Linear Data Structure
 ### Array
