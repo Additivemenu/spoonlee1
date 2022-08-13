@@ -383,28 +383,21 @@ String formatString = "%X.Y"; // Syntax: x.y; where x= padding (width) and y= de
 |g|通用浮点数(e和f中较短的一个)|-| %| 百分号| %|
 |a|十六进制浮点数|0x1.fccpd3| 0x1.fccpd3| 与平台有关的分隔符| -|
  
- e.g.
-```java
-public class FormatPlay {
-    public static void main(String [] args) {
-        String s = "string";
-        double pi = 3.1415926535;
-        System.out.printf("\"%s\" has %d characters %n", s, s.length()); 
-        System.out.printf("pi to 4 places: %.4f%n", pi);  
-        System.out.printf("Right>>%9.4f<<", pi);
-        System.out.printf(" Left >>%-9.4f<<%n", pi);
-        System.out.printf("$%.2f%n", 9.99);
-        System.out.printf("%06.2f%n", 9.99);//一共6个字符, 精度为小数点后2位
-    } 
-}
-```
+
+ [Demo: formatPlay](formatPlay.java)
+
+Result
 
 ```shell
 "string" has 6 characters 
 pi to 4 places: 3.1416
-Right>>   3.1416<< Left >>3.1416   <<
+Right>>   3.1416<<
+Left>>3.1416   <<
 $9.99
 009.99
+009.99
+250000.00
+2.50e+05
 ```
 ### 3.7.3 文件输入与输出
 aaa
@@ -585,7 +578,7 @@ The exit statement takes one integer argument . By tradition, a zero argument is
 
 
 ## 3.10 数组Array
-### 1. 数组声明
+### 3.10.1 数组声明
 [arrayAnnouncing](arrayJava.java)
 > 数组是用来存储同一类型值的集合. 
 >+ 数组长度不要求是常量, 但一旦数组长度指定便无法更改(使用arrayList动态扩容).  
@@ -602,10 +595,10 @@ The exit statement takes one integer argument . By tradition, a zero argument is
 >+ 方式2: 在{}中枚举元素, 无需指定数组长度
 >+ 方式3: 用匿名数组快速初始化旧数组
 
-### 2. 访问数组元素
+### 3.10.2 访问数组元素
 略
 
-### 3. for each loop
+### 3.10.3 for each loop
 ```Java
 for(int element:arr)
     System.out.println(element);
@@ -614,7 +607,7 @@ for(int element:arr)
 + 更简洁不宜错
 + 但不如for循环效率高, 不如for循环灵活(for each只能遍历每一个元素)
 
-### 4. 数组拷贝
+### 3.10.4 数组拷贝
 [arrayCopy](arrayJava.java)
 >+ 方式1: 拷贝数组变量  
 >  新旧变量同时引用内存中的同一数组, 一变都变
@@ -622,20 +615,20 @@ for(int element:arr)
 >+ 方式2: Arrays.copyOf()
 >  直接开辟新的内存来存储新的数组, 新旧数组各自独立
 
-### 5. 命令行参数
+### 3.10.5 命令行参数
 [arrayCommandLine](arrayCommandLine.java)
 ```java
 public static void main(String[] args)
 ```
 中的String[] args 其实是一个string array, 用来接收命令行的输入
 
-### 6. 数组排序
+### 3.10.6 数组排序
 [arraySort](arraySorting.java)
 Arrays.sort() 使用快速排序法(QuickSort)排序
 
-### 7. 多维数组
+### 3.10.7 多维数组
 先跳过,
 java实际上没有多维数组, 实际上只是"数组的数组"
 
-### 8. 不规则数组
+### 3.10.8 不规则数组
 紧跟多维数组, 先跳过
