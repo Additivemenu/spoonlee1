@@ -20,9 +20,19 @@
 >+ 聚合aggregation("has-a"): 意味着类A的对象包含类B的对象.
 >+ 继承 inheritance("is-a"): 一般来讲, 如果类A扩展类B, 类A不但包含从类B继承的方法, 还会有一些额外的功能.
 >+ 可以使用UML(Unified Modelling Language)绘制类图来描述类之间的关系
+
+---
+
+UniMelb Java:
+
+Terminologies:  
+A **class** is a type and you can declare variables of your own class type (e.g., you can define a class Car and then declare a variable  Car myCar). _A value of_ a class type is called an **object** or an **instance** of the class. The process of creating an object of a class is called **instantiation**. If A is a class, then the statements “the type of B is A”, “B is an instance of A”, and “B is an object of the class A” all mean the same thing. 
+
+An object has both data and actions (i.e., methods) associated with it. Both the data items and the methods are also called **members** of the object. Data items are also referred to as fields. Methods define what objects of your class are capable of.You can think of methods and the list of variable names/types as belonging to the class, and the data stored in the variables as belonging to the instance of the class.
+
 ## 4.2 使用预定义类
 
- >对象与对象变量  
+ 1. 对象与对象变量  
 + 构造对象
   **想要使用对象, 首先必须构造对象, 并对其初始状态, 然后对对象应用方法**
 + 在Java中, 使用构造器(constructor)构造新实例. 构造器的名字应和类名相同.例如想构造一个Date对象, 需要在构造器前加上new操作符:
@@ -37,38 +47,38 @@
 
 ---
 
-> :full_moon:注意事项
-1. **注意一定要区分对象和对象变量!!!**
-   
-    ```JAVA
-    Date deadline;
-    ```
+2. :full_moon:注意事项
+   + **注意一定要区分对象和对象变量!!!**
+      
+       ```JAVA
+       Date deadline;
+       ```
 
-    例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.  
-    可以认为对象变量相当于C中的指针变量, 而对象相当于一个实实在在的数据（而不是地址值).
+       例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.  
+       可以认为对象变量相当于C中的指针变量, 而对象相当于一个实实在在的数据（而不是地址值).
 
-2. **注意一定要先初始化对象变量, 才能对其使用方法**
-    不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
-    + 引用新构造的对象
-    ```JAVA
-    deadline=new Date();
-    ```
-    + 引用已有的对象 
-    两个对象变量将引用内存中的同一个对象
-    ```JAVA
-    deadline=birthday;
-    ```
+   + **注意一定要先初始化对象变量, 才能对其使用方法**
+       不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
+       + 引用新构造的对象
+       ```JAVA
+       deadline=new Date();
+       ```
+       + 引用已有的对象 
+       两个对象变量将引用内存中的同一个对象
+       ```JAVA
+       deadline=birthday;
+       ```
 
-3. **new操作符返回值也是一个引用**
-   
-    ```JAVA
-    Date deadline = new Date();
-    ```
+   + **new操作符返回值也是一个引用**
+      
+       ```JAVA
+       Date deadline = new Date();
+       ```
 
-    表达式new Date()构造了一个Date类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量deadline中.
+       表达式new Date()构造了一个Date类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量deadline中.
 
 
-4. **所有的Java对象都存储在堆中.当一个对象包含另一个对象变量时,它只是包含另一个堆对象的指针.**
+   + **所有的Java对象都存储在堆中.当一个对象包含另一个对象变量时,它只是包含另一个堆对象的指针.**
 
 
 ### 4.2.2 Java类库中的LocalDate类

@@ -307,6 +307,22 @@ Results:
 
 链表这块的语法参考JavaCore chapter4 4.5对象的引用
 
+### P27 双链表的反转
+[Demo: reverseDoubleLinkedList](class4/reverseDoubleLinkedList_Practice.java)
+
+类似反转单链表, 中间用到三个指针; 关于链表的算法的难点在于其操作比较繁琐, 算法思想上并无什么难度, 重在练习.
+### P28 用单链表结构实现队列
+
+### P29 用单链表结构实现栈
+
+### P30 用双链表结构实现双端队列
+
+### P31 K个节点的组内逆序调整
+
+### P32 两个链表相加
+
+### P33 两个有序链表的合并
+
 ## Class5 单链表及其简单题目(下)
 
 

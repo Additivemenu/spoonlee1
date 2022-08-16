@@ -58,19 +58,25 @@ public class Code01_ReverseList {
 
 	// 双链表反转--------------------------------------------------------------------------
 	public static DoubleNode reverseDoubleList(DoubleNode head) {
+		
 		DoubleNode pre = null;
 		DoubleNode next = null;
+
 		while (head != null) {
-			next = head.next;
-			head.next = pre;
-			head.last = next;
-			pre = head;
-			head = next;
+			next = head.next; // 记下原链表下一个node
+
+			head.next = pre;  // 反转操作
+			head.last = next; // 反转操作
+
+			pre = head; // pre 走向当前node
+
+			head = next; // head 走向下一个node
 		}
+		//记得最后一定要return原链表尾node作为新链表的head
 		return pre;
 	}
 
-	//
+	// p3: test===========================================================
 	public static Node testReverseLinkedList(Node head) {
 		if (head == null) {
 			return null;

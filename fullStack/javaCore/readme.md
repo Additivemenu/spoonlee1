@@ -20,11 +20,11 @@ File>preferences>configure snippet编辑自定义模板代码
 
 ---
 
-+ [chapter3](chap3/README.md)
++ [chapter3: fundamentals of Java](chap3/README.md)
 
-+ [chapter4](chap4/README.md)
++ [chapter4: class](chap4/README.md)
 
-+ [chapter5](chap5/README.md)
++ [chapter5: ](chap5/README.md)
 
 
 

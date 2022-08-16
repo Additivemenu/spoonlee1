@@ -104,8 +104,10 @@ public class reverseDoubleLinkedList_Practice {
 			return null;
 		}
 		size--;
+
 		dNode head = new dNode((int) (Math.random() * (value + 1)));
 		dNode pre = head;
+        // connect nodes
 		while (size != 0) {
 			dNode cur = new dNode((int) (Math.random() * (value + 1)));
 			pre.next = cur;
