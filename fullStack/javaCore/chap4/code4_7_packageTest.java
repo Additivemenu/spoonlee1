@@ -4,7 +4,7 @@ import com.horstmann.corejava.Employee;
 
 import static java.lang.System.*;
 
-public class code4_6_packageTest {
+public class code4_7_packageTest {
 
     public static void main(String[] args)
     {

@@ -400,8 +400,9 @@ $9.99
 2.50e+05
 ```
 ### 3.7.3 文件输入与输出
-aaa
+[Demo: Histogram of temperatures](UniMelb/Histogram_temp/histo_temp.java)
 
+注意上述demo因为是通过command line来读取和写出的, 所以package目前还是读取base directory中的txt file, 不是读取package内部的txt file!
 
 ### 3.7.4 Command Line Input
 _this session is from UniMelb Java_
@@ -594,6 +595,9 @@ The exit statement takes one integer argument . By tradition, a zero argument is
     Boolean型数组元素初始化为false
     String型数组元素初始化为null
 + 方式2: 在{}中枚举元素, 无需指定数组长度
+    ```java
+    int[] arr = {1,2,3,4,5,6};
+    ```
 + 方式3: 用匿名数组快速初始化旧数组
 
 ### 3.10.2 访问数组元素
