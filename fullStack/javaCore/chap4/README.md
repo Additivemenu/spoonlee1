@@ -40,53 +40,57 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 
 ## 4.2 使用预定义类
 
- 1. 对象与对象变量  
+ 1. 对象与对象变量
+   
+    [Demo: constructor](UniMelb/constructor/Date.java)
+
 + 构造对象
   **想要使用对象, 首先必须构造对象, 并对其初始状态, 然后对对象应用方法**
-+ 在Java中, 使用构造器(constructor)构造新实例. 构造器的名字应和类名相同.例如想构造一个Date对象, 需要在构造器前加上new操作符:
- ```Java
- new Date(); // 构造了一个新的对象, 它被初始化为当前的日期和时间
- ```
++ 在Java中, 使用构造器(constructor)构造新实例(构造器相当于一种特殊的方法, 用来初始化object的instance variable, 通常一个class中的constructor会被overloaded(重载)). 构造器的名字应和类名相同.例如想构造一个Date对象, 需要在构造器前加上new操作符:
+    ```Java
+    new Date(); // 构造了一个新的对象, 它被初始化为当前的日期和时间
+    ```
 + 复用构造的对象-对象变量
   通常会希望复用构造的对象, 此时需要将构造的对象放在对象变量里:
- ```Java
- Date birthday = new Date();
- ```
+   
+    ```Java
+    Date birthday = new Date();
+    ```
 
 ---
 
-2. :full_moon:注意事项
-   + **注意一定要区分对象和对象变量!!!**
-      
-       ```JAVA
-       Date deadline;
-       ```
+1. :full_moon:注意事项
++ **注意一定要区分对象和对象变量!!!**
+   
+    ```JAVA
+    Date deadline;
+    ```
 
-       例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.  
-       可以认为对象变量相当于C中的指针变量, 而对象相当于一个实实在在的数据（而不是地址值).
+    例如上述代码定义了一个对象变量deadline, 它可以引用Date类型的对象,但deadline本身并不是一个对象! **对象变量并没有包含一个对象, 而是引用内存中的对象.** 在Java中, 任何对象变量的值都是对存储在另外一个地方的某个对象的引用.  
+    可以认为对象变量相当于C中的指针变量, 而对象相当于一个实实在在的数据（而不是地址值).
 
-   + **注意一定要先初始化对象变量, 才能对其使用方法**
-       不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
-       + 引用新构造的对象
-       ```JAVA
-       deadline=new Date();
-       ```
-       + 引用已有的对象 
-       两个对象变量将引用内存中的同一个对象
-       ```JAVA
-       deadline=birthday;
-       ```
++ **注意一定要先初始化对象变量, 才能对其使用方法**
+    不同于C, 在Java中如果未初始化指针(引用)，运行时系统会直接报错,而不是产生一个随机的结果
+    + 引用新构造的对象
+    ```JAVA
+    deadline=new Date();
+    ```
+    + 引用已有的对象 
+    两个对象变量将引用内存中的同一个对象
+    ```JAVA
+    deadline=birthday;
+    ```
 
-   + **new操作符返回值也是一个引用**
-      
-       ```JAVA
-       Date deadline = new Date();
-       ```
++ **new操作符返回值也是一个引用**
+   
+    ```JAVA
+    Date deadline = new Date();
+    ```
 
-       表达式new Date()构造了一个Date类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量deadline中.
+    表达式new Date()构造了一个Date类型的对象, 它的值是对新创建对象的一个引用. 而这个引用存储在对象变量deadline中.
 
 
-   + **所有的Java对象都存储在堆中.当一个对象包含另一个对象变量时,它只是包含另一个堆对象的指针.**
++ **所有的Java对象都存储在堆中.当一个对象包含另一个对象变量时,它只是包含另一个堆对象的指针.**
 
 
 ### 4.2.2 Java类库中的LocalDate类
@@ -99,10 +103,12 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 
 ### 4.2.3 更改器方法与访问器方法
 [calender_demo](code2_3_demo.java)
+
 [Demo: mutator](UniMelb/mutator_method/demoDate.java)
 
 >重要概念
->+ 更改器方法(mutator method): 更改对象状态的方法
+> 一般一个class中的方法分为两类:
+>+ 更改器方法(mutator or setter method): 更改对象状态的方法
 >+ 访问器方法(accessor method): 只访问对象而不修改对象状态的方法. 通常这种方法用get作为函数开头名, 里面写个return...
 
 具体内容先跳过

@@ -1,0 +1,8 @@
+Please enter temperature for Monday: Please enter temperature for Tuesday: Please enter temperature for Wednesday: Please enter temperature for Thursday: Please enter temperature for Friday: 
+Histogram of Temperatures
+--------------------------
+Mon | *************************
+Tue | *********************************
+Wed | **************************
+Thu | ****************************
+Fri | ********************

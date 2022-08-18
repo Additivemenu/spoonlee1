@@ -578,22 +578,23 @@ The exit statement takes one integer argument . By tradition, a zero argument is
 
 
 ## 3.10 数组Array
-### 3.10.1 数组声明
+### 3.10.1 :full_moon:数组声明
 [arrayAnnouncing](arrayJava.java)
-> 数组是用来存储同一类型值的集合. 
->+ 数组长度不要求是常量, 但一旦数组长度指定便无法更改(使用arrayList动态扩容).  
->+ Java中允许长度为0的数组(注意长度为0的数组不同于null数组)
 
-> 数组的声明方式:
->+ 方式1: 
->```java
->   int arr = new int[100];//内存中开辟一个可以容纳100个int数值的空间存放数组arr
->```
->> int型数组元素初始化为0
->> Boolean型数组元素初始化为false
->> String型数组元素初始化为null
->+ 方式2: 在{}中枚举元素, 无需指定数组长度
->+ 方式3: 用匿名数组快速初始化旧数组
+1. 数组是用来存储同一类型值的集合. 
++ 数组长度不要求是常量, 但一旦数组长度指定便无法更改(使用arrayList动态扩容).  
++ Java中允许长度为0的数组(注意长度为0的数组不同于null数组)
+
+2. 数组的声明方式:
++ 方式1: 
+    ```java
+    int[] arr = new int[100];//内存中开辟一个可以容纳100个int数值的空间存放数组arr
+    ```
+    int型数组元素初始化为0
+    Boolean型数组元素初始化为false
+    String型数组元素初始化为null
++ 方式2: 在{}中枚举元素, 无需指定数组长度
++ 方式3: 用匿名数组快速初始化旧数组
 
 ### 3.10.2 访问数组元素
 略
