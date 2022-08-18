@@ -189,6 +189,11 @@ public Employee(String n, double s, int year, int month, int day){
 >+ 隐式(implicit)参数: 用关键词this指示隐式参数(Java中可写可不写), 隐式参数不会出现在方法声明中.
 >+ 显示(explicit)参数: 位于方法名后面括号中的数值, 显式地列在方法声明中
 
+---
+
+
+
+
 #### 7.封装的优点
 略
 
@@ -203,6 +208,10 @@ public Employee(String n, double s, int year, int month, int day){
 #### 3. final实例字段
 >可以将实例字段定义为final, 这样的字段必须在构造对象时初始化， 且之后无法再修改这个字段.
 
+## 4.35 对象之间的比较
+UniMelb Java:  
+For your classes, you should always implement an equals() method to be able to compare instances to each other. 
+[Demo: compareInstances]()
 
 ## 4.4 静态字段与静态方法
 解释static修饰符的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
@@ -251,30 +260,72 @@ public class math{
 ==NumberFormat类??????==
 
 
-
-### 4.4.5 main方法
+### 4.4.5 :full_moon: main方法
 main方法也是一个静态方法, 它不对任何对象进行操作. 每一个类都可以有一个main方法, 这是常用于对类进行单元测试的一个技巧.
 
-[staticTest](code4_4_staticTest.java)
+[Demo: staticTest](code4_4_staticTest.java)
 
-+ **注意textbook中 class Employee前得也加上static, 否则无法在Employee类中定义static field or method**
++ **注意上述Demo中两个class是并列关系的, 不是包含关系**
 + 注意并不是只要一个方法用到static field, 该方法就是static method--**是否要冠以一个method以static, 取决于该方法是否要用到instances的field(是否可以只依赖于类).** 比如demo中的setId方法用到了static field nextId, 但同时也要用到instances的id, 所以不是static method.
 
-+ run public class staticTest的main method:  
-可见static class Employee的main method并未被执行  
-```shell
-name=Tom, id=1, salary=40000.0
-name=Dick, id=2, salary=60000.0
-name=Harry, id=3, salary=65000.0
-Next available id = 4
-```
-+ run static class Employee的main method:  
-可见只有static class Employee的main method被执行了  
++ 跑 class code4_4_staticTest中的main method: 
+    在terminal中输入: java code4_4_staticTest  
+    可见static class Employee的main method并未被执行  
+    ```shell
+    name=Tom, id=1, salary=40000.0
+    name=Dick, id=2, salary=60000.0
+    name=Harry, id=3, salary=65000.0
+    Next available id = 4
+    ```
++ 跑class Employee中的main method:  
+    在terminal中输入: java Employee
+    可见只有static class Employee的main method被执行了  
 
-```shell
-Harry50000.0
-```
+    ```shell
+    Harry50000.0
+    ```
+
 ## 4.5 :full_moon:方法参数
+
+### 4.5.0 UniMelb Java content  
+
+1. block & local variable
+    A variable declared within a method definition is called a local variable. All method parameters are local variables.**Unlike other programming languages, Java does not have global variables.**
+
+    A block is another name for a compound statement or a method body; that is, a set of Java statements enclosed in braces, {}. A variable declared within a block is local to that block. When the block ends, all variables declared within the block disappear.
+
+    ```java
+    int sum = 0;
+    for(int i=1; i<=100; i++) {
+        sum = sum+1;
+    }
+    ```
+    The variable i is local to the for loop, and cannot be used outside of the loop. If you need to use such a variable outside of a loop, then you must declare it outside the loop.  
+
+
+2. method, parameter and argument
+   
+    Some methods, however, need to receive additional data via a list of parameters in order to perform their work. These parameters are also called formal parameters. A **parameter list** provides a description of the data required by a method. It indicates the number and types of data pieces needed, the order in which they must be given, and the local name for these pieces as used in the method:
+    ```java
+    public double myMethod(int param1, int param2, double param3) {} // parameter list within bracket
+    ```
+    When a method is invoked, the appropriate values must be passed to the method in the form of **arguments**. Arguments are also called **actual parameters**. The number and order of the arguments must exactly match that of the parameter list. The type of each argument must be compatible with the type of the corresponding parameter.
+    ```java
+    int a=1,b=2,c=3;
+    double result = myMethod(a,b,c);
+    ```
+    If argument and parameter types do not match exactly, Java will attempt to make an automatic type conversion. In the example above, the int value of argument c would be cast to a double. A primitive argument can automatically be typecast from any of the following types to any of the types that appear to its right: 
+    ```shell
+    byte > short > int > long > float > double > char
+    ```
+    >The terms parameter and argument are often used wrongfully interchangeably. You may need to infer their meaning from context.
+
+3. Pass-by-value mechanism
+    **The value of each argument (not the variable name) is plugged into the corresponding method parameter**. This method of plugging in arguments for formal parameters is known as the **pass-by-value mechanism.** When a method is invoked, the value of its argument is computed/evaluated, and the corresponding parameter (i.e., the local variable) is initialized to this value. Even if the value of a formal parameter is changed within a method (i.e., it is used as a local variable) **the value of the argument cannot be changed.**
+
+    >If the parameter is a variable of object type (class or array), then it can seem as if the value can be changed.  This will be explained in more detail in a later lecture.  For now just think of **primitive types** as being passed by value, and **object types** as being "it's complicated".
+
+### 4.5.1 JavaCore content
 [paramTest](code4_5_paramTest.java)
 
 Java程序设计语言对对象采用的不是按引用调用, 实际上, **对象引用是按值传递的.**
@@ -301,6 +352,9 @@ Java程序设计语言对对象采用的不是按引用调用, 实际上, **对�
 
 ## 4.6 对象构造
 对象构造非常重要, Java提供了多种编写构造器的机制.
+
+除了利用构造器及其参数来将构造对象外, 还可以通过class内部的method来构造对象, [Demo](UniMelb_bill/BillingDialog.java)
+
 ### 4.6.1 重载
 >+ 如果多个方法有相同的名字,不同的参数, 便出现了**重载(Overloading)**.编译器必须挑选出具体调用哪个方法: 编译器用各个方法首部中的参数类型与特定方法调用中所使用的值类型进行匹配, 来选出正确的方法.这个查找匹配的过程叫**做重载解析(overloading resolution)**.
 >+ Java允许重载任何方法, 要完整地描述一个方法, 需要指定方法名及其参数类型, 这叫做方法的**签名(signature)**.例如String类有4个名为indexOf的公共方法, 它们的签名是:
