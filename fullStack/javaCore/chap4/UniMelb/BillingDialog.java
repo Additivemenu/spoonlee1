@@ -1,6 +1,6 @@
-package UniMelb_bill;
+package UniMelb;
 
-import UniMelb_bill.Bill;
+import UniMelb.Bill;
 
 public class BillingDialog {
     public static void main(String[] args)

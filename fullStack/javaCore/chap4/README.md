@@ -30,6 +30,14 @@ A **class** is a type and you can declare variables of your own class type (e.g.
 
 An object has both data and actions (i.e., methods) associated with it. Both the data items and the methods are also called **members** of the object. Data items are also referred to as fields. Methods define what objects of your class are capable of.You can think of methods and the list of variable names/types as belonging to the class, and the data stored in the variables as belonging to the instance of the class.
 
+The **application programming interface (API)** for a class is a description of how to use the class. Optimally, a programmer need only read the API in order to use a well-designed class. 
+
+An **abstract data type (ADT)** is a data type that is written using good information-hiding techniques.
+
+
+
+![](Src/API.png)
+
 ## 4.2 使用预定义类
 
  1. 对象与对象变量  
@@ -124,8 +132,12 @@ class ClassName{
 demo中包含两个类: Employee类和带有public修饰符的EmployeeTest类（包含了main方法）. 当编译这段source code时, 编译器将在目录下创建两个类文件: 1) EmployeeTest.class; 2) Employee.class. 在命令行中键入 javac EmployeeTest.java则会编译EmployeeTest及其用到的类
 
 #### 2. public与private修饰符
+Java uses **modifiers** to restrict access to certain variables and methods. They contribute to the language's ability to hide information and are a crucial component of encapsulation.
+
 + public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
 + private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
++ It is considered good programming practice to **make all instance variables private** by default. 
++ **Most methods are public** and thus provide controlled access to the object. Usually, **methods are private only if used as helper methods** for other methods in the class. 
   
 #### 3. 关于构造器  
 demo中的Employee类的第二部分关于constructor的定义:
@@ -208,10 +220,27 @@ public Employee(String n, double s, int year, int month, int day){
 #### 3. final实例字段
 >可以将实例字段定义为final, 这样的字段必须在构造对象时初始化， 且之后无法再修改这个字段.
 
-## 4.35 对象之间的比较
+## 4.35 编写额外的常用对象方法
 UniMelb Java:  
-For your classes, you should always implement an equals() method to be able to compare instances to each other. 
-[Demo: compareInstances]()
+
+1. 对象之间的比较
+    > 注意!
+    >+ You can't just use == to compare objects as it often refers to references in memory!
+    >+ If you don't provide an equals() method, a default will generated -- but the default often doesn't do what you would expect, and so it is good to provide your own.
+
+    For your classes, you should always implement an equals() method to be able to compare instances to each other. 
+
+    [Demo: compareInstances](UniMelb/compareInstance/Date.java)
+    为毛用javac, java运行不了????????
+
+2. toString
+[Demo: object_toString](UniMelb/toString/Data.java)
+    为毛用javac, java运行不了????????  
+    In the example above, check what happens if you replace the last line with the following statement:
+    ```java
+    System.out.println(date1);
+    ```
+    What happens here is that Java knows that the println() function takes a String as an argument. As a result, it tries to convert the date1 object into a String, which it does by calling the toString() method.
 
 ## 4.4 静态字段与静态方法
 解释static修饰符的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
@@ -268,7 +297,7 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
 + **注意上述Demo中两个class是并列关系的, 不是包含关系**
 + 注意并不是只要一个方法用到static field, 该方法就是static method--**是否要冠以一个method以static, 取决于该方法是否要用到instances的field(是否可以只依赖于类).** 比如demo中的setId方法用到了static field nextId, 但同时也要用到instances的id, 所以不是static method.
 
-+ 跑 class code4_4_staticTest中的main method: 
++ 跑 class code4_4_staticTest中的main method:  
     在terminal中输入: java code4_4_staticTest  
     可见static class Employee的main method并未被执行  
     ```shell
@@ -277,7 +306,7 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
     name=Harry, id=3, salary=65000.0
     Next available id = 4
     ```
-+ 跑class Employee中的main method:  
++ 跑class Employee中的main method:   
     在terminal中输入: java Employee
     可见只有static class Employee的main method被执行了  
 

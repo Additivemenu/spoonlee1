@@ -1,4 +1,4 @@
-package UniMelb_bill;
+package UniMelb;
 
 import java.util.Scanner;
 
