@@ -43,7 +43,7 @@
 Java has different integer types (byte, short, int, long) and different "floating point" types (float, double). These take up increasing amounts of storage (1, 2, 4, 8 bytes for integers, 4, 8 bytes for floating point), but can store larger ranges of numbers.
 
 > Widening conversion
-> 在二元运算中, 当混用两种类型的数值时(如a+b, a是int, b是float), 先将两个操作数化为同一类型再做计算, 优先级是 double > float > long > int (即有浮点就化浮点, 有精度高的结果就精度高), 如下:
+> 在二元运算中, 当混用两种类型的数值时(如a+b, a是int, b是float), 先将两个操作数化为同一类型再做计算, 优先级是 double > float > long > int **(即有浮点就化浮点, 有精度高的结果就精度高)**, 如下:
 >+ 如果两个操作数中有一个是double型, 另一个也化为double型
 >+ 否则, 如果其中一个操作数是float型, 另一个操作数也化为float型
 >+ 否则，如果其中一个操作数是long型, 另一个操作数也化为long型
@@ -71,8 +71,8 @@ public class Conversion {
 ---
 
 ### 3.5.4 :moon:强制类型转换 (Typecasting)
-> narrowing conversion
-> 强制类型转换: 在圆括号内给出想要转换的目标类型, 后面紧跟待转换的变量名.例如:
+narrowing conversion
+强制类型转换: 在圆括号内给出想要转换的目标类型, 后面紧跟待转换的变量名.例如:
 ```java
 double x = 9.997;
 int nx = (int) x;
@@ -163,23 +163,23 @@ System.out.println("Windows file names become C:\\users\\fred"); // Windows file
 + Certain letters after a backslash are treated specially, for example, \n for a new line and \t for a tab character.
 
 + Two strings can be appended using +, an operation also called concatenation. If either operand is a string, the + operation will convert the other operand into a string:
-```java
-// simple concatenation
-System.out.println("Hello " + "String!"); //Hello String!
+    ```java
+    // simple concatenation
+    System.out.println("Hello " + "String!"); //Hello String!
 
-// conversion
-int x = 1;
-System.out.println("x = " + x); // x = 1
+    // conversion
+    int x = 1;
+    System.out.println("x = " + x); // x = 1
 
-// can you figure out (and fix) what happens here?
-System.out.println("x + x = " + x + x); // x + x = 11
-
-// Explain what happens here.
-String strJ = "J";
-char chrJ = 'J';
-System.out.println ("With a string we get " + (strJ + 1)); //With a string we get J1
-System.out.println ("With a char we get " + (chrJ + 1)); // With a char we get 75
-```
+    // can you figure out (and fix) what happens here?
+    System.out.println("x + x = " + x + x); // x + x = 11
+    System.out.println( x + x + "= x + x  "); // 2 = x + x
+    // Explain what happens here.
+    String strJ = "J";
+    char chrJ = 'J';
+    System.out.println ("With a string we get " + (strJ + 1)); //With a string we get J1
+    System.out.println ("With a char we get " + (chrJ + 1)); // With a char we get 75, as char is treated as int
+    ```
 + [Java Doc for more String API](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
 
 ---
@@ -264,8 +264,8 @@ System.out.println(completedString);
 注意Scanner 类定义在java.util中. 当使用的类不是定义在基本java.lang包中时， 一定要使用import
 
 > 常用Scanner api:
->+ keyboard.nextLine(): reads the entire line, including the newline character
->+ keyboard.next(): reads in one word as a String
+>+ keyboard.nextLine(): reads **the entire line**, including the newline character (\n换行符)
+>+ keyboard.next(): reads in **one word** as a String
 >+ keyboard.nextInt(): reads in a number and converts it to int
 >+ keyboard.nextDouble(): reads in a number and converts it to double
 
@@ -553,7 +553,11 @@ switch (Controlling_Expression)
 
 ### 3.8.6 中断控制流程的语句
 
-When loop statements are nested, any break or continue statement applies to the innermost, containing loop statement.
+---
+
+UniMelb Java
+
+When loop statements are nested, any **break** or **continue** statement **applies to the innermost, containing loop statement**.
 
 **1. label break**
  
@@ -577,6 +581,7 @@ System.exit(0);
 ```
 The exit statement takes one integer argument . By tradition, a zero argument is used to indicate a normal ending of the program. However, the cleanest way to end a program is to always let it run to the end of its main function, except when you want to report that an error occurred.
 
+---
 
 ## 3.10 数组Array
 ### 3.10.1 :full_moon:数组声明

@@ -42,14 +42,15 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 
  1. 对象与对象变量
    
-    [Demo: constructor](UniMelb/constructor/Date.java)
-
 + 构造对象
   **想要使用对象, 首先必须构造对象, 并对其初始状态, 然后对对象应用方法**
 + 在Java中, 使用构造器(constructor)构造新实例(构造器相当于一种特殊的方法, 用来初始化object的instance variable, 通常一个class中的constructor会被overloaded(重载)). 构造器的名字应和类名相同.例如想构造一个Date对象, 需要在构造器前加上new操作符:
     ```Java
     new Date(); // 构造了一个新的对象, 它被初始化为当前的日期和时间
     ```
+    
+    [Demo: constructor](UniMelb/constructor/Date.java)
+
 + 复用构造的对象-对象变量
   通常会希望复用构造的对象, 此时需要将构造的对象放在对象变量里:
    

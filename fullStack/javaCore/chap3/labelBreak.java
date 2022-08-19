@@ -13,8 +13,10 @@ public class labelBreak {
                     break outerLoop;
 
                 System.out.print("\n"); 
-                i++;
+                //i++;
             }
+            i++;
+            System.out.println("--------");
         }
 
         System.out.println("\nEnough looping!");

@@ -1,6 +1,10 @@
-package UniMelb;
+// this is from UniMelb Java week4 pre-course content
+// the Bill class uses no constructor to initialize the instance 
+// 
 
-import UniMelb.Bill;
+package UniMelb.Bill;
+
+import UniMelb.Bill.Bill;;
 
 public class BillingDialog {
     public static void main(String[] args)

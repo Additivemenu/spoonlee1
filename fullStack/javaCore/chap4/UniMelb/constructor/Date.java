@@ -1,5 +1,6 @@
-package UniMelb.constructor;
 // this java file is from UniMelb Java
+
+package UniMelb.constructor;
 
 public class Date {
     private int day;
