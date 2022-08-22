@@ -251,7 +251,7 @@ UniMelb Java:
     What happens here is that Java knows that the println() function takes a String as an argument. As a result, it tries to convert the date1 object into a String, which it does by calling the toString() method.
 
 ## 4.4 静态字段与静态方法
-解释static修饰符的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
+解释static修饰符(modifier)的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
 ### 4.4.1 静态字段
 >+ 如果将一个字段定义为**static**, **每个类**只有一个这样的字段;
 >+ 对于非静态的实例字段, **每个对象**都有一个自己的副本
@@ -268,6 +268,16 @@ class Employee{
 
 ==有个代码例子???????没懂==
 
+---
+
+UniMelb Java: If not explicitly initialized, a static variable will be automatically initialized to a default value:  
+   + **boolean** static variables are initialized to **false**
+
+   + **Other primitive types** static variables are initialized to **the zero of their type**
+
+   + **Class-type** static variables are initialized to **null**
+
+---
 ### 4.4.2 静态常量
 静态变量用的比较少, 但是静态常量却用得很多. 例如Math类中关于PI的定义:
 ```Java
@@ -282,12 +292,49 @@ public class math{
 ### 4.4.3 静态方法
 >+ **静态方法是不在对象上执行的方法 (或认为是没有this参数的方法).**
 > 例如Math类的pow方法就是一个静态方法, 表达式 Math.pow(x,a)会计算x的a次幂. 在运算完成时, 它不使用任何Math对象(换言之,它没有隐式参数). 这种方法更像是面对过程中的普通函数.
->+ **静态方法无法访问非静态实例字段, 因为它不能在对象上执行; 但是相应地, 静态方法可以访问静态字段.** 
->+ 可以使用对象来调用静态方法, 这是合法的, _但是不推荐这么做, 因为这违背了我们使用静态方法的初衷: 静态方法不依赖于对象, 而是属于类的._
+>+ **静态方法无法访问非静态实例字段(static method cannot access instance variables), 因为它不能在对象上执行; 但是相应地, 静态方法可以访问静态字段.** 
+>+ 可以使用对象来调用静态方法, 这是合法的, 但是不推荐这么做, 因为这违背了我们使用静态方法的初衷: 静态方法不依赖于对象, 而是属于类的.
 
-> 以下两种情况可以使用静态方法
->+ 方法不需要访问对象状态, 因为它需要的所有参数都通过显示参数提供.(e.g. Math.pow) 
->+ 方法只需访问类的静态字段
+2. 以下两种情况可以使用静态方法 
+    
+   + 方法不需要访问对象状态, 因为它需要的所有参数都通过显示参数提供.(e.g. Math.pow) 
+   + 方法只需访问类的静态字段
+
+---
+
+UniMelb Java: 注意! 静态方法不能call非静态方法. e.g.:
+
+    ```java
+    class Main {
+        private void sayHello () {
+            System.out.println ("Hello, World!");
+        }
+
+        public static void main (String[] args) {
+            sayHello (); // static method calls a non-static method, error will pop out
+        }
+    }
+    ```
+    Principle:  When a non-static method is called, it is passed a hidden parameter, this, which refers to the object ("instance") of this class from which it is being called.  A static method can be called without an object, like  Main.main(),  and so there is no this variable that it can pass.
+
+    + 修改方法一: 给sayHello() 加上modifier: static
+
+    + 修改方法二: 非静态方法依赖object来被invoke, 如下
+
+    ```java
+    class Main {
+        private void sayHello () {
+            System.out.println ("Hello, World!");
+        }
+
+        public static void main (String[] args) {
+            Main instance = new Main();
+            instance.sayHello ();
+        }
+    }
+    ```
+
+---
 
 ### 4.4.4 工厂方法 
 使用静态工厂方法(factory method)来构建对象.
@@ -302,11 +349,14 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
 
 [Demo: staticTest](code4_4_staticTest.java)
 
-+ **注意上述Demo中两个class是并列关系的, 不是包含关系**
++ **注意上述Demo中两个class是并列关系的, 不是包含关系**: class code4_4_staticTest(和java file的名字一样), class Employee; 其中前者用到后者.
 + 注意并不是只要一个方法用到static field, 该方法就是static method--**是否要冠以一个method以static, 取决于该方法是否要用到instances的field(是否可以只依赖于类).** 比如demo中的setId方法用到了static field nextId, 但同时也要用到instances的id, 所以不是static method.
 
 + 跑 class code4_4_staticTest中的main method:  
-    在terminal中输入: java code4_4_staticTest  
+    在terminal中输入: 
+    ```shell
+    java code4_4_staticTest  
+    ```
     可见static class Employee的main method并未被执行  
     ```shell
     name=Tom, id=1, salary=40000.0
@@ -315,7 +365,10 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
     Next available id = 4
     ```
 + 跑class Employee中的main method:   
-    在terminal中输入: java Employee
+    在terminal中输入: 
+    ```shell
+    java Employee
+    ```
     可见只有static class Employee的main method被执行了  
 
     ```shell

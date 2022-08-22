@@ -141,5 +141,5 @@ arr[i]表示: node i 指向 node arr[i]
 [Edge](Class17/Edge.java)  
 [Graph](Class17/Graph.java)
 
-[Graph_generator]()
+[Graph_generator](Class17/GraphGenerator.java)
 
