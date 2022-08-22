@@ -143,3 +143,15 @@ arr[i]表示: node i 指向 node arr[i]
 
 [Graph_generator](Class17/GraphGenerator.java)
 
+## P141 BFS & DFS
+
+1. BFS
+
+set: 有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环
+
+原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
+
+2. DFS
+
+一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复
+

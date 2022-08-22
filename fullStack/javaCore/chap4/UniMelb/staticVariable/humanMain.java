@@ -1,3 +1,5 @@
+// this code is from UniMelb Java week5 
+
 package UniMelb.staticVariable;
 
 public class humanMain {
