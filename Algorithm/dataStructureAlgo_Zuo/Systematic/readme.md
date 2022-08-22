@@ -102,3 +102,44 @@ O($N^2$)
 
 # Class5
 ## p96 归并排序
+
+
+
+
+# Class 17 graph
+## P136-138
+有向图(所有图都可以转化为有向图)
+无向图(可以认为是edge双向的有向图)
+
+
+adjacency list (邻接表)
+也可认为是K-V表, K是node, 对应V是node的neighboring node; 如果是weighted graph, 那在V的下标上注明weight
+![](Src/adjacencyList.jpg)
+
+adjacency matrix (邻接矩阵)  
+这里是定义没有直接相连的edge的两个Node对应值为无穷, 自己和自己之间的对应matrix值是0
+![](Src/adjacencymatrix.jpg)
+
+**图还有别的表达法:**
+二维矩阵(面试最常见的形式)
+arr[][]  
+其中arr[i]由[w,p1,p2]三个int组成, w表示weight, p1表示start node, p2表示end node, p1-p2构成一个edge
+
+数组
+arr[]
+arr[i]表示: node i 指向 node arr[i]
+但用这种表达法, 一个节点只能向外延申到另一个节点(而不是延伸到多个节点) 
+
+![](Src/arrayGraph.jpg)
+
+
+图的表示方法有很多, 我们可以选择一种自己喜欢的表示方法着重练习, 在面试中遇到其他的表示法直接先写个函数(适配器)转化成我们熟悉的表示方法再coding.
+
+## P139-140
+
+[Node](Class17/Node.java)  
+[Edge](Class17/Edge.java)  
+[Graph](Class17/Graph.java)
+
+[Graph_generator]()
+
