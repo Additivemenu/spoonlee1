@@ -444,7 +444,47 @@ this session is from UniMelb Java
 
 ## 4.5 :full_moon:方法参数
 
+这里只看JavaCore的内容即可, UniMelb的内容作为补充
+
 ### 4.5.0 UniMelb Java content  
+
+0. Some basic knowledge
+    It is important to understand how computers store data, such as Java variables. A computer has two forms of memory:
+
+    + Secondary memory (typically a hard disk, or flash drive like SSD) is used to hold files for "permanent" storage
+
+    + Main memory (a.k.a. Primary memory, typically RAM) is used by a computer when it is running a program.
+
+    Values stored in a program's variables are kept in main memory.
+
+    ![](Src/variableandmemory.png)
+
+    > variable and memory  
+    > Every variable is stored in a location in computer memory.
+    >+ **基本类型变量是实实在在的内存的数据.** When the variable is a **primitive type** (int, double etc.), **the value of the variable** is stored directly in the memory location assigned to the variable.  This is possible because each value of a primitive type always requires the same amount of memory to store its values.
+    >+ **类变量是引用(指针)，不是真的内存中的object.** When the variable is a **class type**, **only the memory address (or reference)** of where the object is located is stored at the memory location assigned to the variable.  (Note: two different locations are involved.)
+    > For classes:
+    >>+ The object named by the variable is stored in some other location in memory, not the location assigned to the variable.
+    >>+ Like primitives, the value of a class variable (i.e., the reference) is a fixed size
+    >>+ Unlike primitives, the value of a class variable is a memory address or reference
+    >>+ The object whose address is stored in the variable can be of variable size.
+    >
+    >Because a class variable only holds a reference to the object, two class variables can contain the same reference, and therefore name the same object. 因而你可以使得两个类变量引用(指向)内存中的同一个object, 对任意一个类变量进行操作就相当于对内存中的object操作.
+
+
+
+
+    > Advanced: Virtual memory
+    >"Virtual memory" allows the operating system allows some data from "main memory" to be stored on the hard drive instead of in RAM.  That is one reason we talk about main and secondary memory, instead of RAM and hard drive.  Main memory includes RAM plus virtual memory "swap space".
+
+    > Conversion
+    > 1 Byte = 8 bits
+    > 1 kiB = 2^10 = 1024 bytes.  1 kB = 10^3 bytes    (Note the "i" in kiB.)
+    > 1 MiB = 2^20 bytes.  1 MB = 10^6 bytes
+    > 1 GiB = 2^30 bytes.  1 GB = 10^9 bytes
+    > 2^32B = 4 x 2^30 bytes = 4 GiB
+    > 2^64B = 16 x 2^60 bytes ~ 16,000,000,000 GiB.  To paraphrase Bill Gates, that should be enough for anyone.
+
 
 1. block & local variable
     A variable declared within a method definition is called a local variable. All method parameters are local variables.**Unlike other programming languages, Java does not have global variables.**
@@ -478,9 +518,26 @@ this session is from UniMelb Java
     >The terms parameter and argument are often used wrongfully interchangeably. You may need to infer their meaning from context.
 
 3. Pass-by-value mechanism
-    **The value of each argument (not the variable name) is plugged into the corresponding method parameter**. This method of plugging in arguments for formal parameters is known as the **pass-by-value mechanism.** When a method is invoked, the value of its argument is computed/evaluated, and the corresponding parameter (i.e., the local variable) is initialized to this value. Even if the value of a formal parameter is changed within a method (i.e., it is used as a local variable) **the value of the argument cannot be changed.**
+   
+   ```java 
+    int myFunction (int arg) {
+        arg = arg + 1;
+        return arg;
+    }
 
-    >If the parameter is a variable of object type (class or array), then it can seem as if the value can be changed.  This will be explained in more detail in a later lecture.  For now just think of **primitive types** as being passed by value, and **object types** as being "it's complicated".
+    int a = 1;
+    int b = myFunction(a);
+   ```
+    + In a call-by-value function call, a copy of a would be passed to myFunction and so a would not be affected by the line  arg = arg + 1;
+
+    + In a call-by-reference function call, arg would actually stand for a during the function call -- arg would be a reference to the location where a is stored, and so after the function call, a == 2.
+
+    [Demo: call by value and call by reference](UniMelb/callByValue_ByReference/callByValueByReference.java)
+
+    > So which does Java use?
+    > Technically, **all Java methods are call-by-value.**  A parameter is a local variable that is set equal to the value of its argument.  Therefore, any change to the value of the parameter cannot change the value of its argument.
+    > However, since class variables are actually references to objects, they behave very similarly to call-by-reference parameters.  In particular, the function call can change the value of the object that the parameter refers to, even though it cannot change the parameter itself (i.e., can't make it refer to a different object).
+
 
 ### 4.5.1 JavaCore content
 [paramTest](code4_5_paramTest.java)
