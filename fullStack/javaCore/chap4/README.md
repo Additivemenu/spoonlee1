@@ -385,8 +385,62 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
 ## 4.45 math class
 this session is from UniMelb Java
 
+> Math class provides many static methods related to (you guessed it) mathematics.It is in java.lang which is imported by default, and so you do not need an import statement.All of its elements are static, and so you will never need to create an object of class Math.
 
+2. Some methods
+    ```java
+    public static double  pow(double base, double exponent)
+    public static double   sqrt (double argument)
+    public static T abs(T argument) // for T in double, float, long, int
+    public static T min (T n1, T n2) // for T in  double, float, long, int
+    public static T max (T n1, T n2) // for T in  double, float, long, int
+    ```
 
+3. Converting to integers  
+    There are three methods for converting floating point values (double and float) to integers. (There are four counting overloading.)
+
+    + Round to nearest
+        ```java
+        public static long round (double argument)
+        public static int  round (float  argument)
+        ```
+        These return the integer nearest to the argument.
+
+        Positive values with a fractional part 0.5 or higher round up, and values with a fractional part less than 0.5 round down.  (For negative values, this is reversed.  Have a think about why.)
+
+        Note that these return integer types (long and int).
+
+    + Round down
+        ```java
+        public static double floor (double argument)
+        ```
+        This rounds down; it returns the largest whole number that isn't bigger than the argument, e.g., Math.floor(3.5) = 3.0.
+
+        (For negative values, it rounds away from zero.  Math.floor(-3.5) = -4)
+
+        Note that these return double.  They are not useful for changing the type of data; just for mathematical operations.
+
+    + Round Up
+        ```java
+        public static double ceil (double argument)
+        ```
+        This rounds up; it returns the smallest whole number that isn't smaller than the argument. e.g., Math.ceil(3.5) = 4.0
+
+        The name is short for "ceiling".
+
+        Again, for negative values this rounds away from zero.  Again, it returns a double.
+
+4. Additional functions
+   
+   random
+
+    sin, cos, tan, asin, acos, atan, sinh, cosh, tanh
+
+    toDegrees, toRadians
+
+    atan2, hypot
+
+    exp, log, log10, expm1, logp1
 
 ## 4.5 :full_moon:方法参数
 
