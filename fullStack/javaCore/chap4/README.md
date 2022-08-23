@@ -292,10 +292,14 @@ public class math{
 在程序中用Math.PI来访问这个常量. 但如果这里省略关键字static, PI就变成了Math类的一个实例字段, 即需要一个Math类的对象来访问PI，且每一个Math对象都有一个自己的PI副本.
 
 ==另一个常使用的静态常量是System.out ???????回头看==
-### 4.4.3 静态方法
->+ **静态方法是不在对象上执行的方法 (或认为是没有this参数的方法).**
+### 4.4.3 :full_moon:静态方法
+
+[Demo: staticMethod](UniMelb/staticMethod/SharePrice.java)
+
+>+ **静态方法是不在对象上执行的方法 (或认为是没有this参数的方法). 静态方法可以不经过Object就被调用** 
 > 例如Math类的pow方法就是一个静态方法, 表达式 Math.pow(x,a)会计算x的a次幂. 在运算完成时, 它不使用任何Math对象(换言之,它没有隐式参数). 这种方法更像是面对过程中的普通函数.
 >+ **静态方法无法访问非静态实例字段(static method cannot access instance variables), 因为它不能在对象上执行; 但是相应地, 静态方法可以访问静态字段.** 
+>+ **非静态方法不但可以访问非静态字段，还可以访问静态字段** 如上述demo的value method
 >+ 可以使用对象来调用静态方法, 这是合法的, 但是不推荐这么做, 因为这违背了我们使用静态方法的初衷: 静态方法不依赖于对象, 而是属于类的.
 
 2. 以下两种情况可以使用静态方法 
@@ -377,6 +381,12 @@ main方法也是一个静态方法, 它不对任何对象进行操作. 每一个
     ```shell
     Harry50000.0
     ```
+
+## 4.45 math class
+this session is from UniMelb Java
+
+
+
 
 ## 4.5 :full_moon:方法参数
 

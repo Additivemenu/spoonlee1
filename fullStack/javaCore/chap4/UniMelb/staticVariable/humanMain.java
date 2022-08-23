@@ -18,10 +18,11 @@ class Human {
 
     public Human(String aName) {
         name = aName;
-        populationCount++;
+        populationCount++; // whenever an object is instantiated
     }
 
-    public static int getPopulation() {
+    // only static method can access static fields
+    public static int getPopulation() { 
         return populationCount;
     }
 }
