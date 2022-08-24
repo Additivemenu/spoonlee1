@@ -205,6 +205,32 @@ public Employee(String n, double s, int year, int month, int day){
     ...
 }
 ```
+
+---
+
+UniMelb Java
+
+null is a special constant that may be assigned to a variable of any class
+
+```java
+e.g., YourClass  yourObject = null; 
+```
+
+**It indicates that your variable does not currently refer to any object at all.** It is often used in constructors to initialize class type instance variables when there is no obvious object to use yet.  If a variable of a class type is not initialized, it will default to being null.
+
+**null is not an object.**  It is a placeholder that doesn't refer to anywhere in memory. To test if a variable is null, use == or != (instead of equals() ).  We are testing whether or not the variable refers to something, not testing its value.
+
+```java
+e.g.    if (myObject == null)
+```
+
+Because null doesn't refer to an object, it is meaningless to refer to its instance variables. Accessing a non-static member through a null variable will result in a "Null Pointer Exception" error message.
+
+
+---
+
+
+
 #### 6.隐式参数与显示参数
 >+ 隐式(implicit)参数: 用关键词this指示隐式参数(Java中可写可不写), 隐式参数不会出现在方法声明中.
 >+ 显示(explicit)参数: 位于方法名后面括号中的数值, 显式地列在方法声明中
@@ -444,7 +470,7 @@ this session is from UniMelb Java
 
 ## 4.5 :full_moon:方法参数
 
-这里只看JavaCore的内容即可, UniMelb的内容作为补充
+这里只看JavaCore的内容即可, UniMelb可以只看最后的call by value call by reference的demo即可, UniMelb其他内容作为补充 
 
 ### 4.5.0 UniMelb Java content  
 
@@ -536,9 +562,22 @@ this session is from UniMelb Java
 
     > So which does Java use?
     > Technically, **all Java methods are call-by-value.**  A parameter is a local variable that is set equal to the value of its argument.  Therefore, any change to the value of the parameter cannot change the value of its argument.
-    > However, since class variables are actually references to objects, they behave very similarly to call-by-reference parameters.  In particular, the function call can change the value of the object that the parameter refers to, even though it cannot change the parameter itself (i.e., can't make it refer to a different object).
+    > However, since class variables are actually references to objects, they behave very **similarly** to call-by-reference parameters.  In particular, the function call can change the value of the object that the parameter refers to, even though it cannot change the parameter itself (i.e., can't make it refer to a different object).
 
+    The value plugged into a class type parameter is a reference (memory address) 
 
+    + Therefore, the parameter becomes another name for the argument
+  
+    + Any change made to the object named by the parameter (i.e., changes made to the values of its instance variables) will be made to the object named by the argument, because they are the same object
+  
+    + Note that, because it still is a call-by-value parameter, any change made to the class type parameter itself (i.e., its address) will not change its argument (the reference or memory address)
+    
+    The value of the object named by the argument can be updated but the argument itself will not be changed.
+
+    > The operators = and == don't do what you might expect when used on class variables. Note class variable is essentially a pointer, the value of a class variable is just an address, so that:
+    >+ ‘=’是赋值, class type variable a  = class type variable b, 代表a和b指向内存中的同一个object. Assignment (=) causes two variables to be names for the same object; it does not create a copy. Changing the instance variables of the object referred to by one variable will cause cause changes in the object referred to by the other  variable, because it is the same object.
+    >+ ‘==’两个等号是check变量地址是否相同. Testing for equality (==两个等号) only checks that two variables of a class type refer to the same object.If they refer to two objects with the same instance variables, it will return false.
+    >+ To test for equality, use the member method equals().
 ### 4.5.1 JavaCore content
 [paramTest](code4_5_paramTest.java)
 
