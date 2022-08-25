@@ -267,6 +267,18 @@ UniMelb Java:
     [Demo: compareInstances](UniMelb/compareInstance/Date.java)
     为毛用javac, java运行不了????????
 
+    > 注意!  
+    > 这里的equals method不考虑做比较的两个object的instance variable取值为Null的情况(e.g. objectA.field1 = null, objectB.field1 = null, 这种情况我们不能认为objectA.field1 equals objectB.field1); 如果你想比较的instance variable 取值可能为null, 此时需要你额外再写一个match method引用equals method来进行比较, 如下
+    > ```java 
+    > private static boolean datesMatch(Date date1, Date date2)
+    > if (date1 == null)
+    >    return (date2 == null);
+    > else if (date2 == null) //&& date1 != null
+    >    return false;
+    > else // both dates are not null.
+    >    return(date1.equals(date2));
+    > ```
+
 2. toString
 [Demo: object_toString](UniMelb/toString/Data.java)
     为毛用javac, java运行不了????????  
@@ -576,7 +588,7 @@ this session is from UniMelb Java
 
     > The operators = and == don't do what you might expect when used on class variables. Note class variable is essentially a pointer, the value of a class variable is just an address, so that:
     >+ ‘=’是赋值, class type variable a  = class type variable b, 代表a和b指向内存中的同一个object. Assignment (=) causes two variables to be names for the same object; it does not create a copy. Changing the instance variables of the object referred to by one variable will cause cause changes in the object referred to by the other  variable, because it is the same object.
-    >+ ‘==’两个等号是check变量地址是否相同. Testing for equality (==两个等号) only checks that two variables of a class type refer to the same object.If they refer to two objects with the same instance variables, it will return false.
+    >+ ‘==’两个等号是check变量地址是否相同. Testing for equality (==两个等号) only checks that two variables of a class type refer to the same object.If they refer to two objects with the same instance variables, it will return false. 对于primitive type variable, 因为它们就是call by value的, 所以==就是比较variable的value
     >+ To test for equality, use the member method equals().
 ### 4.5.1 JavaCore content
 [paramTest](code4_5_paramTest.java)
@@ -607,6 +619,109 @@ Java程序设计语言对对象采用的不是按引用调用, 实际上, **对�
 对象构造非常重要, Java提供了多种编写构造器的机制.
 
 除了利用构造器及其参数来将构造对象外, 还可以通过class内部的method来构造对象, e.g.[Demo](UniMelb_bill/BillingDialog.java)
+
+### 4.6.0 :full_moon:  Privacy leaks
+
+1. Copy constructors
+
+A copy constructor is a constructor with a single argument of the same type as the class. The copy constructor should create an object that is a **separate, independent object**, but with the instance variables set so that it is an exact copy of the argument object.
+
++ 对于只含有primitive type instance variable的写法：
+
+    Note how, in the Date copy constructor, the values of all of the **primitive type** private instance variables are merely copied.
+
+    ```java
+    public Date(Date aDate) //constructor - chapter 4, 构造器输入为同一个类的class type variable
+    {
+        if (aDate == null) //Not a real date.
+        {
+            System.out.println("Fatal Error.");
+            System.exit(0);
+        }
+        month = aDate.month;
+        day = aDate.day;
+        year = aDate.year;
+    }
+    ```
+
++ 对于含有class type instance variable的写法 
+
+    现在来看一个含有class type as instance variable的类：Person
+
+    ```java
+    public class Person
+    {
+        private String name;
+        private Date born;  
+        private Date died; //null if still alive
+    }
+    ```
+    若按照如下方式来定义copy constructor, 则不会'复制'出一个separate, independent的object. 因为如下其实是把旧的class type variable的born, died字段的值赋给了新的想要'复制'的class type variable的born, died字段, 实际上二者的字段指向的是内存中的同一object.
+    ```java
+    born = original.born //dangerous
+    died = original.died //dangerous
+    ```
+
+    真正的安全的做法是, 在内存中再创建一个新的object(用new), 然后再将其引用赋给新的class type variable的对应字段, 这样新的class type variable才能代表一个独立的object, 如下:
+
+    ```java
+    born = new Date(original.born);
+    ```
+
+    如下, 完整的对含有class type instance variable的class的copy constructor的写法:
+    ```java
+    public Person(Person original)
+    {
+        if (original == null)
+        {
+            System.out.println("Fatal error.");
+            System.exit(1);
+        }
+        name = original.name;
+        born = new Date(original.born); // 创建内存中新的object
+        if (original.died == null)
+            died = null;
+        else
+            died = new Date(original.died); // 创建内存中新的object
+    }
+    ```
+
+2. privacy leaks
+
+    The previously illustrated examples from the Person class show how an incorrect definition of a constructor can result in a privacy leak.
+
+    A similar problem can occur with incorrectly defined mutator or accessor methods. For instance:
+
+    ```java
+        public Date getBirthDate()
+    {
+        return born; //dangerous, 相当于return了内存中born object的指针, 直接掏心掏肺了属于是
+    }
+
+        public Date getBirthDate()
+    {
+        return new Date(born); //correct, return了另一个完全独立于内存中born object的copy, 不会影响到原来的born object, 阴阳合同的感觉
+    }
+    ```
+
+
+3. Mutable and immutable classes
+
+    + A class that contains no methods (other than constructors) that change any of the data in an object of the class is called an immutable class.Objects of such a class are called **immutable objects**. It is perfectly safe to return a reference to an immutable object because the object cannot be changed in any way. The String class is an immutable class.
+
+    + A class that contains public mutator methods or other public methods that can change the data in its objects is called a **mutable class**, and its objects are called **mutable objects**.
+
+    + **Never write a method that returns a mutable instance variable**(因为这样其实会return指向内存中object的指针, 这个指针如果暴露在外，通过mutator method就可以改动内存中的object).  Instead, use a copy constructor to return a reference to a **completely independent copy** of the mutable object. 
+        >+ A **deep copy** of an object is a copy that, with one exception, has no references in common with the original.  The exception is that references to immutable objects are allowed to be shared.
+        >+ Any copy that is not a deep copy is called a **shallow copy**. This type of copy can cause dangerous privacy leaks in a program.
+        >+ shallow copy当然效率比deep copy更高
+4. complete example
+   作为前面的汇总: [Demo: personDate](UniMelb/copyConstructor/copyConstructor.java)
+
+    Exercise:  Implement  Date.precedes()  near the end of the code, and fill in your name and birth date, and those of a friend or other person in the method  Main.main  at the start of the code.
+
+    You can also test the unused methods such as Person.consistent, and/or check which of two people with death dates lived longer.
+
 
 ### 4.6.1 重载
 
@@ -721,6 +836,7 @@ public Employee(double s){ // another constructor
 }
 ```
 这样当调用new Employee(60000)时, Employee(double)构造器将调用Employee(String, double)构造器. 采用这种方式使用this关键字非常有用, 这样对公共的构造器代码只需要编写一次即可.
+
 ==没懂?????? -- 看4.6.7 demo==
 
 ### 4.6.7 :full_moon:初始化块 (initialization block)
