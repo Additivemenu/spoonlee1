@@ -288,6 +288,139 @@ UniMelb Java:
     ```
     What happens here is that Java knows that the println() function takes a String as an argument. As a result, it tries to convert the date1 object into a String, which it does by calling the toString() method.
 
+## 4.36 wrapper class
+
+Variables of primitive types are not Java objects.  That is, they are not of a class derived from class Object.That means we cannot have, for example, a java List of integers, because the List class can only have lists of Object elements.
+
+However, java provides classes that behave like the primitive types:
+
+```java
+// 大写首字母
+boolean -> Boolean
+byte    -> Byte
+short   -> Short
+long    -> Long
+float   -> Float
+double  -> Double
+// 其他
+char -> Character
+int  -> Integer
+
+```
+
+Wrapper classes also have many useful constants and static methods  
+e.g., Integer.decode(String s) converts a decimal string to an Integer.
+
+1. Boxing
+   Boxing is the process of going from a value of a primitive type to an object of its wrapper class
+
+   + To convert a primitive value to an "equivalent" class type value, create an object of the corresponding wrapper class using the primitive value as an argument
+   + The new object will contain an instance variable that stores a copy of the primitive value
+   + Unlike most other classes, a wrapper class does not have a no-argument constructor
+        Integer integerObject = new Integer(42);
+
+2. Unboxing
+   Unboxing: the process of going from an object of a wrapper class to the corresponding value of a primitive type.  The methods for this are:
+
+    ```java
+    Boolean.booleanValue()
+    Byte.byteValue()
+    Short.shortValue()
+    Integer.intValue()
+    Float.floatValue()
+    Double.doubleValue()
+    Character.charValue()
+    ```
+    None of these methods take an argument
+    ```java
+    int i = integerObject.intValue();
+    ```
+3. Automatic boxing and unboxing
+   Manually inserting boxing and unboxing code makes coding slower and makes code harder to read.Starting with version 5.0, Java can automatically do boxing and unboxing.
+
+   + **Boxing简化写法**: Instead of creating a wrapper class object using the new operation (as shown before), it can be done as an automatic type cast:    
+    ```java
+        Integer integerObject = 42;
+    ```
+
+    + **Unboxing简化写法**: Instead of having to invoke the appropriate method (such as intValue) to convert from an object of a wrapper class to a value of its associated primitive type, the primitive value can be recovered automatically
+        ```java
+        int i = integerObject;
+        ```
+4. :moon:Static methods of wrapper class
+    
+    [Demo: StringManipulation](UniMelb/wrapperClass/stringManipulation.java)
+
+    Wrapper classes have static methods that convert a correctly formed string representation of a number to the number of a given type:
+
+    ```java
+    Integer.parseInt ()
+    Long.parseLong ()
+    Float.parseFloat ()
+    Double.parseDouble ()
+    ```
+
+    Wrapper classes also have static methods that convert from a numeric value to a string representation of the value:
+
+    ```java
+    Double.toString(123.99); // returns the string value "123.99"
+    ```
+
+    The Character class contains a number of static methods that are useful for string processing.  
+
+    ```java
+    // Replace lower case characters by upper case equivalents, or vice versa
+    public static char toUpperCase(char argument)
+    public static char toLowerCase(char argument)
+
+    // Returns true if the argument is an upper-case letter, and false otherwise.
+    public static boolean isUpperCase(char argument)
+    public static boolean isLowerCase(char argument)
+
+    // The following return true if argument is...
+    public static boolean isWhitespace(char argument) // Whitespace (space, tab \t, new line \n)
+    public static boolean isLetter(char argument)     // A letter a-z, A-Z, accented chars
+    public static boolean isDigit(char argument)
+    public static boolean isLetterOrDigit(char argument)
+    ```
+
+    a short example:
+    ```java
+    import java.util.Scanner;
+
+    /**
+    Illustrate the use of a static method from the class Character.
+    */
+
+    public class StringProcessor {
+        public static void main (String[] args) {
+            System.out.println("Enter a one-line sentence:");
+            Scanner keyboard = new Scanner(System.in);
+            String sentence = keyboard.nextLine();
+            
+            sentence = sentence.toLowerCase();
+            char firstCharacter = sentence.charAt(0); // get the first char of sentence
+            sentence = Character.toUpperCase(firstCharacter) + sentence.substring(1); // Capitalizing the first character of sentence
+
+            System.out.println("The revised sentence is:");
+            System.out.println(sentence);
+        }
+    }
+    ```
+    Results:
+    ```shell
+    Enter a one-line sentence:
+    this is WRONG
+    The revised sentence is:
+    This is wrong
+
+    ```
+
+    > Advanced: Unicode
+    > 这些static method对于不同语言的字母的处理方式会不同. 具体google
+
+
+
 ## 4.4 静态字段与静态方法
 解释static修饰符(modifier)的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
 ### 4.4.1 静态字段
@@ -588,8 +721,12 @@ this session is from UniMelb Java
 
     > The operators = and == don't do what you might expect when used on class variables. Note class variable is essentially a pointer, the value of a class variable is just an address, so that:
     >+ ‘=’是赋值, class type variable a  = class type variable b, 代表a和b指向内存中的同一个object. Assignment (=) causes two variables to be names for the same object; it does not create a copy. Changing the instance variables of the object referred to by one variable will cause cause changes in the object referred to by the other  variable, because it is the same object.
-    >+ ‘==’两个等号是check变量地址是否相同. Testing for equality (==两个等号) only checks that two variables of a class type refer to the same object.If they refer to two objects with the same instance variables, it will return false. 对于primitive type variable, 因为它们就是call by value的, 所以==就是比较variable的value
+    >+ '=='本质上是check左右两边的值是否相同. 但'=='对于primitive type 和class type variable的作用是不一样的. 
+    >>+ 对于class type variable, 由于它们的值是address, 所以'=='实际上对于它们是check引用的Object是否相同. Testing for equality (==两个等号) only checks that two variables of a class type refer to the same object.If they refer to two objects with the same instance variables, it will return false. 
+    >>+ 对于primitive type variable, 因为它们就是call by value的, 所以==就是比较variable的value
     >+ To test for equality, use the member method equals().
+
+
 ### 4.5.1 JavaCore content
 [paramTest](code4_5_paramTest.java)
 
