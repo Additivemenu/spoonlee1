@@ -288,138 +288,6 @@ UniMelb Java:
     ```
     What happens here is that Java knows that the println() function takes a String as an argument. As a result, it tries to convert the date1 object into a String, which it does by calling the toString() method.
 
-## 4.36 wrapper class
-
-Variables of primitive types are not Java objects.  That is, they are not of a class derived from class Object.That means we cannot have, for example, a java List of integers, because the List class can only have lists of Object elements.
-
-However, java provides classes that behave like the primitive types:
-
-```java
-// 大写首字母
-boolean -> Boolean
-byte    -> Byte
-short   -> Short
-long    -> Long
-float   -> Float
-double  -> Double
-// 其他
-char -> Character
-int  -> Integer
-
-```
-
-Wrapper classes also have many useful constants and static methods  
-e.g., Integer.decode(String s) converts a decimal string to an Integer.
-
-1. Boxing
-   Boxing is the process of going from a value of a primitive type to an object of its wrapper class
-
-   + To convert a primitive value to an "equivalent" class type value, create an object of the corresponding wrapper class using the primitive value as an argument
-   + The new object will contain an instance variable that stores a copy of the primitive value
-   + Unlike most other classes, a wrapper class does not have a no-argument constructor
-        Integer integerObject = new Integer(42);
-
-2. Unboxing
-   Unboxing: the process of going from an object of a wrapper class to the corresponding value of a primitive type.  The methods for this are:
-
-    ```java
-    Boolean.booleanValue()
-    Byte.byteValue()
-    Short.shortValue()
-    Integer.intValue()
-    Float.floatValue()
-    Double.doubleValue()
-    Character.charValue()
-    ```
-    None of these methods take an argument
-    ```java
-    int i = integerObject.intValue();
-    ```
-3. Automatic boxing and unboxing
-   Manually inserting boxing and unboxing code makes coding slower and makes code harder to read.Starting with version 5.0, Java can automatically do boxing and unboxing.
-
-   + **Boxing简化写法**: Instead of creating a wrapper class object using the new operation (as shown before), it can be done as an automatic type cast:    
-    ```java
-        Integer integerObject = 42;
-    ```
-
-    + **Unboxing简化写法**: Instead of having to invoke the appropriate method (such as intValue) to convert from an object of a wrapper class to a value of its associated primitive type, the primitive value can be recovered automatically
-        ```java
-        int i = integerObject;
-        ```
-4. :moon:Static methods of wrapper class
-    
-    [Demo: StringManipulation](UniMelb/wrapperClass/stringManipulation.java)
-
-    Wrapper classes have static methods that convert a correctly formed string representation of a number to the number of a given type:
-
-    ```java
-    Integer.parseInt ()
-    Long.parseLong ()
-    Float.parseFloat ()
-    Double.parseDouble ()
-    ```
-
-    Wrapper classes also have static methods that convert from a numeric value to a string representation of the value:
-
-    ```java
-    Double.toString(123.99); // returns the string value "123.99"
-    ```
-
-    The Character class contains a number of static methods that are useful for string processing.  
-
-    ```java
-    // Replace lower case characters by upper case equivalents, or vice versa
-    public static char toUpperCase(char argument)
-    public static char toLowerCase(char argument)
-
-    // Returns true if the argument is an upper-case letter, and false otherwise.
-    public static boolean isUpperCase(char argument)
-    public static boolean isLowerCase(char argument)
-
-    // The following return true if argument is...
-    public static boolean isWhitespace(char argument) // Whitespace (space, tab \t, new line \n)
-    public static boolean isLetter(char argument)     // A letter a-z, A-Z, accented chars
-    public static boolean isDigit(char argument)
-    public static boolean isLetterOrDigit(char argument)
-    ```
-
-    a short example:
-    ```java
-    import java.util.Scanner;
-
-    /**
-    Illustrate the use of a static method from the class Character.
-    */
-
-    public class StringProcessor {
-        public static void main (String[] args) {
-            System.out.println("Enter a one-line sentence:");
-            Scanner keyboard = new Scanner(System.in);
-            String sentence = keyboard.nextLine();
-            
-            sentence = sentence.toLowerCase();
-            char firstCharacter = sentence.charAt(0); // get the first char of sentence
-            sentence = Character.toUpperCase(firstCharacter) + sentence.substring(1); // Capitalizing the first character of sentence
-
-            System.out.println("The revised sentence is:");
-            System.out.println(sentence);
-        }
-    }
-    ```
-    Results:
-    ```shell
-    Enter a one-line sentence:
-    this is WRONG
-    The revised sentence is:
-    This is wrong
-
-    ```
-
-    > Advanced: Unicode
-    > 这些static method对于不同语言的字母的处理方式会不同. 具体google
-
-
 
 ## 4.4 静态字段与静态方法
 解释static修饰符(modifier)的含义: **静态, 与类关联, 是类的方法(静态方法)或属性(静态字段), 而与动态变化的对象无关. 因此, 静态字段和静态方法不依赖于对象, 通过类便可直接调用, 而一般的实例字段却需要对象才能使用.**
@@ -613,6 +481,140 @@ this session is from UniMelb Java
 
     exp, log, log10, expm1, logp1
 
+
+## 4.46 wrapper class
+
+Variables of primitive types are not Java objects.  That is, they are not of a class derived from class Object.That means we cannot have, for example, a java List of integers, because the List class can only have lists of Object elements.
+
+However, java provides classes that behave like the primitive types:
+
+```java
+// 大写首字母
+boolean -> Boolean
+byte    -> Byte
+short   -> Short
+long    -> Long
+float   -> Float
+double  -> Double
+// 其他
+char -> Character
+int  -> Integer
+
+```
+
+Wrapper classes also have many useful constants and static methods  
+e.g., Integer.decode(String s) converts a decimal string to an Integer.
+
+1. Boxing
+   Boxing is the process of going from a value of a primitive type to an object of its wrapper class
+
+   + To convert a primitive value to an "equivalent" class type value, create an object of the corresponding wrapper class using the primitive value as an argument
+   + The new object will contain an instance variable that stores a copy of the primitive value
+   + Unlike most other classes, a wrapper class does not have a no-argument constructor
+        Integer integerObject = new Integer(42);
+
+2. Unboxing
+   Unboxing: the process of going from an object of a wrapper class to the corresponding value of a primitive type.  The methods for this are:
+
+    ```java
+    Boolean.booleanValue()
+    Byte.byteValue()
+    Short.shortValue()
+    Integer.intValue()
+    Float.floatValue()
+    Double.doubleValue()
+    Character.charValue()
+    ```
+    None of these methods take an argument
+    ```java
+    int i = integerObject.intValue();
+    ```
+3. Automatic boxing and unboxing
+   Manually inserting boxing and unboxing code makes coding slower and makes code harder to read.Starting with version 5.0, Java can automatically do boxing and unboxing.
+
+   + **Boxing简化写法**: Instead of creating a wrapper class object using the new operation (as shown before), it can be done as an automatic type cast:    
+    ```java
+        Integer integerObject = 42;
+    ```
+
+    + **Unboxing简化写法**: Instead of having to invoke the appropriate method (such as intValue) to convert from an object of a wrapper class to a value of its associated primitive type, the primitive value can be recovered automatically
+        ```java
+        int i = integerObject;
+        ```
+4. :moon:Static methods of wrapper class
+    
+    [Demo: StringManipulation](UniMelb/wrapperClass/stringManipulation.java)
+
+    Wrapper classes have static methods that convert a correctly formed string representation of a number to the number of a given type:
+
+    ```java
+    Integer.parseInt ()
+    Long.parseLong ()
+    Float.parseFloat ()
+    Double.parseDouble ()
+    ```
+
+    Wrapper classes also have static methods that convert from a numeric value to a string representation of the value:
+
+    ```java
+    Double.toString(123.99); // returns the string value "123.99"
+    ```
+
+    The Character class contains a number of static methods that are useful for string processing.  
+
+    ```java
+    // Replace lower case characters by upper case equivalents, or vice versa
+    public static char toUpperCase(char argument)
+    public static char toLowerCase(char argument)
+
+    // Returns true if the argument is an upper-case letter, and false otherwise.
+    public static boolean isUpperCase(char argument)
+    public static boolean isLowerCase(char argument)
+
+    // The following return true if argument is...
+    public static boolean isWhitespace(char argument) // Whitespace (space, tab \t, new line \n)
+    public static boolean isLetter(char argument)     // A letter a-z, A-Z, accented chars
+    public static boolean isDigit(char argument)
+    public static boolean isLetterOrDigit(char argument)
+    ```
+
+    a short example:
+    ```java
+    import java.util.Scanner;
+
+    /**
+    Illustrate the use of a static method from the class Character.
+    */
+
+    public class StringProcessor {
+        public static void main (String[] args) {
+            System.out.println("Enter a one-line sentence:");
+            Scanner keyboard = new Scanner(System.in);
+            String sentence = keyboard.nextLine();
+            
+            sentence = sentence.toLowerCase();
+            char firstCharacter = sentence.charAt(0); // get the first char of sentence
+            sentence = Character.toUpperCase(firstCharacter) + sentence.substring(1); // Capitalizing the first character of sentence
+
+            System.out.println("The revised sentence is:");
+            System.out.println(sentence);
+        }
+    }
+    ```
+    Results:
+    ```shell
+    Enter a one-line sentence:
+    this is WRONG
+    The revised sentence is:
+    This is wrong
+
+    ```
+
+    > Advanced: Unicode
+    > 这些static method对于不同语言的字母的处理方式会不同. 具体google
+
+
+
 ## 4.5 :full_moon:方法参数
 
 这里只看JavaCore的内容即可, UniMelb可以只看最后的call by value call by reference的demo即可, UniMelb其他内容作为补充 
@@ -761,7 +763,7 @@ Java程序设计语言对对象采用的不是按引用调用, 实际上, **对�
 
 1. Copy constructors
 
-A copy constructor is a constructor with a single argument of the same type as the class. The copy constructor should create an object that is a **separate, independent object**, but with the instance variables set so that it is an exact copy of the argument object.
+    A copy constructor is a constructor with a single argument of the same type as the class. The copy constructor should create an object that is a **separate, independent object**, but with the instance variables set so that it is an exact copy of the argument object.
 
 + 对于只含有primitive type instance variable的写法：
 
@@ -1059,24 +1061,72 @@ Java可以完成自动的垃圾回收, 不需要人工回收内存,所以Java不
 ## 4.7 包
 Java允许使用包(package)来将类组织在一个集合中. 借助包我们可以方便地组织自己的代码, 并将自己的代码与别人提供的代码库分开管理.
 
+---
+
+### 4.7.0 UniMelb Java: Package
+
+1. Make a package 
+   To make a package, group all the classes together in a single directory (folder), and add the following package statement to the beginning of each java file for those classes:
+    ```java
+    package package_name;
+    ```
+
+    Only the .class files must be in the directory or folder; the .java files are optional
+
+    Only blank lines and comments may go before the package statement.
+
+    If there are both import and package statements, the package statement must go before any import statements.
+
+2. Find a package
+    Java needs two things to find the directory for a package:
+
+       + The name of the package and  
+       + The value of the CLASSPATH variable.
+    
+    The CLASSPATH environment variable is similar to the PATH variable, and is set in the same way for a given operating system. The CLASSPATH variable is set equal to the list of directories (including the current directory, ".") in which Java will look for packages on a particular computer.Java searches this list of directories in order, and uses the first directory on the list in which the package is found.
+
+   + The default package
+    All classes in the current directory belong to an unnamed package called the default package. As long as the current directory (.) is part of the CLASSPATH variable, all the classes in the default package are automatically available to a program.
+
+   + Pitfall: Not including the current directory in your class path
+
+      + If the CLASSPATH variable is set, the current directory must be included as one of the alternatives.  Otherwise, Java may not even be able to find the .class files for the program itself.
+
+      + If the CLASSPATH variable is not set, then all the class files for a program must be put in the current directory.
+
+    + Specifying a class path when you compile
+    The class path can be manually specified when a class is compiled.  Just add  -classpath  followed by the desired class path to the  javac  line.  This will compile the class, overriding any previous CLASSPATH setting.You should use the same -classpath option again when the class is run.
+
+---
+
 ### 4.7.1 包名
->+ **使用包的主要原因是确保类名的唯一性.**  
-> 假如两个程序员同时建立了Employee类, 只要将这些类放置在不同的包中就不会产生冲突. 事实上, 为了保证包名的绝对唯一性, 要用一个因特网域名(这显然是唯一的)以逆序的形式作为包名, 然后对不同的工程使用不同的子包.
->+ **每一个包都是独立的类的集合**
-> 从编译器的角度来看, 嵌套的包之间没有任何关系. 例如java.util包与java.util.jar包之间毫无关系.
++ **使用包的主要原因是确保类名的唯一性.**  
+ 假如两个程序员同时建立了Employee类, 只要将这些类放置在不同的包中就不会产生冲突. 事实上, 为了保证包名的绝对唯一性, 要用一个因特网域名(这显然是唯一的)以逆序的形式作为包名, 然后对不同的工程使用不同的子包.
++ **每一个包都是独立的类的集合**
+ 从编译器的角度来看, 嵌套的包之间没有任何关系. 例如java.util包与java.util.jar包之间毫无关系.
+
+
 ### 4.7.2 类的导入
-> **一个类可以使用所属包中的所有类, 以及其他包中的公共类**, 对于后者, 我们有两种方法来访问:
->>+ 使用完全限定名(fully qualified name)
->> 即包名后面跟着类名(很繁琐), 例如:
->> ```java
->> java.time.LocalDate today = java.time.LocalDate.now();
->> ```
->>+ 使用import语句 
->> 可以使用import语句导入一个特定的类或整个包
->> ```java
->> import java.time.*; // import all package
->> import java.time.LocalDate; // import the specified class
->>```
+ **一个类可以使用所属包中的所有类, 以及其他包中的公共类**, 对于后者, 我们有两种方法来访问:
+  + 使用完全限定名(fully qualified name)
+   即包名后面跟着类名(很繁琐), 但是这样做容易区分不同package中相同的class, 例如:
+    ```java
+    java.time.LocalDate today = java.time.LocalDate.now();
+    ```
+  + 使用import语句 
+   可以使用import语句导入一个特定的类或整个包
+    ```java
+    import java.time.*; // import all package
+    import java.time.LocalDate; // import the specified class
+    ```
+
+> Drawbacks of using *:
+> + Worse readability of code due to lack of info of which package is used
+> + Possibly longer compilation time
+> + Larger possibility of conflict of package names with other packages
+
+
+
 
 > **注意!**
 > 在多数情况下, 可以用import导入你需要的包而不必过多考虑. 但如果发生命名冲突, 此时应注意包了. 例如, java.util和java.sql包都有Date类, 如果你同时导入这两个包:
@@ -1155,7 +1205,35 @@ public class Employee{
 
 
 
-## 4.9 文档注解
+## 4.9 文档注解 (javadoc)
+JDK包含一个很有用的工具, 叫做javadoc, 它可以由源文件生成一个HTML文档. 事实上, 在第3章中介绍的联机API文档就是通过对标准Java类库的源代码运行javadoc生成的.
+
+### 4.9.1 注释的插入
+javadoc实用工具从下面几项中抽取信息:
++ 模块
++ 包
++ 公共类与接口
++ 公共和受保护的字段
++ 公共的和受保护的构造器及方法
+
+应该为以上各个特性编写注释. 注释放置在所描述的特性前面. 注释以/**开始， 以*/结束。每个/**...*/文档注释包含标记以及之后紧跟着的自由格式文本(free-form text). 标记以@开始, 如@since或@param. 自由格式文本的第一句应该是一个概要性的句子. javadoc工具将自动地将这些句子抽取出来生成概要页.
+
+在自由格式文本中, 可以使用HTML修饰符.
+
+### 4.9.2 类注释
+
+### 4.9.3 方法注释
+
+### 4.9.4 字段注释
+
+### 4.9.5 通用注释
+
+### 4.9.6 包注释
+
+### 4.9.7 注释抽取
+
+
+
 
 
 
