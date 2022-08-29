@@ -135,7 +135,7 @@ arr[i]表示: node i 指向 node arr[i]
 
 图的表示方法有很多, 我们可以选择一种自己喜欢的表示方法着重练习, 在面试中遇到其他的表示法直接先写个函数(适配器)转化成我们熟悉的表示方法再coding.
 
-## P139-140
+## P139-140 graph的java对象表达
 
 [Node](Class17/Node.java)  
 [Edge](Class17/Edge.java)  
@@ -151,7 +151,51 @@ set: 有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循
 
 原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
 
+
+```java
+UniMelb Pseudo code for BFS
+
+function BFS(<V,E>)
+   mark each node in V with 0
+   count <-- 0, init(queue)
+   for each v in V do   // loop over nodes
+      if v is marked with 0 then
+         count <-- count + 1
+         mark v with count
+         inject(queue,v)       // queue containing just v
+         while queue is non-empty do
+            u <-- eject(queue)     // dequeues u
+            for each edge(u,w) do    // w is u's neighbour
+               if w is marked with 0 then
+                  count <-- count + 1
+                  mark w with count
+                  inject(queue, w)   // enqueues w
+
+```
+
 2. DFS
 
 一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复
+
+
+
+
+```java
+UniMelb Pseudo code for DFS
+
+function DFS(<V,E>)
+   mark each node in V with 0
+   count <-- 0
+   for each v in V do          // 写作loop over node, 实则 loop over component
+      if v is marked with 0 then 
+         DFSExplore(v)
+
+
+function DFSExplore(v)
+   count <-- count + 1
+   mark v with count 
+   for each edge (v,w) in E do  // 以node为单位, 往深处走
+      if w is marked with 0 then
+         DFSExplore(w)
+```
 
