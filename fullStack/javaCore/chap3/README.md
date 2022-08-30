@@ -587,26 +587,82 @@ The exit statement takes one integer argument . By tradition, a zero argument is
 ### 3.10.1 :full_moon:数组声明
 [arrayAnnouncing](arrayJava.java)
 
-1. 数组是用来存储同一类型值的集合. 
-+ 数组长度不要求是常量, 但一旦数组长度指定便无法更改(使用arrayList动态扩容).  
-+ Java中允许长度为0的数组(注意长度为0的数组不同于null数组)
+1. 数组是用来存储**同一类型值**的集合. 
+   + 数组长度不要求是常量, 但一旦数组长度指定便无法更改(使用arrayList动态扩容).  
+   + Java中允许长度为0的数组(注意长度为0的数组不同于null数组)
 
 2. 数组的声明方式:
-+ 方式1: 
+   + 方式1: 
+       ```java
+       int[] arr = new int[100];//内存中开辟一个可以容纳100个int数值的空间存放数组arr
+       ```
+       默认初始化:
+        + int型数组元素初始化为0
+        + Boolean型数组元素初始化为false
+        + String型数组元素初始化为null
+   + 方式2: 在{}中枚举元素, 无需指定数组长度
+       ```java
+       int[] arr = {1,2,3,4,5,6};
+       ```
+   + 方式3: 用匿名数组快速初始化旧数组
+
+UniMelb Java:
+
+1. Base types
+
+    **You can create an array of any type, including class types.**  However, all elements in the array must have the same type.  This type is called the **base type** of the array.
+
+    Advanced: If you want to have an array of different types of objects, you can use polymorphism, which will be covered much later in this course.
+
+    An array is declared and created in almost the same way that objects are declared and created:
+
     ```java
-    int[] arr = new int[100];//内存中开辟一个可以容纳100个int数值的空间存放数组arr
+    BaseType[] ArrayName = new BaseType[size];
     ```
-    int型数组元素初始化为0
-    Boolean型数组元素初始化为false
-    String型数组元素初始化为null
-+ 方式2: 在{}中枚举元素, 无需指定数组长度
+
+    The size may be given as an expression that evaluates to a nonnegative integer, for example, an int variable.
+
     ```java
-    int[] arr = {1,2,3,4,5,6};
+    char[] line = new char[80];
+    double[] reading = new double[count];
+    Person[] specimen = new Person[2 * line.length];
     ```
-+ 方式3: 用匿名数组快速初始化旧数组
+2. access
+
+    The array itself (i.e., the entire collection of indexed variables) can be referred to using the array name without any square brackets. You would use this form if you wanted to pass the array as a parameter to a method, for example.
+
+3.Three ways square brackets are used with an array name
+
+   + The most common way: Square brackets are used to name an element of an array:
+  
+        ```java
+        max = score[0];
+        ```
+
+
+   + Square brackets can be used with an integer value to create a new array
+        ```java
+        score = new double [5];
+        ```
+
+
+   + Square brackets can be used to create a type name.  In this context, the brackets are only used to mean "this is an array", because brackets are associated with arrays due to the first two uses.
+
+        ```java
+        double [] score;
+        ```
+
 
 ### 3.10.2 访问数组元素
 略
+
+UniMelb Java:
+
+The number in square brackets is called an index or subscript
+
+In Java, indices must be numbered starting with 0.
+
+Advanced:  This is because of how the array is laid out in memory.  A reference to the array refers to the first element in the array.  The ith element is stored at  <array reference> + i * (size of element).  The element stored at <array reference> is number i=0.
 
 ### 3.10.3 for each loop
 ```Java

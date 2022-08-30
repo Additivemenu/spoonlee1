@@ -199,3 +199,12 @@ function DFSExplore(v)
          DFSExplore(w)
 ```
 
+DFS变种: 标记edge为tree edge or back edge
+```java
+
+```
+
+DFS变种: 确定一个graph是否是cyclic
+```java
+
+```
