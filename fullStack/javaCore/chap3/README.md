@@ -602,9 +602,11 @@ The exit statement takes one integer argument . By tradition, a zero argument is
         + String型数组元素初始化为null
    + 方式2: 在{}中枚举元素, 无需指定数组长度
        ```java
-       int[] arr = {1,2,3,4,5,6};
+       int[] arr = {1,2,3,4,5,6}; // no need to new
        ```
    + 方式3: 用匿名数组快速初始化旧数组
+
+---
 
 UniMelb Java:
 
@@ -631,7 +633,7 @@ UniMelb Java:
 
     The array itself (i.e., the entire collection of indexed variables) can be referred to using the array name without any square brackets. You would use this form if you wanted to pass the array as a parameter to a method, for example.
 
-3.Three ways square brackets are used with an array name
+3. Three ways square brackets are used with an array name
 
    + The most common way: Square brackets are used to name an element of an array:
   
@@ -651,7 +653,69 @@ UniMelb Java:
         ```java
         double [] score;
         ```
+4. An array is considered to be an object, not a class
 
+     + Every array has exactly one instance variable named length. When an array is created, the instance variable length is automatically set equal to its size. The value of length cannot be changed (although a new array of a different size can be assigned to the same variable).
+
+        ```java
+        double[] score = new double[5];      // score.length now has a value of 5
+        ```
+
+        An out of bounds index will cause a program to terminate with a run-time error message.
+
+         > Advanced: Note that this is an instance variable, not a member method.  Some classes, such as String have a method named length() for a similar role, and others have a method named size().  You can remember that arrays are the odd one out (variable not method) because they aren't classes.
+
+    + **An array variable holds a reference to where the actual array is stored in memory**. Note also that as a result of the assignment statement above, a contains a single value: a memory address or reference:
+
+        ```java
+        double[] a = new double[10];
+        ```
+
+        + The assignment operator (=) only copies this memory address. It does not copy the values of each element.
+
+        + For the same reason, the equality operator (==) only tests two arrays to see if they are stored in the same location in the computer's memory. It does not test two arrays to see if they contain the same values.
+            ```java
+            (a == b)
+            ```
+            In the same way that an equals method can be defined for a class, an equalsArray method can be defined for a type of array. This is how two arrays must be tested to see if they contain the same elements.
+
+
+5. Pitfall: An array of characters is not a String
+
+    An array of characters is conceptually a list of characters, and so is conceptually like a string. However, an array of characters is not an object of the class String.  (This may be a surprise to C programmers.)
+    ```java
+    char[] a = {'A', 'B', 'C'};
+    String s = a; //Illegal!
+    ```
+    An array of characters can be converted to an object of type String, however.
+
+    <br/>
+
+    The class String has a constructor that has a single parameter of type char[].
+    ```java
+    String s = new String(a);
+    ```
+    The object s will have the same sequence of characters as the entire array a ("ABC"), but is an independent copy.  
+    Another String constructor uses a subrange of a character array instead:
+    ```java
+    String s2 = new String(a,0,2);
+    ```
+    Given a as before, the new string object is "AB".
+
+    <br/>
+
+    An array of characters does have some things in common with String objects. For example, an array of characters can be output using println
+    ```java
+    System.out.println(a);
+    ```
+    Given a as before, this would produce the output
+    ```shell
+    ABC
+    ```
+
+
+
+---
 
 ### 3.10.2 访问数组元素
 略
