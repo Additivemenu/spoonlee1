@@ -144,7 +144,7 @@ Java uses **modifiers** to restrict access to certain variables and methods. The
 
 + public: Employee类中的方法都被标记为public,这意味着任何类的任何方法都可以调用这些方法.
 + private: Employee类中的字段都标记为了private, 这意味着只有Employee类自身的方法能够访问访问这些实例字段,而其他类的方法则不能读写这些字段.
-+ It is considered good programming practice to **make all instance variables private** by default. 
++ It is considered good programming practice to **make all instance variables private** by default. Use accessor to access these private instance variable outside the class.
 + **Most methods are public** and thus provide controlled access to the object. Usually, **methods are private only if used as helper methods** for other methods in the class. 
   
 #### 3. 关于构造器  

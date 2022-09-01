@@ -720,9 +720,82 @@ UniMelb Java:
     [Demo: 数组扩容](UniMelb/Array/partiallyFilledArray.java)
     [Demo: 自定义动态数组](UniMelb/Array/varArrayMain.java)
 
+    8. Methods with a variable number of parameters
+    [Demo: methods with a variable number parameters](UniMelb/Array/varArg_method.java)
+        
+        Starting with Java 5.0, methods can be defined that take any number of arguments. **Essentially, it is implemented by taking in an array as argument, but the job of placing values in the array is done automatically.** The values for the array are given as arguments. Java automatically creates an array and places the arguments in the array. Note that arguments corresponding to regular parameters are handled in the usual way.
 
+        Such a method has as the last item on its parameter list a vararg specification of the form:
+        ```java
+        Type... ArrayName
+        ```
+        Note the three dots called an ellipsis that must be included as part of the vararg specification syntax.
+        
+        Following the arguments for regular parameters are any number of arguments of the type given in the vararg specification. These arguments are automatically placed in an array. This array can be used in the method definition. Note that a vararg specification allows any number of arguments, including zero.
 
+    9. :full_moon:Privacy leaks with array
+        see [javaCore chapter4 4.6](../chap4/README.md) for details of privacy leak and deep copy
 
+        Arrays are objects, like class objects.  Just as there were risks of privacy leaks with object member variables (static or instance variables), there are risks with array member variables.
+
+        If an accessor method does return the contents of an array, special care must be taken:
+        ```java
+        public double[] getArray() {
+            return anArray;        //BAD!
+        }
+        ```
+        The example above will result in a privacy leak.  It would simply return a reference to anArray.  The code  var.getArray()[0] = 1;  will write to anArray, which may have been private.
+
+        + **Instead, an accessor method should usually return a reference to a deep copy of the private array object.**
+            ```java
+            class Main {
+                double[] anArray = {};
+
+                public double [] getArray ()
+                {   
+                    // create an copy of anArray, then return the copy instead of returning itself
+                    double [] tmp = new double [anArray.length];
+
+                    for (int i = 0; i < anArray.length; i++)
+                        tmp[i] = anArray[i];
+                        
+                    return tmp;
+                }
+
+                public static void main (String[] args) {
+                // Write your own test here.
+                }
+
+            }
+            ```
+        + **If a private instance variable is an array that has a class as its base type**, the ncopies must be made of each class object in the array when the array is copied:
+            ```java
+            class Main {
+
+                ClassType[] anArray = {}; // every element in an  array is of class type, so you need to create copy of every element, then return the copy instead of returning itself
+
+                public ClassType [] getArray ()
+                {
+                    ClassType [] tmp = new ClassType [anArray.length];
+                    for (int i = 0; i < anArray.length; i++)
+                        tmp[i] = new ClassType(anArray[i]); // since tmp[i] is of class type
+                    return tmp;
+                }
+
+                public static void main (String[] args) {
+                    // Write your own test here.
+                }
+            }
+
+            class ClassType {
+                // Copy constructor.
+                // Add a member variable to ClassType, and update this copy constructor
+                ClassType(ClassType c) {  
+                }
+            }
+            ```
+    10. Array sorting
+        [Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
 ---
 
 ### 3.10.2 访问数组元素
@@ -767,6 +840,73 @@ Arrays.sort() 使用快速排序法(QuickSort)排序
 ### 3.10.7 多维数组
 先跳过,
 java实际上没有多维数组, 实际上只是"数组的数组"
+
+---
+
+UniMelb java:
+
+It is sometimes useful to have an array with more than one index. These "multidimensional" arrays are declared and created in basically the same way as one-dimensional arrays.  You simply use as many square brackets as there are indices. Each index must be enclosed in its own brackets.
+
+```java
+double[][] table = new double[100][10];
+int[][][] figure = new int[10][20][30];
+Person[][] = new Person[10][100];
+```
+
+![](Src/twoD_char.png)
+
+```java
+class Main {
+    public static void main (String[] args) {
+        char[][] a = new char[][] {
+            {'O', 'n', 'c', 'e', ' ', 'u', 'p', 'o', 'n', ' ', ' ', ' '},
+            {'a', ' ', 't', 'i', 'm', 'e', ' ', ' ', ' ', ' ', ' ', ' '},
+            {'t', 'h', 'e', 'r', 'e', ' ', 'w', 'e', 'r', 'e', ' ', ' '},
+            {'t', 'h', 'r', 'e', 'e', ' ', 'l', 'i', 't', 't', 'l', 'e'},
+            {'p', 'r', 'o', 'g', 'r', 'a', 'm', 'm', 'e', 'r', 's', '.'}};
+
+        for (int row = 0; row < 5; row++) {
+            for (int column = 0; column < 12; column++)
+                System.out.print(a[row][column]);
+            System.out.println('|');
+        }
+    }
+}
+```
+
+The fact that a two dimensional array is an array of arrays allows some flexibility.  The line
+```java
+double[][] = new double[3][5];
+```
+is equivalent to
+```java
+double[][] a = new double[3][];
+a[0] = new double[5];
+a[1] = new dobule[5];
+a[2] = new double[5];
+```
+Note that the first line makes a the name of an array with room for 3 entries, each of which is an array of doubles that can be of any length.
+
+The next three lines each create an array of doubles of size 5, but we can replace them with any sizes. We could write:
+```java
+double[][] a = new double[3][];
+a[0] = new double[5];
+a[1] = new dobule[10];
+a[2] = new double[4];
+```
+
+Multidimensional array parameters and return values
+```java
+public void myMethod(int[][] a)
+{ . . . }
+
+public double[][] aMethod()
+{ . . . }
+```
+
+
+
+---
 
 ### 3.10.8 不规则数组
 紧跟多维数组, 先跳过
