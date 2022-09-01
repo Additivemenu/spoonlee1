@@ -713,6 +713,14 @@ UniMelb Java:
     ABC
     ```
 
+    6. Methods that return arrays
+    [Demo: 数组元素加1返回新数组](UniMelb/Array/arrayTest.class)
+
+    7. 数组扩容
+    [Demo: 数组扩容](UniMelb/Array/partiallyFilledArray.java)
+    [Demo: 自定义动态数组](UniMelb/Array/varArrayMain.java)
+
+
 
 
 ---
