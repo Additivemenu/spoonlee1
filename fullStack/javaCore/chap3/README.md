@@ -845,6 +845,10 @@ java实际上没有多维数组, 实际上只是"数组的数组"
 
 UniMelb java:
 
+> [Demo: GradeBook](UniMelb/Array/GradeBook.java)
+> ![](Src/GradeBook.png)
+
+
 It is sometimes useful to have an array with more than one index. These "multidimensional" arrays are declared and created in basically the same way as one-dimensional arrays.  You simply use as many square brackets as there are indices. Each index must be enclosed in its own brackets.
 
 ```java
@@ -910,3 +914,131 @@ public double[][] aMethod()
 
 ### 3.10.8 不规则数组
 紧跟多维数组, 先跳过
+
+### 3.10.9 ArrayList
+UniMelb Java
+
+> ArrayList is a class in the standard Java libraries. Unlike arrays, which have a fixed length once they have been created, an ArrayList is an object that can grow and shrink while your program is running. In general, an ArrayList serves the same purpose as an array, except that an ArrayList can change length while the program is running.
+> 
+> The class ArrayList is implemented using an array as a private instance variable. When this hidden array is full, a new larger hidden array is created and the data is transferred to this new array, like in the class we wrote in the previous module.
+
+Why not always use an ArrayList instead of an array?
+
+  + An ArrayList is less efficient than an array
+
+  + It does not have the convenient square bracket notation
+
+  + The base type of an ArrayList must be a class type or interface type (or other reference type): it cannot be a primitive type. This last point is less of a problem now that Java provides automatic boxing and unboxing of primitives.
+
+1. Using the ArrayList class
+    In order to make use of the ArrayList class, it must first be imported from the package java.util
+
+    An ArrayList is created and named in the same way as object of any class, except that you specify the base type in angle brackets ("less than" and "greater than") as follows:
+    ```java
+    ArrayList<Double> aList = new ArrayList<Double>();
+
+    double[] score = new double[5]; // compare with an array
+
+    // The following code creates an ArrayList that stores objects of the base type String with an initial capacity of 20 items
+    ArrayList<String> list = new ArrayList<String>(20);
+    ```
+
+2. API of ArrayList
+   + **add(item)**: 
+    append item to the end of the list
+
+   + **add(idx, item)**: 
+    insert item at location  idx,  and move up all elements after idx to the next higher position.
+
+   + **set(idx, item)**:
+     overwrite the data at idx, which must already be present in the list.
+
+   + **int size()**:
+     return the number of elements in the list -- not the number pre-allocated in the constructor.
+
+        > Java  uses three methods for reporting sizes of objects.
+        > For arrays:  member variable  int length
+        > For strings:        method            int length ()
+        > For containers: method            int size ()
+
+
+### 3.10.10 Enumerated types (枚举类型)
+
+1. Basics of enumerated type
+   + Define a enumerated type
+       Starting with version 5.0, Java permits enumerated types. An enumerated type is a type in which all the values are given in a (typically short) list. The definition of an enumerated type is normally placed outside of all methods in the same place that named constants are defined:
+       ```java
+       enum TypeName {VALUE_1, VALUE_2, ..., VALUE_N};
+       ```
+       Note that a value of an enumerated type is a kind of named constant and so, by convention, is spelled with all UPPERCASE_LETTERS, with underlines between them.
+
+       As with any other type, variables can be declared of an enumerated type.  Given the following definition
+       ```java
+       enum WorkDay {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY};
+       ```
+
+   + Declare a variable as enumerated type
+       variables can be declared as
+       ```java
+       WorkDay meetingDay, availableDay;
+       ```
+   + Set the value for a variable as enumerated type
+       The value of a variable of this type can be set to one of the values listed in the definition of the type, or the special value  null:
+       ```java
+       meetingDay = WorkDay.THURSDAY;
+       availableDay = null;
+       ```
+
+2. Enumerated type VS String
+    Although they may look like String values, values of an enumerated type are not String values
+
+    However, they can be used for tasks which could be done by String values and, in some cases, work better:
+
+    + Using a String variable allows the possibility of setting the variable to a nonsense value. Using an enumerated type variable constrains the possible values for that variable. An error message will result if an attempt is made to give an enumerated type variable a value that is not defined for its type
+
+    + Enumerated types are also more efficient.  An enumerated type is stored as an integer.  The computer can test if the enumerated type has a particular value in one "clock cycle", whereas testing if strings are equal takes many clock cycles; more for longer strings.
+
+    + Two variables or constants of an enumerated type can be compared using the equals method or the == operator. However, the == operator has a nicer syntax:
+        ```java
+        if (meetingDay == availableDay)
+        System.out.println("Meeting will be on schedule.");
+        if (meetingDay == WorkDay.THURSDAY)
+        System.out.println("Long weekend!);
+        ```
+3. Enumerated Types in switch
+   
+    Enumerated types can be used to control a switch statement. The switch control expression uses a variable of an enumerated type. Case labels are the unqualified values of the same enumerated type (i.e., they don't mention the type name).
+
+    <br/>
+
+    [Demo: enumated type in switch](UniMelb/Array/enumeratedType.java)
+
+    This example also uses three new features of enumerated types.
+
+    + The static method _Flavour.values()_ returns an array of type Flavour containing each value of the enumeration.
+
+    + Enumeration values convert to String in the way you would expect: the string value is a string containing the same name as is used in code.  For example toString(Flavour.CHOCOLATE) is "CHOCOLATE".  (Note that toString() is called implicitly when a value has to be converted to a String, such as when it is being added to a String.)
+Z 
+    + The reverse -- converting from a string to the enumeration value -- is done by _Flavour.valueOf()_.  The input is a string, which must be exactly the name of the enumeration value.  The case must match, and it must not have any spaces.
+        ```shell
+        Flavour.valueOf(toString(Flavour.CHOCOLATE)) == Flavour.CHOCOLATE
+        ```
+
+4. Enumeration methods
+   The following are some methods that every enumerated type has automatically.
+
+   + protected Enum(String name, int ordinal)
+    This is the only constructor.  However enumerations are like primitive types, and can be just assigned from literals, like Flavour.VANILLA without needing a new and a constructor.
+   + boolean equals(Object other)
+    Returns true if the specified object is equal to this enum constant.
+   + String toString()
+   + String name()
+   Returns the name of this enum constant, as contained in the declaration.  The difference between these two is that toString() can be overridden (a process which we will cover in a later lecture) but name cannot.
+   + int ordinal()
+    Returns the ordinal of this enumeration constant (its position in its enum declaration, where the initial constant is assigned an ordinal of zero).
+   + int compareTo(EnumeratedType o)
+    Compares this enum with the specified object.  Returns > 0 if this is later in the list than o, or < 0 if this is earlier or 0 if they are equal..
+   + public EnumeratedType [] values ()
+    Returns an array whose elements are the values of the enumerated type in te order in which they are listed in the definition of the enumerated type.
+   + static EnumeratedType valueOf(String name) 
+    Returns the enum constant of the specified enum type with the specified name.
