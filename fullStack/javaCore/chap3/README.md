@@ -915,7 +915,7 @@ public double[][] aMethod()
 ### 3.10.8 不规则数组
 紧跟多维数组, 先跳过
 
-### 3.10.9 ArrayList
+### 3.10.9 :full_moon:ArrayList
 UniMelb Java
 
 > ArrayList is a class in the standard Java libraries. Unlike arrays, which have a fixed length once they have been created, an ArrayList is an object that can grow and shrink while your program is running. In general, an ArrayList serves the same purpose as an array, except that an ArrayList can change length while the program is running.
@@ -943,10 +943,10 @@ Why not always use an ArrayList instead of an array?
     double[] score = new double[5]; // compare with an array
 
     // creates an ArrayList that stores objects of the base type String with an initial capacity of 20 items
-    ArrayList<String> list = new ArrayList<String>(20);
+    ArrayList<String> list = new ArrayList<String>(20); // watch it: if you don't fill up the arraylist with any elements, its length is still 0 
     ```
 
-2. API of ArrayList
+2. 常用API 
    
     [Demo: API of ArrayList](UniMelb/Array/arrayListMethod.java)
 
@@ -972,33 +972,41 @@ Why not always use an ArrayList instead of an array?
 
     ArrayLists, however, come with a selection of powerful methods that can do many of the things for which code would have to be written in order to do them using arrays.
 
+      <br/>
+
     + Constructors
         ```java 
         public ArrayList<BaseType>(int initialCapacity)
         public ArrayList<BaseType>()  
         ```
         Creates an empty ArrayList with the specified BaseType.  If initialCapacity is omitted, 10 is used.
+
+    <br/>
+
     + Array-like methods  
         ```java
         public BaseType set (int index, BaseType newElement)
         ```
-        Sets the element at the specified index to newElement.  Returns the element previously at that position, but the method is often used as if it were a void method.  (In java, return values can be ignored.)  If you draw an analogy between the ArrayList and an array a, this function is analogous to setting a[index] to the value newElement.  We need  0 <= index <= ArrayList.size().  Throws an IndexOutOfBoundsException if the index is not in this range.
-
-        <br/>
+        相当于CRUD中的U  
+        Sets the element at the specified index to newElement.  Returns the element previously at that position, but the method is often used as if it were a void method.  (In java, return values can be ignored.) 
+        If you draw an analogy between the ArrayList and an array a, this function is analogous to setting a[index] to the value newElement.  We need  0 <= index <= ArrayList.size().  Throws an IndexOutOfBoundsException if the index is not in this range.
 
         ```java
         public BaseType get (int index)
         ```
-        Returns the element at the specified index.  This statement is analogous to returning a[index] for an array a.  We need  0 <= index < ArrayList.size().  (Note that the second is < not <=.)  Throws an IndexOutOfBoundsException if the index is not in this range.
+        相当于CRUD中的R
+        Returns the element at the specified index.  
+        This statement is analogous to returning a[index] for an array a.  We need  0 <= index < ArrayList.size().  (Note that the second is < not <=.)  Throws an IndexOutOfBoundsException if the index is not in this range.
+
+      <br/>
 
     + Inserting elements  
         ```java
         public void add (int index, BaseType newElement)
         ```
-        Inserts newElement as an element of the calling ArrayList at the specified index.  Each element in the ArrayList with an index greater than or equal to index is shifted upward to have an index that is one greater than the value it had previously.  The index must be a value greater than or equal to  and less than or equal to the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Note that you can use this method to add an element after the last element.  The capacity of the ArrayList is increased if that is required.
+        Inserts newElement as an element of the calling ArrayList at the specified index. **Each element in the ArrayList with an index greater than or equal to index is shifted upward to have an index that is one greater than the value it had previously.** 
+        The index must be a value greater than or equal to  and less than or equal to the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Note that you can use this method to add an element after the last element.  The capacity of the ArrayList is increased if that is required.
         
-        <br/>
-
         ```java
         public boolean add(BaseType newElement)
         ```
@@ -1006,56 +1014,57 @@ Why not always use an ArrayList instead of an array?
 
         Adds newElement to the end of the calling ArrayList and increases the ArrayList's size by one.  The capacity of the ArrayList is increased if that is required.  Returns true if the add was successful.
 
+      <br/>
+
     + Deleting elements
         ```java
         public BaseType remove (int index)
         ```
-        Deletes and returns the element at the specified index.  Each element of the ArrayList with an index greater than index is decreased to have an index that is one less than the value it had previously.  The index must be a value greater than or equal to 0, and less than the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Often used as if it were a void method.
-
-        <br/>
+        相当于CRUD中的D, 根据index来删除元素    
+        Deletes and returns the element at the specified index.  **Each element of the ArrayList with an index greater than index is decreased to have an index that is one less than the value it had previously.** 
+        The index must be a value greater than or equal to 0, and less than the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Often used as if it were a void method.
 
         ```java
         protected void removeRange (int fromIndex, int toIndex)
         ```
         Deletes all the elements with indices i such that fromIndex <= i < toIndex.  Elements with indices greater than or equal to toIndex are decreased appropriately.
 
-        <br/>
-
         ```java
         public boolean remove (Object theElement)
         ```
         (Treat this as if Object were the base type of the ArrayList.  This will become clear next lecture.)
 
-        Removes the first occurrence of theElement from the calling ArrayList.  If theElement is found in the ArrayList, then each element in the ArrayList with an index greater than the removed element's index is decreased to have an index that is one less than the value it had previously.  Returns true if theElement was found (and removed).  Returns false if theElement was not found in the calling ArrayList.
-
-        <br/>
+        Removes the first occurrence of theElement from the calling ArrayList.  **If theElement is found in the ArrayList, then each element in the ArrayList with an index greater than the removed element's index is decreased to have an index that is one less than the value it had previously.** 
+        Returns true if theElement was found (and removed).  Returns false if theElement was not found in the calling ArrayList.
 
         ```java
         public void clear ()
         ```
-        Removes all elements from the calling ArrayList and sets the ArrayList's size to 0.  This does not reduce the ArrayList's capacity (i.e., the amount of memory allocated to it).  See trimToSize() below for that.
+        Removes all elements from the calling ArrayList and **sets the ArrayList's size to 0.**
+        This does not reduce the ArrayList's capacity (i.e., the amount of memory allocated to it).  See trimToSize() below for that.
 
+      <br/>
 
     + Searching
         ```java
         public boolean contains (Object target)
         ```
-        Returns true if the calling ArrayList contains target; otherwise, returns false.  Uses the method  equals  of the object target to test for equality with any element in the calling ArrayList.
-
-        <br/>
+        Returns true if the calling ArrayList contains target; otherwise, returns false.  
+        Uses the method  equals  of the object target to test for equality with any element in the calling ArrayList.
 
         ```java
         public int indexOf (Object target)
         ```
-        Returns the index of the first element that is equal to target.  Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
-
-        <br/>
+        Returns the index of the **first element** that is equal to target.    
+        Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
 
         ```java
         public int lastIndexOf (Object target)
         ```
-        Returns the index of the last element that is equal to target.  Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
+        Returns the index of the **last element** that is equal to target.  
+        Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
 
+    <br/>
 
     + Finding the how many elements there are
         ```java
@@ -1063,26 +1072,27 @@ Why not always use an ArrayList instead of an array?
         ```
         Returns the number of elements in the calling ArrayList.
 
-        <br/>
-
         ```java
         public boolean isEmpty()
         ```
         Equivalent to  size() == 0.  Using isEmpty makes the intention clearer to the reader.  For some other container classes, it may also be faster, and so using it makes it easier to refactor code to use another container.
 
+    <br/>
+
     + Resizing the underlying array
+        主动控制已有的ArrayList的大小， 拉长或截短
         ```java
         public void ensureCapacity (int newCapacity)
         ```
         Increases the capacity of the calling ArrayList, if necessary, in order to ensure that the ArrayList can hold at least newCapacity elements.  Using ensureCapacity can sometimes increase efficiency (as it can avoid increasing the capacity multiple times and elements are added sequentially), but it is not needed for any other reason.
 
-        <br/>
-
         ```java
         public void trimToSize()
         ```
-        An ArrayList automatically increases its capacity when needed. However, the capacity may increase beyond what a program requires. In addition, although an ArrayList grows automatically when needed, it does not shrink automatically.
+        An ArrayList automatically increases its capacity when needed. However, the capacity may increase beyond what a program requires. **In addition, although an ArrayList grows automatically when needed, it does not shrink automatically.**
         If an ArrayList has a large amount of excess capacity, an invocation of the method trimToSize will shrink the capacity of the ArrayList down to the size needed.
+
+    <br/>
 
     + Copies
         ```java
@@ -1090,29 +1100,35 @@ Why not always use an ArrayList instead of an array?
         ```
         Returns an array containing all the elements in the list.  Preserves the order of the elements.
 
-        <br/>
 
         ```java
         public Type[] toArray( Type[] a)
         ```
-        Returns an array containing all the elements in the list.  Preserves the order of the elements.  Type can be any class type.  If the list will fit in a, the elements are copied to a and a is returned.  Any elements of a not needed for list elements are set to null.  If the list will not fit in a, a new array is created and returned.
+        Returns an array containing all the elements in the list.  Preserves the order of the elements.  
+        Type can be any class type.  
+        + If the list will fit in a, the elements are copied to a and a is returned.  Any elements of a not needed for list elements are set to null.  
+        + If the list will not fit in a, a new array is created and returned.
 
         (It is explained in Setion 14.2 of the text book that the correct Java syntax for this method heading is
-        public <Type> Type[] toArray(Type[] a) but you can treat it as if it is the simpler heading.)
+        ```java
+        public <Type> Type[] toArray(Type[] a)
+        ```
+        but you can treat it as if it is the simpler heading.)
 
         <br/>
 
         ```java
-        public Object clone()
+        public Object clone() // shallow copy,  could be dangerous 
         ```
-        Returns a shallow copy of the calling ArrayList.  Warning: The clone is not an independent copy.  Subsequnt changes to the clone may affect the calling object and vice versa.  (See Chapter 5 of the text book for a discussion of shallow copy.)
+        Returns a shallow copy (not a deep copy) of the calling ArrayList.  Warning: The clone is not an independent copy.  Subsequnt changes to the clone may affect the calling object and vice versa.  (See Chapter 5 of the text book for a discussion of shallow copy.)
         
-        <br/>
 
         ```java
         public boolean equals (Object other)
         ```
         If other is another ArrayList (of any base type), then equals returns true if and only if both ArrayLists are of the same size and contain the same list of elements in the same order.  (In fact, if other is any kind of list, then equals returns true if and only if both the ArrayList and other are of the same size and contain the same list of elements in the same order.  Lists are discussed in Chapter 16 of the text book.)  Does not require the capacities to be equal.
+
+:full_moon: still have two challenges at the end of UniMelb java slides
 
 ### 3.10.10 Enumerated types (枚举类型)
 
