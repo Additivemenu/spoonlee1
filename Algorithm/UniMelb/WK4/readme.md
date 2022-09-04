@@ -26,7 +26,7 @@ function DFSExplore(v)
 
 # 2. BFS
 
-```java
+```C
 function BFS(<V,E>)
 
     mark each v in V with 0
