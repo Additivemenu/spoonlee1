@@ -171,60 +171,73 @@ arr[i]表示: node i 指向 node arr[i]
 ## P141 BFS & DFS
 
 1. BFS
+   [Demo: BFS](Class17/Code01_BFS.java)
+   其核心思想就是: 每当从queue中eject一个node, 就把它的所有未遍历的neighboring nodes都放入queue中, 接着下次循环, 直到queue为空. 其中有两个关键点:
+   + **queue的使用**. queue的使用往往就和BFS天然相关.
+   + **确认一个node是否被遍历过, 因为有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环**. 这里用的是HashSet来检查一个node是否被遍历过 (这点和UniMelb algo的mark node with count的目的是一样的). 原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
 
-   set: 有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环
-
-   原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
 
 
-```java
-UniMelb Pseudo code for BFS
 
-function BFS(<V,E>)
-   mark each node in V with 0
-   count <-- 0, init(queue)
+   ```java
+   UniMelb Pseudo code for BFS
 
-   for each v in V do                     // loop over nodes
-      if v is marked with 0 then
-         count <-- count + 1
-         mark v with count
+   function BFS(<V,E>)
+      mark each node in V with 0             
+      count <-- 0, init(queue)
 
-         inject(queue,v)                  // queue containing just v
-         while queue is non-empty do
-            u <-- eject(queue)            // dequeues u
-            for each edge(u,w) do         // w is u's neighbour
-               if w is marked with 0 then
-                  count <-- count + 1
-                  mark w with count
-                  inject(queue, w)        // enqueues all u's neighbouring nodes that are unvisited
+      for each v in V do                     // loop over nodes
+         if v is marked with 0 then          // only visit nodes unvisited
+            count <-- count + 1
+            mark v with count
 
-```
+            inject(queue,v)                  // queue containing just v
+            while queue is non-empty do
+               u <-- eject(queue)            // dequeues u
+               for each edge(u,w) do         // w is u's neighbour
+                  if w is marked with 0 then
+                     count <-- count + 1
+                     mark w with count
+                     inject(queue, w)        // enqueues all u's neighbouring nodes that are unvisited
+
+   ```
 
 2. DFS
+   [Demo: DFS](Class17/Code02_DFS.java)
+   一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复. 
 
-   一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复
+   DFS既可用recursion来实现, 也可用stack来实现.
+
+   + recursion实现手段的核心思想是, 外循环是loop over each node, 内循环是在each node上再loop over its unvisited neighboring nodes, 在内循环中添加recursion的操作, 这样只有达到最底层(node 没有neighbor时)才会返回
+
+   + stack实现手段的核心思想是, 难以说明, 看代码体会...每当从stack中pop off a node, 只将该Node的一个未遍历的neighbor加入stack(注意不是在一个循环中将所有neighbor全加入stack, 那样和BFS没差了), 下次循环pop off 这个neighbor, 直到pop off一个没有neighbor的node,  从而模拟recursion. 
+   + 继续思考这和UniMelb Algo week6 lec2: preorder traversal using a stack的不同
+ 
+   这里有几个关键点:
+   + **确认一个node是否被遍历过, 因为有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环**. 同BFS的手段
+   + 与BFS不同, 使用stack来实现DFS时, 一个node的neighbor不是一次全加入stack的
 
 
-```java
-UniMelb Pseudo code for DFS
+   ```java
+   UniMelb Pseudo code for DFS
 
-function DFS(<V,E>)
-   mark each node in V with 0
-   count <-- 0
+   function DFS(<V,E>)
+      mark each node in V with 0
+      count <-- 0
 
-   for each v in V do          // 写作loop over node, 实则 loop over component
-      if v is marked with 0 then 
-         DFSExplore(v)
+      for each v in V do          // 写作loop over node, 实则 loop over component
+         if v is marked with 0 then 
+            DFSExplore(v)
 
 
-function DFSExplore(v)
-   count <-- count + 1
-   mark v with count 
+   function DFSExplore(v)
+      count <-- count + 1
+      mark v with count 
 
-   for each edge (v,w) in E do  // 以node为单位, 往深处走
-      if w is marked with 0 then
-         DFSExplore(w)
-```
+      for each edge (v,w) in E do  // 以node为单位, 往深处走
+         if w is marked with 0 then
+            DFSExplore(w)
+   ```
 
 DFS变种: 标记edge为tree edge or back edge
 ```java
@@ -235,3 +248,6 @@ DFS变种: 确定一个graph是否是cyclic
 ```java
 
 ```
+
+
+## P143 图的拓扑排序算法
