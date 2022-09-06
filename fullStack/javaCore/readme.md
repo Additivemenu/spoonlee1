@@ -24,7 +24,9 @@ File>preferences>configure snippet编辑自定义模板代码
 
 + [chapter4: class](chap4/README.md)
 
-+ [chapter5: ](chap5/README.md)
++ [chapter5: inheritance](chap5/README.md)
+
++ [chapter6: ]()
 
 
 

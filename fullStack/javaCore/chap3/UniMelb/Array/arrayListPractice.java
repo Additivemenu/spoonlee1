@@ -19,17 +19,17 @@ public class arrayListPractice {
         // declared an arraylist with initial capacity of 20, contains String element
         ArrayList<String> toDoList = new ArrayList<String>(20); 
         
-        // display current arrayList
+        // display current arrayList status
         showCurrentArrayList(toDoList);
 
         System.out.println("Size of current toDoList is: "+ toDoList.size());
         System.out.println("Enter list entries, ending with a blank line.");
         
-        Boolean done = false;
-        String item = null; // you'd better initialize a variable
         Scanner keyboard = new Scanner (System.in);
 
-        // user input loop ---------------------------------------
+        // trial1: user input loop ------------------------------------------------------------
+        Boolean done = false;
+        String item = null; // you'd better initialize a variable
         while (!done) {
 
             // start to input
@@ -38,17 +38,52 @@ public class arrayListPractice {
             item = keyboard.next();
             toDoList.add(item);
 
-            // display current arrayList status-------
+            // display current arrayList status
             showCurrentArrayList(toDoList);
             
             if(toDoList.size() == 20 || item.equals("stop")){
                 done = true;
             }
-        } // end of while----------------------------------------
+        } // end of while--------
 
+        // trial2: user remove items by index--------------------------------------------------
+        int deleteIndex;
+        while (true){
+            System.out.println("Please remove undesired items by index: ");
+
+            deleteIndex = keyboard.nextInt();
+            if (deleteIndex == -1){
+                System.out.println("remove by index is skipped");
+                break;
+            }
+            
+            toDoList.remove(deleteIndex);
+
+            // display current arrayList status
+            showCurrentArrayList(toDoList);
+        }
+
+        // trial3: user remove items by content-------------------------------------------------
+        String removeItem = null;
+        while (true){
+            System.out.println("Please remove undesired items by content: ");
+
+            removeItem = keyboard.next();
+            if (removeItem.equals("stop")){
+                System.out.println("remove by content is skipped");
+                break;
+            }
+            
+            toDoList.remove(removeItem);
+
+            // display current arrayList status
+            showCurrentArrayList(toDoList);
+        }
+
+        keyboard.close();
     }
 
-
+    // helper function-------------------------------------------------
     public static void showCurrentArrayList(ArrayList<String> arrList){
 
         System.out.println("The list contains:");
