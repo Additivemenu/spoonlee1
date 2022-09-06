@@ -142,20 +142,20 @@ arr[i]表示: node i 指向 node arr[i]
    + [Node](Class17/Node.java)  
       一个Node需要知道它自身的价值, degree, 以及到哪里去(nexts, edges)
       ```java
-      public int value;
-	   public int in; // in-degree of node 
-	   public int out; // out-degree of node
-	
-	   public ArrayList<Node> nexts; // 从本node出发, 能直接reference到哪些node
-	   public ArrayList<Edge> edges; // 从本node出发, 能直接reference到哪些edge
+         public int value;
+         public int in; // in-degree of node 
+         public int out; // out-degree of node
+      
+         public ArrayList<Node> nexts; // 从本node出发, 能直接reference到哪些node
+         public ArrayList<Edge> edges; // 从本node出发, 能直接reference到哪些edge
       ```
 
    + [Edge](Class17/Edge.java)  
       一个Edge由两端的Node及自身weight构成
       ```java
-       public int weight;
-       public Node from; 
-       public Node to;
+         public int weight;
+         public Node from; 
+         public Node to;
       ```
    + [Graph](Class17/Graph.java)
       将所有的node与edge分别放置到两个container里

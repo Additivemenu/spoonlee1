@@ -968,13 +968,9 @@ Why not always use an ArrayList instead of an array?
         > For containers (e.g. ArrayList): method            int size ()
 3. More methods in the class ArrayList
 
-    The tools for manipulating arrays consist only of the square brackets and the instance variable length.
-
-    ArrayLists, however, come with a selection of powerful methods that can do many of the things for which code would have to be written in order to do them using arrays.
-
       <br/>
 
-    + Constructors
+    1. Constructors
         ```java 
         public ArrayList<BaseType>(int initialCapacity)
         public ArrayList<BaseType>()  
@@ -983,7 +979,7 @@ Why not always use an ArrayList instead of an array?
 
     <br/>
 
-    + Array-like methods  
+    2. Array-like methods  
         ```java
         public BaseType set (int index, BaseType newElement)
         ```
@@ -1000,7 +996,7 @@ Why not always use an ArrayList instead of an array?
 
       <br/>
 
-    + Inserting elements  
+    3. Inserting elements  
         ```java
         public void add (int index, BaseType newElement)
         ```
@@ -1016,7 +1012,7 @@ Why not always use an ArrayList instead of an array?
 
       <br/>
 
-    + Deleting elements
+    4. Deleting elements
         ```java
         public BaseType remove (int index)
         ```
@@ -1045,7 +1041,7 @@ Why not always use an ArrayList instead of an array?
 
       <br/>
 
-    + Searching
+    5. Searching
         ```java
         public boolean contains (Object target)
         ```
@@ -1066,7 +1062,7 @@ Why not always use an ArrayList instead of an array?
 
     <br/>
 
-    + Finding the how many elements there are
+    6. Finding the how many elements there are
         ```java
         public int size()
         ```
@@ -1079,7 +1075,7 @@ Why not always use an ArrayList instead of an array?
 
     <br/>
 
-    + Resizing the underlying array
+    7. Resizing the underlying array
         主动控制已有的ArrayList的大小， 拉长或截短
         ```java
         public void ensureCapacity (int newCapacity)
@@ -1094,7 +1090,7 @@ Why not always use an ArrayList instead of an array?
 
     <br/>
 
-    + Copies
+    8. Copies
         ```java
         public Object[] toArray ()
         ```
@@ -1128,7 +1124,10 @@ Why not always use an ArrayList instead of an array?
         ```
         If other is another ArrayList (of any base type), then equals returns true if and only if both ArrayLists are of the same size and contain the same list of elements in the same order.  (In fact, if other is any kind of list, then equals returns true if and only if both the ArrayList and other are of the same size and contain the same list of elements in the same order.  Lists are discussed in Chapter 16 of the text book.)  Does not require the capacities to be equal.
 
-:full_moon: still have two challenges at the end of UniMelb java slides
+4. Demos for practice
+    [Demo: to-do-list](UniMelb/Array/arrayListPractice.java)
+    [Demo: scoreKeeper](UniMelb/Array/arrayList_scoreKeeper.java)
+    [Demo: hospitalWard](UniMelb/Array/arrayList_hospitalWard.java)
 
 ### 3.10.10 Enumerated types (枚举类型)
 
