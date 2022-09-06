@@ -1126,7 +1126,9 @@ Why not always use an ArrayList instead of an array?
 
 4. Demos for practice
     [Demo: to-do-list](UniMelb/Array/arrayListPractice.java)
+    
     [Demo: scoreKeeper](UniMelb/Array/arrayList_scoreKeeper.java)
+    
     [Demo: hospitalWard](UniMelb/Array/arrayList_hospitalWard.java)
 
 ### 3.10.10 Enumerated types (枚举类型)
