@@ -1,3 +1,5 @@
+// this java file aims to transform other graph expression into 
+// Nodes, Edge and Graph object expression 
 
 public class  GraphGenerator {
     
@@ -12,13 +14,13 @@ public class  GraphGenerator {
 
         for(int i =0; i<matrix.length;i++){  // loop over edges, matrix[i]
 
-            // read input 
+            // read input for an edge
             Integer weight = matrix[i][0];  // 也可用int型, 不用Integer
             Integer from = matrix[i][1];
             Integer to = matrix[i][2];
             
             // step1: create node if a particular node is not in the hashMap--------------------------------------------
-            if(! graph.nodes.containsKey(from)){ // key in hashMap define node represents the index of a node
+            if(! graph.nodes.containsKey(from)){ // key in the hashMap define node represents the index of a node
                 graph.nodes.put(from, new Node(from)); // hashMap API: put(key, value) 
             }
     
@@ -38,12 +40,12 @@ public class  GraphGenerator {
             fromNode.out++;
 
             toNode.in++;
-
+            
             fromNode.edges.add(newEdge);
             graph.edges.add(newEdge);
         }
 
-        return graph;
+        return graph; // finally, return the graph object we formulated
     }
 
 }

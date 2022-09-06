@@ -137,19 +137,44 @@ arr[i]表示: node i 指向 node arr[i]
 
 ## P139-140 graph的java对象表达
 
-[Node](Class17/Node.java)  
-[Edge](Class17/Edge.java)  
-[Graph](Class17/Graph.java)
+1. Graph的对象表达
+   Node是Graph的基本元素, 因而一个Node object所包含的信息也应最多.
+   + [Node](Class17/Node.java)  
+      一个Node需要知道它自身的价值, degree, 以及到哪里去(nexts, edges)
+      ```java
+      public int value;
+	   public int in; // in-degree of node 
+	   public int out; // out-degree of node
+	
+	   public ArrayList<Node> nexts; // 从本node出发, 能直接reference到哪些node
+	   public ArrayList<Edge> edges; // 从本node出发, 能直接reference到哪些edge
+      ```
 
-[Graph_generator](Class17/GraphGenerator.java)
+   + [Edge](Class17/Edge.java)  
+      一个Edge由两端的Node及自身weight构成
+      ```java
+       public int weight;
+       public Node from; 
+       public Node to;
+      ```
+   + [Graph](Class17/Graph.java)
+      将所有的node与edge分别放置到两个container里
+      ```java
+      public HashMap<Integer, Node> nodes; // node 放在HashMap中
+
+      public HashSet<Edge> edges; // edge 放在 HashSet中
+      ```
+
+2. Graph的适配器
+   + [Graph_generator](Class17/GraphGenerator.java)
 
 ## P141 BFS & DFS
 
 1. BFS
 
-set: 有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环
+   set: 有的图内有cycle, 防止一个Node反复进入queue, 程序进入死循环
 
-原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
+   原则: 当一个node进入queue之后, 也在set内注册, 这样当某个Node再次试图进入queue时, check set内有无该Node，如果已经有了则不能进入queue 
 
 
 ```java
@@ -158,26 +183,26 @@ UniMelb Pseudo code for BFS
 function BFS(<V,E>)
    mark each node in V with 0
    count <-- 0, init(queue)
-   for each v in V do   // loop over nodes
+
+   for each v in V do                     // loop over nodes
       if v is marked with 0 then
          count <-- count + 1
          mark v with count
-         inject(queue,v)       // queue containing just v
+
+         inject(queue,v)                  // queue containing just v
          while queue is non-empty do
-            u <-- eject(queue)     // dequeues u
-            for each edge(u,w) do    // w is u's neighbour
+            u <-- eject(queue)            // dequeues u
+            for each edge(u,w) do         // w is u's neighbour
                if w is marked with 0 then
                   count <-- count + 1
                   mark w with count
-                  inject(queue, w)   // enqueues w
+                  inject(queue, w)        // enqueues all u's neighbouring nodes that are unvisited
 
 ```
 
 2. DFS
 
-一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复
-
-
+   一条路没走完就走到黑，走到黑之后再back track上一层Node看有没有路可走, 有的话继续走到黑，如此往复
 
 
 ```java
@@ -186,6 +211,7 @@ UniMelb Pseudo code for DFS
 function DFS(<V,E>)
    mark each node in V with 0
    count <-- 0
+
    for each v in V do          // 写作loop over node, 实则 loop over component
       if v is marked with 0 then 
          DFSExplore(v)
@@ -194,6 +220,7 @@ function DFS(<V,E>)
 function DFSExplore(v)
    count <-- count + 1
    mark v with count 
+
    for each edge (v,w) in E do  // 以node为单位, 往深处走
       if w is marked with 0 then
          DFSExplore(w)
