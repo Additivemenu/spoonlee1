@@ -216,7 +216,7 @@ arr[i]表示: node i 指向 node arr[i]
 
    + recursion实现手段的核心思想是, 外循环是loop over each node, 内循环是在each node上再loop over its unvisited neighboring nodes, 在内循环中添加recursion的操作, 这样只有达到最底层(node 没有neighbor时)才会返回
 
-   + stack实现手段的核心思想是, 难以说明, 看代码体会...每当从stack中pop off a node, 只将该Node的一个未遍历的neighbor加入stack(注意不是在一个循环中将所有neighbor全加入stack, 那样和BFS没差了), 下次循环pop off 这个neighbor, 直到pop off一个没有neighbor的node,  从而模拟recursion.
+   + stack实现手段的核心思想是, 难以说明, 看代码体会...每当从stack中pop off a node, 只将该Node的一个未遍历的neighbor加入stack(注意不是在一次循环中将所有neighbor全加入stack, 那样和BFS没差了), 下次循环pop off 这个刚被加入stack的neighbor, 如此往复, 直到pop off一个没有neighbor的node, 此时stack中的node开始回退, 从而模拟recursion.
      + 在左给的DFS示例代码中, 一旦一个node被加入stack, 该node就会被访问; 但只有当该node已经是底层node时(没有其他未访问的neighbor), 该node才会被真正弹出stack
    
    + 继续思考这和UniMelb Algo week6 lec2: preorder traversal using a stack的不同
