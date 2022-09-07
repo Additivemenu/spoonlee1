@@ -26,6 +26,8 @@ public class Code02_DFS {
 		while (!stack.isEmpty()) { // loop until stack is empty
 
 			// recursion-like behaviour happens
+			// 这个pop有两个作用, 一是pop off一个node, 作为分析对象
+			// 二是当一个Node是底层node时, 该node被pop off, stack开始回退分析上一层Node
 			start cur = stack.pop(); // eject cur: current node
 
 			// loop over neighboring nodes with cur
