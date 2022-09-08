@@ -360,7 +360,7 @@ For example, the Employee class contains an instance variable, hireDate, of the 
 
 Both kinds of relationships are commonly used to create complex classes, often within the same class.  Since HourlyEmployee is a derived class of Employee, and contains an instance variable of class Date, then HourlyEmployee "is an" Employee and "has a" Date.
 
-[Demo: practice](UniMelb/isaHasa_practice.java)
+[Demo: "is a"&"has a"-practice](UniMelb/isaHasa_practice.java)
 
 ## 6.3. class Object
 In Java, every class is a descendent of the class Object.
@@ -405,37 +405,112 @@ In contrast getClass() is used when you want to check the exact class of the obj
 ### 6.3.3 equals()
 In most cases, instanceof is a better choice than getClass(), but there is one big exception: testing for equality.
 
-The overridden version of equals must meet the following conditions
+1. The overridden version of equals must meet the following conditions
 
-+ The parameter otherObject of type Object must be type cast to the given class (e.g., Employee)
+   + The parameter otherObject of type Object must be type cast to the given class (e.g., Employee)
 
-The right way to define equals:
-```java
-public boolean equals(Object otherObject)
-{
-    if(otherObject == null)                           // NULL object
-        return false;
-    else if(getClass( ) != otherObject.getClass( ))   // not the same class
-        return false;
-    else {                                           // same class, but what about content?
-        // the parameter otherObject of type Object must be type cast to the given class
-        Employee otherEmployee = (Employee)otherObject;
-        
-        // compare each of the instance variables
-        return (name.equals(otherEmployee.name) &&
-            hireDate.equals(otherEmployee.hireDate));
-    }
-}
-```
+   The right way to define equals:
+   ```java
+   public boolean equals(Object otherObject)
+   {
+       if(otherObject == null)                           // NULL object
+           return false;
+       else if(getClass( ) != otherObject.getClass( ))   // not the same class, can't compare so return false
+           return false;
+       else {                                           // same class, but what about content?
+           // the parameter otherObject of type Object must be type cast to the given class
+           Employee otherEmployee = (Employee)otherObject;
+           
+           // compare each of the instance variables
+           return (name.equals(otherEmployee.name) &&
+               hireDate.equals(otherEmployee.hireDate));
+       }
+   }
+   ```
 
-Now consider the following:
-```java
-Employee e = new Employee("Joe", new Date());
-HourlyEmployee h = new HourlyEmployee("Joe", new Date(),8.5, 40);
-boolean testH = e.equals(h);
-boolean testE = h.equals(e);
-```
-Results:
-+ testH will be true, because h is an Employee with the same name and hire date as e
+   What would this look like using  instanceof?  For class Employee, we would have
+   ```java
+   . . . //excerpt from bad equals method
+   else if(!(OtherObject instanceof Employee))
+       return false; . . .
+   ```
 
-+ testE will be false, because e is not an HourlyEmployee, and cannot be compared to h
+   and from class HourlyEmployee, we would have
+   ```java
+   . . . //excerpt from bad equals method
+   else if(!(OtherObject instanceof HourlyEmployee))
+   return false; . . .
+   ```
+
+   In order to use instanceof, you need to know the type of this object in the first place.
+
+2. Now consider the following example :
+    ```java
+    Employee e = new Employee("Joe", new Date());
+    HourlyEmployee h = new HourlyEmployee("Joe", new Date(),8.5, 40);
+    boolean testH = e.equals(h);
+    boolean testE = h.equals(e);
+    ```
+    Results:
+    + testH will be true, because h is an Employee with the same name and hire date as e
+
+    + testE will be false, because e is not an HourlyEmployee, and cannot be compared to h
+
+    Note that this problem would not occur if the getClass() method were used instead, as in the previous equals method example :question: what does this mean?
+
+
+# 7. Modularity
+
+Some OOB philosophy:
+
+Modularity is a way to manage complexity and improve quality.
+
+A **module** is the basic unit of decomposition of our systems. It will often correspond to a Java class, a file containing multiple classes, or a "package", which is a set of Java classes that cooperate to achieve a task.
+
+**Modular design and programming** is designing or constructing software based on modules.
+
+Modules typically form a hierarchy: modules can consist of smaller modules.  For example, a java program may consist of multiple packages. A package consists of multiple classes.  Each class consists of multiple methods, or even of sub-classes.
+
+## 7.2 Modular design criteria
+There are five criteria that underlie modular design.
+
++ Decomposability.
+
++ Composability.
+
++ Understandability.
+
++ Continuity.
+
++ Protection.
+
+References:
+
+[1] Meyer, Bertrand. “Object-Oriented Software Construction, 2nd Edition.” (1997).
+
+## 7.3 Modular design rules
+The guiding principles that allow modular design to meet the above criteria are as follows.
+
++ Direct mapping
+
++ Few interfaces
+
++ Small interfaces
+
++ Explicit interfaces
+
++ Information hiding
+
+## 7.4 Unified modelling language (UML)
+
+The Unified modelling language (UML) is a graphical representation of modules and their interactions. UML is designed to reflect modularity, and the object-oriented programming philosophy.
+
+### 7.4.1 UML diagrams
+
+
+### 7.4.2 
+
+
+# 8. Polymorphism
+
+# 9. Abstract classes
