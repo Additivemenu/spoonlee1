@@ -42,16 +42,15 @@ class Person {
             Employed e = (Employed) this;
             System.out.println(", job: " + e.getJob());
 
-        }
-
-         if (this instanceof Musician) {
+        } 
+        else if (this instanceof Musician) {
 
             Musician m = (Musician) this; // you are going to use methods in Musician
-            System.out.println(",1 instrument: " + m.getInstrument());
+            System.out.println(",1 instrument: " + m.getInstrument()); // why would this call the method in ExperiencedMusician? 
+
 
         }
-        
-        if (this instanceof ExperiencedMusician) {
+        else if (this instanceof ExperiencedMusician) {
 
             ExperiencedMusician m = (ExperiencedMusician) this; // you are going to use methods in ExperiencedMusician
             System.out.println(",2 instrument: " + m.getInstrument());

@@ -713,89 +713,90 @@ UniMelb Java:
     ABC
     ```
 
-    6. Methods that return arrays
-    [Demo: 数组元素加1返回新数组](UniMelb/Array/arrayTest.class)
+6. Methods that return arrays
+[Demo: 数组元素加1返回新数组](UniMelb/Array/arrayTest.class)
 
-    7. 数组扩容
-    [Demo: 数组扩容](UniMelb/Array/partiallyFilledArray.java)
-    [Demo: 自定义动态数组](UniMelb/Array/varArrayMain.java)
+7. 数组扩容
+[Demo: 数组扩容](UniMelb/Array/partiallyFilledArray.java)
+[Demo: 自定义动态数组](UniMelb/Array/varArrayMain.java)
 
-    8. Methods with a variable number of parameters
-    [Demo: methods with a variable number parameters](UniMelb/Array/varArg_method.java)
-        
-        Starting with Java 5.0, methods can be defined that take any number of arguments. **Essentially, it is implemented by taking in an array as argument, but the job of placing values in the array is done automatically.** The values for the array are given as arguments. Java automatically creates an array and places the arguments in the array. Note that arguments corresponding to regular parameters are handled in the usual way.
+8. Methods with a variable number of parameters
+[Demo: methods with a variable number parameters](UniMelb/Array/varArg_method.java)
+  
+Starting with Java 5.0, methods can be defined that take any number of arguments. **Essentially, it is implemented by taking in an array as argument, but the job of placing values in the array is done automatically.** The values for the array are given as arguments. Java automatically creates an array and places the arguments in the array. Note that arguments corresponding to regular parameters are handled in the usual way.
 
-        Such a method has as the last item on its parameter list a vararg specification of the form:
-        ```java
-        Type... ArrayName
-        ```
-        Note the three dots called an ellipsis that must be included as part of the vararg specification syntax.
-        
-        Following the arguments for regular parameters are any number of arguments of the type given in the vararg specification. These arguments are automatically placed in an array. This array can be used in the method definition. Note that a vararg specification allows any number of arguments, including zero.
+Such a method has as the last item on its parameter list a vararg specification of the form:
+```java
+Type... ArrayName
+```
+Note the three dots called an ellipsis that must be included as part of the vararg specification syntax.
 
-    9. :full_moon:Privacy leaks with array
-        see [javaCore chapter4 4.6](../chap4/README.md) for details of privacy leak and deep copy
+Following the arguments for regular parameters are any number of arguments of the type given in the vararg specification. These arguments are automatically placed in an array. This array can be used in the method definition. Note that a vararg specification allows any number of arguments, including zero.
 
-        Arrays are objects, like class objects.  Just as there were risks of privacy leaks with object member variables (static or instance variables), there are risks with array member variables.
+9. :full_moon:Privacy leaks with array
+  see [javaCore chapter4 4.6](../chap4/README.md) for details of privacy leak and deep copy
 
-        If an accessor method does return the contents of an array, special care must be taken:
-        ```java
-        public double[] getArray() {
-            return anArray;        //BAD!
-        }
-        ```
-        The example above will result in a privacy leak.  It would simply return a reference to anArray.  The code  var.getArray()[0] = 1;  will write to anArray, which may have been private.
+  Arrays are objects, like class objects.  Just as there were risks of privacy leaks with object member variables (static or instance variables), there are risks with array member variables.
 
-        + **Instead, an accessor method should usually return a reference to a deep copy of the private array object.**
-            ```java
-            class Main {
-                double[] anArray = {};
+  If an accessor method does return the contents of an array, special care must be taken:
+  ```java
+  public double[] getArray() {
+      return anArray;        //BAD!
+  }
+  ```
+  The example above will result in a privacy leak.  It would simply return a reference to anArray.  The code  var.getArray()[0] = 1;  will write to anArray, which may have been private.
 
-                public double [] getArray ()
-                {   
-                    // create an copy of anArray, then return the copy instead of returning itself
-                    double [] tmp = new double [anArray.length];
+  + **Instead, an accessor method should usually return a reference to a deep copy of the private array object.**
+      ```java
+      class Main {
+          double[] anArray = {};
 
-                    for (int i = 0; i < anArray.length; i++)
-                        tmp[i] = anArray[i];
-                        
-                    return tmp;
-                }
+          public double [] getArray ()
+          {   
+              // create an copy of anArray, then return the copy instead of returning itself
+              double [] tmp = new double [anArray.length];
 
-                public static void main (String[] args) {
-                // Write your own test here.
-                }
+              for (int i = 0; i < anArray.length; i++)
+                  tmp[i] = anArray[i];
+                  
+              return tmp;
+          }
 
-            }
-            ```
-        + **If a private instance variable is an array that has a class as its base type**, the ncopies must be made of each class object in the array when the array is copied:
-            ```java
-            class Main {
+          public static void main (String[] args) {
+          // Write your own test here.
+          }
 
-                ClassType[] anArray = {}; // every element in an  array is of class type, so you need to create copy of every element, then return the copy instead of returning itself
+      }
+      ```
+  + **If a private instance variable is an array that has a class as its base type**, the ncopies must be made of each class object in the array when the array is copied:
+      ```java
+      class Main {
 
-                public ClassType [] getArray ()
-                {
-                    ClassType [] tmp = new ClassType [anArray.length];
-                    for (int i = 0; i < anArray.length; i++)
-                        tmp[i] = new ClassType(anArray[i]); // since tmp[i] is of class type
-                    return tmp;
-                }
+          ClassType[] anArray = {}; // every element in an  array is of class type, so you need to create copy of every element, then return the copy instead of returning itself
 
-                public static void main (String[] args) {
-                    // Write your own test here.
-                }
-            }
+          public ClassType [] getArray ()
+          {
+              ClassType [] tmp = new ClassType [anArray.length];
+              for (int i = 0; i < anArray.length; i++)
+                  tmp[i] = new ClassType(anArray[i]); // since tmp[i] is of class type
+              return tmp;
+          }
 
-            class ClassType {
-                // Copy constructor.
-                // Add a member variable to ClassType, and update this copy constructor
-                ClassType(ClassType c) {  
-                }
-            }
-            ```
-    10. Array sorting
-        [Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
+          public static void main (String[] args) {
+              // Write your own test here.
+          }
+      }
+
+      class ClassType {
+          // Copy constructor.
+          // Add a member variable to ClassType, and update this copy constructor
+          ClassType(ClassType c) {  
+          }
+      }
+      ```
+      
+10. Array sorting
+    [Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
 ---
 
 ### 3.10.2 访问数组元素
