@@ -610,30 +610,31 @@ The exit statement takes one integer argument . By tradition, a zero argument is
 
 UniMelb Java:
 
-1. Base types
+#### 1. Base types
 
-    **You can create an array of any type, including class types.**  However, all elements in the array must have the same type.  This type is called the **base type** of the array.
+**You can create an array of any type, including class types.**  However, all elements in the array must have the same type.  This type is called the **base type** of the array.
 
-    Advanced: If you want to have an array of different types of objects, you can use polymorphism, which will be covered much later in this course.
+Advanced: If you want to have an array of different types of objects, you can use polymorphism, which will be covered much later in this course.
 
-    An array is declared and created in almost the same way that objects are declared and created:
+An array is declared and created in almost the same way that objects are declared and created:
 
-    ```java
-    BaseType[] ArrayName = new BaseType[size];
-    ```
+```java
+BaseType[] ArrayName = new BaseType[size];
+```
 
-    The size may be given as an expression that evaluates to a nonnegative integer, for example, an int variable.
+The size may be given as an expression that evaluates to a nonnegative integer, for example, an int variable.
 
-    ```java
-    char[] line = new char[80];
-    double[] reading = new double[count];
-    Person[] specimen = new Person[2 * line.length];
-    ```
-2. access
+```java
+char[] line = new char[80];
+double[] reading = new double[count];
+Person[] specimen = new Person[2 * line.length];
+```
 
-    The array itself (i.e., the entire collection of indexed variables) can be referred to using the array name without any square brackets. You would use this form if you wanted to pass the array as a parameter to a method, for example.
+#### 2. access
 
-3. Three ways square brackets are used with an array name
+The array itself (i.e., the entire collection of indexed variables) can be referred to using the array name without any square brackets. You would use this form if you wanted to pass the array as a parameter to a method, for example.
+
+#### 3. Three ways square brackets are used with an array name
 
    + The most common way: Square brackets are used to name an element of an array:
   
@@ -653,74 +654,78 @@ UniMelb Java:
         ```java
         double [] score;
         ```
-4. An array is considered to be an object, not a class
+#### 4. An array is considered to be an object, not a class
 
-     + Every array has exactly one instance variable named length. When an array is created, the instance variable length is automatically set equal to its size. The value of length cannot be changed (although a new array of a different size can be assigned to the same variable).
++ Every array has exactly one instance variable named length. When an array is created, the instance variable length is automatically set equal to its size. The value of length cannot be changed (although a new array of a different size can be assigned to the same variable).
 
-        ```java
-        double[] score = new double[5];      // score.length now has a value of 5
-        ```
+```java
+double[] score = new double[5];      // score.length now has a value of 5
+```
 
-        An out of bounds index will cause a program to terminate with a run-time error message.
+An out of bounds index will cause a program to terminate with a run-time error message.
 
-         > Advanced: Note that this is an instance variable, not a member method.  Some classes, such as String have a method named length() for a similar role, and others have a method named size().  You can remember that arrays are the odd one out (variable not method) because they aren't classes.
+> Advanced: Note that this is an instance variable, not a member method.  Some classes, such as String have a method named length() for a similar role, and others have a method named size().  You can remember that arrays are the odd one out (variable not method) because they aren't classes.
 
-    + **An array variable holds a reference to where the actual array is stored in memory**. Note also that as a result of the assignment statement above, a contains a single value: a memory address or reference:
++ **An array variable holds a reference to where the actual array is stored in memory**. Note also that as a result of the assignment statement above, a contains a single value: a memory address or reference:
 
-        ```java
-        double[] a = new double[10];
-        ```
+```java
+double[] a = new double[10];
+```
 
-        + The assignment operator (=) only copies this memory address. It does not copy the values of each element.
++ The assignment operator (=) only copies this memory address. It does not copy the values of each element.
 
-        + For the same reason, the equality operator (==) only tests two arrays to see if they are stored in the same location in the computer's memory. It does not test two arrays to see if they contain the same values.
-            ```java
-            (a == b)
-            ```
-            In the same way that an equals method can be defined for a class, an equalsArray method can be defined for a type of array. This is how two arrays must be tested to see if they contain the same elements.
++ For the same reason, the equality operator (==) only tests two arrays to see if they are stored in the same location in the computer's memory. It does not test two arrays to see if they contain the same values.
+  ```java
+  (a == b)
+  ```
+  In the same way that an equals method can be defined for a class, an equalsArray method can be defined for a type of array. This is how two arrays must be tested to see if they contain the same elements.
 
 
-5. Pitfall: An array of characters is not a String
+#### 5. Pitfall: An array of characters is not a String
 
-    An array of characters is conceptually a list of characters, and so is conceptually like a string. However, an array of characters is not an object of the class String.  (This may be a surprise to C programmers.)
-    ```java
-    char[] a = {'A', 'B', 'C'};
-    String s = a; //Illegal!
-    ```
-    An array of characters can be converted to an object of type String, however.
+An array of characters is conceptually a list of characters, and so is conceptually like a string. However, an array of characters is not an object of the class String.  (This may be a surprise to C programmers.)
+```java
+char[] a = {'A', 'B', 'C'};
+String s = a; //Illegal!
+```
+An array of characters can be converted to an object of type String, however.
 
-    <br/>
+<br/>
 
-    The class String has a constructor that has a single parameter of type char[].
-    ```java
-    String s = new String(a);
-    ```
-    The object s will have the same sequence of characters as the entire array a ("ABC"), but is an independent copy.  
-    Another String constructor uses a subrange of a character array instead:
-    ```java
-    String s2 = new String(a,0,2);
-    ```
-    Given a as before, the new string object is "AB".
+The class String has a constructor that has a single parameter of type char[].
+```java
+String s = new String(a);
+```
+The object s will have the same sequence of characters as the entire array a ("ABC"), but is an independent copy.  
+Another String constructor uses a subrange of a character array instead:
+```java
+String s2 = new String(a,0,2);
+```
+Given a as before, the new string object is "AB".
 
-    <br/>
+<br/>
 
-    An array of characters does have some things in common with String objects. For example, an array of characters can be output using println
-    ```java
-    System.out.println(a);
-    ```
-    Given a as before, this would produce the output
-    ```shell
-    ABC
-    ```
+An array of characters does have some things in common with String objects. For example, an array of characters can be output using println
+```java
+System.out.println(a);
+```
+Given a as before, this would produce the output
+```shell
+ABC
+```
 
-6. Methods that return arrays
+#### 6. Methods that return arrays
+
 [Demo: 数组元素加1返回新数组](UniMelb/Array/arrayTest.class)
 
-7. 数组扩容
+#### 7. 数组扩容
+
 [Demo: 数组扩容](UniMelb/Array/partiallyFilledArray.java)
+
+
 [Demo: 自定义动态数组](UniMelb/Array/varArrayMain.java)
 
-8. Methods with a variable number of parameters
+#### 8. Methods with a variable number of parameters
 [Demo: methods with a variable number parameters](UniMelb/Array/varArg_method.java)
   
 Starting with Java 5.0, methods can be defined that take any number of arguments. **Essentially, it is implemented by taking in an array as argument, but the job of placing values in the array is done automatically.** The values for the array are given as arguments. Java automatically creates an array and places the arguments in the array. Note that arguments corresponding to regular parameters are handled in the usual way.
@@ -733,70 +738,72 @@ Note the three dots called an ellipsis that must be included as part of the vara
 
 Following the arguments for regular parameters are any number of arguments of the type given in the vararg specification. These arguments are automatically placed in an array. This array can be used in the method definition. Note that a vararg specification allows any number of arguments, including zero.
 
-9. :full_moon:Privacy leaks with array
-  see [javaCore chapter4 4.6](../chap4/README.md) for details of privacy leak and deep copy
+#### 9. :full_moon:Privacy leaks with array
+see [javaCore chapter4 4.6](../chap4/README.md) for details of privacy leak and deep copy
 
-  Arrays are objects, like class objects.  Just as there were risks of privacy leaks with object member variables (static or instance variables), there are risks with array member variables.
+Arrays are objects, like class objects.  Just as there were risks of privacy leaks with object member variables (static or instance variables), there are risks with array member variables.
 
-  If an accessor method does return the contents of an array, special care must be taken:
-  ```java
-  public double[] getArray() {
-      return anArray;        //BAD!
-  }
-  ```
-  The example above will result in a privacy leak.  It would simply return a reference to anArray.  The code  var.getArray()[0] = 1;  will write to anArray, which may have been private.
+If an accessor method does return the contents of an array, special care must be taken:
+```java
+public double[] getArray() {
+return anArray;        //BAD!
+}
+```
+The example above will result in a privacy leak.  It would simply return a reference to anArray.  The code  var.getArray()[0] = 1;  will write to anArray, which may have been private.
 
-  + **Instead, an accessor method should usually return a reference to a deep copy of the private array object.**
-      ```java
-      class Main {
-          double[] anArray = {};
++ **Instead, an accessor method should usually return a reference to a deep copy of the private array object.**
+```java
+class Main {
+    double[] anArray = {};
 
-          public double [] getArray ()
-          {   
-              // create an copy of anArray, then return the copy instead of returning itself
-              double [] tmp = new double [anArray.length];
+    public double [] getArray ()
+    {   
+        // create an copy of anArray, then return the copy instead of returning itself
+        double [] tmp = new double [anArray.length];
 
-              for (int i = 0; i < anArray.length; i++)
-                  tmp[i] = anArray[i];
-                  
-              return tmp;
-          }
+        for (int i = 0; i < anArray.length; i++)
+            tmp[i] = anArray[i];
+            
+        return tmp;
+    }
 
-          public static void main (String[] args) {
-          // Write your own test here.
-          }
+    public static void main (String[] args) {
+    // Write your own test here.
+    }
 
-      }
-      ```
-  + **If a private instance variable is an array that has a class as its base type**, the ncopies must be made of each class object in the array when the array is copied:
-      ```java
-      class Main {
+}
+```
++ **If a private instance variable is an array that has a class as its base type**, the ncopies must be made of each class object in the array when the array is copied:
+```java
+class Main {
 
-          ClassType[] anArray = {}; // every element in an  array is of class type, so you need to create copy of every element, then return the copy instead of returning itself
+    ClassType[] anArray = {}; // every element in an  array is of class type, so you need to create copy of every element, then return the copy instead of returning itself
 
-          public ClassType [] getArray ()
-          {
-              ClassType [] tmp = new ClassType [anArray.length];
-              for (int i = 0; i < anArray.length; i++)
-                  tmp[i] = new ClassType(anArray[i]); // since tmp[i] is of class type
-              return tmp;
-          }
+    public ClassType [] getArray ()
+    {
+        ClassType [] tmp = new ClassType [anArray.length];
+        for (int i = 0; i < anArray.length; i++)
+            tmp[i] = new ClassType(anArray[i]); // since tmp[i] is of class type
+        return tmp;
+    }
 
-          public static void main (String[] args) {
-              // Write your own test here.
-          }
-      }
+    public static void main (String[] args) {
+        // Write your own test here.
+    }
+}
 
-      class ClassType {
-          // Copy constructor.
-          // Add a member variable to ClassType, and update this copy constructor
-          ClassType(ClassType c) {  
-          }
-      }
-      ```
+class ClassType {
+    // Copy constructor.
+    // Add a member variable to ClassType, and update this copy constructor
+    ClassType(ClassType c) {  
+    }
+}
+```
       
-10. Array sorting
-    [Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
+#### 10. Array sorting
+
+[Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
+
 ---
 
 ### 3.10.2 访问数组元素
