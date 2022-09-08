@@ -804,6 +804,8 @@ class ClassType {
 
 [Demo: selectionSort with java](UniMelb/Array/selectionSort.java)
 
+[Demo: collection sort](UniMelb/Array/collectionSort.java)
+
 ---
 
 ### 3.10.2 访问数组元素

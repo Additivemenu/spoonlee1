@@ -12,6 +12,8 @@ markdown preview enhanced
 
 [HelloJava](Src/helloJava.java)
 
+[markdown guide](https://www.markdownguide.org/basic-syntax#code)
+
 
 # 1.标题
 e.g.
@@ -83,18 +85,23 @@ OR
 
 # 8.链接
 链接可以由两种格式构成: 行内式和参考式
+
 ## 行内式
 [sponlee_GitHub](https://github.com/)
+
 ## 参考式
 [spoonlee_Res1][1]  
 [spoonlee_Res2][2]  
 [1]:https://github.com/Additivemenu/spoonlee1
 [2]:https://github.com/Additivemenu/algorithm-primary-beginner
+
 # 9.图片
 与链接类似, 只需再在链接的基础上在前方加一个!
 ![](Src/R.jpg)
+
 # 10. 反斜杠\
 相当于反转义作用, 使一个符号变为普通符号
+
 # 11. 符号`
 起到标记作用, 如  
 `ctrl + k`
@@ -103,3 +110,14 @@ OR
 Column | Column
 ------ | ------
 Cell   | Cell  
+
+# 13. Math
+
+When $a \ne 0$, there are two solutions to $(ax^2 + bx + c = 0)$ and they are 
+$$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$
+
+$$ 函数名=\begin{cases}
+公式1 & 条件1 \\
+公式2 & 条件2 \\
+公式3 & 条件3 
+\end{cases}$$
