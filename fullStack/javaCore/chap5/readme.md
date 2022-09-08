@@ -512,5 +512,66 @@ The Unified modelling language (UML) is a graphical representation of modules an
 
 
 # 8. Polymorphism
+Polymorphism is the ability to associate many meanings to one method name.  It does this through a special mechanism known as _late binding or dynamic binding_.
 
++ Inheritance allows a base class to be defined, and other classes derived from it. Code for the base class can then be used for its own objects, as well as objects of any derived classes.
+
++ Polymorphism allows changes to be made to method definitions in the derived classes, and have those changes apply to the software written for the base class.
+
+## 8.1 Late binding with toString
+
+> About binding
+>+  **Binding**: The process of associating a method definition with a method invocation.
+>+ **Early binding or static binding**: If the method definition is associated with its invocation when the code is compiled. 
+>+ **Late binding or dynamic binding**: If the method definition is associated with its invocation when the method is invoked (at run time).
+
+Java uses late binding for all methods (except private, final, and static methods) .
+
+
+### e.g.1
+
+If an appropriate toString method is defined for a class, then an object of that class can be output using System.out.println
+```java
+Sale aSale = new Sale("tyre gauge", 9.95);
+System.out.println(aSale); // println an object!
+```
+
+Output produced:
+
+```java
+tyre gauge price and total cost = $9.95
+```
+
+This works because of late binding. One definition of the method println takes a single argument of type Object (see below code). In turn, It invokes the version of println that takes a String argument.
+
+```java
+public void println(Object theObject)
+{
+    System.out.println(theObject.toString());
+}
+```
+
+Note that the println method was defined before the Sale class existed.
+
+Yet, because of late binding, the toString method from the Sale class is used, not the toString from the Object class.
+
+### e.g.2
+
+```java
+HourlyEmployee joe = new HourlyEmployee("Joe Worker", new Date("January", 1, 2004),
+                                        50.50, 160);
+Employee mike = new Employee("Mike Jordan", new Date("March", 1, 1984));
+
+System.out.println();
+System.out.println("joe's record is as follows:");
+System.out.println(joe);
+
+System.out.println();
+System.out.println("mike's record is as follows:");
+System.out.println(mike);
+```
+Exercise: Write suitable toString functions for HourlyEmployee and Employee.
+
+
+## 8.2 Upcasting and downcasting
 # 9. Abstract classes
