@@ -347,9 +347,46 @@ The modifiers public, private, and protected, and package access have the same m
 # 6. Relationship between two classes
 There are many ways in which objects can be related.  Two of these are called the "is a" hierarchy and the "has a" hierarchy.
 ## 6.1 "is a"
+
+JavaCore
+
+子类的对象同时也是超类的对象
+
+"is-a"规则的另一种表述是替换原则(substitution principle). 它指出程序中出现超类对象的任何地方都可以使用子类对象来替换.
+
+即在Java中, 对象变量是多态的(polymorphic). 一个Employee类型的变量既可以引用一个Employee类型的对象, 也可以引用Employee类的任何一个子类的对象(e.g. Manager, Executive, Secretary...)
+
+基于此: 
++ 可以将子类对象引用赋给超类变量
+
+    ```java
+    Manager boss = new Manager(...);
+    Employee[] staff = new Employee[3];
+    staff[0] = boss;
+    ```
+    这里, 变量staff[0]与boss引用同一个对象. 但编译器只将staff[0]看成是一个Employee对象. 
+    ```java
+    boss.setBonus(5000); // OK
+
+    staff[0].setBonus(5000); // error! 因为staff[0]的声明类型是Employee, 而setBonus不是Employee类的方法
+    ```
+
+
++ 但是, 不能将超类的引用赋给子类变量
+
+    ```java
+    Manager m = staff[i];
+    ```
+
+    因为不是所有的员工都是经理. 如果赋值成功, m有可能引用一个不是经理的Employee对象, 而在后面有可能会调用m.setBonus(...), 这时就会发生运行错误
+
+--- 
+
 A derived class demonstrates an "is a" relationship between it and its base class. Forming an "is a" relationship is one way to make a more complex class out of a simpler class.
 
 For example, an HourlyEmployee "is an" Employee. HourlyEmployee is a more complex class compared to the more general Employee class
+
+---
 
 ## 6.2 "has a"
 Another way to make a more complex class out of a simpler class is through a "has a" relationship.
@@ -505,20 +542,80 @@ The guiding principles that allow modular design to meet the above criteria are 
 
 The Unified modelling language (UML) is a graphical representation of modules and their interactions. UML is designed to reflect modularity, and the object-oriented programming philosophy.
 
-### 7.4.1 UML diagrams
+### 7.4.1 Structural diagrams
+UML diagrams show relationships between classes.  
+
+![](Src/UML_hierarchy.png)
+
+### 7.4.2 Class diagrams
+
+A class diagram is divided up into three sections:
+
++ The top section contains the class name
+
++ The middle section contains the data specification for the class
+
++ The bottom section contains the actions or methods of the class
+
+The data specification for each piece of data in a UML diagram consists of its name, followed by a colon, followed by its type
+
+Each name is preceded by a character that specifies its access type:
+
++ A minus sign (-) indicates private access
+
++ A plus sign (+) indicates public access
+
++ A sharp (#) indicates protected access
+
++ A tilde (~) indicates package access
+
+![](Src/UML_class_access.png)
+
+A class diagram need not give a complete description of the class.  If a given analysis does not require that all the class members be represented, then those members are not listed in the class diagram.  Missing members are indicated with an ellipsis (three dots).
+
+### 7.4.3 Class interactions
+
+Rather than show just the interface of a class, class diagrams are primarily designed to show the interactions
+among classes.
+[Stackoverflow: UML Arrow](https://stackoverflow.com/questions/1874049/explanation-of-the-uml-arrows)
+
+#### Inheritance
+
+![](Src/UML_derived2.png)
+
+#### Associations
+
+Unidirectional 
 
 
-### 7.4.2 
+<img src="Src/UML_association_unidirectional.png" width="100%">
+Bidirectional
 
+![](Src/UML_association_bidirectional.png)
+
+The numbers have have the following meanings:
+
+n : exactly  n
+
+\* : zero or more
+
+0..n : any number from zero to n
+
+m..n:  any number from m to n.
+
+#### UML Packages
+
+![](Src/UML_package.png)
 
 # 8. Polymorphism
 Polymorphism is the ability to associate many meanings to one method name.  It does this through a special mechanism known as _late binding or dynamic binding_.
 
-+ Inheritance allows a base class to be defined, and other classes derived from it. Code for the base class can then be used for its own objects, as well as objects of any derived classes.
++ **Inheritance** allows a base class to be defined, and other classes derived from it. Code for the base class can then be used for its own objects, as well as objects of any derived classes.
 
-+ Polymorphism allows changes to be made to method definitions in the derived classes, and have those changes apply to the software written for the base class.
++ **Polymorphism** allows changes to be made to method definitions in the derived classes, and _have those changes apply to the software written for the base class_.
 
-## 8.1 Late binding with toString
+
+## 8.1 Late binding 
 
 > About binding
 >+  **Binding**: The process of associating a method definition with a method invocation.
@@ -531,9 +628,10 @@ Java uses late binding for all methods (except private, final, and static method
 ### e.g.1
 
 If an appropriate toString method is defined for a class, then an object of that class can be output using System.out.println
+
 ```java
 Sale aSale = new Sale("tyre gauge", 9.95);
-System.out.println(aSale); // println an object!
+System.out.println(aSale); // println an object! but you need to define toString method for class Sale first
 ```
 
 Output produced:
@@ -555,7 +653,7 @@ Note that the println method was defined before the Sale class existed.
 
 Yet, because of late binding, the toString method from the Sale class is used, not the toString from the Object class.
 
-### e.g.2
+### practice
 
 ```java
 HourlyEmployee joe = new HourlyEmployee("Joe Worker", new Date("January", 1, 2004),
@@ -572,6 +670,139 @@ System.out.println(mike);
 ```
 Exercise: Write suitable toString functions for HourlyEmployee and Employee.
 
+### e.g.2
+Because of late binding, a method can be written in a base class to perform a task, even if portions of that task aren't yet defined.
+
+For an example, the relationship between a base class called Sale and its derived class DiscountSale will be examined.  Consider the following two classes:
+
+
+
+<img src="Src/UML_sale.png" width="50%">
+
+<img src="Src/UML_discount_sale.png" width="50%">
+
+Note lessThan() method is defined in based class, while bill() method is overridden in the derived class
+
+```java
+// Class Sale
+public boolean lessThan (Sale otherSale) 
+{
+// the method defined in base class can also be called in its derived class object
+{
+    if (otherSale == null)
+    {
+        System.out.println("Error: null object");
+        System.exit(0);
+    }
+
+    // when a derived class object calls this method, 
+    // it knows which bill() to call:
+    // if the object is just an instance of class Sale (not  DiscountSale),
+    // then bill() calls the methods in Sale; 
+    // if the object is an instance of class DiscountSale, 
+    // then bill() calls the methods in DiscountSale
+    // -------------------------------------------------
+    // e.g. this object is an instance of DiscountSale,
+    // then below bill() calls the methods defined in DiscountSale
+    // e.g. this object is an instance of Sale,
+    // then below bill() calls the methods defined in Sale
+    // -------------------------------------------------
+    // this is because late binding is working, we didn't 
+    // explicitly specify class.bill() in the first place 
+    // while the program understand which bill() we are calling
+    // according to who's calling lessThan()
+    return (bill( ) < otherSale.bill( )); 
+}
+
+public double bill( )
+{
+    return price;
+}
+```
+
+```java
+// Class DiscountSale
+@overridden
+public double bill( )
+{
+    double discountedPrice = getPrice() * (1-discount/100);
+    return discountedPrice + discountedPrice * SALES_TAX/100;
+}
+```
+
+Main function:
+
+```java
+Sale simple = new sale("floor mat", 10.00); // price
+DiscountSale discount = new DiscountSale("floor mat", 11.00, 10); // price, discount
+. . .
+if (discount.lessThan(simple)) // here is the point! 
+    System.out.println ("$" + discount.bill() +
+                        " < " + "$" + simple.bill() +
+                        " because late-binding works!");
+. . .
+```
+
+will produce：
+
+```shell
+$9.90 < $10 because late-binding works!
+```
+
+In this example, the boolean expression in the if statement returns true.
+
+As the output indicates, when the lessThan method in the Sale class is executed, it knows which bill() method to invoke: the DiscountSale class bill() method for discount, and the Sale class bill() method for simple.
+
+Note that when the Sale class was created and compiled, the DiscountSale class and its bill() method did not yet exist.  These results are made possible by late-binding.
+
+> Advanced: Late binding is achieved by each object having a table of references to methods.  The name of the method corresponds to the index into the table.  The value of the entry corresponds to the appropriate method for that object to call when that method name is used.  This process is an example of indirection, common in lower level languages.
 
 ## 8.2 Upcasting and downcasting
+### 8.2.1 Upcasting
+
+超类对象变量 <-- 子类对象变量
+
+Upcasting is when an object of a derived class is assigned to a variable of a base class (or any ancestor class)
+
+```java
+Sale saleVariable;                  //Base class
+DiscountSale discountVariable = new DiscountSale("paint", 15,10); //Derived class
+saleVariable = discountVariable;    //Upcasting 
+// now that saleVariable and discountVariable points to the same
+// object in memory, but saleVariable cannot access exclusive 
+// methods defined in DiscountSale class, 因为编译器依然把
+// saleVariable看作是Sale class
+System.out.println(saleVariable.toString());
+```
+Because of late binding, toString above still uses the definition given in the DiscountSale class.
+:question:what? this conflicts with javaCore 5.1.5 多态, experiment it!!!
+
+### 8.2.2 Downcasting
+
+子类对象变量 <-- 超类对象变量: problematic 
+
+Downcasting is when a type cast is performed from a base class to a derived class (or from any ancestor class to any descendent class).
+
+Downcasting has to be done very carefully.  In many cases it doesn't make sense, or is illegal:
+
+```java
+//will produce compiler error
+discountVariable = saleVariable
+
+//will produce run-time error
+discountVariable = (DiscountSale)saleVariable;
+```
+
+There are times, however, when downcasting is necessary, e.g., inside the equals method for a class:
+
+```java
+Sale otherSale = (Sale)otherObject;    //downcasting
+```
+
+We also saw downcasting, protected by instanceof, used in the previous slide.
+
+> Note!
+> It is the responsibility of the programmer to use downcasting only in situations where it makes sense.  The compiler does not check to see if downcasting is a reasonable thing to do.
+> Using downcasting in a situation that does not make sense usually results in a run-time error.
+
 # 9. Abstract classes

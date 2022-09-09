@@ -66,6 +66,7 @@ C<sub>w</sub> stands for C<sub>worst</sub>
 #### 1. Merge sort:
 
 Worst-case: 
+
 if the largest and second-largest elements are in different arrays, then n-1 comparisons need to be made in MERGE
 
 $$ C_w(n)=\begin{cases}
@@ -76,6 +77,7 @@ $$ C_w(n)=\begin{cases}
 #### 2. Quick sort:
 
 Best-case: 
+
 when pivot is the median, that results in two sub-tasks of equal size
 
 $$ C_b=\begin{cases}
@@ -84,6 +86,7 @@ $$ C_b=\begin{cases}
 \end{cases}$$
 
 Worst-case: 
+
 Array is already sorted. In this case, we don't really have divide-and-conquer, because each recursive call deals with a problem size that has only been decremented by 1
 
 $$ C_w(n)=\begin{cases}
