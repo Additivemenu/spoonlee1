@@ -1,3 +1,5 @@
+# Chapter 5 Inheritance and Polymorphism
+
 UniMelb Java
 
 # 1. inheritance
@@ -70,9 +72,9 @@ In the above example, the function sayHelloHello called the function sayHello.  
 
 ## 2.1 Pitfall: Overriding vs Overloading
 
-  + **Overridden**: the new method definition given in the derived class has the same "signature".  That is, the exact same number and types of parameters as in the base class.
+  + **Overridden**: the new method definition given in the derived class has _the same "signature"_.  That is, the exact same number and types of parameters as in the base class.
 
-  + **Overloading**: When a method in a derived class has a different signature from the method in the base class
+  + **Overloading**: When a method in a derived class has a _different signature_ from the method in the base class
     + Note that when the derived class overloads the original method, it still inherits the original method from the base class as well.
   
     ```java
@@ -608,6 +610,9 @@ m..n:  any number from m to n.
 ![](Src/UML_package.png)
 
 # 8. Polymorphism
+
+Firstly: refer to 6.1 "is-a"
+
 Polymorphism is the ability to associate many meanings to one method name.  It does this through a special mechanism known as _late binding or dynamic binding_.
 
 + **Inheritance** allows a base class to be defined, and other classes derived from it. Code for the base class can then be used for its own objects, as well as objects of any derived classes.
@@ -671,7 +676,7 @@ System.out.println(mike);
 Exercise: Write suitable toString functions for HourlyEmployee and Employee.
 
 ### e.g.2
-Because of late binding, a method can be written in a base class to perform a task, even if portions of that task aren't yet defined.
+Because of late binding, a method can be written in a base class to perform a task, even if portions of that task aren't yet defined (有点像abstract class).
 
 For an example, the relationship between a base class called Sale and its derived class DiscountSale will be examined.  Consider the following two classes:
 
@@ -702,9 +707,9 @@ public boolean lessThan (Sale otherSale)
     // if the object is an instance of class DiscountSale, 
     // then bill() calls the methods in DiscountSale
     // -------------------------------------------------
-    // e.g. this object is an instance of DiscountSale,
+    // e.g. if this object is an instance of DiscountSale,
     // then below bill() calls the methods defined in DiscountSale
-    // e.g. this object is an instance of Sale,
+    // e.g. if this object is an instance of Sale,
     // then below bill() calls the methods defined in Sale
     // -------------------------------------------------
     // this is because late binding is working, we didn't 
@@ -758,7 +763,7 @@ Note that when the Sale class was created and compiled, the DiscountSale class a
 > Advanced: Late binding is achieved by each object having a table of references to methods.  The name of the method corresponds to the index into the table.  The value of the entry corresponds to the appropriate method for that object to call when that method name is used.  This process is an example of indirection, common in lower level languages.
 
 ## 8.2 Upcasting and downcasting
-### 8.2.1 Upcasting
+### 8.2.1 :question:Upcasting
 
 超类对象变量 <-- 子类对象变量
 
@@ -806,3 +811,83 @@ We also saw downcasting, protected by instanceof, used in the previous slide.
 > Using downcasting in a situation that does not make sense usually results in a run-time error.
 
 # 9. Abstract classes
+
+## 9.1 Background
+
+<img src="Src/UML_employees.png" width="50%">
+
+Imagine the following method is added to the Employee class. It compares employees to to see if they have the same pay:
+
+```java
+public boolean samePay(Employee other)
+{
+return(this.getPay() == other.getPay());
+}
+```
+
+There are several problems with this method:
+
++ The getPay method is invoked in the samePay method
+
++ There are getPay methods in each of the derived classes
+
++ There is no getPay method in the Employee class, nor is there any way to define it reasonably without knowing whether the employee is hourly or salaried.
+
+
+The ideal situation would be if there were a way to
++ Postpone the definition of a getPay method until the type of the employee were known (i.e., in the derived classes)
+
++ Leave some kind of note in the Employee class to indicate that it was accounted for
+
+---
+## 9.2 Abstract method
+
+Java allows this using "abstract" classes and methods. It has a complete method heading, to which has been added the modifier abstract. It cannot be private, otherwise derived class won't be able to override it.
+
+_In order to postpone the definition of a method, Java allows an **abstract method** to be declared._
++ An abstract method has a heading, but no method body
+
++ The body of the method is defined in the derived classes
+  
+```java
+// e.g. abstract method
+public abstract double getPay();  // watch the semicolon
+public abstract void doIt(int count);
+```
+
+An abstract method is like a placeholder for a method that will be fully defined in a descendent class.
+
+## 9.3 Abstract class
+
+> Abstract class: the class that has at least one abstract method.
+> Concrete class: the class that has no abstract methods.
+
+An abstract class must have the modifier abstract included in its class heading:
+
+```java
+public abstract class Employee
+{
+private instanceVariables;
+. . .
+public abstract double getPay();
+. . .
+}
+```
+
+If a derived class of an abstract class adds to or does not define all of the abstract methods, then it is abstract also, and must add abstract to its modifier.
+
+
+
+## Pitfall
+
+An abstract class can only be used to derive more specialized classes. You cannot create an instance of an abstract class
+
+An abstract class constructor cannot be used to create an object of the abstract class.  However, a derived class constructor will include an invocation of the abstract class constructor in the form of super. The constructor in an abstract class is only used by the constructor of its derived classes.
+
+Exercise: Any abstract class can be replaced by a class that simply has methods with an empty method body replacing all virtual methods.  What is the advantage of using an abstract class over the class just described?  (Hint: the answer relates to this pitfall.)
+
+## Tip: An Abstract Class Is a Type
+
+Although an object of an abstract class cannot be created, it is perfectly fine to have a parameter of an abstract class type.  This makes it possible to plug in an object of any of its descendant classes.
+
+It is also fine to use a variable of an abstract class type, as long as it names objects of its concrete descendant classes only.
