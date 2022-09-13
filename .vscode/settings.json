@@ -1,11 +1,12 @@
 {
   "java.project.sourcePaths": [
+    "fullStack/javaCore/chap5/UniMelb",
     "fullStack/javaCore/chap4",
     "fullStack/javaCore/chap3",
     "Algorithm/dataStructureAlgo_Zuo/beginner/class4",
     "Algorithm/dataStructureAlgo_Zuo/beginner/class3",
     "Algorithm/dataStructureAlgo_Zuo/beginner/class1",
     "Algorithm/UniMelb/WK3",
-    "fullStack/javaCore/chap5/UniMelb"
+    "Algorithm/UniMelb/WK7"
   ]
 }
