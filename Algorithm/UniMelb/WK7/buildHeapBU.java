@@ -40,7 +40,7 @@ public class buildHeapBU{
             printArr(arr);
             markSlidingWindow(arr, k);
             System.out.println("k: "+k+ ", v: "+v);
-            System.out.println("----------------------------");
+            System.out.println("---------");
 
             while (!heap && 2*k <= n-2){        // 2*k needs to be less than n-2 to ensure not exceed array bound
                 j = 2*k;                        // j is left child index
@@ -73,7 +73,7 @@ public class buildHeapBU{
             //arr[k] = v;                         // class material
 
             // show array at the end of a for loop
-            System.out.println("-------------------------");
+            System.out.println("---------");
             System.out.println("i="+i+" end: ");
             printArr(arr);
             markSlidingWindow(arr, k);
