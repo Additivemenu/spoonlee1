@@ -2,9 +2,23 @@ UniMelb DB practice on mySQL
 
 ![](Src/physical%20model.jpg)
 
+---
+
 ![](Src/department.png)
 
 ![](Src/employee.png)
+
+---
+
+![](Src/supplier.png)
+
+![](Src/delivery.png)
+
+---
+
+![](Src/item.png)
+
+![](Src/sale.png)
 
 
 [Week 5 tut: basic SQL](WK5/readme.md)

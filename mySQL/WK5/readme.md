@@ -189,7 +189,7 @@ From employee;
 Group by永远伴随着aggregate function一起使用, 如下例中,
 Group by floor 代表count()是针对floor不同的值, 分别进行count;
 
-如果不写group by, 则结果count全部的row
+如果不写group by, 则结果count全部的row, 所以注意在使用aggregate function时确保你写了正确的group by. group by 后面也可跟多个column, 见week6 tut 4.
 
 ```sql
 Select floor, count(departmentid)
