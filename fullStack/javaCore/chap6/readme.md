@@ -105,8 +105,145 @@ In the previous example, "StringArgument" is an argument to the Exception constr
 This is the string used for the value of the string instance variable of exception e.  Therefore, the method call e.getMessage() returns this string.
 
 
+# 3. Exception classes
+
+There are more exception classes than just the single class Exception.
+
++ There are more exception classes in the standard Java libraries
+
++ New exception classes can be defined like any other class
+
+All predefined exception classes have the following properties:
+
++ There is a constructor that takes a single argument of type String.
+
++ The class has an accessor method getMessage that can recover the string given as an argument to the constructor when the exception object was created.
+
+All programmer-defined exception classes must be derived from the class Exception its descendants.
+
+## 3.1 Exception Classes from Standard Packages
+
+### 3.1.1 base exception class
+The predefined exception class Exception is the root class for all exceptions. Every exception class is a descendent class of the class Exception.
 
 
 
+The class Exception is in the java.lang package, and so requires no import statement.
 
+### 3.1.2 predefined derived exception classes
+Numerous predefined exception classes are included in the standard packages that come with Java. For example:
+
++ IOException
+
++ NoSuchMethodException
+
++ FileNotFoundException
+
+Many exception classes must be imported in order to use them.
+
+```shell
+import java.io.IOException;
+```
+
+## 3.2 Defining Exception Classes
+
+A throw statement can throw an exception object of any exception class.
+
+Instead of using a predefined class, exception classes can be programmer-defined
++ These can be tailored to carry the precise kinds of  information needed in the catch block
++ A different type of exception can be defined to identify each different exceptional situation
+
+Constructors are the most important members to define in an exception class
++ They must behave appropriately with respect to the variables and methods inherited from the base class
++ Often, there are no other members, except those inherited from the base class
+
+
+The following exception class performs these basic tasks only:
+
+```java
+class Main {
+    public static void main(String[] args) {
+        try{
+           double c = 9.0/0; 
+           throw new DivisionByZeroException();  // non argument constructor
+        }
+        catch(DivisionByZeroException e){
+            String message = e.getMessage();
+            System.out.println(message);
+            System.exit(1);
+        }
+    }
+}
+
+class DivisionByZeroException extends Exception {
+    public DivisionByZeroException() {
+        super("Error: divisor cannot be Zero");
+    }
+
+    public DivisionByZeroException(String message) {
+        super(message);
+    }
+}
+```
+
+The two most important things about an exception object are 
++ Its type (i.e., exception class) and 
++ The message it carries.
+  + The message is sent along with the exception object as an instance variable. Furthermore, this message can be recovered with the accessor method getMessage, so that the catch block can use the message.
+
+### 3.2.1 Programmer-Defined Exception Class Guidelines
+
+A programmer-defined exception class must be a derived class of an already existing exception class.
+
+The exception class should allow for the fact that the method getMessage is inherited.   For all predefined exception classes, getMessage returns the string that is passed to its constructor as an argument, or it will return a default string if no argument is used with the constructor.
+
+At least two constructors should be defined:
+
++ A constructor that takes a string argument and begins with a call to super, which takes the string argument.
+
++ A no-argument constructor that includes a call to super with a default string as the argument.
+
+Often more constructors will be provided, to pass additional information. For instance, to take types other than String as the argument.
+
+
+## 3.3 Other message types
+
+An exception class constructor can be defined that takes an argument of any other type. 
+
+It would store its value in an instance variable.  It would need to define accessor methods for this instance variable.
+
+```java
+class Main {
+    public static void main(String[] args) {
+        
+    }
+}
+
+class BadNumberException extends Exception {
+    private int badNumber;
+
+    // Accessor
+    public int getBadNumber () {
+        return badNumber;
+    }
+
+    // new constructor taking integer ----------------
+    public BadNumberException (int number) {
+        super("Bad number");
+        badNumber = number;   // take other type of argument as instance variable
+    }
+
+    // Standard constructors------------------------
+    public BadNumberException () {
+        super ("Bad number");
+        badNumber = -1;
+    }
+
+    public BadNumberException (String message) {
+        super(message);
+        badNumber = -1;
+    }
+
+}
+```
 

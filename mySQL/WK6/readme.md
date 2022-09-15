@@ -164,10 +164,13 @@ where department.floor = 5;
 
 When we join more than 2 tables, the same principle apply, there must be a common column between the two entities functioning as a primary key/ foreign key referential integrity
 
+
+1. Query: find the sale dates of all types of tents
+
 We want to join item, saleitem, sale these three tables(they are directly connected):
 
-
 ```sql
+# find the sale dates of all types of tents
 Select *
 From item inner join saleitem
 on item.itemid = saleitem.itemid inner join sale
@@ -179,6 +182,7 @@ Results:
 ![](Src/tent1.png)
 
 ```sql
+# find the sale dates of all types of tents
 Select item.name as item_name, saledate, sum(saleitem.quantity)
 From item inner join saleitem
 on item.itemid = saleitem.itemid inner join sale
@@ -192,6 +196,7 @@ Results:
 ![](Src/tent2.png)
 
 ```sql
+# find the sale dates of all types of tents
 Select item.name as item_name, saledate, sum(saleitem.quantity)
 From item inner join saleitem
 on item.itemid = saleitem.itemid inner join sale
