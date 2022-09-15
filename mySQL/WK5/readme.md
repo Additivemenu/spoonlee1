@@ -185,9 +185,10 @@ Select count(*)
 From employee;
 ```
 
-# 7. Group by
+# 7.:full_moon:Group by
 Group by永远伴随着aggregate function一起使用, 如下例中,
-Group by floor 代表count()是针对floor不同的值, 分别进行count
+Group by floor 代表count()是针对floor不同的值, 分别进行count;
+
 如果不写group by, 则结果count全部的row
 
 ```sql
