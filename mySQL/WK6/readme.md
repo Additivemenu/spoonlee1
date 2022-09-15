@@ -69,6 +69,7 @@ On department.departmentid = employee.departmentid;
 ```
 
 Results:
+
 ![](Src/innerjoin1.png)
 
 # 3. Sub Queries 
