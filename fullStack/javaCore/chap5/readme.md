@@ -762,33 +762,45 @@ Note that when the Sale class was created and compiled, the DiscountSale class a
 
 > Advanced: Late binding is achieved by each object having a table of references to methods.  The name of the method corresponds to the index into the table.  The value of the entry corresponds to the appropriate method for that object to call when that method name is used.  This process is an example of indirection, common in lower level languages.
 
-## 8.2 Upcasting and downcasting
+## 8.2 :question:Upcasting and downcasting
+
+:full_moon: 先看后面接着的网上找的解释, UniMelb Java的解释是一坨屎看不懂
+
 ### 8.2.1 :question:Upcasting
 
-超类对象变量 <-- 子类对象变量
+想让超类对象变量引用一个子类对象, legal, 但是这个超类对象变量在编译器看来依然是超类对象变量, 无法使用子类对象的额外方法与字段. 就像你爸想登录你的wow账号, 却无法游玩一样.
+
+超类对象变量 <-- 子类对象变量: legal因为车(derived class)是载具(base class)
 
 Upcasting is when an object of a derived class is assigned to a variable of a base class (or any ancestor class)
 
 ```java
-Sale saleVariable;                  //Base class
+// create class type variable----------------------------
+Sale saleVariable;                                                //Base class
 DiscountSale discountVariable = new DiscountSale("paint", 15,10); //Derived class
-saleVariable = discountVariable;    //Upcasting 
+
+// upcasting---------------------------------------------
+saleVariable = discountVariable;    // 本质还是赋给指针的值  
 // now that saleVariable and discountVariable points to the same
-// object in memory, but saleVariable cannot access exclusive 
+// object in memory, 
+// --------------------
+// but saleVariable cannot access exclusive 
 // methods defined in DiscountSale class, 因为编译器依然把
-// saleVariable看作是Sale class
+// saleVariable看作是Sale class (base class)
 System.out.println(saleVariable.toString());
 ```
 Because of late binding, toString above still uses the definition given in the DiscountSale class.
 :question:what? this conflicts with javaCore 5.1.5 多态, experiment it!!!
 
-### 8.2.2 Downcasting
+### 8.2.2 :question:Downcasting
 
-子类对象变量 <-- 超类对象变量: problematic 
+想让子类对象变量引用一个超类对象, 经常会出现问题, 因为这个子类对象变量...
+
+子类对象变量 <-- 超类对象变量: usually problematic as 载具(base class)不一定就得是车(derived class)
 
 Downcasting is when a type cast is performed from a base class to a derived class (or from any ancestor class to any descendent class).
 
-Downcasting has to be done very carefully.  In many cases it doesn't make sense, or is illegal:
+**Downcasting has to be done very carefully.  In many cases it doesn't make sense, or is illegal**:
 
 ```java
 //will produce compiler error
@@ -797,6 +809,8 @@ discountVariable = saleVariable
 //will produce run-time error
 discountVariable = (DiscountSale)saleVariable;
 ```
+
+#### when downcasting is necessary
 
 There are times, however, when downcasting is necessary, e.g., inside the equals method for a class:
 
@@ -809,6 +823,167 @@ We also saw downcasting, protected by instanceof, used in the previous slide.
 > Note!
 > It is the responsibility of the programmer to use downcasting only in situations where it makes sense.  The compiler does not check to see if downcasting is a reasonable thing to do.
 > Using downcasting in a situation that does not make sense usually results in a run-time error.
+
+
+## 8.2 Upcasting and downcasting
+
+[resource](https://www.codejava.net/java-core/the-java-language/what-is-upcasting-and-downcasting-in-java#:~:text=1%20What%20is%20Upcasting%20in%20Java%3F%20Upcasting%20is,tree.%20...%204%20Why%20is%20Downcasting%20in%20Java%3F)
+
+Before we go into the details, suppose that we have the following class hierarchy:
+
+Mammal > Animal > Dog, Cat
+
+Mammal is the super interface:
+```java
+public interface Mammal {
+    public void eat();
+ 
+    public void move();
+ 
+    public void sleep();
+}
+```
+
+Animal is the abstract class:
+```java
+public abstract class Animal implements Mammal {
+    public void eat() {
+        System.out.println("Eating...");
+    }
+ 
+    public void move() {
+        System.out.println("Moving...");
+    }
+ 
+    public void sleep() {
+        System.out.println("Sleeping...");
+    }
+ 
+}
+```
+
+Dog and Cat are the two concrete sub classes:
+```java
+public class Dog extends Animal {
+    public void bark() {
+        System.out.println("Gow gow!");
+    }
+    public void eat() {
+        System.out.println("Dog is eating...");
+    }
+}
+ 
+public class Cat extends Animal {
+    public void meow() {
+        System.out.println("Meow Meow!");
+    }
+}
+```
+
+### 8.2.1 Upcasting
+Upcasting is casting a subtype to a supertype, upward to the inheritance tree. Let’s see an example:
+
+```java
+Dog dog = new Dog();
+Animal anim = (Animal) dog;
+anim.eat();
+```
+
+Here, we cast the Dog type to the Animal type. Because Animal is the supertype of Dog, this casting is called upcasting.
+
+> **Note that the actual object type does not change because of casting. The Dog object is still a Dog object. Only the reference type gets changed.** Hence the above code produces the following output:
+> ```shell
+> Dog is eating…
+> ```
+
+Upcasting is always safe, as we treat a type to a more general one. In the above example, an Animal has all behaviors of a Dog. 说白了还是 "is-a"关系, a dog is a dog, and also an animal.
+
+This is also another example of upcasting:
+```java
+Mammal mam = new Cat();
+Animal anim = new Dog();
+```
+
+#### why upcasting in java?
+Generally, upcasting is not necessary. However, we need upcasting when we want to write general code that deals with only the supertype. Consider the following class:
+```java
+public class AnimalTrainer {
+    public void teach(Animal anim) {
+        anim.move();
+        anim.eat();
+    }
+}
+```
+
+Here, the teach() method can accept any object which is subtype of Animal. So objects of type Dog and Cat will be upcasted to Animal when they are passed into this method:
+```java
+Dog dog = new Dog();
+Cat cat = new Cat();
+ 
+AnimalTrainer trainer = new AnimalTrainer();
+trainer.teach(dog);
+trainer.teach(cat);
+```
+
+
+### 8.2.2 Downcasting
+Downcasting is casting to a subtype, downward to the inheritance tree. Let’s see an example:
+```java
+Animal anim = new Cat();
+Cat cat = (Cat) anim;
+```
+Here, we cast the Animal type to the Cat type. As Cat is subclass of Animal, this casting is called downcasting.
+
+Unlike upcasting, downcasting can fail if the actual object type is not the target object type. For example:
+
+```java
+Animal anim = new Cat();
+Dog dog = (Dog) anim;       //mismatch
+```
+This will throw a ClassCastException because the actual object type is Cat. And a Cat is not a Dog so we cannot cast it to a Dog.
+
+The Java language provides the instanceof keyword to check type of an object before casting. For example:
+```java
+if (anim instanceof Cat) {
+    Cat cat = (Cat) anim;
+    cat.meow();
+} else if (anim instanceof Dog) {
+    Dog dog = (Dog) anim;
+    dog.bark();
+}
+```
+
+So if you are not sure about the original object type, use the instanceof operator to check the type before casting. This eliminates the risk of a ClassCastException thrown.
+
+
+#### why downcasting in java?
+Downcasting is used more frequently than upcasting. Use downcasting when we want to access specific behaviors of a subtype.
+
+Consider the following example:
+```java
+public class AnimalTrainer {
+    public void teach(Animal anim) {
+        // do animal-things
+        anim.move();
+        anim.eat();
+ 
+        // if there's a dog, tell it barks
+        if (anim instanceof Dog) {
+            Dog dog = (Dog) anim;
+            dog.bark();
+        }
+    }
+}
+```
+Here, in the teach() method, we check if there is an instance of a Dog object passed in, downcast it to the Dog type and invoke its specific method, bark().
+
+### 8.2.3 Summary of upcasting and downcasting
+Okay, so far you have got the nuts and bolts of upcasting and downcasting in Java. Remember:
++ Casting does not change the actual object type. Only the reference type gets changed.
++ Upcasting is always safe and never fails.
++ Downcasting can risk throwing a ClassCastException, so the instanceof operator is used to check type before casting.
+
+
 
 # 9. Abstract classes
 
