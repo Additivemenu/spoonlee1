@@ -212,7 +212,66 @@ Results:
 # 5. Having clause
 
 The HAVING clause acts like a WHERE  clause but it identifies groups meeting a criteria, rather than rows. 
+
 **A HAVING clause usually follows a GROUP BY clause.**
+
+## e.g.1
+
+```sql
+# list department names with more than 2 employees
+Select department.name, count(employee.employeeid)
+From department inner join employee
+on department.departmentid = employee.departmentid
+group by department.name
+Having count(employee.employeeid) > 2;
+```
+Results:
+![](Src/having1.png)
+
+This is based on group by results, if only have:
+
+```sql
+Select department.name, count(employee.employeeid)
+From department inner join employee
+on department.departmentid = employee.departmentid
+group by department.name;
+```
+Results:
+![](Src/having_showall.png)
+
+## 5.1 Practice
+
+### :star: :question: e.g.1
+find the item id's sold by at least two departments on the second floor
+
+```sql
+select *
+from item inner join deliveryitem inner join department
+on item.itemid = deliveryitem.itemId 
+AND deliveryitem.departmentid = department.departmentid
+Where floor = 2
+Order by item.itemid;
+```
+Results:
+![](Src/having_practice1_all.png)
+
+:question: what is 'distinct' used for??
+
+
+
+
+### e.g.2 
+
+```sql
+select department.departmentid, avg(salary)
+from department inner join employee 
+on department.departmentid = employee.departmentid
+Group by department.departmentid
+Having avg(salary) > 55000;
+```
+
+remember having is the way to use a condition for any column that has an aggregate function used on it (e.g. AVG, MAX, SUM, COUNT etc)
+
 
 
 # 6. Union
