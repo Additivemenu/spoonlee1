@@ -26,7 +26,9 @@ File>preferences>configure snippet编辑自定义模板代码
 
 + [chapter5: inheritance](chap5/readme.md)
 
-+ [chapter6: exception handling](chap6/readme.md)
++ [chapter6: interface](chap6/readme.md)
+
++ [chapter7: exception handling](chap7/readme.md)
 
 
 
