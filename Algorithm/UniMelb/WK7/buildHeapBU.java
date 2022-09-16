@@ -8,7 +8,8 @@ import javax.print.event.PrintJobListener;
 public class buildHeapBU{
     public static void main(String[] args)
     {
-        int[] arr1 = {0, 2,9,7,6,5,8,3};  // arr1[0] should contain nothing
+        // int[] arr1 = {0, 2,9,7,6,5,8,3};  // arr1[0] should contain nothing
+        int[] arr1 = {0, 0,1,2,3,4,5,6,7,8,9};  // arr1[0] should contain nothing
         System.out.println("Original array is: ");
         printArr(arr1);
 
@@ -42,14 +43,17 @@ public class buildHeapBU{
             System.out.println("k: "+k+ ", v: "+v);
             System.out.println("---------");
 
-            while (!heap && 2*k <= n-2){        // 2*k needs to be less than n-2 to ensure not exceed array bound
+            while (!heap && 2*k <= n-1){        // 2*k needs to be less than n-1 to ensure not exceed array bound
                 j = 2*k;                        // j is left child index
 
                 // determine the larger child
                 if (j < n-1){
-                    if (arr[j] < arr[j+1]){
+                    
+                    if (arr[j] < arr[j+1]){     // j+1 might also exceed bound
                         j=j+1;                  // j points to the largest child
                     }
+                }else if (j==n-1){              // when j points to the last element of array
+                    System.out.println("wow, j == n-1! no j+1!");
                 }
 
                 System.out.println("k: "+k+ ", v: "+v);
@@ -85,13 +89,13 @@ public class buildHeapBU{
 
     // helper function ------------------------------------------------
     public static void printArr(int[] arr){
-        
+        // print array
         for (int ele:arr){
             System.out.print(ele + ", ");
         }
 
         System.out.println();
-
+        // print index
         for (int i = 0; i<arr.length;i++){
             System.out.print(i+ "  ");
         }
