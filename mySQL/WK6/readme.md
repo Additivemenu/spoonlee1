@@ -213,7 +213,8 @@ Results:
 
 The HAVING clause acts like a WHERE  clause but it identifies groups meeting a criteria, rather than rows. 
 
-**A HAVING clause usually follows a GROUP BY clause.**
+**A HAVING clause usually follows a GROUP BY clause, acting as a filter**
+**A GROUP BY clause specifies how to use an aggregate function**
 
 ## e.g.1
 
@@ -242,7 +243,10 @@ Results:
 ## 5.1 Practice
 
 ### :star: :question: e.g.1
+
 find the item id's sold by at least two departments on the second floor
+
+:question: why join item, deliveryitem and department doesn't work??
 
 ```sql
 select *
@@ -255,9 +259,104 @@ Order by item.itemid;
 Results:
 ![](Src/having_practice1_all.png)
 
-:question: what is 'distinct' used for??
+
+### :star:e.g.1 
+
+find the item id's sold by at least two departments on the second floor
+
+#### join table
+
+```sql
+select *
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2;
+```
+Results:
+
+37 records in total
+
+从左至右为: sale - saleitem - department table,
+是按照SQL里from 的顺序join table的
+
+![](Src/q7_1.png)
 
 
+#### see difference with group by:
+
+count()里面只要不写distinct, 写什么都无所谓, 都代表count row number; 关键在于你是group by哪个column, 这里就像hashmap一样, group by是指定用哪个column来作为横坐标来画histogram统计频率
+
+以下: 
++ group by itemid: 是统计每个itemid的记录对应表里有几行;
++ group by department.departmentid: 是统计每个departmentid的记录对应表里有几行.
+
+```sql
+# group by itemid
+select itemId,  count(department.departmentid)
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2
+Group by itemid;
+```
+
+Results:
+
+![](Src/q7_groupbyitemid.png)
+
+
+```sql
+# group by departmentid
+select department.departmentid,  count(department.departmentid)
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2
+Group by department.departmentid;
+```
+
+Results:
+
+![](Src/q7_groupbydepartmentid.png)
+
+#### count(distinct(...))
+进一步地, 我们把上面group by itemid中count()内的内容改成distinct(department.departmentid)再来看下效果
+
+```sql
+select itemid, count(distinct(department.departmentid))
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2
+Group by itemid;
+```
+Results:
+![](Src/q7_countdistinct.png)
+
+
+The SELECT DISTINCT statement is used to return only distinct (different) values.
+
+相应地, 使用count(distinct(department.departmentid)), 相同的deparmentid记录只算作1行. 比如itemid = 14, 对应有8条记录(如下), 但这8条记录中对应departmentid = 3的有5条, count(distinct(...))只把这5条算作1条; 对应deparmentid = 7的有3条, count(distinct(...))只把这3条算作1条. 故最后itemid=14对应count(distinct(...))为2.
+
+```sql
+select itemid, department.departmentid
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2 AND itemid = 14 AND (department.departmentid = 3 OR department.departmentID=7);
+```
+Results:
+
+![](Src/q7_item14.png)
+
+#### solution
+最后, 在上一步中进行一个having的过滤即得到最终结果
+```sql
+select distinct itemid
+from sale inner join saleitem inner join department
+on sale.saleid = saleitem.saleid AND sale.departmentid = department.departmentid
+where department.floor =2
+Group by itemid
+Having count(distinct(department.departmentid))>1;
+```
+
+![](Src/q7_final.png)
 
 
 ### e.g.2 

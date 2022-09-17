@@ -3,22 +3,38 @@ UniMelb DB practice on mySQL
 ![](Src/physical%20model.jpg)
 
 ---
-
+## department-employee
 ![](Src/department.png)
 
 ![](Src/employee.png)
 
 ---
+## supplier-delivery
+
+supplier
 
 ![](Src/supplier.png)
 
+delivery
+
 ![](Src/delivery.png)
 
----
+deliveryitem
 
-![](Src/item.png)
+![](Src/deliveryitem.png)
+---
+## item-sale 
+
+Sale
 
 ![](Src/sale.png)
+
+saleitem
+
+![](Src/saleitem.png)
+
+item
+![](Src/item.png)
 
 
 [Week 5 tut: basic SQL](WK5/readme.md)
