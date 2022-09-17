@@ -358,6 +358,12 @@ Having count(distinct(department.departmentid))>1;
 
 ![](Src/q7_final.png)
 
+#### :star:Summary
+对于复杂问题:
++ 确保先看明白了physical model
++ 看physical model, 确定要join哪些table
++ 再确定有哪些filter条件要使用, 思考是否需要aggregate function
+
 
 ### e.g.2 
 
@@ -371,6 +377,77 @@ Having avg(salary) > 55000;
 
 remember having is the way to use a condition for any column that has an aggregate function used on it (e.g. AVG, MAX, SUM, COUNT etc)
 
+#### Format()
 
+Format(,2) 可限定格式为显示2位小数点
+```sql
+select department.departmentid, Format(avg(employee.salary),2) AS averageSalary
+from department inner join employee 
+on department.departmentid = employee.departmentid
+Group by department.departmentid
+Having avg(salary) > 55000;
+```
+
+### e.g.3
+
+Type the name of items which have only been delivered by exactly one supplier
+
+类似e.g.1:
+
+```sql
+select item.itemid, item.name, count(distinct(delivery.supplierid))
+From item inner join deliveryitem inner join delivery
+On item.itemid = deliveryitem.itemid AND deliveryitem.deliveryid = delivery.deliveryid
+Group by item.name
+Having count(distinct(delivery.supplierid)) = 1;
+```
+
+### e.g.4
+
+list the suppliers that have delivered at least 10 distinct items. List the supplier name and id.
+
+类似e.g.1
+
+```sql
+select supplier.supplierid, supplier.name, count(distinct(item.itemid))
+From item inner join deliveryitem inner join delivery inner join supplier
+On item.itemid = deliveryitem.itemid AND deliveryitem.deliveryid = delivery.deliveryid AND delivery.supplierid = supplier.supplierid
+Group by supplier.supplierid
+Having count(distinct(item.itemid)) >= 10;
+```
+
+### e.g.5
+
+Type the SQL that for each item, gives its type, the departments that sell the item, and the floor location of these three departments.
+
+just note "for each item", so we need distinct
+
+```sql
+select distinct item.name,  item.type, department.departmentID, department.floor
+From item inner join saleitem inner join sale inner join department
+On item.itemid = saleitem.itemId AND saleitem.saleid = sale.saleid AND sale.departmentID = department.departmentid
+Order by  item.name;
+```
+
+
+### :star:e.g.6
+
+Name the items that are delivered by Nepalese Corp OR sold in the Navigation department
+
+```sql
+select distinct item.name
+From item
+Where itemid In 
+        (select itemID 
+        from deliveryitem inner join delivery inner join supplier
+        On deliveryitem.deliveryid = delivery.deliveryid AND supplier.supplierid = delivery.supplierid
+        where supplier.name = 'Nepalese Corp.')
+OR itemid In 
+        (select itemid
+        From saleitem inner join sale inner join department 
+        On saleitem.saleid = sale.saleid AND sale.departmentid = department.departmentid
+        Where department.name = 'Navigation'
+        );
+```
 
 # 6. Union

@@ -4,7 +4,12 @@ UniMelb DB practice on mySQL
 
 ---
 ## department-employee
+
+department
+
 ![](Src/department.png)
+
+employee
 
 ![](Src/employee.png)
 
@@ -34,6 +39,7 @@ saleitem
 ![](Src/saleitem.png)
 
 item
+
 ![](Src/item.png)
 
 
