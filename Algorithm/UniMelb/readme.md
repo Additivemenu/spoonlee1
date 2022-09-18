@@ -9,6 +9,6 @@
 
 [WK5: decrease and conquer](WK5/readme.md)
 
-[WK6: divide and conquer](WK6/readme.md)
+[WK6: divide and conquer](WK6/readme.md))
 
 [WK7: heap, transform and conquer](WK7/readme.md)

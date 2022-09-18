@@ -434,6 +434,8 @@ Order by  item.name;
 
 Name the items that are delivered by Nepalese Corp OR sold in the Navigation department
 
+1. Use OR 
+
 ```sql
 select distinct item.name
 From item
@@ -450,4 +452,31 @@ OR itemid In
         );
 ```
 
-# 6. Union
+2. Use Union
+
+you could also use the UNION Clause
+
+A UNION Join includes all data from each table that is joined. The columns selected in a UNION join must be the same.
+
+```sql
+Select Distinct item.name
+From item
+Where itemid in 
+        (select Itemid
+        From deliveryitem
+        inner join delivery
+        inner join supplier
+        On deliveryitem.deliveryid = delivery.deliveryid
+        AND supplier.supplierid = delivery.supplierid
+        where supplier.name = 'Nepalese Corp.')
+Union
+        (Select item.name
+        From saleitem
+        inner join sale
+        inner join department
+        inner join item
+        On item.itemid = saleitem.itemid
+        AND saleitem.saleid = sale.saleid
+        AND sale.departmentID = department.departmentid
+        where department.name = 'Navigation');
+```
