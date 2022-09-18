@@ -56,6 +56,8 @@ Quick sort   | divide-and-conquer   | when pivot is the median $$\theta(nlogn)$$
 
 Although merge sort has a better performance guarantee, quick sort is faster on average
 
+[best case of merge sort:](https://stackoverflow.com/questions/57132694/best-case-for-merge-sort)
+
 
 ### Recurrence relations:
 
