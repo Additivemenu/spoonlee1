@@ -57,8 +57,13 @@ To implement an interface, a concrete class (non-abstract class) must do two thi
 
 - The class **must implement all** the method headings listed in the definition(s) of the interfaces(s).
 
-### e.g.
+### e.g.1
 
 Note the use of Object as the parameter type in the following examples.
 
 [Demo: implement_interface](UniMelb/implementInterface_eg.java)
+
+Exercise: Read and understand the above code.  Write a main method to create two HourlyEmployee objects and compare them.
+
+### Abstract classes implementing interfaces
+

@@ -1,5 +1,7 @@
 package DND;
 
+// week 7 lec live code demo
+
 public class DNDGame
 {
     public static void main (String[] args)

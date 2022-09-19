@@ -1,5 +1,8 @@
 package UniMelb;
 
+// content relating to upper bounding, downward bounding refer to chapter 5 inheritance
+
+
 public class OrderedHourlyEmployee extends HourlyEmployee implements Ordered  {
     // if this and other are comparable, then
     // return true if this.getpay() < other.get()--------------------------------

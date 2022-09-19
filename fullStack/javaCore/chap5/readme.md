@@ -1067,7 +1067,10 @@ Although an object of an abstract class cannot be created, it is perfectly fine 
 
 It is also fine to use a variable of an abstract class type, as long as it names objects of its concrete descendant classes only.
 
-# 10. Demo: Dungeons & Dragons (DND)
+# 10. Demo
+## 10.1 Demo: Dungeons & Dragons (DND)
+
+### 10.1.1 Week7 demo
 
 [Task Description](UniMelb/DND/DND.md)
 
@@ -1076,3 +1079,17 @@ It is also fine to use a variable of an abstract class type, as long as it names
 [Demo: DND Player](UniMelb/DND/Player.java)
 
 [Demo: DND Warrior](UniMelb/DND/Warrior.java)
+
+### 10.1.2 Week8 demo
+
+[Task Description](UniMelb/DND/DND.md)
+
+[Demo: DND Game]()
+
+[Demo: DND Player]()
+
+[Demo: DND Warrior]()
+
+
+## 10.2 Demo: Town simulator
+
