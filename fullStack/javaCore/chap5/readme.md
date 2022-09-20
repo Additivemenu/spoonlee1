@@ -1094,3 +1094,25 @@ It is also fine to use a variable of an abstract class type, as long as it names
 ## 10.2 Demo: Town simulator
 
 [Task Description](UniMelb/wk8Tut/townSimulator.md)
+
+### base class
+
+[Demo: TownSimulator](UniMelb/wk8Tut/TownSimulator.java)
+
+[Demo: Town](UniMelb/wk8Tut/Town.java)
+
+[Demo: Entity](UniMelb/wk8Tut/Entity.java)
+
+### extend Entity
+
+[Demo: Building](UniMelb/wk8Tut/Building.java)
+
+[Demo: Resident](UniMelb/wk8Tut/Resident.java)
+
+#### extend Resident
+
+[Demo: Cat](UniMelb/wk8Tut/Cat.java)
+
+[Demo: Dog](UniMelb/wk8Tut/Dog.java)
+
+[Demo: Person](UniMelb/wk8Tut/Person.java)
