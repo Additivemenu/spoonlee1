@@ -398,6 +398,190 @@ Order by department.departmentid;
 
 Find the supplier id and supplier names that deliver both compasses and an item other than compasses
 
-```sql
+## solution1
 
+```sql
+# this works
+Select supplier.SupplierID, supplier.name
+From supplier
+Where supplier.SupplierID In (
+		Select supplier.SupplierID
+		From item inner join deliveryitem inner join delivery inner join supplier
+		On item.itemID = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.SupplierID = supplier.SupplierID
+		Where item.name like 'compass%'
+) And supplier.SupplierID In (
+		Select supplier.supplierid
+		From item inner join deliveryitem inner join delivery inner join supplier
+		On item.itemID = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.SupplierID = supplier.SupplierID
+		Where item.name NOT like 'compass%'
+) Order by supplier.supplierid;
+```
+
+
+```sql
+this also works
+Select distinct supplier.SupplierID, supplier.name
+From item inner join deliveryitem inner join delivery inner join supplier
+On item.itemID = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.SupplierID = supplier.SupplierID
+Where item.name like 'compass%'
+And supplier.SupplierID In (
+		Select supplier.supplierid
+		From item inner join deliveryitem inner join delivery inner join supplier
+		On item.itemID = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.SupplierID = supplier.SupplierID
+		Where item.name NOT like 'compass%'
+) Order by supplier.supplierid;
+```
+
+> Note: Solution 1 uses the approach to find those suppliers that supply things other than compasses and also supply compasses (sub query)
+
+
+## Solution2
+
+```sql
+Select distinct delivery.supplierid, supplier.name
+From supplier inner join delivery inner join deliveryitem inner join item
+On supplier.supplierid = delivery.supplierid AND delivery.deliveryid = deliveryitem.deliveryid AND deliveryitem.itemid = item.itemid
+Where delivery.SupplierID in(
+		select supplierid
+        From delivery inner join deliveryitem inner join item
+        On delivery.DeliveryID = deliveryitem.DeliveryID AND deliveryitem.itemid = item.itemid 
+        Where item.name LIKE 'Compass%'
+)
+Group by delivery.supplierid, supplier.name
+Having count(distinct item.name) > 1
+Order by delivery.SupplierID;
+```
+
+> Note: Solution 2 uses a more generalized approach. The generalizable approach is better as it allows queries such as "_find suppliers that deliver two items other than compasses_" - change the >1 to >2 in the Having clause in solution 2 to do this. (Solution 2 uses distinct to handle multiple deliveries of compasses for the same supplier)
+
+
+# :question:e.g.18 
+
+this is an extended problem from e.g.17
+
+Find suppliers that deliver two items other than compasses
+
+Ambiguity:
++ supplier that do not deliver compasses but only deliver 2 other items
++ supplier that do deliver compasses but also deliver 2 other items
+
+```sql
+# Find supplier and its distinct item delivery number
+Select  supplier.Name AS supplierName, count(distinct(item.itemid))
+From item inner join deliveryitem inner join delivery inner join supplier
+On item.itemid = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.supplierid = supplier.SupplierID
+Group by supplier.name;
+```
+
+
+
+```sql
+# Find suppliers supplying compass records
+Select  *
+From item inner join deliveryitem inner join delivery inner join supplier
+On item.itemid = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.supplierid = supplier.SupplierID
+Where item.name LIKE "compass%";
+```
+
+```sql
+# Solution: correct or not??
+Select supplier.Name AS supplierName, count(distinct(item.itemid))
+From item inner join deliveryitem inner join delivery inner join supplier
+On item.itemid = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.supplierid = supplier.SupplierID
+Where delivery.deliveryid NOT IN(
+		Select delivery.deliveryid
+		From item inner join deliveryitem inner join delivery inner join supplier
+		On item.itemid = deliveryitem.itemId AND deliveryitem.DeliveryId = delivery.DeliveryID AND delivery.supplierid = supplier.SupplierID
+		Where item.name LIKE "compass%"
+)
+Group by supplier.name;
+```
+
+
+
+
+# SQL Homework - Functions
+
+[MySQL reference manual](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
+
+## Q1: monthname()
+
+How many deliveries have here been in the month of July?
+
+```sql
+Select count(DeliveryID)
+From delivery
+Where Monthname(deliverydate) = 'July';
+```
+
+## Q2
+
+List the names of the tents available for sale
+
+```sql
+Select name
+From Item
+Where name like '%Tent%';
+```
+
+## Q3 
+
+What month has had the highest number of sales?
+
+```sql
+Select count(SaleId), monthname(saledate)
+From Sale
+Group by monthname(saledate)
+Order by count(saleid) Desc
+Limit 1;
+```
+
+## Q4
+
+List the salary total and employee count for each departmentid. Order by the smallest salary total to largest 
+
+```sql
+Select departmentid, count(employeeid), sum(salary) AS total_salary
+From employee
+Group by departmentid
+Order by total_salary;
+```
+
+## Q5: dayname()
+
+How many sales have been on a Sunday
+
+```sql
+Select count(saleid)
+From sale
+Where dayname(saledate) = 'Sunday';
+```
+
+## Q6: daydiff(), max(), min()
+
+How many days have elapsed between the first delivery date and most recent delivery date for each supplier?
+
+```sql
+Select supplierid, datediff(max(deliverydate), min(deliverydate)), count(distinct(deliverydate))
+From delivery
+Group by supplierid;
+```
+
+## Q7: concat()
+
+Produce the following output by writing a SQL statement
+
+```sql
+Select Concat('The', name, 'department is on floor number',floor) AS 'Where is each department?'
+From department;
+```
+
+## Q8 stddev()
+
+Find the minimum, maximum, average and standard deviation for salaries in each department
+
+```sql
+Select departmentid, Min(salary), Max(salary), stddev(salary)
+From employee
+Group by departmentid;
 ```
