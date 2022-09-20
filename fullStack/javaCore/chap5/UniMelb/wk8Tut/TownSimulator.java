@@ -13,7 +13,6 @@ public class TownSimulator {
 		// You can uncomment it and use it as is or delete it and write your own.
 		// Feel free to experiment with adding lots of different entities to your town here!
 		
-		
 		// Create a Town.
 		Town town = new Town("Forest");
 		

@@ -453,9 +453,9 @@ Having count(distinct item.name) > 1
 Order by delivery.SupplierID;
 ```
 
-Note here we Select delivery.supplierid, instead of supplier.supplierid, to make sure the supplierid selected do participate in the relationship with item (while there could exist a supplier who haven't deliver any items). 
+Note here we Select delivery.supplierid, instead of supplier.supplierid, to make sure the supplierid selected do participate in the relationship with item (while there could exist a supplier who haven't deliver any items). Be very careful to this!
 
-In this solution, we firstly find out which supplier deliver compass, and then count how many distinct items the suppliers have delivered
+In this solution, we firstly find out which supplier deliver compass, and then count how many distinct items the suppliers have delivered, at last screen out the ones with more than 1 distinct items delivered
 
 > Note: Solution 2 uses a more generalized approach. The generalizable approach is better as it allows queries such as "_find suppliers that deliver two items other than compasses_" - change the >1 to >2 in the Having clause in solution 2 to do this. (Solution 2 uses distinct to handle multiple deliveries of compasses for the same supplier)
 

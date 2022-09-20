@@ -7,23 +7,23 @@ package wk8Tut;
 public class Building extends Entity {
 	
 	// fields -----------------------------------------
-    String color;
-    int height; 
+    private final String color;
+    private final int height; 
 
 
     // constructors ----------------------------------
-    public Building(){
-        this.color = "white";
-        this.height = 50;
+    public Building(String color, int height){
+        super();
+        this.color = color;
+        this.height = height;
     }
 
 
     // methods ---------------------------------------
-
 	@Override
 	public String describe() {
 		// TODO: Implement this method.
-		return color + " building with" + height + "floor(s)";
+		return color + " building with " + height + "floor(s)";
 	}
 
 }

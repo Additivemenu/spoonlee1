@@ -7,19 +7,18 @@ package wk8Tut;
  */
 import java.util.ArrayList;
 
+
+// Town "has" Entity
 public class Town {
 	
 	// fields --------------------------------------------------
-	String name;
-    ArrayList<Entity> entities;
+	private String name;
+    private ArrayList<Entity> entities = new ArrayList<Entity>();
 	
-
 	// constructors ---------------------------------------------
 	public Town(String name){
-        this.name = "bikini beach";
-        this.entities = new ArrayList<Entity>(10);
+        this.name = name;
     }
-
 
     // methods --------------------------------------------------
 	/**
@@ -36,13 +35,10 @@ public class Town {
 	 */
 	public void displayDescription() {
 
-        System.out.println("The name of the town: " + this.name);
-		System.out.println("The number of entities in this town: " + this.entities.size());
+        System.out.println("The name of the town: " + this.name + ", the number of entities in this town: " + this.entities.size());
 		
         for (Entity ele: entities){
-
-            System.out.println(ele.describe());
-            
+            System.out.println("It has ... a" + ele.describe());
         }
 		
 	}
@@ -51,9 +47,10 @@ public class Town {
 	 * Prints out the result of interacting with every object inside the town.
 	 */
 	public void displayInteraction() {
-		
-		
-		
+
+		for (Entity ele:entities){
+			System.out.println("You tried interacting with the " + ele.describe() + "..." + ele.interact());
+		}
 	}
 	
 }

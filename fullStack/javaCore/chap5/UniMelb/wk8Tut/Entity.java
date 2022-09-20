@@ -19,9 +19,9 @@ public abstract class Entity {
 	 * @return a string describing this entity
      * An abstract method
 	 */
+	// abstract method, forces derived class to define this method 
 	public abstract String describe();
 	
-
 	/**
 	 * Return a description of interaction with this entity.
 	 * @return a string describing the result of interacting with this entity

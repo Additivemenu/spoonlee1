@@ -2,20 +2,19 @@ package wk8Tut;
 
 // derived class: Cat, Dog, Person 
 
-public class Resident extends Entity{
+public abstract class Resident extends Entity{
     // fields -------------------------------------
-    String name;
-
+    private String name;
 
     // constructors -------------------------------
-    public Resident(){
-
+    public Resident(String name){
+        super();
+        this.name = name;
     }
 
     // methods ------------------------------------
 
-    public String describe(){
-
-        return "entity";
+    public String getName(){
+        return name;
     }
 }
