@@ -881,6 +881,9 @@ public class Cat extends Animal {
 ```
 
 ### 8.2.1 Upcasting
+
+超类对象变量 <-- 子类对象变量:
+
 Upcasting is casting a subtype to a supertype, upward to the inheritance tree. Let’s see an example:
 
 ```java
@@ -891,7 +894,7 @@ anim.eat();
 
 Here, we cast the Dog type to the Animal type. Because Animal is the supertype of Dog, this casting is called upcasting.
 
-> **Note that the actual object type does not change because of casting. The Dog object is still a Dog object. Only the reference type gets changed.** Hence the above code produces the following output:
+> :star::star::star:**Note that the actual object type does not change because of casting. The Dog object is still a Dog object. Only the reference type gets changed.** Hence the above code produces the following output:
 > ```shell
 > Dog is eating…
 > ```
@@ -904,7 +907,7 @@ Mammal mam = new Cat();
 Animal anim = new Dog();
 ```
 
-#### why upcasting in java?
+#### :star: why upcasting in java?
 Generally, upcasting is not necessary. However, we need upcasting when we want to write general code that deals with only the supertype. Consider the following class:
 ```java
 public class AnimalTrainer {
@@ -927,6 +930,9 @@ trainer.teach(cat);
 
 
 ### 8.2.2 Downcasting
+
+子类对象变量 <-- 超类对象变量:
+
 Downcasting is casting to a subtype, downward to the inheritance tree. Let’s see an example:
 ```java
 Animal anim = new Cat();
@@ -956,7 +962,7 @@ if (anim instanceof Cat) {
 So if you are not sure about the original object type, use the instanceof operator to check the type before casting. This eliminates the risk of a ClassCastException thrown.
 
 
-#### why downcasting in java?
+#### :star:why downcasting in java?
 Downcasting is used more frequently than upcasting. Use downcasting when we want to access specific behaviors of a subtype.
 
 Consider the following example:

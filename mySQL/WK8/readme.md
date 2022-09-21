@@ -120,6 +120,13 @@ Order by item.Name;
 
 # 4. Relational divides
 
++ IN: Used to test whether the attributes is IN the sub-query
++ EXISTS: return true if the sub-query return one or more record
++ ANY: Return true if ANY of the sub-query meet the condition
++ ALL: Return true if ALL of the sub-query meet the condition
+
+>+ Note that a sub-query can invoke the table listed in its parent-query 
+
 ## :star: e.g.14
 
 List the departments that have at least one sale of all the items delivered to them.
@@ -130,6 +137,8 @@ List the departments that have at least one sale of all the items delivered to t
 Find the items (itemid) sold by ALL departments located on the second floor
 
 ### Solution1
+
+Basic idea is to find out the distinct salePair (itemid, departmentid), then count the records group by itemid and compared it with the department number on the 2nd floor
 
 #### Solution1 step1: 
 
@@ -145,16 +154,20 @@ Order by saleitem.itemId, department.departmentID;
 
 #### :star: Solution1 step2: 
 
-show distinct sale pair using group by two columns (yes, we can use GROUP BY based on 2 columns, in that case, the whole databased is divided based on the key(column1, column2) and then do the aggregate function)
+show distinct sale pair using group by two columns 
+
+> Note: yes, we can use GROUP BY based on 2 columns, in that case, the table is divided based on the key(column1, column2) and then do the aggregate function
 
 ```sql
-select distinct saleitem.itemId, department.departmentID, count(saleitem.itemId)
+select saleitem.itemId, department.departmentID, count(saleitem.itemId)  # add distinct in front of saleitem.itemid will give the same results
 From saleitem inner join sale inner join department
 On saleitem.SaleId = sale.SaleID AND sale.departmentID = department.departmentID
 Where department.Floor = 2
 Group by saleitem.itemId, department.departmentID
 Order by saleitem.itemId, department.departmentID;
 ```
+
+:question: Why add distinct in front of saleitem.itemid in the first line will give the same results?
 
 ##### :question: is there an easier way to display distinct sale pair?
 
@@ -200,6 +213,30 @@ Having count(itemid) = (
 ```
 
 ### Solution2
+
+Basic idea：
+
+Similar to e.g.15
+
+> Note: sub-query中可以引用parent-query的table
+
+```sql
+Select distinct itemid
+From item
+Where NOT EXISTS (
+	Select *
+    From department
+    Where department.Floor = 2
+    AND NOT EXISTS (
+		Select *
+        From saleitem inner join sale
+        On saleitem.SaleId = sale.SaleId
+        Where saleitem.itemId = item.itemid AND sale.departmentID = department.departmentID
+    )
+)
+Order by itemid;
+```
+
 
 ## e.g.16
 

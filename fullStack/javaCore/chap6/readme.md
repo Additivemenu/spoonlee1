@@ -55,7 +55,8 @@ To implement an interface, a concrete class (non-abstract class) must do two thi
 
   at the start of the class definition. If more than one interface is implemented, each is listed, separated by commas.
 
-- The class **must implement all** the method headings listed in the definition(s) of the interfaces(s).
+- The class **must implement all** the method headings listed in the definition(s) of the interfaces(s). 
+  + Abstract class implementing the interface can just give an abstract method.
 
 ### e.g.1
 
@@ -63,7 +64,17 @@ Note the use of Object as the parameter type in the following examples.
 
 [Demo: implement_interface](UniMelb/implementInterface_eg.java)
 
-Exercise: Read and understand the above code.  Write a main method to create two HourlyEmployee objects and compare them.
 
-### Abstract classes implementing interfaces
+### 1.2.1 Abstract classes implementing interfaces
 
++ Abstract classes may implement one or more interfaces.  Any method headings given in the interface that are not given definitions are made into abstract methods.
+
++ A concrete class must have definitions for all the method headings given in the abstract class and the interface.  Notice in the following example that the concrete class doesn't need to redefine the method precedes, because it is already defined in the abstract class.
+
+[Demo: abstract class implementing interfaces](UniMelb/abstractClass_impleInterf.java)
+
+## 1.3 Derived interface
+
+## 1.4 The comparable interface
+
+## 1.5 Inconsistent interface
