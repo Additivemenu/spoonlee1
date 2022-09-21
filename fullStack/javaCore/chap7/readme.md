@@ -1,3 +1,6 @@
+# 0. Overview
+These are personal notes referring to UniMelb Java week 8 learning materials
+
 # 1. Introduction to exception handling
  
 Java exception handling facilities are used when the invocation of a method may cause something exceptional to occur.
