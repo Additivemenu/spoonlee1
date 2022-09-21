@@ -7,7 +7,7 @@ An interface is essentially a set of methods that a class promises to implement.
 
 It is something like an extreme case of an abstract class. However, an interface is not a class. It is a type that can be satisfied by any class that "implements" the interface (i.e., defines the required methods).
 
-## 1.1 Define an interface
+## 1.1 :moon: Define an interface
 
 The syntax for defining an interface is similar to that of defining a class, except the word interface is used in place of class.
 
@@ -46,7 +46,7 @@ public interface Ordered {
 }
 ```
 
-## 1.2 Implementing an interface
+## 1.2 :full_moon:Implementing an interface
 
 To implement an interface, a concrete class (non-abstract class) must do two things:
 
@@ -170,4 +170,26 @@ Although an interface cannot contain any member variables, it can contain define
 
 Any class that implements the interface has access to these defined constants.
 
-## 1.6 Inconsistent interface
+## 1.6 :full_moon:Inconsistent interface
+
+In Java, a class can have only one base class.  This prevents any inconsistencies arising from different definitions having the same method heading.
+
+In addition, a class may implement any number of interfaces.  Since interfaces do not have method bodies, the above problem cannot arise.
+
+### 1.6.1 Problem
+
+However, there are other types of inconsistencies that can arise. When a class implements two interfaces:
+
++ One type of inconsistency will occur if the interfaces have constants with the same name, but with different values.
+
++ Another type of inconsistency will occur if the interfaces contain methods with the same name and signature but different return types
+
+If a class definition implements two inconsistent interfaces, then that is an error, and the class definition is illegal.
+
+### 1.6.2 Problem
+
+Another more subtle problem is that both interfaces can have the same method heading but with different intended semantics.
+
++ For example, a method same can be intended in one interface to return true if two objects have equal value (like equals) and in the other interface be intended to return true if two references refer to the same object (like ==).  A class implementing  boolean same (Object o) will satisfy the required syntax of both interfaces (i.e., it will be legal), but will probably cause unintended behaviour.
+
++ Alternatively, an interface could capture the idea of partial ordering.  For example, (a,b) < (c,d) if a<c and b<d,  (a,b) > (c,d) if a>c and b>d, but they are "incomparable" otherwise.  If a programmer carelessly required a method compareTo of this class to return 0 for incomparable pairs, then a class implementing both this interface and Comparable would run into trouble in a binary search.  (What trouble?) For this reason, it is good practice not to reuse the names of methods of standard java interfaces.  If in doubt, search the web for the name you are considering and see if you find it in an existing interface.
