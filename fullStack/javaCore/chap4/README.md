@@ -850,7 +850,7 @@ Java程序设计语言对对象采用的不是按引用调用, 实际上, **对�
 
     + A class that contains public mutator methods or other public methods that can change the data in its objects is called a **mutable class**, and its objects are called **mutable objects**.
 
-    + **Never write a method that returns a mutable instance variable**(因为这样其实会return指向内存中object的指针, 这个指针如果暴露在外，通过mutator method就可以改动内存中的object).  Instead, use a copy constructor to return a reference to a **completely independent copy** of the mutable object. 
+    + **Never write a method that returns a mutable instance variable**(因为这样其实会return指向内存中object的指针, 这个指针如果暴露在外（比如将return的reference赋给一个变量, 之后仅仅通过这个变量就可以改变内存中object的状态），通过mutator method就可以改动内存中的object).  Instead, use a copy constructor to return a reference to a **completely independent copy** of the mutable object. 
         >+ A **deep copy** of an object is a copy that, with one exception, has no references in common with the original.  The exception is that references to immutable objects are allowed to be shared.
         >+ Any copy that is not a deep copy is called a **shallow copy**. This type of copy can cause dangerous privacy leaks in a program.
         >+ shallow copy当然效率比deep copy更高
