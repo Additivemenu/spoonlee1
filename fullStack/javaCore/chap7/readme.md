@@ -250,7 +250,7 @@ class BadNumberException extends Exception {
 }
 ```
 
-# 4. Multiple catch block
+# 4. :full_moon:Multiple catch block
 
 A try block can potentially throw any number of  exception values, and they can be of differing types.
 
@@ -260,7 +260,7 @@ Different types of exceptions can be caught by placing more than one catch block
 
 Any number of catch blocks can be included, but they must be placed in the correct order. When an exception is thrown in a try block, the catch blocks are examined in order.  The first one that matches the type of the exception thrown is the one that is executed.
 
-> tip: Catch the more specific exception first (i.e., catch a descendant class before an ancestor).
+> tip: **Catch the more specific exception first** (i.e., catch a descendant class before an ancestor).
 
 ## e.g.
 
@@ -281,17 +281,20 @@ class Main {
 }
 ```
 
-Because an ArithmeticException is a descendant of Exception, if you place catch (Exception e) before catch(ArithmeticException) in the code, all ArithmeticException will be caught by the first catch block before ever reaching the second block.  The catch block for ArithmeticException will never be used.  (Ed refuses even to compile this code.) So catch the more specific exception first.
+Because an ArithmeticException is a descendant of Exception, if you place catch (Exception e) before catch(ArithmeticException) in the code, all ArithmeticException will be caught by the first catch block before ever reaching the second block.  The catch block for ArithmeticException will never be used.  (Ed refuses even to compile this code.) **So catch the more specific exception first.**
 
-# 5. Throwing exceptions from methods
+# 5. :full_moon:Throwing exceptions from methods
 The greatest value of exceptions is when we don't know enough of the context to be able to handle the situation.  For example, if we divide by 0, should we replace the answer by a very large number and continue, or should we tell the calling method to choose a different set of parameters and call again?
 
-Because of this, it is common to want to throw an exception in a method, but not catch it in the same method.
+_Because of this, it is common to want to throw an exception in a method, but not catch it in the same method._
 
 In such cases, the program using the method should enclose the method invocation in a try block, and catch the exception in a catch block that follows.  The method that throws the exception would not surround the throw by try and catch blocks.
 
 ## 5.1 Methods throws without catching
-However, the method that throws without catching has to include a throws clause in its header (不然编译时会报错), 这是在提示程序员后续代码必须有catch语句来接收被throw的Exception. 
+
+> **简言之, 如果一个method中throw了exception, 那么这个exception必须在后续的代码执行中被catch; 如果这个throw exception的method没有catch, 要在它的heading上加上throws ...**
+
+However, the method that throws without catching has to include a throws clause in its header (不然编译时会报错), 这是在提示程序员后续代码必须有catch语句来接收被throw的Exception.
 
 The reason is that, if a method can throw an exception but does not catch it, it must provide a warning to the callers.  The process of including an exception class in a throws clause is called **declaring the exception.** 
 
@@ -350,4 +353,85 @@ public void aMethod() throws AnException, AnotherException
 ```
 
 # 6. Advanced topics
-...
+## 6.1 Hierarchy of throwable objects
+he try/throw/catch framework can apply to objects other than exceptions.
+
+![](Src/9_10_throwable_hierarchy.png)
+
+Most importantly, not all exceptions are subject to the "catch or declare" rule(e.g. RuntimeException and its derived class). The compiler checks to see if they are accounted for with either a catch block or a throws clause.
+
++ Exception class
+  + The classes Throwable, Exception, and all descendants of the  class Exception (other than RuntimeException and its descendants) are **checked exceptions**. _They must be either caught in a catch block or declared in a throws clause._
+  + Descendants of RuntimeException are **unchecked exceptions**. _They do not need to be accounted for in a catch block or throw clause._
+
++ Error class
+  + The class Error and all its descendant classes are called **error classes**.  They are not subject to the "catch or declare" rule.
+
+
+## e.g.
+
+## What happens if an exception is never caught?
+If every method up to and including the main method simply includes a throws clause for an exception, that
+exception may be thrown but never caught
+
++ In a GUI program (i.e., a program with a windowing interface), nothing happens - but the user may be left in an unexplained situation, and the program may be no longer be reliable.
++ In non-GUI programs, this causes the program to terminate with an **error message** giving the name of the exception class.
+
+Every well-written program should eventually catch every exception by a catch block in some method.
+
+## When to use exceptions
+There is overhead in using exceptions, even if the exception is not thrown.  The try itself slightly increases run time.
+
+Exceptions should be reserved for situations where a method encounters an unusual or unexpected case that cannot be handled easily in some other way.  (In other languages such as Python, exceptions are used more freely.)
+
+How exceptions are handled depends on how a method is called.
+
+## Event driven programming (作了解)
+
+Exception handling is an example of a programming methodology known as **event-driven programming** (就像JS触发event来调用对应CSS代码一样).  When using event-driven programming, objects are defined so that they send events to other objects that handle the events.  An event is also an object. Sending an event is called firing an event.
+
+In exception handling, the event objects are the exception objects.  They are fired (thrown) by an object when the object invokes a method that throws the exception.  An exception event is sent to a catch block, where it is handled.
+
+Another important type of event driven programming is writing GUI applications.  There, events are typically triggered by a user action, such as a mouse movement, mouse click, or key press.  The handlers for these events can last a long time, such as recalculating a spreadsheet.
+
+## Nested try-catch blocks (作了解)
+
+It is possible to place a try block and its following catch blocks inside a larger try block, or inside a larger catch block.
+
++ If a set of try-catch blocks are placed inside a larger catch block, different names must be used for the catch block parameters in the inner and outer blocks, just like any other set of nested blocks
+
++ If a set of try-catch blocks are placed inside a larger try block, and an exception is thrown in the inner try block that is not caught, then the exception is thrown to the outer try block for processing, and may be caught in one of its catch blocks
+
+## The finally block
+
+## Exception controlled loops
+Sometimes it is better to simply loop through an action again when an exception is thrown, as follows:
+
+```java
+boolean done = false;
+while (! done)
+{
+    try
+    {
+        // CodeThatMayThrowAnException
+        done = true;
+    }
+    catch (SomeExceptionClass e)
+    {
+        // SomeMoreCode
+    }
+}
+```
+
+Exercise: Read and understand the following code.  Try it with inputs "forty", "=1", "10.5", "10,5", "10/5", "10".  Before you try each, guess whether or not nextInt() will succeed.
+
+[Demo: Exception_Controlled_Loops](UniMelb/Exception_controlled_loops.java)
+
+
+## Program exit values
+You will notice that System.exit() takes an argument.  This argument is passed to the operating system when the program finishes.  
+
+If the program is being run from a script, the script will interpret an exit value of
++ 0 as "success", or true, 
++ a non-zero value as "failure" or false.  If the program exits because of an error, it should pass a non-zero argument to exit.  
+

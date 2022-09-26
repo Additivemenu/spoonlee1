@@ -22,6 +22,8 @@ File>preferences>configure snippet编辑自定义模板代码
 
 + [chapter3: fundamentals of Java](chap3/README.md)
 
++ [chapter3.5: File I/O](chap3_5/readme.md)
+
 + [chapter4: class](chap4/README.md)
 
 + [chapter5: inheritance](chap5/readme.md)
