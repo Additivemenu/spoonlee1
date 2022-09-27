@@ -3,7 +3,7 @@ import java.io.PrintWriter;         // the class that formats
 import java.io.FileOutputStream;    // the class that actually writes to the file
 import java.io.FileNotFoundException;
 
-class Main {
+public class binary_writing {
     public static void main (String[] args) {
         PrintWriter outputStream = null;
         

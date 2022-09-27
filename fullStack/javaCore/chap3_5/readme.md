@@ -1,3 +1,7 @@
+[Java I/O tutorial by Oracle](https://docs.oracle.com/javase/tutorial/essential/io/index.html)
+
+[Online tutorial](https://www.tutorialspoint.com/java/java_files_io.htm)
+
 # 1.Introduction
 
 Data stored in variables is lost when a program ends
@@ -8,11 +12,11 @@ We need to store it in a file, either on disk or on an SSD.  This is called Inpu
 
 ## 1.1 Stream objects
 
-To communicate with the outside world, java uses stream objects.
+To communicate with the outside world, java uses stream objects. A stream can be defined as a sequence of data. 
 
-+ If the data flows into a program, then the stream is called an input stream.
++ If the data flows into a program, then the stream is called an **input stream (InPutStream)**.
 
-+ If the data flows out of a program, then the stream is called an output stream.
++ If the data flows out of a program, then the stream is called an **output stream (OutPutStream)**.
 
 > The name "stream" comes because a stream represents a file as a sequence of bytes one after the other.  These are then interpreted by the program as characters, integers, strings or such like.  However, because streams are sequential, data structures such as trees must be "serialized" (turned into a sequence of bytes) before they can be written to a stream.
 
@@ -67,7 +71,7 @@ Java tries to make its binary files portable. (Non-assessable:  It does that by 
 ## 2.1 Writing to a text file
 
 ### 2.1.1 PrintWriter class
-The class PrintWriter is a stream class used for writing text to a file. This class has methods print and println, just like System.out does.
+The class **PrintWriter** is a stream class used for writing text to a file (the class that outputs to a output stream). This class has methods print and println, just like System.out does.
 
 ```java
 // All file I/O classes are in package  java.io
@@ -104,14 +108,24 @@ Main.java:13: error: unreported exception FileNotFoundException; must be caught 
 ```
 
 
-#### Opening
+#### 2.1.1.1 Opening
 
-Note that in the above example, the FileOutputStream object is an anonymous argument.  It cannot be accessed except by the PrintWriter object.  The purpose of the FileOutputStream class is to connect a class that outputs to a stream, such as PrintWriter, to a particular file in the filesystem.
+Note that in the above example, the _FileOutputStream_ object is an anonymous argument.  It cannot be accessed except by the _PrintWriter_ object.  
 
-The process of connecting an output stream to a file is called opening the file (for writing).
+**The purpose of the _FileOutputStream_ class is to connect a class that outputs to a stream, such as PrintWriter (the class that outputs to a stream), to a particular file in the filesystem.**
 
-#### Exceptions
-When a text file is opened in this way, a _FileNotFoundException_ can be thrown.  In this context it actually means that the file could not be created.  The name was chosen because this type of exception can also be thrown when a program attempts to open a file for reading and there is no such file, and reading is more common than writing.
+
+Some key concepts to differentiate:
++ FileOutputStream class: act as connector
++ PrintWriter class: act as the printer that outputs to a output stream
++ OutPutStream: a sequence of data flow out of a program
+
+> The process of connecting an output stream to a file is called opening the file (for writing).
+
+#### 2.1.1.2 Exceptions
+When a text file is opened in this way, a _FileNotFoundException_ can be thrown.  In this context it actually means that the file could not be created.  
+
+>The name was chosen because this type of exception can also be thrown when a program attempts to open a file for reading and there is no such file, and reading is more common than writing.
 
 It is therefore necessary to enclose this code in exception handling blocks.
 
@@ -121,7 +135,13 @@ It is therefore necessary to enclose this code in exception handling blocks.
 
 + The variable that refers to the PrintWriter object should be declared outside the block (and initialized to null) so that it is not local to the block
 
-#### Closing
+:question: go back here after checking all materials
+
+Exercise: Try to run the above code.  Which method throws the error?  Fix the code by catching the exception (and no other exceptions).  The exception is defined in java.io.FileNotFoundException.  In the catch block, print the error message "Could not open example.txt for writing" and exit with exit code 1.  Note that the error message says quite clearly what the problem is: it mentions the file name, and the fact that it is writing, not reading, that is not possible.
+
+Exercise: Then run your new code and check that the expected output file is created, and contains the expected text.
+
+#### 2.1.1.3 Closing
 
 When a program is finished writing to a file, it should always close the stream connected to that file.
 
@@ -133,7 +153,11 @@ This allows the system to release any resources used to connect the stream to th
 
 > If the system crashes while the file is open, then it may be left in an "inconsistent" state, which means that it won't be able to be read when the computer reboots or, worse, it may contain corrupted data.  Keeping the file open also means that other programs, such as system updates, cannot access the file.  That is a common reason for an annoying reboot to be required when updating or installing new software.
 
-## 3.1 Reading from a text file
+
+### 2.1.2 Buffered writing
+
+
+## 2.2 Reading from a text file
 
 
 
