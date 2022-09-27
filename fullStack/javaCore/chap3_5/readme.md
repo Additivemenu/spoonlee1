@@ -155,6 +155,76 @@ This allows the system to release any resources used to connect the stream to th
 
 
 ### 2.1.2 Buffered writing
+Output streams connected to files are usually buffered.
+
+Rather than physically writing to the file as soon as possible, the data is saved in a temporary location (buffer).   When enough data accumulates, or when the method **flush** is invoked, the buffered data is written to the file all at once.  
+
+> This is more efficient, since there is usually a significant overhead for each physical write that doesn't depend on the size of the write.
+> + For hard drives, that is the time it takes for the disk to spin to the right location and the read/write head to get to the right track
+> + For SSDs, it is a wear-and-tear overhead.  There is a limit to the number of times each block in an SSD can be written to.  In a simple system, writing a single byte involves reading a block into memory, changing one byte and then writing the block back.
+
+#### Close and flush
+
+The method **close** invokes the method **flush**, thus ensuring that all the data is written to the file.
+
+If a program relies on Java to close the file, and the program terminates abnormally, then any output that was buffered may not get written to the file.  Also, if a program writes to a file and later reopens it to read from the same file, it will have to be closed first anyway (write --> close --> reopen --> read).
+
+> The sooner a file is closed after finishing writing to it, the less likely it is that there will be a problem.
+
+### 2.1.3 File names
+
+The rules for how file names should be formed depend on a given operating system (OS), not Java. When a file name is given to a java constructor for a stream, it is just a string, not a Java identifier (e.g., "fileName.txt").  Any suffix used, such as .txt has no special meaning to a Java program.
+
+#### Referencing of a file
+Just as a java object can have multiple references to it, a file can be referred to in multiple ways:
++ It has a real file name used by the operating sytem
++ When it is open, it is referred to by the stream that is connected to the file.
+
+> Note:
+> Depending on the OS, multiple programs can have read streams connected to the file.  **It is even possible (though rare) for one program to have multiple _read streams_ connected to the file.  However, only one stream can be connected for _writing_.**
+
+#### FileOutputStream
+The class **FileOutputStream** is used to create a stream, and connect it to the file with the specified OS file name.  
+
+The stream "name" is only a temporary name for the file, while the program is running and the file is open.  If it is closed and reopened, then the old stream object is destroyed and a new stream object is created.
+
+### 2.1.4 Exceptions
+
+#### Checked Exceptions related to file I/O
+In slide "Writing to a text file", we met the FileNotFoundException. When performing file I/O there are many situations in which this or another exception may be thrown.
+
+Many of these exception classes are subclasses of the class IOException. The class IOException is the root class for a variety of exception classes having to do with input and/or output.
+
+These exception classes are all checked exceptions.  Therefore, they must be caught or declared in a throws clause for the program to compile.
+
+#### Unchecked Exceptions related to file I/O
+In contrast to these checked exceptions, there are many unchecked exceptions, such as:
++ NoSuchElementException
++ InputMismatchException
++ IllegalStateException
+
+> Your code will compile even if unchecked exceptions are neither caught nor declared in a throws clause, but if they occur and are not caught then your code will crash.
+
+#### Pitfall: a try block limits the scope of a variable
+Watch for the scope of a block!
+
+Since opening a file can result in an exception, it should be placed inside a try block.
+
+If the variable for a **PrintWriter** object needs to be used outside that block, then the variable must be declared outside the block.  Otherwise it would be local to the block, and could not be used elsewhere;  If it were declared in the block and referenced elsewhere, the compiler will generate a message indicating that it is an undefined identifier.
+
+This is not specific to file I/O, but that is a common case in which this pitfall arises.
+
+### 2.1.5 Appending text to a file
+
+To create a PrintWriter object and connect it to a text file for appending, a second argument, set
+to true, must be used in the constructor for the FileOutputStream object.
+
+```java
+outputStreamName = new PrintWriter(new FileOutputStream(FileName, true));
+// second argument of FileOutputStream constructor true, indicates we want to append the file           
+```
+
+After this statement, the methods print, println and/or printf can be used to write to the file.  The new text will be written after the old text in the file.
 
 
 ## 2.2 Reading from a text file
