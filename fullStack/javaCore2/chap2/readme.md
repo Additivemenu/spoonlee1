@@ -71,6 +71,9 @@ Java tries to make its binary files portable. (Non-assessable:  It does that by 
 ## 2.1 Writing to a text file
 
 ### 2.1.1 PrintWriter class
+
+[more example of PrintWriter](https://www.programiz.com/java-programming/printwriter)
+
 The class **PrintWriter** is a stream class used for writing text to a file (the class that outputs to a output stream). This class has methods print and println, just like System.out does.
 
 ```java
