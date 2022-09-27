@@ -107,7 +107,6 @@ Main.java:13: error: unreported exception FileNotFoundException; must be caught 
 1 error
 ```
 
-
 #### 2.1.1.1 Opening
 
 Note that in the above example, the _FileOutputStream_ object is an anonymous argument.  It cannot be accessed except by the _PrintWriter_ object.  
@@ -140,6 +139,8 @@ It is therefore necessary to enclose this code in exception handling blocks.
 Exercise: Try to run the above code.  Which method throws the error?  Fix the code by catching the exception (and no other exceptions).  The exception is defined in java.io.FileNotFoundException.  In the catch block, print the error message "Could not open example.txt for writing" and exit with exit code 1.  Note that the error message says quite clearly what the problem is: it mentions the file name, and the fact that it is writing, not reading, that is not possible.
 
 Exercise: Then run your new code and check that the expected output file is created, and contains the expected text.
+
+[Demo: binary_writing](UniMelb/binary_writing.java)
 
 #### 2.1.1.3 Closing
 
