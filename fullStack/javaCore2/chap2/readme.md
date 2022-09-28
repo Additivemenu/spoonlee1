@@ -218,7 +218,7 @@ If the variable for a **PrintWriter** object needs to be used outside that block
 
 This is not specific to file I/O, but that is a common case in which this pitfall arises.
 
-### 2.1.5 Practice: Appending text to a file
+### 2.1.5 :star: Practice: Appending text to a file
 
 To create a PrintWriter object and connect it to a text file for appending, a second argument, set
 to true, must be used in the constructor for the FileOutputStream object.
@@ -301,6 +301,11 @@ Scanner StreamObject = new Scanner(new FileInputStream(FileName));
 ```
 
 [Demo: textScannerReading](UniMelb/TextFileScannerDemo.java)
+总结, 打印分四步:
+step0: 声明打印机
+step1: 连接打印机和纸 (有可能出现Exception, 比如这个纸不存在)
+step2: 正式打印
+step3: 关闭打印机
 
 
 ### 2.2.2 :star: Testing for the end of a text file with Scanner
