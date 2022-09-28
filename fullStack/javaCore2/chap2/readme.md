@@ -293,8 +293,8 @@ public void flush()
 ```
 Flushes(清洗) the output stream.  This forces an actual physical write to the fiel of any data that has been buffered and not yet physically written to the file.  Normally, you should not need to invoke flush.  It is useful, for example, if some other program is reading from the file as it is being written.
 
-## 2.2 Reading from a text file
-### 2.2.1 Scanner for reading text file
+## 2.2 :full_moon: Reading from a text file
+### 2.2.1 :star: Scanner for reading text file
 The class Scanner can be used for reading from a text file as well as reading from the keyboard. Simply replace the argument System.in (to the Scanner constructor) with a suitable stream that is connected to the text file.
 ```java
 Scanner StreamObject = new Scanner(new FileInputStream(FileName));
@@ -303,7 +303,7 @@ Scanner StreamObject = new Scanner(new FileInputStream(FileName));
 [Demo: textScannerReading](UniMelb/TextFileScannerDemo.java)
 
 
-### 2.2.2 Testing for the end of a text file with Scanner
+### 2.2.2 :star: Testing for the end of a text file with Scanner
 A program that tries to read beyond the end of a file using methods of the Scanner class will cause an exception to be thrown.
 
 However, instead of having to rely on an exception to signal the end of a file, the Scanner class provides methods such as hasNextInt and hasNextLine. These methods can also be used to check that the next token to be input is a suitable element of the appropriate type.
@@ -314,10 +314,301 @@ However, instead of having to rely on an exception to signal the end of a file, 
 
 
 [Demo: hasNextIntDemo](UniMelb/HasNextIntDemo.java)
-Exercise: Modify the loop so that, if there isn't a next int, but there is a next line, the rest of the current line is discarded, and the loop continues from the next line.  The output should be 40.
 
 
 ### 2.2.3 Methods in the class Scanner
+[Resource: Scanner class docs by Oracle](https://docs.oracle.com/javase/7/docs/api/java/util/Scanner.html)
 
+#### Constructor
+1. Normal Scanner constructor
+```java
+public Scanner (InputStream streamObject)
+```
+There is no constructor that accepts a file name as an argument.
+
+2. If you want to create a stream using a file name you can use
+```java
+new Scanner(new FileInputStream(fileName))
+```
+When used in this way, the FileINputStream constructor, and thus the Scanner constructor invocation, can throw a FileNotFoundException, which is a kind of IOException.
+
+3. To create a stream connected to the keyboard, use
+```java
+new Scanner(System.in)
+```
+
+4. File object as argument
+```java
+public Scanner(File fileObject)
+```
+The File class will be covered later in this lesson.  It is mentioned here only so that you will have a more complete reference here, butyou can ignore this entry until after you have read that section.
+
+If you want to create a stream using a file name, you can use
+```java
+new Scanner(new File(fileName))
+```
+#### Methods
+Many inherent methods in Scanner can throw Exceptions by themselves
+
++ NextInt()
+
+    ```java
+    public int nextInt()
+    ```
+    Returns the next token as an int, provided the next token is a well-formed string representation of an int.
+
+    + Throws a NoSuchElementException if there are no more tokens.
+
+    + Throws an InputMismatchException if the next token is not a well-formed string representation of an int.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
+    ```java
+    public boolean hasNextInt()
+    ```
+    Returns true if the next token is a well-formed string representation of an int; otherwise returns false.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
+    ```java
+    // similar methods
+    public long nextLong()
+    public boolean hasNextLong()
+
+    public byte nextByte()
+    public boolean hasNextByte()
+
+    public short nextShort()
+    public boolean hasNextShort()
+
+    public double nextDouble()
+    public boolean hasNextDouble()
+
+    public float nextFloat()
+    public boolean hasNextFloat()
+
+    public boolean nextBoolean()
+    public boolean hasNextBoolean()
+    ```
++ next()
+    ```java
+    public String next()
+    ```
+    Returns the next token(暂时将the next token理解为一个单位的word; int, double...都算一个token).
+
+    + Throws a NoSuchElementException if there are no more tokens.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
+    [Demo: next()](https://www.javatpoint.com/post/java-scanner-next-method)
+
+    ```java
+    public boolean hasNext()
+    ```
+    Returns true if there is another token.  It may wait for a next token to enter the stream.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
+    [Resource: hasNext()](https://www.tutorialspoint.com/java/util/scanner_hasnext.htm)
++ NextLine()
+    ```java
+    public String nextLine()
+    ```
+    Returns the restu of the current inptu line.  Note that the line terminator '\n' is read and discarded; it is not included in the string returned.
+
+    + Throws a NoSuchElementException if there are no more lines.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
+    ```java
+    public boolean hasNextLine()
+    ```
+    Returns true if there is a next line.  It may wait for a next line to enter the stream.
+
+    + Throws an IllegalStateException if the Scanner stream is closed.
+
++ Delimiter(了解)
+    ```java
+    public Scanner useDelimiter(String newDelimiter)
+    ```
+    > The above methods often mention a "token".  A token is the string between a pair of delimiters (or between the start of the file and the first delimiter, or the last delimiter and the end of file).
+
+    This function changes the string that acts as the delimiter that separates tokens (words or numbers).  It replaces the previous value.  See the subsection "Other Input Delimiters" in Chapter 2 of the text book for the details.  (You can use this method to set the delimiters to a mor complex pattern than just a single string, but we are not covering that.)
+
+    Returns the calling object, but it is usually used as if it were a void method.
+
+### 2.2.4 Reading from a text file using Buffered Reader
+
+...
+
+## 2.3 其他补充
+### 2.3.1 Path names
+When a file name (i.e., with no '/' or '\' characters) is used as an argument to a constructor for opening a file, _it is assumed that the file is in the same directory or folder as the one in which the program is run._
+
+A path name not only gives the name of the file, but also the directory or folder in which the file exists.
++ A full path name gives a complete path name, starting from the root directory
+  + An absolute path name starts with either a slash ('/' or '\'), or a drive specifier followed by a slash ("C:\").
++ A relative path name gives the path to the file, starting with the directory from which the program was run.
+  + A relative path name starts either with a './' **for the current directory**, a '../' **for the parent of the current directory**, or a directory name denoting a subdirectory of the current directory.
+
+#### OS
+The way path names are specified depends on the operating system.
+
++ In Unix-like systems (e.g., MacOS, Linux), directory names are separated by a forward slash, '/'.  A typical path name that could be used as a file name argument is "/user/sallyz/data/data.txt".
+
+    A BufferedReader input stream connected to this file is created as follows:
+    ```java
+    BufferedReader inputStream = new BufferedReader(new FileReader("/user/sallyz/data/data.txt"));
+    ```
+
++ The Windows operating system uses a backslash '\' to separate path components, and optionally has a drive specifier at the start. A typical Windows path name is "C:\dataFiles\goodData\data.txt".
+
+    A BufferedReader input stream connected to this file is created as follows:
+
+    ```java
+    BufferedReader inputStream = new BufferedReader(new FileReader ("C:\\dataFiles\\goodData\\data.txt"));
+    ```
+
+    > Note:
+    > that a Windows pat must use \\ in place of \, since a single backslash denotes an the beginning of an escape sequence.  This is part of the process of parsing the .java file to convert it to a .class file.  It does not apply to file names read from a file, such as the keyboard, or to file names constructed some other way.
+    > Problems with escape characters can be avoided altogether by always using Unix conventions when writing a path name.  A Java program will accept a path name written in either Unix or Windows format, regardless of the OS on which it is run.  This is one of the ways in which Java attempts to be platform-independent.
+
+
+### 2.3.2 Nested constructors (先做了解)
+Each of the Java I/O library classes serves only one function, or a small number of functions.  Normally two or more class constructors are combined to obtain full functionality. Therefore, expressions with two constructors are common when dealing with Java I/O classes.
+
+```java
+new BufferedReader(new FileReader("stuff.txt"))
+```
+
+Above, the anonymous FileReader object establishes a connection with the stuff.txt file.  However, it provides only very primitive methods for input.  For example, it is responsible for handling different file encodings (UTF-8, UTF-16, BIG5 etc.)
+
+The constructor for _BufferedReader_ takes this FileReader object and adds a richer collection of input methods. **This transforms the inner object into an instance variable of the outer object.**
+
+#### Standard input, standard output, standard error
+Unix-like operating systems and Windows attach three standard streams to any running program. Java's access to these three streams is through System.out, System.err and System.in.
+
++ Standard output is used for normal output.  By default it goes to the screen, but it can be "redirected" to a file using "java Prog > dest_file".
+
++ Standard error is used to output error messages.  By default it also goes to the screen, and even if standard output is redirected, standard error still goes to the screen.  On Unix-like systems, standard error can also be redirected using "java Prog 2>& dest_file"
+
++ Standard input is normally used for keyboard input.  However, it can be redirected to come from a file using "java Prog < intput_file".  More powerfully, it can use the output of another program.  The command "java Prog1 | java Prog2" takes the standard output of running Prog1 and uses it as the standard input of Prog2.  This is called a "pipe", and Unix shell scripts often have chains of half a dozen piped commands.
+
+
+#### Redirect streams
+As well as the redirection from the command line described above, it is possible to redirect the streams in System using the following methods:
+```java
+public static void setOut(PrintStream outStream)
+public static void setErr(PrintStream outStream)
+public static void setIn(InputStream inStream)
+```
+Using these methods, any of the three standard streams can be redirected.  For example, instead of appearing on the screen, error messages could be redirected to a file.
+
+In order to redirect a standard stream, a new stream object is created. Like other streams created in a program, a stream object used for redirection should be closed after I/O is finished.
+
+Note, standard streams do not need to be closed.
+
+Redirecting System.err:
+
+```java
+public void getInput() {
+    //. . .
+    PrintStream errStream = null;
+    try {
+        errStream = new PrintStream(new FileOuptputStream("errMessages.txt"));
+        System.setErr(errStream);
+        //. . . Set up input stream and read
+    } catch(FileNotFoundException e) {
+        System.err.println("Input file not found");
+    } finally {
+        // . . .
+        errStream.close();
+    }
+}
+```
+This is useful if we sometimes want to send the output to the operating system's standard error and sometimes want to send it to a file.  We can either call or not call the setErr depending on a configuration variable.
+
+
+#### What have these got to do with nested constructors?
+System.in, System.out and System.err are low-level I/O streams.  Being able to mix-and-match different sources of streams-of-character, we can use different classes on top of these special streams.  Other low-level streams come from networking, and again we get to choose which skin to apply on top of a network connection.
+
+### 2.3.3 :star: File class
+The File class is like a wrapper class for file names.
+
+The constructor for the class File takes a name (known as the abstract name) as a string argument, and produces an object that represents the file with that name.
+
+The File object and methods of the class File can be used to determine information about the file and its properties.
+
+[Demo: file class](UniMelb/FileClassDemo.java)
+
+Exercise: Modify the example above to ask for a new file name, and then rename it just before exiting.
+
+Exercise: Modify the example above to check if the file name entered contains "/" or "\".  If so, check if the directory exists and create it if necessary before creating the file.
+
+
+#### Some methods in class File
+
+```java
+public File (String fileName)
+```
+Constructor.  fileName can be either a full or a relative path name (which includes the case of a simple file name).  fileName is referred to as the abstract path name.
+
+[Resource: File class docs by Oracle](https://docs.oracle.com/javase/7/docs/api/java/io/File.html)
+
+```java
+public boolean exists()
+```
+
+```java
+public boolean canRead()
+```
+
+```java
+public boolean setReadOnly()
+```
+
+```java
+public boolean canWrite()
+```
+
+```java
+public boolean delete()
+```
+
+```java
+public boolean createNewFile() throws IOException
+```
+
+```java
+public String getName()
+```
+
+```java
+public String getPath()
+```
+
+```java
+public boolean renameTo (File newName)
+```
+
+```java
+public boolean isFile()
+```
+
+```java
+public boolean isDirectory()
+```
+
+```java
+public boolean mkdir()
+```
+
+```java
+public boolean mkdirs()
+```
+
+```java
+public long length()
+```
 
 # 3. Binary files
