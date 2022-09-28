@@ -218,7 +218,7 @@ If the variable for a **PrintWriter** object needs to be used outside that block
 
 This is not specific to file I/O, but that is a common case in which this pitfall arises.
 
-### 2.1.5 Appending text to a file
+### 2.1.5 Practice: Appending text to a file
 
 To create a PrintWriter object and connect it to a text file for appending, a second argument, set
 to true, must be used in the constructor for the FileOutputStream object.
@@ -231,9 +231,93 @@ outputStreamName = new PrintWriter(new FileOutputStream(FileName, true));
 After this statement, the methods print, println and/or printf can be used to write to the file.  The new text will be written after the old text in the file.
 
 
+### 2.1.6 Useful methods for text file output
+
+
+
+#### about constructor of PrintWriter
+
+1. Normal constructor
+    ```java
+    public PrintWriter(OutputStream streamObject)
+    ```
+    This is the only constructor you are likely to need.  There is no constructor that accepts a file name as an argument. 
+
+2. Constructor that creates a stream using a file name
+    If you want to create a stream using a file name, you use
+    ```java
+    new PrintWriter( new FileOutputStream(fileName));
+    ```
+    When the constructor is used in this way, a blank file is created.  If there already was a file named fileName, then the old contents of the file are lost. 
+
+3. Constructor for appending the file
+    If you want instead to append new text to the end of the old file contents, use
+    ```java
+    new PrintWriter( new FileOutputStream(fileName, true));
+    ```
+
+    When used in either of these ways, the _FileOutputStream_ constructor, and so the _PrintWriter_ constructor invocation, can throw a _FileNotFoundException_, which is a kind of _IOException_.
+
+
+    >了解:
+    > If you want to create a stream object using an object of the class File, you can use a File object in place of the fileName.  (The File class is covered in Section 10.3 of the text book.  It is mentioned here so that you will have a more complete reference in this slide, but you can ignore the reference to the class File until after you've read that section.)
+
+#### useful methods of PrintWriter
+
+```java
+public void println(argument)
+```
++ The argument can be a string, character, integer, floating-point number, boolean value, or any combination of these, connected with + signs.  (Note that each of these types is converted to a string, and the + is simple string concatenation.  If you use println(2+2), you will get 22.  To get 4, use println((2+2)).) 
+
++ The argument can also be any object, although it will not work as desired unless the object has a properly defined toString() method.  
+
++ The argument is output to the file connected to the stream.  After the argument has been output, the line ends, and so the next output is sent to the next line.
+
+```java
+public void print(argument)
+```
+This is the same as println, except that this method dos not end the line, so the next output will be on the same line.
+
+```java
+public PrintWriter printf(arguments)
+```
+This is the same as System.out.printf, except that this method sends output to a text file rather than to the screen.
+
+```java
+public void close()
+```
+Closes the stream's connection to a file.  This method calls flush before closing the file.
+
+```java
+public void flush()
+```
+Flushes(清洗) the output stream.  This forces an actual physical write to the fiel of any data that has been buffered and not yet physically written to the file.  Normally, you should not need to invoke flush.  It is useful, for example, if some other program is reading from the file as it is being written.
+
 ## 2.2 Reading from a text file
+### 2.2.1 Scanner for reading text file
+The class Scanner can be used for reading from a text file as well as reading from the keyboard. Simply replace the argument System.in (to the Scanner constructor) with a suitable stream that is connected to the text file.
+```java
+Scanner StreamObject = new Scanner(new FileInputStream(FileName));
+```
+
+[Demo: textScannerReading](UniMelb/TextFileScannerDemo.java)
 
 
+### 2.2.2 Testing for the end of a text file with Scanner
+A program that tries to read beyond the end of a file using methods of the Scanner class will cause an exception to be thrown.
+
+However, instead of having to rely on an exception to signal the end of a file, the Scanner class provides methods such as hasNextInt and hasNextLine. These methods can also be used to check that the next token to be input is a suitable element of the appropriate type.
+
+在读取的过程中, 设想有一个cursor也随着.nextLine(), .nextInt()移动
+
+[Demo: hasNextLineDemo](UniMelb/HasNextLineDemo.java)
+
+
+[Demo: hasNextIntDemo](UniMelb/HasNextIntDemo.java)
+Exercise: Modify the loop so that, if there isn't a next int, but there is a next line, the rest of the current line is discarded, and the loop continues from the next line.  The output should be 40.
+
+
+### 2.2.3 Methods in the class Scanner
 
 
 # 3. Binary files

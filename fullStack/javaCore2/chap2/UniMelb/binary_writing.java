@@ -15,22 +15,22 @@ public class binary_writing {
         try {
             // connect PrintWriter object to the file we want to write into
             outputStream = new PrintWriter(new FileOutputStream(filename));
+            // Write to the file opened------------------------------------
+            // Now we can use the PrintWriter object:
             outputStream.print("Hello, world!!!");
             outputStream.close();
-
+            // If "example.txt" already existed, its contents have been erased.
+            // If it did not exist, it has been created.
+            // Either way, it is now a zero-length file.
             throw new FileNotFoundException();      // FIXME: 100% trigger? if i cancel this, will it still be thrown?
         }
-        // If "example.txt" already existed, its contents have been erased.
-        // If it did not exist, it has been created.
-        // Either way, it is now a zero-length file.
+        
         catch(FileNotFoundException e){
             
             System.out.println("Could not open "+filename+" for writing");
             System.exit(1);
         }
 
-        // Write to the file opened------------------------------------
-        // Now we can use the PrintWriter object:
-        outputStream.print("Hello, world!");
+    
     }
 }
