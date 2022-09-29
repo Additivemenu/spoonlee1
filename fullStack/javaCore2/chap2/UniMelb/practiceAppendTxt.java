@@ -10,12 +10,14 @@ public class practiceAppendTxt {
     public static void main (String[] args) {
         System.out.println("Type a sequence of non-empty lines");
         System.out.println("To clear the file and start again, type 'reset'.");
-        String filename = "output.txt";
+
+        // make sure you compile and run this program at 'current path'
+        String filename = "./fullStack/javaCore2/chap2/UniMelb/output.txt";
 
         // open filename as outStream;
         String str;
         boolean done = false;
-        Scanner kbd = new Scanner (System.in);
+        Scanner kbd = new Scanner (System.in);  // connect scanner with keyboard
 
         // step0: 声明打印机
         PrintWriter outputStream = null;
@@ -30,9 +32,9 @@ public class practiceAppendTxt {
                 break;
             } else if (str.equals("reset")) {          // input is 'reset', link printer to an empty txt
                 try {
-                outputStream = new PrintWriter(new FileOutputStream(filename));
+                outputStream = new PrintWriter(new FileOutputStream(filename));    // nested constructor: make the object created by inner constructor an instance variable of the object create by the outer constructor
                 
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {     // will pop out when file not found, e.g. invalid path given 
                 System.err.println("Problem opening files.");
                 System.exit(1);                         // exit program and all following codes are aborted
                 }

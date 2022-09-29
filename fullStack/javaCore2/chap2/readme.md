@@ -446,6 +446,10 @@ Many inherent methods in Scanner can throw Exceptions by themselves
 
 ...
 
+The class BufferedReader is another stream class that can be used to read from a text file.  It is older and less powerful than Scanner, but can still be useful.
+
+略
+
 ## 2.3 其他补充
 ### 2.3.1 Path names
 When a file name (i.e., with no '/' or '\' characters) is used as an argument to a constructor for opening a file, _it is assumed that the file is in the same directory or folder as the one in which the program is run._
@@ -617,3 +621,130 @@ public long length()
 ```
 
 # 3. Binary files
+## 3.1 Writing
+Binary files store data in the same format used by computer memory to store the values of variables.
+
+Minimal conversion needs to be performed when a value is stored or retrieved from a binary file.
+
+Java binary files, unlike other binary language files, are portable between "big endian" and "little endian" computers.
+
+
+### 3.1.1 ObjectOutputStream class
+
++ The class ObjectOutputStream is a stream class that can be used to write to a binary file. 就像PrintWriter可以用来写入txt file
+
++ An object of this class has methods to write strings, values of primitive types, and objects to a binary file.
+
+#### import
+A program using ObjectOutputStream needs to import several classes from package java.io:
+```java
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+```
+
+#### opening
+An ObjectOutputStream object is created and connected to a binary file as follows:
+```java
+ObjectOutputStream outputStreamName = new ObjectOutputStream(new FileOutputStream(FileName));
+```
++ The constructor for FileOutputStream may throw a FileNotFoundException
++ The constructor for ObjectOutputStream may throw an IOException
++ Each of these must be handled.
+
+#### 正式写
+After opening the file, ObjectOutputStream methods can be used to write to the file.
+
+Primitive values can be written by methods such as _writeInt, writeDouble, writeChar, and writeBoolean_. 
+
+> Note that writeInt will not convert an integer into a decimal form, and output a sequence of digits the way an integer would be written to a text file.  Instead, it will directly write the four bytes that are used to store the integer.  However, it will output the most significant byte first, regardless of which is stored first in memory.  That is how it remains portable between little-endian and big-endian computers.
+
+> Note also that writeChar writes a two-byte value.  This is unlike many languages such as C/C++ in which a character is a single byte.  That is because java uses UTF-16 internally as a way to represent unicode characters.  You can instead output using UTF-8, by writeUTF(String s).  If all of your characters are ASCII characters (anything you can type with a US or Australian keyboard layout), then the UTF-8 representation is the same as the ASCII representation.
+
+#### close stream
+
+The stream should always be closed after writing.
+
+### 3.1.2 Some methods in the class ObjectOutputStream
+
+[Resource: ObjectOutputStream class docs by Oracle](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html)
+
+
+[])()
+
+#### Constructor
+
+1.
+```java
+public  ObjectOutputStream (OutputStream streamObject)
+```
+
+2.
+This is no constructor that takes a file name as an argument.  If you want to cera create a stream using a file name, you use
+```java
+new ObjectOutputStream (new FileOutputStream(fileName))
+```
+This creates a blank file.  If there already is a file named fileName, then the old contents of the fiel are lost.
+
+3.
+If you want to create a stream using an object of the class File, you use
+```java
+new ObjectOutputStream (new FileOutputStream (fileObject))
+```
+The constructor for FileOutputStream may throw a FileNotFoundException, which is a kind of IOException.  If the FileOutputStream constructor succeeds, then the constructor for ObjectOutputStream may throw a different IOException.
+
+
+
+
+#### Methods
+
+```java
+public void writeInt(int n) throws IOException
+```
+
+```java
+public void writeShort(short n) throws IOException
+public void writeLong(long n) throws IOException
+public void writeFloat(float x) throws IOException
+public void writeDouble(double x) throws IOException
+public void writeBoolean(boolean b) throws IOException
+public void writeByte(int b) throws IOException
+```
+
+
+```java
+ public void writeChar(int n) throws IOException
+```
+
+```java
+outputStream.writeChar((int)'A');
+outputStream.writeChar('A');
+```
+
+```java
+public void writeChars(String aString) throws IOException
+```
+
+```java
+public void writeUTF(String aString) throws IOException
+```
+
+```java
+public  void writeObject(Object anObject) throws IOException
+```
+
+```java
+public void close() throws IOException
+```
+
+```java
+public void flush() throws IOException
+```
+
+
+
+## 3.2 Reading
+
+## 3.3 Binary I/O and objects
+
+## 3.4 Reading and writing from the same file
