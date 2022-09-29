@@ -670,7 +670,7 @@ The stream should always be closed after writing.
 [Resource: ObjectOutputStream class docs by Oracle](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html)
 
 
-[])()
+[Demo: binary output demo](UniMelb/BinaryOutputDemo.java)
 
 #### Constructor
 
@@ -744,7 +744,151 @@ public void flush() throws IOException
 
 
 ## 3.2 Reading
+### 3.2.1 ObjectInputStream class
+The class ObjectInputStream is a stream class that can be used to read from a binary file.
+
+An object of this class has methods to read strings, values of primitive types, and objects from a binary file.
+
+#### import
+A program using ObjectInputStream needs to import several classes from package java.io:
+```java
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+```
+
+#### opening
+An ObjectInputStream object is created and connected to a binary file as follows:
+```java
+ObjectInputStream inStreamName = new ObjectInputStream(new FileInputStream(FileName));
+```
++ The constructor for FileInputStream may throw a FileNotFoundException.
+
++ The constructor for ObjectInputStream may throw an IOException.
+
++ Each of these must be handled.
+
+
+#### 正式写
+After opening the file, ObjectInputStream methods can be used to read to the file. 
+
+Methods used to input primitive values include readInt, readDouble, readChar, and readBoolean.
+
+The method readUTF or readChars is used to input values of type String, depending on whether writeUTF or writeChars was used to write the file.
+
+**If the file contains multiple types, each item type must be read in exactly the same order it was written to the file.**
+
+#### closing
+The stream should be closed after reading.
+
+
+### 3.2.2 Some methods in the class ObjectInputStream
+#### Constructor
+1.
+```java
+public ObjectInputStream(InputStream streamObject)
+```
+
+2.There is no constructor that takes a file name as an argument.  If you want to create a stream using a file name, you use
+```java
+new ObjectInputStream(new FileInputStream(fileName))
+```
+
+3.Alternatively, you can use an object of the class File in place of the fileName, as follows:
+```java
+new ObjectInputStream(new FileInputStream(fileObject))
+```
+The constructor for FileInputStream may throw a FileNotFoundException, which is a kind of IOexception.  If the FileInputStream constructor succeeds, then the constructor for ObjectInputStream may throw a different IOException.
+
+
+#### Methods
+1.Read primitive data 
+```java
+public int readInt() throws IOException
+```
+Reads an int value from the input stream and returns that int value.  
++ readInt需要与writeInt相搭配. If readInt tries to read a value from the file and that value was **not** written using the method _**writeInt**_ of the class ObjectOutputStream (or written in some equivalent way), then problems will occur.  
++ If an attempt is made to read beyond the end of the file, and EOFException is thrown.
+```java
+public int readShort() throws IOexception
+public long readLong() throws IOexception
+public double readDouble() throws IOexception
+public float readFloat() throws IOexception
+public char readChar() throws IOexception
+public boolean readBoolean() throws IOexception
+public String readUTF() throws IOexception
+public String readChars() throws IOexception
+```
+
+2. Read object
+```java
+Object readObject() throws ClassNotFoundException, IOException
+```
+Reads an object from the input stream.  The object read should have been written using writeObject of the class ObjectOutputStream.  Throws a ClassNotFoundException if the serialized object in the input stream doesn't match any known object type in the current program.  If an attempt is made to read beyond the end of the file, and EOFException is thrown.  May throw variaous other IOExceptions.
+
+3.skipBytes
+```java
+public int skipBytes (int n) throws IOException
+```
+Skips  n  bytes.  Returns the number of byes skipped.  This may be less than n if, for example, the end of file is reached before skipping n bytes.  This never throws EOFException.
+
+4. close
+```java
+public void close throws IOException
+```
+Closes the stream's connection to a file.
+
+### :star: 3.2.3 Practices
+
+#### e.g.1
+[Demo: binary file reading](UniMelb/BinaryInputDemo.java)
+
+read and write 应该相互match, 不然结果不是想要的. 比如write的时候是用writeInt(), 那read这部分信息时就要用readInt().
+
++ Exercise: Repeat using readShort.  This should give the sequence 0, 0, 0, 1, 0, 2, 0, 3, 0, 4.  Why?
+
++ Exercise: Repeat using readLong.  You will need to reduce the "i<10" to "i < 5".  (Why?)  This should give output 1, 8589934595, 17179869189, 25769803783, 34359738377.  Why?  Try converting these numbers to hexadecimal, possibly using the web site [Resource: rapidTable](https://www.rapidtables.com/convert/number/decimal-to-hex.html)
+
+#### check for the end of a binary file the correct way
+All of the ObjectInputStream methods that read from a binary file throw an EOFException when trying to read beyond the end of a file.  This can be used to end a loop that reads all the data in a file.
+
+Note that different file-reading methods check for the end of a file in different ways.  Testing for the end of a file in the wrong way can cause a program to go into an infinite loop or terminate abnormally.
+
+[Demo: EOFDemo](UniMelb/EOFDemo.java)
+
+Exercise: Modify the above to create numbers.dat containing 10 integers, before the code tries to read it.
 
 ## 3.3 Binary I/O and objects
+
+Objects can also be input and output from a binary file.
++ Use the writeObject method of the class ObjectOutputStream to write an object to a binary file.
++ Use the readObject method of the class ObjectInputStream to read an object from a binary file.
+### 3.3.1 :full_moon: type cast the object read
+In order to use the value returned by readObject as an object of a class, it must be type cast first:
+```java
+SomeClass someObject = (SomeClass)objectInputStream.readObject();
+```
+> It is best to store the data of only one class type in any one file.  Storing objects of multiple class types or objects of one class type mixed with primitives can lead to loss of data.
+
+### 3.3.2 :star: serializable interface
+**In addition, the class of the object being read or written must implement the Serializable interface.**
+
+The Serializable interface is easy to use and requires no knowledge of interfaces. A class that implements the Serializable interface is said to be a serializable class.
+
+[Demo: Player](UniMelb/Player.java)
+
+In order to make a class serializable, simply add implements Serializable to the heading of the class definition
+```java
+public class SomeClass implements Serializable
+```
+#### 3.2.2.1
+When a serializable class has instance variables of a class type, then all those classes must be serializable also.  A class is not serializable unless the classes for all instance variables are also serializable for all levels of instance variables within classes.
+
+### 3.3.3 :full_moon: read array
+Since an array is an object, arrays can also be read and written to binary files using readObject and writeObject.  If the base type is a class, then it must also be serializable, just like any other class type.  Since readObject returns its value as type Object (like any other object), it must be type cast to the correct array type:
+```java
+SomeClass[] someObject = (SomeClass[])objectInputStream.readObject();
+```
+
 
 ## 3.4 Reading and writing from the same file
