@@ -861,8 +861,11 @@ Exercise: Modify the above to create numbers.dat containing 10 integers, before 
 ## 3.3 Binary I/O and objects
 
 Objects can also be input and output from a binary file.
-+ Use the writeObject method of the class ObjectOutputStream to write an object to a binary file.
-+ Use the readObject method of the class ObjectInputStream to read an object from a binary file.
+
++ Use the writeObject method of the class _ObjectOutputStream_ to write an object to a binary file (就像txt file中用PrintWriter).
+  
++ Use the readObject method of the class _ObjectInputStream_ to read an object from a binary file (就像txt file中用Scanner).
++ 
 ### 3.3.1 :full_moon: type cast the object read
 In order to use the value returned by readObject as an object of a class, it must be type cast first:
 ```java
@@ -881,8 +884,9 @@ In order to make a class serializable, simply add implements Serializable to the
 ```java
 public class SomeClass implements Serializable
 ```
-#### 3.2.2.1
-When a serializable class has instance variables of a class type, then all those classes must be serializable also.  A class is not serializable unless the classes for all instance variables are also serializable for all levels of instance variables within classes.
+
+> Note:
+> When a serializable class has instance variables of a class type, then all those classes must be serializable also.  A class is not serializable unless the classes for all instance variables are also serializable for all levels of instance variables within classes.
 
 ### 3.3.3 :full_moon: read array
 Since an array is an object, arrays can also be read and written to binary files using readObject and writeObject.  If the base type is a class, then it must also be serializable, just like any other class type.  Since readObject returns its value as type Object (like any other object), it must be type cast to the correct array type:
@@ -892,3 +896,131 @@ SomeClass[] someObject = (SomeClass[])objectInputStream.readObject();
 
 
 ## 3.4 Reading and writing from the same file
+### Random access:
+The streams for sequential access to files are the ones most commonly used for file access in Java.
+
+However, some applications require very rapid access to records in very large databases. These applications need to have random access to particular parts of a file.
+
+### 3.4.1 class RandomAccessFile
+
+The stream class RandomAccessFile, which is in the java.io package, provides both read and write random
+access to a file in Java.
+
+A random access file consists of a sequence of numbered bytes. There is a kind of marker called the file pointer that is always positioned at one of the bytes.  All reads and writes take place starting at the file pointer location.  The file pointer can be moved to a new location with the method seek.
+
+Although a random access file is byte oriented, there are methods that allow for reading or writing values of the primitive types as well as string values to/from a random access file. 
++ These include readInt, readDouble, and readUTF for input, and writeInt, writeDouble, and writeUTF for output.
++ It does not have writeObject or readObject methods, however.
+
+#### Opening a file for random access
+
+The constructor for RandomAccessFile takes either a string file name or an object of the class File as its first argument.
+
+The second argument must be one of four strings:
++ "rw", meaning the code can both read and write to the file after it is open
++ "r", meaning the code can read form the file, but not write to it
++ "rws" or "rwd" (See Table of methods from RandomAccessFile)
+
+If the file already exists, then when it is opened, the length is not reset to 0, and the file pointer will be positioned at the start of the file. This ensures that old data is not lost, and that the file pointer is set for the most likely position for reading (not writing).
+
+The length of the file can be changed with the setLength method.  In particular, the setLength method can be used to empty the file.
+
+#### Some methods from class RandomAccessFile
+
+[Resource: RandomAccessFile docs by Oracle](https://docs.oracle.com/javase/7/docs/api/java/io/RandomAccessFile.html)
+
+1.Constructor
+```java
+public RandomAccessFile(String fileName, String mode)
+public RandomAccessFile(File fileObject, String mode)
+```
+Opens the file, does not delete data already in the file, but does position the file pointer at the first (zeroth) location.
+
+The mode must be one of the following:
++ "r" Open for reading only.
++ "rw" Open for reading and writing.
++ "rws" Same as "rw", and also requires that every update to the file's content or metadata be written synchronously to the underlying storage device.
++ "rwd" Same as "rw", and also requiring that every update to the file's content be written synchronously to the underlying storage device.
+("rws" and "rwd" are not covered in this course.)
+
+2.Methods
+
++ file pointer
+
+    ```java
+    public long getFilePointer() throws IOException
+    ```
+
+    ```java
+    public void seek (long location) throws IOException
+    ```
+
++ file length
+
+    ```java
+    public log length() throws IOException
+    ```
+
+    ```java
+    public void setLength(long newLength) throws IOException
+    ```
+
++ write 
+
+    ```java
+    public close() throws IOException
+    ```
+
+    ```java
+    public void write(int b) throws IOException
+    ```
+
+    ```java
+    public void write(byte[] a) throws IOException
+    ```
+
+    ```java
+    public final void writeByte(byte b) throws IOException
+    ```
+
+    ```java
+    public final void writeShort(short n) throws IOException
+    public final void writeInt(int n) throws IOException
+    public final void writeLong(long n) throws IOException
+    public final void writeFloat(float f) throws IOException
+    public final void writeDouble(double d) throws IOException
+    public final void writeChar(char c) throws IOException
+    public final void writeBoolean(boolean b) throws IOException
+    ```
+
+    ```java
+    public final writeUTF(String s) throws IOException
+    ```
+
++ Read 
+
+    ```java
+    public int read() throws IOException
+    ```
+
+    ```java
+    public int read(byte[] a) throws IOException
+    ```
+
+    ```java
+    public final byte readByte() throws IOException
+    ```
+
+    ```java
+    public final short readShort() throws IOException
+    public final int readInt() throws IOException
+    public final long readLong() throws IOException
+    public final float readFloat() throws IOException
+    public final double readDouble() throws IOException
+    public final char readChar() throws IOException
+    public final boolean readBoolean() throws IOException
+    ```
+
+    ```java
+    public final String readUTF() throws IOException
+    ```

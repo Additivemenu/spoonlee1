@@ -16,7 +16,7 @@ Java exception handling facilities are used when the invocation of a method may 
 
 The try block contains the code for the basic algorithm.  It tells what to do when everything goes smoothly.  It can also contain code that throws an exception if something unusual happens, and is caught by the catch block.
 
-### :full_moon:2.1.1 try-throw-catch mechanism 
+### 2.1.1 :full_moon: try-throw-catch mechanism 
  
 When a try block is executed, either one of below cases can happen:
 
@@ -404,7 +404,30 @@ It is possible to place a try block and its following catch blocks inside a larg
 
 ## The finally block
 
-## Exception controlled loops
+[Resource: finally block tutorial 注意看其中的例子!](https://dotnettutorials.net/lesson/finally-block-in-java/#:~:text=Syntax%20to%20use%20Finally%20block,in%20Java%3A%201%20try%2Fcatch%2Ffinally%202%20try%2Ffinally)
+
+其中这个例子Example: try/catch/finally with exception and catch block is not matched: 此时由于try block throw 的exception并没被catch block 捕捉, finally中的代码可被执行, 但在finally之后的代码不会被执行了
+
+
+1. What is finally block in Java?
+
+    Finally establishes a block that definitely executes statements placed in it. Statements that are placed in finally block are always executed irrespective of the way the control is coming out from the try block either by completing normally or throwing exceptions by catching or not catching.
+
+2. Why we need finally block in real-time applications?
+
+    As per the coding standard in the finally block we should write resource releasing logic or clean up code.
+
+    Resource releasing logic means unreferenced objects that are created in the try block. For example, in real-time projects, we create JDBC objects in the try block and at the end of the try block, we must close these objects. Since the statements written in try and catch block are not guaranteed to be executed we must place them in the finally block.
+
+Once again, if the try-catch-finally blocks are inside a method definition, there are three possibilities when the code is run:
+
++ Case1: The try block runs to the end, no exception is thrown, and the finally block is executed
+
++ Case2: An exception is thrown in the try block, caught in one of the catch blocks, and the finally block is executed
+
++ Case3: An exception is thrown in the try block, there is no matching catch block in the method, the finally block is executed, and then the method invocation ends and the exception object is thrown to the enclosing method
+
+## :star: Exception controlled loops
 Sometimes it is better to simply loop through an action again when an exception is thrown, as follows:
 
 ```java
@@ -425,7 +448,7 @@ while (! done)
 
 Exercise: Read and understand the following code.  Try it with inputs "forty", "=1", "10.5", "10,5", "10/5", "10".  Before you try each, guess whether or not nextInt() will succeed.
 
-[Demo: Exception_Controlled_Loops](UniMelb/Exception_controlled_loops.java)
+[Demo: InputMismatch_repopUntilMatching](UniMelb/InputMismatchRepop.java)
 
 
 ## Program exit values
