@@ -108,7 +108,7 @@ In the previous example, "StringArgument" is an argument to the Exception constr
 This is the string used for the value of the string instance variable of exception e.  Therefore, the method call e.getMessage() returns this string.
 
 
-# 3. Exception classes
+# 3. :full_moon:Exception classes
 
 There are more exception classes than just the single class Exception.
 
@@ -148,7 +148,7 @@ Many exception classes must be imported in order to use them.
 import java.io.IOException;
 ```
 
-## 3.2 Defining Exception Classes
+## 3.2:full_moon:Defining Exception Classes
 
 A throw statement can throw an exception object of any exception class.
 
@@ -449,6 +449,36 @@ while (! done)
 Exercise: Read and understand the following code.  Try it with inputs "forty", "=1", "10.5", "10,5", "10/5", "10".  Before you try each, guess whether or not nextInt() will succeed.
 
 [Demo: InputMismatch_repopUntilMatching](UniMelb/InputMismatchRepop.java)
+
+## :star: Practice
+This simple program has not handled any exceptions yet. Please identify all potential exceptions and use the "try...catch" statement to capture them. 
+
+```java
+import java.util.Scanner;
+
+public class ExceptionDemo {
+
+  public static void main(String[] args) {
+    Scanner keyboard = new Scanner(System.in);
+
+    int[] arr = {1, 2, 3, 4, 5, 6, 0};
+    System.out.println("Array index: ");
+    
+    int index = keyboard.nextInt();
+
+    int value = arr[index];
+    System.out.printf("arr[%d] = %d\n", index, value);
+
+    keyboard.close();
+  }
+}
+```
+
+[Demo: practice on customized Exception class](UniMelb/Practice_ExceptionDemo.java)
+
+Extension: Define a new customized exception class and throw it instead of the predefined exception class when something wrong happens (e.g., the array index is out of bound).
+
+Extension: Update the program to allow user to repeatedly provide a valid array index until they are successfully.
 
 
 ## Program exit values
