@@ -8,6 +8,11 @@ Java exception handling facilities are used when the invocation of a method may 
 **Throwing an exception:** Java library software (or programmer-defined code) provides a mechanism that signals when something unusual happens.  
 **Handling the exception:** In another place in the program, the programmer must provide code that deals with the exceptional case.  
 
+面对Exception有两方面可以做的:
++ 查阅Oracle Java docs, 看具体某个函数会throw怎样的Exception
++ 自定义Exception class
+
+
 # 2. try-throw-catch
  The basic way of handling exceptions in Java consists of the try-catch mechanism. 
  
@@ -368,9 +373,35 @@ Most importantly, not all exceptions are subject to the "catch or declare" rule(
   + The class Error and all its descendant classes are called **error classes**.  They are not subject to the "catch or declare" rule.
 
 
-## e.g.
+> Note:
+> When a method in a derived class is overridden, it should have the same exception classes listed in its throws clause that it had in the base class, or it should have a subset of them. This is because an object of a derived class must be able to be used any way its parent class can.
 
-## What happens if an exception is never caught?
+### 6.1.1 e.g.
++ When a program contains an assertion check, and the assertion check fails, an object of the class **AssertionError (unchecked)** is thrown.  This causes the program to end with an error message.
+
+    The class AssertionError is derived from the class Error, and therefore is an unchecked Throwable.  In order to prevent the program from ending, it could be handled, but this is not required.
+
+
++ The Scanner class can throw the **InputMismatchException (unchecked exception)**. The nextInt method of the Scanner class can be used to read int values from the keyboard.
+
+    However, if a user enters something other than a well-formed int value, an InputMismatchException will be thrown.  Unless this exception is caught, the program will end with an error message (见finally block 的例子). If the exception is caught, the catch block can give code for some alternative action, such as asking the user to reenter the input.
+
+    + The InputMismatchException is in the standard Java package java.util
+    A program that refers to it must use an import statement, such as the following:
+        ```java
+        import java.util.InputMismatchException;
+        ```
+    + It is a descendent class of RuntimeException.  Therefore, it is an unchecked exception and does not have to be caught in a catch block or declared in a throws clause.
+
++ An **ArrayIndexOutOfBoundsException (unchecked exception)** is thrown whenever a program attempts to use an array index that is out of bounds (below 0 or above the length minus 1).  This normally causes the program to end.
+  
+    + Like all other descendants of the class RuntimeException, it is an unchecked exception.  There is no requirement to handle it.
+
+    + When this exception is thrown, it is nearly always an indication that the program contains an error.  Instead of attempting to handle the exception, the program should simply be fixed.  (A possible exception would be in a class like ArrayList in which it may signal that the underlying array needs to grow.  However, it is typically better to check for that explicitly.)
+
+
+
+### 6.1.2 What happens if an exception is never caught?
 If every method up to and including the main method simply includes a throws clause for an exception, that
 exception may be thrown but never caught
 
@@ -379,14 +410,14 @@ exception may be thrown but never caught
 
 Every well-written program should eventually catch every exception by a catch block in some method.
 
-## When to use exceptions
+### 6.1.3 When to use exceptions
 There is overhead in using exceptions, even if the exception is not thrown.  The try itself slightly increases run time.
 
 Exceptions should be reserved for situations where a method encounters an unusual or unexpected case that cannot be handled easily in some other way.  (In other languages such as Python, exceptions are used more freely.)
 
 How exceptions are handled depends on how a method is called.
 
-## Event driven programming (作了解)
+## 6.2 Event driven programming (作了解)
 
 Exception handling is an example of a programming methodology known as **event-driven programming** (就像JS触发event来调用对应CSS代码一样).  When using event-driven programming, objects are defined so that they send events to other objects that handle the events.  An event is also an object. Sending an event is called firing an event.
 
@@ -394,7 +425,7 @@ In exception handling, the event objects are the exception objects.  They are fi
 
 Another important type of event driven programming is writing GUI applications.  There, events are typically triggered by a user action, such as a mouse movement, mouse click, or key press.  The handlers for these events can last a long time, such as recalculating a spreadsheet.
 
-## Nested try-catch blocks (作了解)
+## 6.3 Nested try-catch blocks (作了解)
 
 It is possible to place a try block and its following catch blocks inside a larger try block, or inside a larger catch block.
 
@@ -402,7 +433,7 @@ It is possible to place a try block and its following catch blocks inside a larg
 
 + If a set of try-catch blocks are placed inside a larger try block, and an exception is thrown in the inner try block that is not caught, then the exception is thrown to the outer try block for processing, and may be caught in one of its catch blocks
 
-## The finally block
+## 6.4 :moon:The finally block
 
 [Resource: finally block tutorial 注意看其中的例子!](https://dotnettutorials.net/lesson/finally-block-in-java/#:~:text=Syntax%20to%20use%20Finally%20block,in%20Java%3A%201%20try%2Fcatch%2Ffinally%202%20try%2Ffinally)
 
@@ -427,7 +458,7 @@ Once again, if the try-catch-finally blocks are inside a method definition, ther
 
 + Case3: An exception is thrown in the try block, there is no matching catch block in the method, the finally block is executed, and then the method invocation ends and the exception object is thrown to the enclosing method
 
-## :star: Exception controlled loops
+## 6.5 :star: Exception controlled loops
 Sometimes it is better to simply loop through an action again when an exception is thrown, as follows:
 
 ```java
@@ -450,7 +481,7 @@ Exercise: Read and understand the following code.  Try it with inputs "forty", "
 
 [Demo: InputMismatch_repopUntilMatching](UniMelb/InputMismatchRepop.java)
 
-## :star: Practice
+## 6.6 :star: Practice
 This simple program has not handled any exceptions yet. Please identify all potential exceptions and use the "try...catch" statement to capture them. 
 
 ```java
@@ -481,7 +512,7 @@ Extension: Define a new customized exception class and throw it instead of the p
 Extension: Update the program to allow user to repeatedly provide a valid array index until they are successfully.
 
 
-## Program exit values
+## 6.7 Program exit values
 You will notice that System.exit() takes an argument.  This argument is passed to the operating system when the program finishes.  
 
 If the program is being run from a script, the script will interpret an exit value of
