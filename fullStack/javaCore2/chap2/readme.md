@@ -896,6 +896,10 @@ SomeClass[] someObject = (SomeClass[])objectInputStream.readObject();
 
 
 ## 3.4 Reading and writing from the same file
+
+连续读取一个文件, 比如A2中, 函数1读取map dimension和terrain array,
+函数2接着读取(而不是从头开始读取)Entity的信息
+
 ### Random access:
 The streams for sequential access to files are the ones most commonly used for file access in Java.
 
@@ -903,23 +907,28 @@ However, some applications require very rapid access to records in very large da
 
 ### 3.4.1 class RandomAccessFile
 
-The stream class RandomAccessFile, which is in the java.io package, provides both read and write random
-access to a file in Java.
+The stream class **RandomAccessFile**, which is in the java.io package, provides both read and write random access (指可以任意访问file中的特定部分) to a file in Java.
 
-A random access file consists of a sequence of numbered bytes. There is a kind of marker called the file pointer that is always positioned at one of the bytes.  All reads and writes take place starting at the file pointer location.  The file pointer can be moved to a new location with the method seek.
++ **file pointer**
+A **random access file** （包含binary file和txt file吗?） consists of a sequence of numbered bytes. There is a kind of marker called the **file pointer** that is always positioned at one of the bytes.  
+  + All reads and writes take place starting at the file pointer location.  
+  + The file pointer can be moved to a new location with the method seek.
 
 Although a random access file is byte oriented, there are methods that allow for reading or writing values of the primitive types as well as string values to/from a random access file. 
+
 + These include readInt, readDouble, and readUTF for input, and writeInt, writeDouble, and writeUTF for output.
-+ It does not have writeObject or readObject methods, however.
++ It **does not** have writeObject or readObject methods, however.
 
 #### Opening a file for random access
 
-The constructor for RandomAccessFile takes either a string file name or an object of the class File as its first argument.
++ The first argument of the constructor for RandomAccessFile takes either 
+  + a string file name 
+  + or an object of the class File 
 
-The second argument must be one of four strings:
-+ "rw", meaning the code can both read and write to the file after it is open
-+ "r", meaning the code can read form the file, but not write to it
-+ "rws" or "rwd" (See Table of methods from RandomAccessFile)
++ The second argument must be one of four strings:
+  + "rw", meaning the code can both read and write to the file after it is open
+  + "r", meaning the code can read form the file, but not write to it
+  + "rws" or "rwd" (See Table of methods from RandomAccessFile)
 
 If the file already exists, then when it is opened, the length is not reset to 0, and the file pointer will be positioned at the start of the file. This ensures that old data is not lost, and that the file pointer is set for the most likely position for reading (not writing).
 
