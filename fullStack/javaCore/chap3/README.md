@@ -925,7 +925,7 @@ public double[][] aMethod()
 ### 3.10.8 不规则数组
 紧跟多维数组, 先跳过
 
-### 3.10.9 :full_moon:ArrayList
+## 3.11 :full_moon:ArrayList
 UniMelb Java
 
 > ArrayList is a class in the standard Java libraries. Unlike arrays, which have a fixed length once they have been created, an ArrayList is an object that can grow and shrink while your program is running. In general, an ArrayList serves the same purpose as an array, except that an ArrayList can change length while the program is running.
@@ -940,286 +940,294 @@ Why not always use an ArrayList instead of an array?
 
   + The base type of an ArrayList must be a class type or interface type (or other reference type): it cannot be a primitive type. This last point is less of a problem now that Java provides automatic boxing and unboxing of primitives.
 
-1. Using the ArrayList class
-    In order to make use of the ArrayList class, it must first be imported from the package java.util
+### 3.11.1 Using the ArrayList class
+
+In order to make use of the ArrayList class, it must first be imported from the package java.util
+```java
+import java.util.ArrayList;
+```
+
+An ArrayList is created and named in the same way as object of any class, except that you specify the base type in angle brackets ("less than" and "greater than") as follows:
+```java
+ArrayList<Double> aList = new ArrayList<Double>();
+
+double[] score = new double[5]; // compare with an array
+
+// creates an ArrayList that stores objects of the base type String with an initial capacity of 20 items
+ArrayList<String> list = new ArrayList<String>(20); // watch it: if you don't fill up the arraylist with any elements, its length is still 0 
+```
+
+### 3.11.2 常用API 
+   
+[Demo: API of ArrayList](UniMelb/Array/arrayListMethod.java)
+
++ **add(item)**: 
+append item to the end of the list
+
++ **add(idx, item)**: 
+insert item at location  idx,  and move up all elements after idx to the next higher position. 
+
++ **set(idx, item)**:
+    overwrite(改写) the data at idx, which must already be present in the list.
+
++ **int size()**:
+    return the number of elements in the list -- not the number pre-allocated in the constructor.
+
+    > Java  uses three methods for reporting sizes of objects.
+    > For arrays: member variable  int length
+    > For strings: method  int length ()
+    > For containers (e.g. ArrayList): method int size ()
+
+
+### 3.11.3 More methods in the class ArrayList
+
+    <br/>
+
+#### 3.11.3.1 Constructors
+```java 
+public ArrayList<BaseType>(int initialCapacity)
+public ArrayList<BaseType>()  
+```
+Creates an empty ArrayList with the specified BaseType.  If initialCapacity is omitted, 10 is used.
+
+<br/>
+
+#### 3.11.3.2 Array-like methods  
+```java
+public BaseType set (int index, BaseType newElement)
+```
+相当于CRUD中的U  
+Sets the element at the specified index to newElement.  Returns the element previously at that position, but the method is often used as if it were a void method.  (In java, return values can be ignored.) 
+If you draw an analogy between the ArrayList and an array a, this function is analogous to setting a[index] to the value newElement.  We need  0 <= index <= ArrayList.size().  Throws an IndexOutOfBoundsException if the index is not in this range.
+
+```java
+public BaseType get (int index)
+```
+相当于CRUD中的R
+Returns the element at the specified index.  
+This statement is analogous to returning a[index] for an array a.  We need  0 <= index < ArrayList.size().  (Note that the second is < not <=.)  Throws an IndexOutOfBoundsException if the index is not in this range.
+
+<br/>
+
+#### 3.11.3.3 Inserting elements  
+```java
+public void add (int index, BaseType newElement)
+```
+Inserts newElement as an element of the calling ArrayList at the specified index. **Each element in the ArrayList with an index greater than or equal to index is shifted upward to have an index that is one greater than the value it had previously.** 
+The index must be a value greater than or equal to  and less than or equal to the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Note that you can use this method to add an element after the last element.  The capacity of the ArrayList is increased if that is required.
+
+```java
+public boolean add(BaseType newElement)
+```
+Equivalent to   v.add(v.size(), newElement).
+
+Adds newElement to the end of the calling ArrayList and increases the ArrayList's size by one.  The capacity of the ArrayList is increased if that is required.  Returns true if the add was successful.
+
+<br/>
+
+#### 3.11.3.4 Deleting elements
+```java
+public BaseType remove (int index)
+```
+相当于CRUD中的D, 根据index来删除元素    
+Deletes and returns the element at the specified index.  **Each element of the ArrayList with an index greater than index is decreased to have an index that is one less than the value it had previously.** 
+The index must be a value greater than or equal to 0, and less than the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Often used as if it were a void method.
+
+```java
+protected void removeRange (int fromIndex, int toIndex)
+```
+Deletes all the elements with indices i such that fromIndex <= i < toIndex.  Elements with indices greater than or equal to toIndex are decreased appropriately.
+
+```java
+public boolean remove (Object theElement)
+```
+(Treat this as if Object were the base type of the ArrayList.  This will become clear next lecture.)
+
+Removes the first occurrence of theElement from the calling ArrayList.  **If theElement is found in the ArrayList, then each element in the ArrayList with an index greater than the removed element's index is decreased to have an index that is one less than the value it had previously.** 
+Returns true if theElement was found (and removed).  Returns false if theElement was not found in the calling ArrayList.
+
+```java
+public void clear ()
+```
+Removes all elements from the calling ArrayList and **sets the ArrayList's size to 0.**
+This does not reduce the ArrayList's capacity (i.e., the amount of memory allocated to it).  See trimToSize() below for that.
+
+<br/>
+
+#### 3.11.3.5 Searching
+```java
+public boolean contains (Object target)
+```
+Returns true if the calling ArrayList contains target; otherwise, returns false.  
+Uses the method  equals  of the object target to test for equality with any element in the calling ArrayList.
+
+```java
+public int indexOf (Object target)
+```
+Returns the index of the **first element** that is equal to target.    
+Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
+
+```java
+public int lastIndexOf (Object target)
+```
+Returns the index of the **last element** that is equal to target.  
+Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
+
+<br/>
+
+#### 3.11.3.6 Finding the how many elements there are
+```java
+public int size()
+```
+Returns the number of elements in the calling ArrayList.
+
+```java
+public boolean isEmpty()
+```
+Equivalent to  size() == 0.  Using isEmpty makes the intention clearer to the reader.  For some other container classes, it may also be faster, and so using it makes it easier to refactor code to use another container.
+
+<br/>
+
+#### 3.11.3.7 Resizing the underlying array
+主动控制已有的ArrayList的大小， 拉长或截短
+```java
+public void ensureCapacity (int newCapacity)
+```
+Increases the capacity of the calling ArrayList, if necessary, in order to ensure that the ArrayList can hold at least newCapacity elements.  Using ensureCapacity can sometimes increase efficiency (as it can avoid increasing the capacity multiple times and elements are added sequentially), but it is not needed for any other reason.
+
+```java
+public void trimToSize()
+```
+An ArrayList automatically increases its capacity when needed. However, the capacity may increase beyond what a program requires. **In addition, although an ArrayList grows automatically when needed, it does not shrink automatically.**
+If an ArrayList has a large amount of excess capacity, an invocation of the method trimToSize will shrink the capacity of the ArrayList down to the size needed.
+
+<br/>
+
+#### 3.11.3.8 Copies
+   
+```java
+public Object[] toArray ()
+```
+Returns an array containing all the elements in the list.  Preserves the order of the elements.
+
+
+```java
+public Type[] toArray( Type[] a)
+```
+Returns an array containing all the elements in the list.  Preserves the order of the elements.  
+Type can be any class type.  
++ If the list will fit in a, the elements are copied to a and a is returned.  Any elements of a not needed for list elements are set to null.  
++ If the list will not fit in a, a new array is created and returned.
+
+(It is explained in Setion 14.2 of the text book that the correct Java syntax for this method heading is
+```java
+public <Type> Type[] toArray(Type[] a)
+```
+but you can treat it as if it is the simpler heading.)
+
+<br/>
+
+```java
+public Object clone() // shallow copy,  could be dangerous 
+```
+Returns a shallow copy (not a deep copy) of the calling ArrayList.  Warning: The clone is not an independent copy.  Subsequnt changes to the clone may affect the calling object and vice versa.  (See Chapter 5 of the text book for a discussion of shallow copy.)
+
+
+```java
+public boolean equals (Object other)
+```
+If other is another ArrayList (of any base type), then equals returns true if and only if both ArrayLists are of the same size and contain the same list of elements in the same order.  (In fact, if other is any kind of list, then equals returns true if and only if both the ArrayList and other are of the same size and contain the same list of elements in the same order.  Lists are discussed in Chapter 16 of the text book.)  Does not require the capacities to be equal.
+
+### 3.11.4 :star: Practice
+   
+[Demo: to-do-list](UniMelb/Array/arrayListPractice.java)
+
+[Demo: scoreKeeper](UniMelb/Array/arrayList_scoreKeeper.java)
+
+[Demo: hospitalWard](UniMelb/Array/arrayList_hospitalWard.java)
+
+
+
+## 3.12 Enumerated types (枚举类型)
+
+### 3.12.1 Basics of enumerated type
++ Define a enumerated type
+   Starting with version 5.0, Java permits enumerated types. An enumerated type is a type in which all the values are given in a (typically short) list. The definition of an enumerated type is normally placed outside of all methods in the same place that named constants are defined:
+   ```java
+   enum TypeName {VALUE_1, VALUE_2, ..., VALUE_N};
+   ```
+   Note that a value of an enumerated type is a kind of named constant and so, by convention, is spelled with all UPPERCASE_LETTERS, with underlines between them.
+
+   As with any other type, variables can be declared of an enumerated type.  Given the following definition
+   ```java
+   enum WorkDay {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY};
+   ```
+
++ Declare a variable as enumerated type
+   variables can be declared as
+   ```java
+   WorkDay meetingDay, availableDay;
+   ```
++ Set the value for a variable as enumerated type
+   The value of a variable of this type can be set to one of the values listed in the definition of the type, or the special value  null:
+   ```java
+   meetingDay = WorkDay.THURSDAY;
+   availableDay = null;
+   ```
+
+### 3.12.2 Enumerated type VS String
+Although they may look like String values, values of an enumerated type are not String values
+
+However, they can be used for tasks which could be done by String values and, in some cases, work better:
+
++ Using a String variable allows the possibility of setting the variable to a nonsense value. Using an enumerated type variable constrains the possible values for that variable. An error message will result if an attempt is made to give an enumerated type variable a value that is not defined for its type
+
++ Enumerated types are also more efficient.  An enumerated type is stored as an integer.  The computer can test if the enumerated type has a particular value in one "clock cycle", whereas testing if strings are equal takes many clock cycles; more for longer strings.
+
++ Two variables or constants of an enumerated type can be compared using the equals method or the == operator. However, the == operator has a nicer syntax:
     ```java
-    import java.util.ArrayList;
+    if (meetingDay == availableDay)
+    System.out.println("Meeting will be on schedule.");
+    if (meetingDay == WorkDay.THURSDAY)
+    System.out.println("Long weekend!);
     ```
 
-    An ArrayList is created and named in the same way as object of any class, except that you specify the base type in angle brackets ("less than" and "greater than") as follows:
-    ```java
-    ArrayList<Double> aList = new ArrayList<Double>();
-
-    double[] score = new double[5]; // compare with an array
-
-    // creates an ArrayList that stores objects of the base type String with an initial capacity of 20 items
-    ArrayList<String> list = new ArrayList<String>(20); // watch it: if you don't fill up the arraylist with any elements, its length is still 0 
-    ```
-
-2. 常用API 
+### 3.12.3 Enumerated Types in switch
    
-    [Demo: API of ArrayList](UniMelb/Array/arrayListMethod.java)
+Enumerated types can be used to control a switch statement. The switch control expression uses a variable of an enumerated type. Case labels are the unqualified values of the same enumerated type (i.e., they don't mention the type name).
 
-   + **add(item)**: 
-    append item to the end of the list
+<br/>
 
-   + **add(idx, item)**: 
-    insert item at location  idx,  and move up all elements after idx to the next higher position. 
+[Demo: enumated type in switch](UniMelb/Array/enumeratedType.java)
 
-   + **set(idx, item)**:
-     overwrite(改写) the data at idx, which must already be present in the list.
+:full_moon:**??没太懂这个???**
 
-   + **int size()**:
-     return the number of elements in the list -- not the number pre-allocated in the constructor.
+This example also uses three new features of enumerated types.
 
-        > Java  uses three methods for reporting sizes of objects.
-        > For arrays:  member variable  int length
-        > For strings:        method            int length ()
-        > For containers (e.g. ArrayList): method            int size ()
-3. More methods in the class ArrayList
++ The static method _Flavour.values()_ returns an array of type Flavour containing each value of the enumeration.
 
-      <br/>
-
-    1. Constructors
-        ```java 
-        public ArrayList<BaseType>(int initialCapacity)
-        public ArrayList<BaseType>()  
-        ```
-        Creates an empty ArrayList with the specified BaseType.  If initialCapacity is omitted, 10 is used.
-
-    <br/>
-
-    2. Array-like methods  
-        ```java
-        public BaseType set (int index, BaseType newElement)
-        ```
-        相当于CRUD中的U  
-        Sets the element at the specified index to newElement.  Returns the element previously at that position, but the method is often used as if it were a void method.  (In java, return values can be ignored.) 
-        If you draw an analogy between the ArrayList and an array a, this function is analogous to setting a[index] to the value newElement.  We need  0 <= index <= ArrayList.size().  Throws an IndexOutOfBoundsException if the index is not in this range.
-
-        ```java
-        public BaseType get (int index)
-        ```
-        相当于CRUD中的R
-        Returns the element at the specified index.  
-        This statement is analogous to returning a[index] for an array a.  We need  0 <= index < ArrayList.size().  (Note that the second is < not <=.)  Throws an IndexOutOfBoundsException if the index is not in this range.
-
-      <br/>
-
-    3. Inserting elements  
-        ```java
-        public void add (int index, BaseType newElement)
-        ```
-        Inserts newElement as an element of the calling ArrayList at the specified index. **Each element in the ArrayList with an index greater than or equal to index is shifted upward to have an index that is one greater than the value it had previously.** 
-        The index must be a value greater than or equal to  and less than or equal to the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Note that you can use this method to add an element after the last element.  The capacity of the ArrayList is increased if that is required.
-        
-        ```java
-        public boolean add(BaseType newElement)
-        ```
-        Equivalent to   v.add(v.size(), newElement).
-
-        Adds newElement to the end of the calling ArrayList and increases the ArrayList's size by one.  The capacity of the ArrayList is increased if that is required.  Returns true if the add was successful.
-
-      <br/>
-
-    4. Deleting elements
-        ```java
-        public BaseType remove (int index)
-        ```
-        相当于CRUD中的D, 根据index来删除元素    
-        Deletes and returns the element at the specified index.  **Each element of the ArrayList with an index greater than index is decreased to have an index that is one less than the value it had previously.** 
-        The index must be a value greater than or equal to 0, and less than the current size of the ArrayList.  Throws IndexOutOfBoundsException if the index is not in this range.  Often used as if it were a void method.
-
-        ```java
-        protected void removeRange (int fromIndex, int toIndex)
-        ```
-        Deletes all the elements with indices i such that fromIndex <= i < toIndex.  Elements with indices greater than or equal to toIndex are decreased appropriately.
-
-        ```java
-        public boolean remove (Object theElement)
-        ```
-        (Treat this as if Object were the base type of the ArrayList.  This will become clear next lecture.)
-
-        Removes the first occurrence of theElement from the calling ArrayList.  **If theElement is found in the ArrayList, then each element in the ArrayList with an index greater than the removed element's index is decreased to have an index that is one less than the value it had previously.** 
-        Returns true if theElement was found (and removed).  Returns false if theElement was not found in the calling ArrayList.
-
-        ```java
-        public void clear ()
-        ```
-        Removes all elements from the calling ArrayList and **sets the ArrayList's size to 0.**
-        This does not reduce the ArrayList's capacity (i.e., the amount of memory allocated to it).  See trimToSize() below for that.
-
-      <br/>
-
-    5. Searching
-        ```java
-        public boolean contains (Object target)
-        ```
-        Returns true if the calling ArrayList contains target; otherwise, returns false.  
-        Uses the method  equals  of the object target to test for equality with any element in the calling ArrayList.
-
-        ```java
-        public int indexOf (Object target)
-        ```
-        Returns the index of the **first element** that is equal to target.    
-        Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
-
-        ```java
-        public int lastIndexOf (Object target)
-        ```
-        Returns the index of the **last element** that is equal to target.  
-        Uses the method equals of the object target to test for equality.  Returns -1 if target is not found.
-
-    <br/>
-
-    6. Finding the how many elements there are
-        ```java
-        public int size()
-        ```
-        Returns the number of elements in the calling ArrayList.
-
-        ```java
-        public boolean isEmpty()
-        ```
-        Equivalent to  size() == 0.  Using isEmpty makes the intention clearer to the reader.  For some other container classes, it may also be faster, and so using it makes it easier to refactor code to use another container.
-
-    <br/>
-
-    7. Resizing the underlying array
-        主动控制已有的ArrayList的大小， 拉长或截短
-        ```java
-        public void ensureCapacity (int newCapacity)
-        ```
-        Increases the capacity of the calling ArrayList, if necessary, in order to ensure that the ArrayList can hold at least newCapacity elements.  Using ensureCapacity can sometimes increase efficiency (as it can avoid increasing the capacity multiple times and elements are added sequentially), but it is not needed for any other reason.
-
-        ```java
-        public void trimToSize()
-        ```
-        An ArrayList automatically increases its capacity when needed. However, the capacity may increase beyond what a program requires. **In addition, although an ArrayList grows automatically when needed, it does not shrink automatically.**
-        If an ArrayList has a large amount of excess capacity, an invocation of the method trimToSize will shrink the capacity of the ArrayList down to the size needed.
-
-    <br/>
-
-    8. Copies
-        ```java
-        public Object[] toArray ()
-        ```
-        Returns an array containing all the elements in the list.  Preserves the order of the elements.
-
-
-        ```java
-        public Type[] toArray( Type[] a)
-        ```
-        Returns an array containing all the elements in the list.  Preserves the order of the elements.  
-        Type can be any class type.  
-        + If the list will fit in a, the elements are copied to a and a is returned.  Any elements of a not needed for list elements are set to null.  
-        + If the list will not fit in a, a new array is created and returned.
-
-        (It is explained in Setion 14.2 of the text book that the correct Java syntax for this method heading is
-        ```java
-        public <Type> Type[] toArray(Type[] a)
-        ```
-        but you can treat it as if it is the simpler heading.)
-
-        <br/>
-
-        ```java
-        public Object clone() // shallow copy,  could be dangerous 
-        ```
-        Returns a shallow copy (not a deep copy) of the calling ArrayList.  Warning: The clone is not an independent copy.  Subsequnt changes to the clone may affect the calling object and vice versa.  (See Chapter 5 of the text book for a discussion of shallow copy.)
-        
-
-        ```java
-        public boolean equals (Object other)
-        ```
-        If other is another ArrayList (of any base type), then equals returns true if and only if both ArrayLists are of the same size and contain the same list of elements in the same order.  (In fact, if other is any kind of list, then equals returns true if and only if both the ArrayList and other are of the same size and contain the same list of elements in the same order.  Lists are discussed in Chapter 16 of the text book.)  Does not require the capacities to be equal.
-
-4. Demos for practice
-    [Demo: to-do-list](UniMelb/Array/arrayListPractice.java)
-    
-    [Demo: scoreKeeper](UniMelb/Array/arrayList_scoreKeeper.java)
-    
-    [Demo: hospitalWard](UniMelb/Array/arrayList_hospitalWard.java)
-
-### 3.10.10 Enumerated types (枚举类型)
-
-1. Basics of enumerated type
-   + Define a enumerated type
-       Starting with version 5.0, Java permits enumerated types. An enumerated type is a type in which all the values are given in a (typically short) list. The definition of an enumerated type is normally placed outside of all methods in the same place that named constants are defined:
-       ```java
-       enum TypeName {VALUE_1, VALUE_2, ..., VALUE_N};
-       ```
-       Note that a value of an enumerated type is a kind of named constant and so, by convention, is spelled with all UPPERCASE_LETTERS, with underlines between them.
-
-       As with any other type, variables can be declared of an enumerated type.  Given the following definition
-       ```java
-       enum WorkDay {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY};
-       ```
-
-   + Declare a variable as enumerated type
-       variables can be declared as
-       ```java
-       WorkDay meetingDay, availableDay;
-       ```
-   + Set the value for a variable as enumerated type
-       The value of a variable of this type can be set to one of the values listed in the definition of the type, or the special value  null:
-       ```java
-       meetingDay = WorkDay.THURSDAY;
-       availableDay = null;
-       ```
-
-2. Enumerated type VS String
-    Although they may look like String values, values of an enumerated type are not String values
-
-    However, they can be used for tasks which could be done by String values and, in some cases, work better:
-
-    + Using a String variable allows the possibility of setting the variable to a nonsense value. Using an enumerated type variable constrains the possible values for that variable. An error message will result if an attempt is made to give an enumerated type variable a value that is not defined for its type
-
-    + Enumerated types are also more efficient.  An enumerated type is stored as an integer.  The computer can test if the enumerated type has a particular value in one "clock cycle", whereas testing if strings are equal takes many clock cycles; more for longer strings.
-
-    + Two variables or constants of an enumerated type can be compared using the equals method or the == operator. However, the == operator has a nicer syntax:
-        ```java
-        if (meetingDay == availableDay)
-        System.out.println("Meeting will be on schedule.");
-        if (meetingDay == WorkDay.THURSDAY)
-        System.out.println("Long weekend!);
-        ```
-3. Enumerated Types in switch
-   
-    Enumerated types can be used to control a switch statement. The switch control expression uses a variable of an enumerated type. Case labels are the unqualified values of the same enumerated type (i.e., they don't mention the type name).
-
-    <br/>
-
-    [Demo: enumated type in switch](UniMelb/Array/enumeratedType.java)
-
-    :full_moon:**??没太懂这个???**
-
-    This example also uses three new features of enumerated types.
-
-    + The static method _Flavour.values()_ returns an array of type Flavour containing each value of the enumeration.
-
-    + Enumeration values convert to String in the way you would expect: the string value is a string containing the same name as is used in code.  For example toString(Flavour.CHOCOLATE) is "CHOCOLATE".  (Note that toString() is called implicitly when a value has to be converted to a String, such as when it is being added to a String.)
++ Enumeration values convert to String in the way you would expect: the string value is a string containing the same name as is used in code.  For example toString(Flavour.CHOCOLATE) is "CHOCOLATE".  (Note that toString() is called implicitly when a value has to be converted to a String, such as when it is being added to a String.)
 Z 
-    + The reverse -- converting from a string to the enumeration value -- is done by _Flavour.valueOf()_.  The input is a string, which must be exactly the name of the enumeration value.  The case must match, and it must not have any spaces.
-        ```shell
-        Flavour.valueOf(toString(Flavour.CHOCOLATE)) == Flavour.CHOCOLATE
-        ```
++ The reverse -- converting from a string to the enumeration value -- is done by _Flavour.valueOf()_.  The input is a string, which must be exactly the name of the enumeration value.  The case must match, and it must not have any spaces.
+    ```shell
+    Flavour.valueOf(toString(Flavour.CHOCOLATE)) == Flavour.CHOCOLATE
+    ```
 
-4. Enumeration methods
-   The following are some methods that every enumerated type has automatically.
+### 3.12.4 Enumeration methods
+The following are some methods that every enumerated type has automatically.
 
-   + protected Enum(String name, int ordinal)
-    This is the only constructor.  However enumerations are like primitive types, and can be just assigned from literals, like Flavour.VANILLA without needing a new and a constructor.
-   + boolean equals(Object other)
-    Returns true if the specified object is equal to this enum constant.
-   + String toString()
-   + String name()
-   Returns the name of this enum constant, as contained in the declaration.  The difference between these two is that toString() can be overridden (a process which we will cover in a later lecture) but name cannot.
-   + int ordinal()
-    Returns the ordinal of this enumeration constant (its position in its enum declaration, where the initial constant is assigned an ordinal of zero).
-   + int compareTo(EnumeratedType o)
-    Compares this enum with the specified object.  Returns > 0 if this is later in the list than o, or < 0 if this is earlier or 0 if they are equal..
-   + public EnumeratedType [] values ()
-    Returns an array whose elements are the values of the enumerated type in te order in which they are listed in the definition of the enumerated type.
-   + static EnumeratedType valueOf(String name) 
-    Returns the enum constant of the specified enum type with the specified name.
++ protected Enum(String name, int ordinal)
+This is the only constructor.  However enumerations are like primitive types, and can be just assigned from literals, like Flavour.VANILLA without needing a new and a constructor.
++ boolean equals(Object other)
+Returns true if the specified object is equal to this enum constant.
++ String toString()
++ String name()
+Returns the name of this enum constant, as contained in the declaration.  The difference between these two is that toString() can be overridden (a process which we will cover in a later lecture) but name cannot.
++ int ordinal()
+Returns the ordinal of this enumeration constant (its position in its enum declaration, where the initial constant is assigned an ordinal of zero).
++ int compareTo(EnumeratedType o)
+Compares this enum with the specified object.  Returns > 0 if this is later in the list than o, or < 0 if this is earlier or 0 if they are equal..
++ public EnumeratedType [] values ()
+Returns an array whose elements are the values of the enumerated type in te order in which they are listed in the definition of the enumerated type.
++ static EnumeratedType valueOf(String name) 
+Returns the enum constant of the specified enum type with the specified name.
