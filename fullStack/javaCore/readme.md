@@ -28,6 +28,8 @@ File>preferences>configure snippet编辑自定义模板代码
 
 + [chapter6: interface](chap6/readme.md)
 
++ [Generics](Generics/readme.md)
+
 + [chapter7: exception handling](chap7/readme.md)
 
 
