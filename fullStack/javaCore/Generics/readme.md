@@ -4,6 +4,8 @@
 
 and 3 demo on Ed
 
+[Demo: unit hospital](UniMelb/GameHospital/GameProgram.java)
+
 ## 1.1 why generics
 Beginning with version 5.0, Java allows class and method definitions that include parameters for types. Such definitions are called generics. 
 
