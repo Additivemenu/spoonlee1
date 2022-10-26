@@ -23,6 +23,8 @@ The try block contains the code for the basic algorithm.  It tells what to do wh
 
 ### 2.1.1 :full_moon: try-throw-catch mechanism 
  
+[Resource: finally block tutorial 注意看其中的例子!](https://dotnettutorials.net/lesson/finally-block-in-java/#:~:text=Syntax%20to%20use%20Finally%20block,in%20Java%3A%201%20try%2Fcatch%2Ffinally%202%20try%2Ffinally)
+
 When a try block is executed, either one of below cases can happen:
 
 1. No exception is thrown in the try block.
