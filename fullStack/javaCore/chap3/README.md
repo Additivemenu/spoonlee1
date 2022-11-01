@@ -992,7 +992,7 @@ Creates an empty ArrayList with the specified BaseType.  If initialCapacity is o
 
 <br/>
 
-#### 3.11.3.2 Array-like methods  
+#### 3.11.3.2 :star:Array-like methods  
 ```java
 public BaseType set (int index, BaseType newElement)
 ```
