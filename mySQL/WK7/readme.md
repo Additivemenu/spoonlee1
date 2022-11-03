@@ -437,6 +437,8 @@ And supplier.SupplierID In (
 
 ## :star:Solution2
 
+思路: 我们先找到哪些supplier deliver了compass, 再进一步看这些supplier的是否deliver过两种以上的item
+
 ```sql
 # this is the solution provided by tutorial solution
 Select distinct delivery.supplierid, supplier.name
