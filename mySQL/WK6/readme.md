@@ -160,7 +160,9 @@ on employee.departmentid = department.departmentid
 where department.floor = 5;
 ```
 
-# 4. Multiple table joins
+# 4. :star::star:Multiple table joins
+
+涉及到GROUP BY 2 columns
 
 When we join more than 2 tables, the same principle apply, there must be a common column between the two entities functioning as a primary key/ foreign key referential integrity
 
@@ -191,6 +193,8 @@ where item.name LIKE "tent%"
 Group by item_name;
 ```
 
+Note: Only Group by item_name will treat item_name as basic unit for aggregation (records with the same item_name, but different saledate也会被aggregate function认为是同一类)
+
 Results:
 
 ![](Src/tent2.png)
@@ -204,6 +208,8 @@ on saleitem.saleid = sale.saleid
 where item.name LIKE "tent%"
 Group by item_name, saledate;       # group by two columns
 ```
+
+Note: Group by two columns makes a (item_name, saledate) a basic unit fro aggregation (records with the same item_name, but different saledate会被aggregate function认为是不同类; 只有records with same item_name and saledata才会被aggregation function认为是同一类)
 
 Results:
 
