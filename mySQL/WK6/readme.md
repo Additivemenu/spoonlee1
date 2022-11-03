@@ -253,6 +253,8 @@ Results:
 find the item id's sold by at least two departments on the second floor
 
 :question: why join item, deliveryitem and department doesn't work??
+-because delivery is a one-to-many-to-many model
+sale is another one-to-many-to-many model, delivery and sale are independent
 
 ```sql
 select *
@@ -266,7 +268,10 @@ Results:
 ![](Src/having_practice1_all.png)
 
 
-### :star:e.g.1 
+### :star::star:e.g.1 
+
+> 核心知识点: count(distinct(departmentid)) 
+> 多行的departmentid一样, 这几行算一行count
 
 find the item id's sold by at least two departments on the second floor
 
@@ -422,7 +427,9 @@ Group by supplier.supplierid
 Having count(distinct(item.itemid)) >= 10;
 ```
 
-### e.g.5
+### :star::star: e.g.5 
+
+> 核心知识点: SELECT DISTINCT(item.itemid)
 
 Type the SQL that for each item, gives its type, the departments that sell the item, and the floor location of these three departments.
 
