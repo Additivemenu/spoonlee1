@@ -186,7 +186,7 @@ Results:
 当题目中涉及到not..., 仔细审题, 以确保你理解题意.
 
 
-# :star:e.g.9
+# :star:e.g.9 (Unary join)
 
 Find the numbers and names of the employees who earn more than their manager.
 
@@ -261,7 +261,7 @@ Results:
 
 ![](Src/eg11_2.png)
 
-# :star:e.g.12
+# :star::star: e.g.12 Group by three columns!
 
 What is the average delivery quantity of items of type N made by each company who delivers them. Be sure to list the Supplier ID and name, items type and name and average delivery quantity in your answer.
 
@@ -349,7 +349,7 @@ On emp.BossID = boss.employeeID
 Where emp.firstname = 'Clare' AND emp.lastname = 'Underwood';
 ```
 
-# :star:e.g.16
+# :star::star:e.g.16 Unary join 和取反求
 
 List the ids of the departments where all of the employees earn less than their manager
 
@@ -394,7 +394,7 @@ Order by department.departmentid;
 ## Summary
 题目中出现all, not all 等词, 考虑先取反来求
 
-# :star:e.g.17
+# :star::star::star:e.g.17
 
 Find the supplier id and supplier names that deliver both compasses and an item other than compasses
 
