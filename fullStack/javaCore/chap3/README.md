@@ -928,6 +928,7 @@ public double[][] aMethod()
 ## 3.11 :full_moon:ArrayList
 
 [sorting ArrayList](https://www.geeksforgeeks.org/comparator-interface-java/)
+[sorting ArrayList with null](https://howtodoinjava.com/java/sort/stream-sort-with-null-values/)
 
 UniMelb Java
 
