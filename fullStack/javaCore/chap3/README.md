@@ -926,6 +926,9 @@ public double[][] aMethod()
 紧跟多维数组, 先跳过
 
 ## 3.11 :full_moon:ArrayList
+
+[sorting ArrayList](https://www.geeksforgeeks.org/comparator-interface-java/)
+
 UniMelb Java
 
 > ArrayList is a class in the standard Java libraries. Unlike arrays, which have a fixed length once they have been created, an ArrayList is an object that can grow and shrink while your program is running. In general, an ArrayList serves the same purpose as an array, except that an ArrayList can change length while the program is running.
