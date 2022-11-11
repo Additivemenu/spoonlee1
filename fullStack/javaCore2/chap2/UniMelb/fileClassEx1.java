@@ -4,17 +4,8 @@ import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
-
-/**
- * file class, used to control file
- * (remember the disastrous Java final project due to the absence of file class)
- */
-
- 
-public class FileClassDemo
-{
-
-	public static void main(String[] args)
+public class fileClassEx1 {
+    public static void main(String[] args)
 	{	
 
 		Scanner console = new Scanner(System.in);
@@ -29,7 +20,7 @@ public class FileClassDemo
 		filename = console.nextLine();
 
 		// create a file object ---------------------------------------------------------------
-		File fileObject = new File(filename);
+		File fileObject = new File(filename);       // will create a fileObject (a file in the specified path)
 
 		while(fileObject.exists())			// avoid created repeated file object
 		{
@@ -38,6 +29,8 @@ public class FileClassDemo
 			fileObject = new File(filename);
 		}
 		// up here, a file is created 
+
+
 
 		// output step0: 声明打印机 ------------------------------------------------------------
 		PrintWriter outputStream = null;
@@ -59,5 +52,4 @@ public class FileClassDemo
 
 		System.out.println("Line written to: " + filename);
 	}
-
 }

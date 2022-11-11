@@ -12,11 +12,13 @@ We need to store it in a file, either on disk or on an SSD.  This is called Inpu
 
 ## 1.1 Stream objects
 
-To communicate with the outside world, java uses stream objects. A stream can be defined as a sequence of data. 
+To communicate with the outside world, java uses stream objects. 
 
-+ If the data flows into a program, then the stream is called an **input stream (InPutStream)**.
++ **A stream** can be defined as **a sequence of data**. 
 
-+ If the data flows out of a program, then the stream is called an **output stream (OutPutStream)**.
+  + If the data flows into a program, then the stream is called an **input stream (InPutStream)**.
+
+  + If the data flows out of a program, then the stream is called an **output stream (OutPutStream)**.
 
 > The name "stream" comes because a stream represents a file as a sequence of bytes one after the other.  These are then interpreted by the program as characters, integers, strings or such like.  However, because streams are sequential, data structures such as trees must be "serialized" (turned into a sequence of bytes) before they can be written to a stream.
 
@@ -541,18 +543,22 @@ This is useful if we sometimes want to send the output to the operating system's
 #### What have these got to do with nested constructors?
 System.in, System.out and System.err are low-level I/O streams.  Being able to mix-and-match different sources of streams-of-character, we can use different classes on top of these special streams.  Other low-level streams come from networking, and again we get to choose which skin to apply on top of a network connection.
 
-### 2.3.3 :star: File class
+### 2.3.3 :star::star: File class
 The File class is like a wrapper class for file names.
 
-The constructor for the class File takes a name (known as the abstract name) as a string argument, and produces an object that represents the file with that name.
+**The constructor for the class File takes a name (known as the abstract name) as a string argument, and produces an object that represents the file with that name (即创建一个file).**
 
 The File object and methods of the class File can be used to determine information about the file and its properties.
 
 [Demo: file class](UniMelb/FileClassDemo.java)
 
-Exercise: Modify the example above to ask for a new file name, and then rename it just before exiting.
+[Demo: exercise1]()
 
-Exercise: Modify the example above to check if the file name entered contains "/" or "\".  If so, check if the directory exists and create it if necessary before creating the file.
+[Demo: exercise2]()
+
++ Exercise1: Modify the example above to ask for a new file name, and then rename it just before exiting.
+
++ Exercise2: Modify the example above to check if the file name entered contains "/" or "\".  If so, check if the directory exists and create it if necessary before creating the file.
 
 
 #### Some methods in class File
@@ -888,6 +894,7 @@ public class SomeClass implements Serializable
 > Note:
 > When a serializable class has instance variables of a class type, then all those classes must be serializable also.  A class is not serializable unless the classes for all instance variables are also serializable for all levels of instance variables within classes.
 
+
 ### 3.3.3 :full_moon: read array
 Since an array is an object, arrays can also be read and written to binary files using readObject and writeObject.  If the base type is a class, then it must also be serializable, just like any other class type.  Since readObject returns its value as type Object (like any other object), it must be type cast to the correct array type:
 ```java
@@ -895,7 +902,7 @@ SomeClass[] someObject = (SomeClass[])objectInputStream.readObject();
 ```
 
 
-## 3.4 Reading and writing from the same file
+## 3.4 :star::star:Reading and writing from the same file
 
 连续读取一个文件, 比如A2中, 函数1读取map dimension和terrain array,
 函数2接着读取(而不是从头开始读取)Entity的信息

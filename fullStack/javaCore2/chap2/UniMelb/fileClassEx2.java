@@ -5,16 +5,8 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
 
-/**
- * file class, used to control file
- * (remember the disastrous Java final project due to the absence of file class)
- */
-
- 
-public class FileClassDemo
-{
-
-	public static void main(String[] args)
+public class fileClassEx2 {
+    public static void main(String[] args)
 	{	
 
 		Scanner console = new Scanner(System.in);
@@ -59,5 +51,4 @@ public class FileClassDemo
 
 		System.out.println("Line written to: " + filename);
 	}
-
 }
