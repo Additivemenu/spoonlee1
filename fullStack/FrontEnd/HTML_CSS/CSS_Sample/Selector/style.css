@@ -55,3 +55,10 @@ ol.website li a[href*="google"][href$=".com.au"]{
   background-color: yellow;
 }
 
+.parag::before{
+  content: "...";
+}
+
+.parag::after{
+  content: "***";
+}

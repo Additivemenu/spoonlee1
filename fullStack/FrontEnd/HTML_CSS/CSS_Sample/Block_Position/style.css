@@ -1,0 +1,33 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+.block1{
+    width: 500px;
+    height: 500px;
+    background: red;
+}
+
+.sub_block1{
+    width: 100px;
+    height: 100px;
+    background: yellow;
+}
+
+.sub_block2{
+    width: 100px;
+    height: 100px;
+    background: lightgreen;
+    /* position: absolute; */
+}
+
+.sub_block3{
+    width: 100px;
+    height: 100px;
+    background: purple;
+    position: relative;
+    left: 50px;
+    top: 50px;
+    
+}
