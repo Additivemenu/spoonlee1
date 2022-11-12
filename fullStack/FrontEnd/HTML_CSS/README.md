@@ -95,7 +95,7 @@ select tag element based on text filter
 .pseudo::after{}: 在元素后跟随
 
 
-## :moon:2.2 Block element
+## 2.2 :moon: Block element
 即div tag
 ```html
 <div class="block1"></div>
@@ -151,7 +151,7 @@ block变成circle
   }
 ```
 
-#### :star:2.2.1.4 文档流
+#### 2.2.1.4 :star:文档流
 
 设置两个block, 会发现block2并不是出现在block1的右边, 而是在它下面
 
@@ -179,7 +179,7 @@ border-radius: 10px;
 }
 ```
 
-#### :star:2.2.1.5 Display属性
+#### 2.2.1.5 :star:Display属性
 block的display属性, 默认是block, 即服从上面的文档流, 一个block结束了, 下一个block从下一行开始;
 
 如果将display设为inline-block, block对外会呈现出inline的性质, 像text一样从左向右排列, 一行满了再去下一行.
@@ -217,7 +217,7 @@ html,body{
 ![](Src/block_display.png)
 
 
-### :star:2.2.2 Position of Block
+### 2.2.2 :star: Position of Block
 关于block的position属性
 
 #### 2.2.2.1 static (by default)
@@ -226,7 +226,7 @@ position: static;
 ```
 Position属性如果是Static，则位移属性（left,right,top,bottom）无效，block的位置完全由文档流决定
 
-#### :star:2.2.2.2 relative
+#### 2.2.2.2 :star: relative
 
 ```css
 position: relative
@@ -332,7 +332,7 @@ html,body{
 如果将sub_block2算入文档流, 则sub_block3的位置紧跟上一个在文档流中的元素(sub_block2)
 ![](Src/position_absolute2.png)
 
-#### :star:2.2.2.4 relative & absolute
+#### 2.2.2.4 :star: relative & absolute
 
 turn to here
 
@@ -341,7 +341,7 @@ turn to here
 
 #### 2.2.2.6 sticky
 
-#### :star:2.2.2.7 block的覆盖关系
+#### 2.2.2.7 :star: block的覆盖关系
 
 
 ### 2.2.3 Dimension of Block
