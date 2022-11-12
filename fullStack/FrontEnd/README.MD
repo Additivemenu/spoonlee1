@@ -5,6 +5,25 @@
 + 使用ctrl + f 可以打开vscode的搜索bar
 + 按住ctrl + z可以返回指令原来的样子，按ctrl + shift + z再切换回去
 + ctrl + shift + p
++ 快速打字:
+  + 输入!按tap, 出现一个html模板
+  + 快速写: 键入“section.main-structure” + tap:
+    ```html
+    <section class="main-strucuture"></section>  
+    ```
+  + 快速写:键入”a>div.logo” + tap:
+    ```html
+    <a href="">
+        <div class="logo"></div>
+    </a>
+    ```
++ Shift+点击收缩代码可以逐层收缩
++ Ctrl + f 检索代码，还可以据此replace 代码中的关键词
+  + Aa: 搜索结果是否对大小写敏感
+  + ab:搜索结果是否必须严格是粘连在一起的
+  + GitHub上使用类似的检索功能(也是ctrl + f启动快捷寻找, 甚至word里也是ctrl + f)
++ 加标签：选中HELLO WROLD, ctrl + p打开搜索框，输入>wrap回车，再输入想wrap的标签 (来自js lesson1 3h44min)
+ 
 
 # 代码模板
 vscode: File ---> preferences ---> configure user snippets ---> define a JSON file

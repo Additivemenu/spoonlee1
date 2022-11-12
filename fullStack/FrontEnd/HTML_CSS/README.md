@@ -50,14 +50,34 @@ HTML <table> 快过时了, 因为现在有了新的布局工具
 
 用来修饰HTML元素的格式, 但首先你得选择特定的HTML标签来施加修饰, 这就需要选择器:
 
-[选择器demo](CSS_Sample/Selector/CSS_Selector.html)
+Demo |
+------ |
+[选择器demo](CSS_Sample/Selector/CSS_Selector.html)   |
+[wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)|
+
 
 ### 2.1.1 无括号选择器:
-  + ‘>’ 表示下一层. 
+allow us to reach down to branch of tag tree
 
-  + 空格表示下属所有. 如ul.info li, 表示选择ul.info下属的所有li标签
++ ‘>’ 表示下一层. 
 
-  + nth:child(int)
++ 空格表示下属所有.
+
++ nth:child(int)
 
 ### 2.1.2 有括号选择器
-  
+select tag element based on text filter
+
++ 直接选择
+  [ = ]
++ 相关性选择
+  [ *= ]
++ 头尾选择
+  [ ^= ]: 开头
+  [ $= ]: 结尾
++ 多个选择器合并选择
+  一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
+
+## 2.2 Block element
+
+## 2.3 Flexbox

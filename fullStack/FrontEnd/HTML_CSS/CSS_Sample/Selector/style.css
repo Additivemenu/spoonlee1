@@ -1,0 +1,42 @@
+
+/*---------------">" 表示下一层所有的指定标签元素-----------------*/
+/*ul.info>li 选定ul.info下一层的li标签元素*/
+
+ul.info>li {
+  background-color: yellow;     /*对nested在ul.info>li里面的元素也设置了, 应该和background标签本质有关*/
+  list-style: none;         /*只设置了ul.info>li*/
+}
+
+
+/* -------------space 表示下属所有的指定标签元素-------------------*/
+/* cancel out text-decoration of all <a> tag under 'ol.website li'*/
+ol.website li a{
+    text-decoration: none;
+}
+
+
+/*-------------------选择指定的child标签元素--------------------------*/
+/* 这里是一个双重selector*/
+/* 先选择ul.info下一层的li标签元素, 再对刚才已经选中的li元素 下属的第二个child元素进行如下渲染*/
+ul.info > li li:nth-child(2){
+    background-color: red;
+    list-style: none;
+}
+
+/*-------------------直接选择-------------------*/
+ol.website li a[href="https://linkedin.com"]{
+  background-color: aqua;
+}
+
+
+/*-------------------相关性选择------------------*/
+ol.website li a[href*="google"]{
+  background-color: lightgreen;
+}
+
+/*------------------多个选择器一起用----------------*/
+ol.website li a[href*="google"][href$=".com.au"]{
+  background-color: blueviolet;
+}
+
+
