@@ -39,4 +39,19 @@ ol.website li a[href*="google"][href$=".com.au"]{
   background-color: blueviolet;
 }
 
+/*---------------::宏修饰段落--------------------*/
+
+.parag::first-letter{
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.parag::first-line{
+  font-size: 24px;
+}
+
+/*only the part selected will be rendered as following*/
+.parag::selection{
+  background-color: yellow;
+}
 

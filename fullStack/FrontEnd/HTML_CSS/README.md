@@ -23,6 +23,11 @@ HTML & CSS
 ### 1.1.2 Heading
 
 ### 1.1.3 multi-media
++ Picture
++ Video
++ Audio
+
+
 
 ### 1.1.4 HTML list
 
@@ -35,7 +40,6 @@ HTML & CSS
 HTML <table> 快过时了, 因为现在有了新的布局工具
 
 
-
 ## 1.2 注意特殊语法:
 + p.active 和p .acitve 的区别 （2h08min-）
 前者指p本级有个叫active的class，后者指p下属所有级适用的叫active的class
@@ -46,7 +50,7 @@ HTML <table> 快过时了, 因为现在有了新的布局工具
 # 2. CSS
 
 ## 2.1 选择器
-[Resource: wc3 selector](https://www.w3schools.com/CSSref/css_selectors.php)
+[Learning Material: wc3 selector](https://www.w3schools.com/CSSref/css_selectors.php)
 
 用来修饰HTML元素的格式, 但首先你得选择特定的HTML标签来施加修饰, 这就需要选择器:
 
@@ -78,6 +82,33 @@ select tag element based on text filter
 + 多个选择器合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 
+### 2.1.3 特殊语法 class::宏 
+注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
+
+可使用 class::宏来渲染段落的某部分
++ .pseudo::first-letter{}: 只对第一个字母生效
++ .pseudo::first-line{}: 只对第一行生效
++ .pseudo::selection{}:只对用鼠标选中部分生效
+
+除此外, 了解伪元素的概念:
+.pseudo::before{}：在元素前跟随，有大用可以做特效（以后会讲）
+.pseudo::after{}: 在元素后跟随
+
+
 ## 2.2 Block element
+即<div> tag
+```html
+<div class="block1"></div>
+```
+
+### 2.2.1 Basics of Block
+
+### 2.2.2 Position of Block
+
+
+
+### 2.2.3 Dimension of Block
+
+
 
 ## 2.3 Flexbox
