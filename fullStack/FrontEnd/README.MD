@@ -23,7 +23,10 @@
   + ab:搜索结果是否必须严格是粘连在一起的
   + GitHub上使用类似的检索功能(也是ctrl + f启动快捷寻找, 甚至word里也是ctrl + f)
 + 加标签：选中HELLO WROLD, ctrl + p打开搜索框，输入>wrap回车，再输入想wrap的标签 (来自js lesson1 3h44min)
- 
++ HTML快速创建多重标签:
+  ```html
+  div.block1*7, then hit tap
+  ```
 
 # 代码模板
 vscode: File ---> preferences ---> configure user snippets ---> define a JSON file

@@ -22,10 +22,38 @@ HTML & CSS
 
 ### 1.1.2 Heading
 
-### 1.1.3 multi-media
-+ Picture
-+ Video
-+ Audio
+### 1.1.3 :star:multi-media
+#### 1.1.3.1 Image
+[document: img tag](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/img)
+```html
+<img class="fit-picture"
+src="/media/cc0-images/grapefruit-slice-332-332.jpg"
+alt="Grapefruit slice atop a pile of other slices">
+```
+
+#### 1.1.3.2 Video
+[document: video tag](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video#attr-controls)
+```html
+<video controls width="250">
+
+    <source src="/media/cc0-videos/flower.webm"
+            type="video/webm">
+
+    <source src="/media/cc0-videos/flower.mp4"
+            type="video/mp4">
+
+    Download the
+    <a href="/media/cc0-videos/flower.webm">WEBM</a>
+    or
+    <a href="/media/cc0-videos/flower.mp4">MP4</a>
+    video.
+</video>
+```
+
+
+#### 1.1.3.3 Audio
+[document: audio tag](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio)
+
 
 
 
@@ -105,6 +133,7 @@ Demo |
 ------ |
 [block demo](CSS_Sample/Block_Element/Block.html)   |
 [block position demo](CSS_Sample/Block_Position/Block_Position.html) |
+[block dimension demo](CSS_Sample/Block_Dimension/Block_Dimension.html) |
 
 
 ### 2.2.1 Basics of Block
@@ -214,11 +243,15 @@ html,body{
     display:inline-block;
 }
 ```
-![](Src/block_display.png)
 
+<img src = "Src/block_display.png" width = 50%>
 
 ### 2.2.2 :star: Position of Block
-关于block的position属性
+关于block的position属性, 以及位移属性(left, top, right, bottom)
+
++ 简言之, static的block的位移属性作废, relative与absolute的block的位移属性才生效.
++ absolute的block不参与文档流, relative的block参与文档流
++ absolute的block的位移参照物为其上级中最近的position=relative的block 
 
 #### 2.2.2.1 static (by default)
 ```css
@@ -269,7 +302,9 @@ html,body{
     display:inline-block;
 }
 ```
-![](Src/relative%20position.png)
+
+<img src="Src/relative%20position.png" width=50%>
+
 + 使用位移属性, 有可能将block移出视口
 + 位移属性优先级顺序: 同时定义了left, right, top and bottom的情况下, left, top优先, right, bottom作废
 
@@ -326,28 +361,64 @@ html,body{
 }
 ```
 将sub_block2从文档流独立出去, sub_block3的位置紧跟上一个在文档流中的元素(sub_block1)
-![](Src/position_absolute.png)
 
+<img src="Src/position_absolute.png" width="50%">
 
 如果将sub_block2算入文档流, 则sub_block3的位置紧跟上一个在文档流中的元素(sub_block2)
-![](Src/position_absolute2.png)
 
-#### 2.2.2.4 :star: relative & absolute
 
-turn to here
+<img src="Src/position_absolute2.png" width="50%">
+
+#### 2.2.2.4 :star: relative & absolute: 位移属性参照物
+
+即使position是absolute, 也需要一个参照物来进行计算位移属性; 属性为absolute的block的位移参照物会从上一级的block属性查看。
++ 如果position为absolute的block的上一级block的position属性是static（不写position默认就是static），那么absolute就不会看上一层的，而会再往上一层去看直到block的position不是static（如果不是才会将其选择为位移参照物）, 如果上一层block的position属性一直都是static, 则会选取整个文档作为参照物，来计算位移属性。有时候发现block没有对齐, 可能就是这个原因!
++ 如果position为absolute的sub-block的上一级block的position属性是relative, 则该sub-block会以上一级的block为参照物来计算位移属性. **因此，一般parent block的position设定习惯上直接写relative，这样child block会选取mother block为位移参照物。**
 
 
 #### 2.2.2.5 fixed
+固定，像狗皮膏药一样贴在一个地方不动
 
 #### 2.2.2.6 sticky
+相当于relative和fixed结合
 
-#### 2.2.2.7 :star: block的覆盖关系
+
+#### 2.2.2.7 :star: block的覆盖关系: z-index
 
 
+<img src="Src/block_zindex.png" width="80%">
+
+HTML中后面生成的block会优先显示（压在之前的block上）; 但z-index可以调节同层级的优先覆盖关系， z-index一般取值0-999 
 
 
 ### 2.2.3 Dimension of Block
 
 
 
-## 2.3 Flexbox
+<img src="Src/block_dimension.png" width = 50%>
+
+由内向外, 依次是: content, padding, border, margin, position; margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子, 
+
++ Margin属性，表示该block与其他block之间的最小距离。用margin-left, 还可以单独定义某一边的margin; 下图中，block3(margin为50px)与block4(margin为30px)的距离是50px
+<img src="Src/block_margin.png" width="100%">
+
++ 默认情况下, content就是我们定义div时的width和height. 但我们可以定义 
+  ```css
+  box-sizing： border-box
+  ```
+  来使得定义div的width和height为包含boder, padding和content的总体dimension. 	一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
+  + 如下, 定义一个500*500px的block, 当设定其box-sizing: border-box后, 它的border+padding+content=500
+  <img src="Src/boxsizing.png" width=50%>
+
+
+## 2.3 :star:Flexbox
++ 前面的我们如果写多个block, 它们按文档流依次排列下来
+
+<img src="Src/before_flexbox1.png" width=80%>
+
++ 使用overflow: hidden 来隐藏掉overflow的block
+<img src="Src/before_flexbox2.png" width=80%>
+
+现在我们来看看如何使得block流动, 呈现一种动态布局
+
+### 2.3.1 Display: Flex

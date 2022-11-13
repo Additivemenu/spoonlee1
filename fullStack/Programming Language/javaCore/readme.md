@@ -37,6 +37,14 @@ File>preferences>configure snippet编辑自定义模板代码
 
 
 --- 
+# configure class path in VSCode:
+左下java projects --> 点击... --> configure class path
+
+之后cd到指定的class path, 再用javac 和java来编译运行program
+
+[VSCode document：java project manager](https://code.visualstudio.com/docs/java/java-project)
+
+---
 
 # debugging
 
