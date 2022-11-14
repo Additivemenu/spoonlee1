@@ -513,6 +513,7 @@ body,html{
 
 #### 2.4.5.1 Only flex flow
 初始情况：只是设置了flex flow的direction和wrap， 不设置任何和content, item, self有关的属性时（当然他们有默认设置）
+
 <img src="Src/onlyflexflow1.png" width=40%><img src="Src/onlyflexflow2.png" width=40%>
 
 ```css
@@ -531,6 +532,7 @@ body,html{
 1. Justify-content: center/flex-start/flex-end 
 
     水平方向上center
+
     <img src="Src/justify-content1.png" width=50%>
     <img src="Src/justify-content2.png" width=40%>
 
@@ -547,6 +549,7 @@ body,html{
 
     }
     ```
+
     <img src="Src/justify-content-table.png" width=100%>
 
     其他justify-content属性选项见上图。
@@ -556,7 +559,8 @@ body,html{
 
 
 2. Align-content: center/flex-start/flex-end
-竖直方向上center
+    竖直方向上center
+
     <img src="Src/align-content1.png" width=50%> <img src="Src/align-content2.png" width=40%>
 
     ```css
@@ -581,6 +585,7 @@ body,html{
 
 3. Justify-content + Align-content
     水平,竖直方向上都center
+
     <img src="Src/justify-align-content1.png" width=50%> <img src="Src/justify-align-content2.png" width=40%>
 
     ```css
@@ -607,6 +612,7 @@ body,html{
     如果只设置align-items: center(上图图一); 可见sub block也是在竖直方向上居中，但是相比align-content: center; 这些sub block并不是合成一体居中，竖直方向上还有gap。
 
     由此可见，**align-content是比align-items更强烈的一个指令（即align-content优先级高于align-items，当然也高于后面的align-self)**, 如果你同时写align-content: center; 和align-items: center;(不管先后顺序) 你会发现结果和只写align-content:center;一致.
+
     <img src="Src/align-items-center1.png" width=50%><img src="Src/align-items-center2.png" width=40%>
 
     ```css
@@ -629,6 +635,7 @@ body,html{
 
   2. justify-content + align-items
     同时定义justify-content: center;(每行水平居中) 和 align-items: center; （每行在竖直方向上居中于其所被分配的空间）会发现水平和竖直方向上sub block在mother block 内部也居中了，但是由于是align-items这个相对较弱的竖直居中条件，sub block们在竖直方向上还是有gap
+    
     <img src="Src/justify-content-align-items1.png" width=50%><img src="Src/justify-content-align-items2.png" width=40%>
 
       ```css
