@@ -510,6 +510,8 @@ body,html{
 简言之:
 + 前标justify: 表示水平方向上布局
 + 前标align: 表示竖直方向上布局
++ content优先级高于item (详见2.4.5.3 items)
++ content, items 定义在parent block中, self定义在sub-block中
 
 #### 2.4.5.1 Only flex flow
 初始情况：只是设置了flex flow的direction和wrap， 不设置任何和content, item, self有关的属性时（当然他们有默认设置）
@@ -635,7 +637,7 @@ body,html{
 
   2. justify-content + align-items
     同时定义justify-content: center;(每行水平居中) 和 align-items: center; （每行在竖直方向上居中于其所被分配的空间）会发现水平和竖直方向上sub block在mother block 内部也居中了，但是由于是align-items这个相对较弱的竖直居中条件，sub block们在竖直方向上还是有gap
-    
+
     <img src="Src/justify-content-align-items1.png" width=50%><img src="Src/justify-content-align-items2.png" width=40%>
 
       ```css

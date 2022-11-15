@@ -19,8 +19,9 @@ body,html{
     flex-direction: row;  
     flex-wrap: wrap;   
 
-    /* align-content: center;*/
-    justify-content: center; 
+    /* align-content: center; */
+    /* justify-content: center;  */
+    /* justify-items: center; */
     align-items: center;
 
 }
