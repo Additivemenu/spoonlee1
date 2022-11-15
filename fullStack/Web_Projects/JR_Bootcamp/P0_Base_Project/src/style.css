@@ -29,27 +29,30 @@
   -webkit-user-drag: none; /*normally*/
 }
 
+
+
 html,
 body {
-  all: unset; /*deactivate all orginal effects*/
+  all: unset;                                     /*deactivate all orginal effects*/
   width: 100vw;
   min-height: 100vh;
 
-  font-family: "Poppins", sans-serif; /*configure the font*/
-  font-size: var(--main-desktop-font-size); /*use global variables from :root*/
+  font-family: "Poppins", sans-serif;             /*configure the font*/
+  font-size: var(--main-desktop-font-size);       /*use global variables from :root*/
 
   background-color: var(--main-background-color); /*backgound color*/
   color: var(
     --main-text-color
-  ); /*text color, but not include the texts inside a hyperlink <a>  */
+  );                                              /*text color, but not include the texts inside a hyperlink <a>  */
 }
 
+/*------------------------------ general layout ---------------------------------*/
 .main-structure,
 .main-structure header,
 .main-structure .content,
 .main-structure footer {
-  width: 100%; /*to make the width of these elements equals to 100% of that of body, which is the mother of them*/
-  border: 5px dashed var(--main-border-color); /*define border to visualize each instance*/
+  width: 100%;                                      /*to make the width of these elements equals to 100% of that of body, which is the mother of them*/
+  border: 5px dashed var(--main-border-color);      /*define border to visualize each instance*/
   user-select: none;
   transition: 0.5s;
 }
@@ -61,10 +64,11 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /*only works if you specify "height: 100vh;" for main-structure first*/
-  align-items: center; /*only works if you cancel specifying "width: 100%" for main-structure first*/
+  justify-content: space-between;                  /*only works if you specify "height: 100vh;" for main-structure first*/
+  align-items: center;                             /*only works if you cancel specifying "width: 100%" for main-structure first*/
 }
 
+/*---------------------------------header ------------------------------------*/
 .main-structure header,
 .main-structure footer{ /*principle: don't make the wheel again, so we also define display: flex here for footer. 
   Anything exclusive to footer will be defined afterwards */
@@ -82,19 +86,19 @@ body {
   height: var(--header-toggle-width);
 
   background: url("./src/icons/menu.svg");
-  background-repeat: no-repeat; /*no repeat of svg*/
-  background-position: center; /*make svg in the center*/
+  background-repeat: no-repeat;   /*no repeat of svg*/
+  background-position: center;    /*make svg in the center*/
   background-size: var(--header-toggle-width); /*set up the size of svg*/
-  filter: invert(1); /*invert the color of svg*/
+  filter: invert(1);              /*invert the color of svg*/
 }
 
 .main-structure header a {
   /*specifically for hyperlink under header*/
   display: inline-block;
-  text-decoration: none; /*cancel text decoration, here the decoration is a bottom line*/
+  text-decoration: none;          /*cancel text decoration, here the decoration is a bottom line*/
   color: var(
     --main-text-color
-  ); /*need to define text in hyperlink standalonely*/
+  );                              /*need to define text in hyperlink standalonely*/
 }
 
 .main-structure header,
@@ -105,21 +109,22 @@ body {
   align-items: center;
 
   padding: var(--screen-desktop-padding-top-bottom)
-  var(--screen-desktop-padding-left-right); /*watch it: no comma between var()*/
+  var(--screen-desktop-padding-left-right);   /*watch it: no comma between var()*/
 }
 
+/*-----------------------------------footer--------------------------------------*/
 .main-structure  footer{
-  justify-content: flex-start; /* we want a different layout for footer compared to header, so we define it here*/
+  justify-content: flex-start;                /* we want a different layout for footer compared to header\*/
 }
 
-.main-structure footer a:not(:last-child){ /*not last child:  exclude last child twitter when assign below properties*/
+.main-structure footer a:not(:last-child){    /*not last child:  exclude last child twitter when assign below properties*/
   width: var(--footer-icon-width);
-  margin-right: var(--footer-margin-right); /*margin between icons*/
+  margin-right: var(--footer-margin-right);   /*margin between icons*/
 
 }
 
 .main-structure  footer a img{
-  filter: invert(1);  /*invert the color of icons*/
+  filter: invert(1);                          /*invert the color of icons*/
 }
 
 /*====================================================================================*/
@@ -149,6 +154,6 @@ body {
 
   .main-structure footer a img{
     width: var(--footer-pad-icon-width);
-
   }
+
 }
