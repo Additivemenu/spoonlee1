@@ -297,20 +297,304 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
 
 ## 1.4 Control flow
 ### 1.4.1 switch case
+和java一样
+```js
+const roles = ["student", "teacher", "boss"];
 
+  let role = roles[2];
+
+  switch (role) {
+    case roles[0]:
+      console.log("hello!");
+      break;
+    case roles[1]:
+      console.log("!!!");
+      break;
+    case roles[2]:
+      console.log("???");
+      break;
+    default:
+      console.log("aaa");
+  }
+
+
+```
 ### 1.4.2 Loop
++ for loop
+  格式和java一样
+  ```js
+  let newArrayNumber = [];
+  for (let i = 0; i < 10; i++) {
+    newArrayNumber[i] = i + 5;
+  }
+  console.log(newArrayNumber);
 
+  ```
++ forEach
+  forEach: 专门用来处理数组的, 必须先指定是对那个数组进行forEach
+  语法格式：
+  Array.forEach()
+  括号里一般是一个箭头函数 () =>{}
+  ```js
+  // forEach: manipulation over each
+  newArrayNumber.forEach((num, index) => {
+  // num here refers to the element in newArrayNumber 
+  // index starts from 0
+  console.log("1:", num, index);
+  });
+
+  // identical to the above
+  for (let i = 0; i < newArrayNumber.length; i++) {
+  console.log("2:", newArrayNumber[i]);
+  }
+
+  ```
+
+  <img src="Src/JS_forEach.png" width = 80%>
+
+  > For和forEach的区别(自己查): forEach是个迭代器; 但是forEach比普通的for loop运行慢很多, 不考虑性能的情况下使用forEach更方便
+
++ for in & for out
+  (自己查)
+
+练习, 用JS打印9*9乘法表：
+[loop.js](./C1_JS_Basics/loop.js)
 
 ## 1.5 Function
+
+> 注意JS中写函数的语法和C,Java不同， JS中服从格式:
+> 函数名 = function(){...}  OR
+> 函数名 = ()=>{...}
+
 ### 1.5.1 定义与使用function
+
 #### 1.5.1.1 Primitive type as function argument
+因为primitive type argument所需的内存大小已知, 不需要引用
+
+```js
+function func2(info) {
+  console.log(`${info} juice`); // ${} extract str input
+}
+
+func2("orange");
+func2("apple");
+
+```
+
+#### 1.5.1.2 Array as function argument
++ Array的变量名采用引用
+  ```js
+  function func4(array) {
+      let cum = 0;
+
+      array.forEach((num) => {
+        cum += num;
+      });
+      console.log(cum);
+    }
+
+    func4([1, 2, 3, 4, 5, 6]); // input has to be an array
+
+  ```
+
++ 柔性数组
+  ```js
+  function func4_1(a, b, ...rest) {
+    let cum = a + b;
+    rest.forEach((num) => {
+      cum += num;
+    });
+    console.log(cum);
+  }
+
+  func4_1(1, 2, 3, 4, 5, 6); // input is not an array, lawful
+  func4_1(...[1, 2, 3, 4, 5, 6]); // expand the array, result in the same as above, lawful
+  ```
+
++ return 
+  ```js
+  // return
+  let cum = func5(1, 2);
+  console.log(cum);
+
+  function func5(a, b) {
+    return a + b; // skip over the code left behind the return
+  }
+
+  ```
 
 
-#### 1.5.1.2 Object type as function argument
+#### 1.5.1.3 Object type as function argument
+
++ object as function argument (直接索引object进行操作)
+  + object type变量名采用引用, 因而存在dependency的问题
+  + object作为函数输入时采用引用, 因此在函数中对object进行操作就相当于对内存中真实的object进行操作.
+  ```js
+  //obj as input parameter--------------------
+  const obj = {
+    // const only confines type of obj, cannot confine its content
+    name: "Shawn",
+    age: 18,
+  };
+
+  function func6(obj) {
+    console.log("name:", obj.name);
+    console.log("age:", obj.age);
+    console.log(obj);
+
+    obj.name = "xueshuo"    // alter obj status
+    obj.age = 30;           // alter obj status
+  }
+
+  func6(obj);
+  console.log(obj);
+  //---------------------------------
+  // function func6(obj) there is only 1 entrance
+  // but there are two 'exit'
+  // return: 出口之一，特点是产生新内容,同时不更改原始数据
+  // 复杂结构的传参: 出口之一, 特点是可以获得内容修改, 缺点是更改了原始的数据。
+  //---------------------------------
+
+  ```
+  注意打印object和打印object的属性的不同之处
+  <img src="./Src/JS_objectAsFunctionInput.png" width = 80%>
+
+
++ 使用object的元素作为函数输入 (采用object的deepCopy进行函数操作)
+    + 此时会创建一个新的, 真实的object, 相当于java中采用一对象的deepCopy来在函数内进行操作.
+    + 但这种方式函数只能通过return来向外界传递信息, 相当于对输入对象的deepCopy进行操作, 然后return这个deepCopy.
+    ```js
+    function func7({ name, age }) {
+
+      name = "shawn";
+      age = "20";
+      return { name, age };
+    }
+
+    const people = {
+      // const only confines type of obj, cannot confine its content
+      name: "Shawn",
+      age: 18,
+    };
+
+    const newPeople = func7(people);
+    console.log(newPeople); 
+    console.log(people); 
+    ```
+  结果可见newPeople和people之间并没有dependency
+  <img src="./Src/JS_objectASFunctioninput2.png" width = 80%>
+
+
 
 ### 1.5.2 箭头函数
+对于一般的function定义方式（如下面）, Function的使用可以在其定义之前, 也可以在定义之后, 因为定义的函数会被存在一个表里,与主函数代码平行来被调用
+
+但是对于const 函数则不能这样, 只有在定义函数之后才能使用, 否则报错. 这是应为这种函数是常量，必须先定义后使用:
+```js
+// function name is at the left hand side of =. 
+// function() is at the right hand side of =
+const func8 = function () { 
+    console.log("func8");
+};
+func8();
+```
+
+**箭头函数同样如此, 必须先定义后使用，因为箭头函数也是常量**
+
+#### 1.5.2.1 箭头函数的定义
+
+格式: 函数名 = ()=>{}
++ 如果只有一个输入参数，可以省略括号写: 函数名 = a=>{}; 
++ 如果是两个以上输入参数，则必须写括号: 函数名 = (a, b)=>{} , 表示(a,b)将作为输入参数进入{}参与运算:
+```js
+const arrow_func1 = () => {
+    console.log("array_func1");
+};
+```
+
+e.g. 一个箭头函数的例子: 先定义后使用
+```js
+const array = [11,12,13,14,15]
+const array_func4 = (num) =>{
+  console.log(num)
+}
+
+array.forEach(array_func4)  //forEach()括号内可以是箭头函数
+
+```
+<img src="./Src/JS_ArrowFunction.png" width = 70%>
+
 
 ### 1.5.3 定义object内部的function
+
+#### 1.5.3.1 标准写法
+```js
+//note 'const' only confine the type of cirle,
+// not its content(its content is still changeable)
+const circle = {    // 注意对象里定义变量用:而不是= 有点像JSON
+  // fields-----------------
+  radius: 1,
+  location: {
+    x: 1,
+    y: 2,
+  },
+  isVisible: true,
+
+  // methods----------------
+  draw1() {
+    console.log("draw1");
+  },
+
+  draw2() {
+    console.log("draw2");
+  },
+};
+
+circle.draw1()
+circle.draw2()
+```
+<img src="./Src/JS_objectMethod.png" width=80%>
+
+
+#### 1.5.3.2 简略写法
+```js
+// 外部变量传入obj进行定义
+const radius = 1;
+const location = { x: 1, y: 2 };
+const isVisible = true;
+const draw = function () {
+  console.log("draw----");
+};
+
+const circle2 = {     //z注意这里用: 而不是等号
+  radius: radius,
+  location: location,
+  isVisible: isVisible,
+  draw: draw,
+};
+
+circle2.draw(); // remember the bracket!!! 
+```
+
+```js
+// 实际上，你甚至可以直接写成，省去映射的title以表示映射title和对应内容一样:
+const radius = 1;
+const location = { x: 1, y: 2 };
+const isVisible = true;
+const draw = function () {
+  console.log("draw----");
+};
+
+const circle2 = {
+  radius,
+  location,
+  isVisible,
+  draw,
+};
+
+circle2.draw();
+
+```
 
 
 ## 1.6 Array
@@ -450,4 +734,249 @@ console.log(person, person3);
 另外要注意到JS中的打印不是按程序执行顺序的打印, 而是反映最终状态的. 如上面结果中, 第一次的console.log(person, person3)显示person3的age也变成了最终状态的100.
 
 
-# 3. JS耦合HTML,CSS
+# 3. Function
+
+> 注意JS中写函数的语法和C,Java不同， JS中服从格式:
+> 函数名 = function(){...}  OR
+> 函数名 = ()=>{...}
+
+## 3.1 定义与使用function
+
+### 3.1.1 Primitive type as function argument
+因为primitive type argument所需的内存大小已知, 不需要引用
+
+```js
+function func2(info) {
+  console.log(`${info} juice`); // ${} extract str input
+}
+
+func2("orange");
+func2("apple");
+
+```
+
+### 3.1.2 Array as function argument
++ Array的变量名采用引用
+  ```js
+  function func4(array) {
+      let cum = 0;
+
+      array.forEach((num) => {
+        cum += num;
+      });
+      console.log(cum);
+    }
+
+    func4([1, 2, 3, 4, 5, 6]); // input has to be an array
+
+  ```
+
++ 柔性数组
+  ```js
+  function func4_1(a, b, ...rest) {
+    let cum = a + b;
+    rest.forEach((num) => {
+      cum += num;
+    });
+    console.log(cum);
+  }
+
+  func4_1(1, 2, 3, 4, 5, 6); // input is not an array, lawful
+  func4_1(...[1, 2, 3, 4, 5, 6]); // expand the array, result in the same as above, lawful
+  ```
+
++ return 
+  ```js
+  // return
+  let cum = func5(1, 2);
+  console.log(cum);
+
+  function func5(a, b) {
+    return a + b; // skip over the code left behind the return
+  }
+
+  ```
+
+
+### 3.1.3 Object type as function argument
+
++ object as function argument (直接索引object进行操作)
+  + object type变量名采用引用, 因而存在dependency的问题
+  + object作为函数输入时采用引用, 因此在函数中对object进行操作就相当于对内存中真实的object进行操作.
+  ```js
+  //obj as input parameter--------------------
+  const obj = {
+    // const only confines type of obj, cannot confine its content
+    name: "Shawn",
+    age: 18,
+  };
+
+  function func6(obj) {
+    console.log("name:", obj.name);
+    console.log("age:", obj.age);
+    console.log(obj);
+
+    obj.name = "xueshuo"    // alter obj status
+    obj.age = 30;           // alter obj status
+  }
+
+  func6(obj);
+  console.log(obj);
+  //---------------------------------
+  // function func6(obj) there is only 1 entrance
+  // but there are two 'exit'
+  // return: 出口之一，特点是产生新内容,同时不更改原始数据
+  // 复杂结构的传参: 出口之一, 特点是可以获得内容修改, 缺点是更改了原始的数据。
+  //---------------------------------
+
+  ```
+  注意打印object和打印object的属性的不同之处
+  <img src="./Src/JS_objectAsFunctionInput.png" width = 80%>
+
+
++ 使用object的元素作为函数输入 (采用object的deepCopy进行函数操作)
+    + 此时会创建一个新的, 真实的object, 相当于java中采用一对象的deepCopy来在函数内进行操作.
+    + 但这种方式函数只能通过return来向外界传递信息, 相当于对输入对象的deepCopy进行操作, 然后return这个deepCopy.
+    ```js
+    function func7({ name, age }) {
+
+      name = "shawn";
+      age = "20";
+      return { name, age };
+    }
+
+    const people = {
+      // const only confines type of obj, cannot confine its content
+      name: "Shawn",
+      age: 18,
+    };
+
+    const newPeople = func7(people);
+    console.log(newPeople); 
+    console.log(people); 
+    ```
+  结果可见newPeople和people之间并没有dependency
+  <img src="./Src/JS_objectASFunctioninput2.png" width = 80%>
+
+
+
+## 3.2 箭头函数
+对于一般的function定义方式（如下面）, Function的使用可以在其定义之前, 也可以在定义之后, 因为定义的函数会被存在一个表里,与主函数代码平行来被调用
+
+但是对于const 函数则不能这样, 只有在定义函数之后才能使用, 否则报错. 这是应为这种函数是常量，必须先定义后使用:
+```js
+// function name is at the left hand side of =. 
+// function() is at the right hand side of =
+const func8 = function () { 
+    console.log("func8");
+};
+func8();
+```
+
+**箭头函数同样如此, 必须先定义后使用，因为箭头函数也是常量**
+
+### 3.2.1 箭头函数的定义
+
+格式: 函数名 = ()=>{}
++ 如果只有一个输入参数，可以省略括号写: 函数名 = a=>{}; 
++ 如果是两个以上输入参数，则必须写括号: 函数名 = (a, b)=>{} , 表示(a,b)将作为输入参数进入{}参与运算:
+```js
+const arrow_func1 = () => {
+    console.log("array_func1");
+};
+```
+
+e.g. 一个箭头函数的例子: 先定义后使用
+```js
+const array = [11,12,13,14,15]
+const array_func4 = (num) =>{
+  console.log(num)
+}
+
+array.forEach(array_func4)  //forEach()括号内可以是箭头函数
+
+```
+<img src="./Src/JS_ArrowFunction.png" width = 70%>
+
+
+## 3.3 定义object内部的function
+
+### 3.3.1 标准写法
+```js
+//note 'const' only confine the type of cirle,
+// not its content(its content is still changeable)
+const circle = {    // 注意对象里定义变量用:而不是= 有点像JSON
+  // fields-----------------
+  radius: 1,
+  location: {
+    x: 1,
+    y: 2,
+  },
+  isVisible: true,
+
+  // methods----------------
+  draw1() {
+    console.log("draw1");
+  },
+
+  draw2() {
+    console.log("draw2");
+  },
+};
+
+circle.draw1()
+circle.draw2()
+```
+<img src="./Src/JS_objectMethod.png" width=80%>
+
+
+### 3.3.2 简略写法
+```js
+// 外部变量传入obj进行定义
+const radius = 1;
+const location = { x: 1, y: 2 };
+const isVisible = true;
+const draw = function () {
+  console.log("draw----");
+};
+
+const circle2 = {     //z注意这里用: 而不是等号
+  radius: radius,
+  location: location,
+  isVisible: isVisible,
+  draw: draw,
+};
+
+circle2.draw(); // remember the bracket!!! 
+```
+
+```js
+// 实际上，你甚至可以直接写成，省去映射的title以表示映射title和对应内容一样:
+const radius = 1;
+const location = { x: 1, y: 2 };
+const isVisible = true;
+const draw = function () {
+  console.log("draw----");
+};
+
+const circle2 = {
+  radius,
+  location,
+  isVisible,
+  draw,
+};
+
+circle2.draw();
+
+```
+
+
+# 4. JS耦合HTML,CSS
+
+# 4.1 JS耦合HTML
+## 4.1.1 JS抓取node
+
+
+
+
+# 4.2 JS耦合CSS
