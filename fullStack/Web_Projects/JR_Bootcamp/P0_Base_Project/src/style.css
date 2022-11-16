@@ -19,6 +19,7 @@
   --screen-pad-padding-top-bottom: 10px;
   --screen-pad-padding-left-right: 30px;
 
+  /**/
   --footer-margin-right: 30px;
   --footer-icon-width: 30px;
   --footer-pad-icon-width:calc(var(--footer-icon-width)*5/6);

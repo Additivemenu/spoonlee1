@@ -95,7 +95,7 @@ html,body{
 
 }
 
-
+/*---------------------text-----------------------*/
 .text{
     position: relative;
     z-index: 3;
@@ -147,6 +147,7 @@ html,body{
 
 }
 
+/*--------------social---------------*/
 .social{
     position: absolute;
     bottom: 50px;
@@ -174,7 +175,7 @@ html,body{
     /* transition: 0.5s; */
 }
 
-
+/*------------------menu-------------------*/
 .menu{
     z-index: 1;  /*z-index: 1; make sure header can cover menu*/
     position: absolute; /*isolate .menu from the file flow, we can place menu wherever we want*/
@@ -202,6 +203,7 @@ html,body{
     color: var(--overlay-color); /*font color*/
 }
 
+/*=======================================================*/
 @media(max-width: 798px){ 
     /*if max-width falls below 798px, employ below settings*/
     .showcase,

@@ -27,11 +27,11 @@
   console.log(b1);
   let b2 = 'he said: "this"';
   console.log(b2);
-  let b3 = "he said: 'this'";
+  let b3 = "he said: 'this' ";
   console.log(b3);
   let b4 = `he said: "a",'b'`;
   console.log(b4);
-  let b5 = `he said: ${b}`;
+  let b5 = `he said: ${b} `;
   console.log(b5);
 
   // data type conversion

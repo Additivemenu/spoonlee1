@@ -11,6 +11,8 @@
 + import自定义字体
 + 使用变量来定义某个dimension, 以及定义变量之间的dependencies
 
+注意: 并不是所有的feature, 后面都要保留; nm这个css写得咋那么乱呢
+
 以下对相同的屏幕区域截屏:
 + 当max-width大于1200px:
 ![](src/P0_style1.png)
