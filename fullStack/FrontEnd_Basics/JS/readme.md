@@ -13,6 +13,8 @@ Tips:
 
 # 1. JS basics
 ## 1.1 变量与打印
+[variable.js](./C1_JS_Basics/variable.js)
+
 ### 1.1.1 Let
 定义变量时无需声明类型, 用let:
 ```js
@@ -153,14 +155,151 @@ If(statement){
 ```
 
 ## 1.4 Operator
+[operator.js](./C1_JS_Basics/operator.js)
 
-turn to here
+### 1.4.1 数值运算符
++ 加减乘除, 幂数运算, 取余取商
++ 自增自减
+```js
+// 数值运算符--------------------
+let x = 10;
+let y = 3;
+console.log(x + y);
+console.log(x - y);
+console.log(x * y);
+console.log(x / y);
+console.log(x % y);
+console.log(x ** y);  //exponential
+console.log(Math.sqrt(100));
+
+console.log(x++); // use first then add
+console.log(x);
+console.log(x--);
+console.log(x);
+console.log(++x); // add first then use
+console.log(x);
+console.log(--x);
+console.log(x);
+
+let xx = 10;
+xx++;
+xx = xx + 5;
+xx += 5;
+xx -= 5;
+xx *= 5;
+xx **= 5;
+xx /= 5;
+xx %= 5;
+
+xx ?? 5; // what is it?
+```
+
+### 1.4.2 比较运算符
+
++ =, ==, ===
++ !=, !==
++ 大于,小于
+
+```js
+// 比较运算符
+let x = 1;
+console.log(x > 1); // false
+console.log(x >= 1);  // true
+console.log(x < 1);  // false
+console.log(x <= 1); // true
+
+console.log((x = 1)); // 1
+console.log(x == 1); // justify if the value of x equals 1: true
+console.log(x === 1); // justify if the value & type of x equals 1: true
+
+//== justify only value, return Boolean
+console.log(0 == false);  // true
+console.log(0 != false); // false,  != is opposite to ==
+console.log(true == 1); // true
+console.log(true == 2); // false,  only 1 can == true
+
+// === justify type & value
+console.log(0 === false); // false
+console.log(0 !== false); // true, !== is opposite to ===
+```
 
 
+### 1.4.3 三联运算符
 
+```js
+let pointers = 100;
+if (pointers > 100) {
+  console.log("gold");
+} else {
+  console.log("silver");
+}
+
+console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
+
+```
+
+
+### 1.4.4 逻辑运算符
++ True: 字符串(包括字符串0)都是true
++ False: 数字0, null, undefined都是false
+
+  + &&, ||
+    ```js
+    console.log(true && true);
+    let dayTime = 3;
+    if (dayTime > 18 && daytime < 24) {
+      console.log("night");
+    } else {
+      console.log("day");  // go through this branch
+    }
+
+
+    console.log(false || true); // true
+
+    if ((dayTime > 18 && dayTime < 24) || (dayTime > 0 && dayTime < 6)) {
+      console.log("night");  // go through this branch
+    } else {
+      console.log("day");
+    }
+
+    ```
+
++ ||: true & false
+  ```js
+  console.log(0 || false);          // false, as num 0 is identical to false
+  console.log(null || false);       // false
+  console.log(undefined || false);  // false
+  console.log(NaN || false);        // false
+  //
+  console.log(3 || false);  // return 3
+  console.log(false||10);   // return 10
+  console.log(4||10);       // return 4
+  ```
+
+  优先return左边的真
+  + 如果||左边为真，则return左边的值， 
+  + 如果左边为假,右边为真，则return右边的，
+  + 如果左右两边都为假，则return false
+  Application: 可以用于选择：默认端口||备用端口
+
++ 取反
+  ```js
+  console.log(true==2)   // return false
+  console.log(!2)  //return false
+  ```
+
+
+### 1.4.5 严格模式
+
+```js
+"use strict"  //开启严格模式会开启诸多语法的严格限制
+```
 
 
 # 2. Array
+
+[Array.js](./C2_Array/Array.js)
+
 ## 2.1 初始化Array
 要点:
 + 用square bracket
@@ -220,6 +359,9 @@ console.log(array[101]);    // now array[101].name displayed
 
 
 # 3. Object
+
+[object.js](./C3_Object/object.js)
+
 ## 3.1 创建一个object(instance)
 ```js
 let obj = {
