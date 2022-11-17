@@ -7,7 +7,7 @@ node指代HTML文档中的某个标签元素. 在HTML文档中, document节点�
 
 > DOM (Document Object Model) 详见见JavaScript高级程序设计第14-16章
 
-<img src="../Src/DOM.jpg" width = 50%>
+<img src="../Src/DOM.jpg" width = 20%>
 
 
 **通过document的selector API可以做到在JS中选择HTML文档中的某个标签元素, 并予以改动.**
