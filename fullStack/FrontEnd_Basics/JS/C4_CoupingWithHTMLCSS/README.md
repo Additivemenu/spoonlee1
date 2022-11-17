@@ -7,7 +7,7 @@ node指代HTML文档中的某个标签元素. 在HTML文档中, document节点�
 
 > DOM (Document Object Model) 详见见JavaScript高级程序设计第14-16章
 
-<img src="../Src/DOM.jpg" width = 20%>
+<img src="../Src/DOM.jpg" width = 40%>
 
 
 **通过document的selector API可以做到在JS中选择HTML文档中的某个标签元素, 并予以改动.**
@@ -38,7 +38,7 @@ content.innerHTML = "Hahahahahahah";
 console.log(content);
 ```
 通过document.querySelector(), 我们edit了HTML文档中第一个".content"标签:
-<img src="../Src/JS_Document_selector.png" width=50%>
+<img src="../Src/JS_Document_selector.png" width=40%>
 
 
 
@@ -53,10 +53,11 @@ node.innerHTML = `content ${index}`;
 })
 ```
 通过document.querySelectorAll(), 我们edit了HTML文档中所有".content"标签:
-<img src="../Src/JS_Document_selector2.png" width=50%>
+<img src="../Src/JS_Document_selector2.png" width=40%>
 
 console打印结果:
-<img src="../Src/JS_Document_selector3.png" width=80%>
+
+<img src="../Src/JS_Document_selector3.png" width=40%>
 
 ## 1.2 JS创建HTML元素
 
