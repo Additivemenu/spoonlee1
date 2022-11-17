@@ -12,9 +12,12 @@ Tips:
     JavaScript每年都会有新feature, 最新的feature自学（可以关注个公众号）, 我们这里只讲基础的
 
 
-[C1: JS Basics](./C1_JS_Basics/README.md)
-[C2: JS Object](./C2_Object/README.md)
-[C3: JS Function](./C3_Function/README.md)
-[C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md)
+Chapter | 
+------ | 
+[C1: JS Basics](./C1_JS_Basics/README.md)   |   
+[C2: JS Object](./C2_Object/README.md) |
+[C3: JS Function](./C3_Function/README.md) |
+[C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md) |
+
 
 
