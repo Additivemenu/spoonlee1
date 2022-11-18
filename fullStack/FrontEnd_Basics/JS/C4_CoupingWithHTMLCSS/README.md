@@ -140,6 +140,8 @@ domBody.appendChild(div)
   + remove(value): 从类名列表中删除指定的字符串值value.
   + toggle(value): 如果类名列表中已经存在指定的value, 则删除; 如果不存在, 则添加.
 
++ addEventListener() (P495):
+  + 接收三个argument: 事件名, 事件处理函数, 一个boolean值
 ---
 
 e.g. click 触发event: style切换
@@ -156,9 +158,9 @@ domBody.appendChild(div)
 // append over CSS: add a style to span we just added using JS ---------------------------
 div.classList.toggle('active')  // toogle: switch
 
-div.setAttribute('style', 'cursor:pointer') // 
+div.setAttribute('style', 'cursor:pointer') // 当鼠标移到div上时, 会变成一个小手手
 
-// *** define click event ***
+// *** add EventListener to div: (event name, event handling function) ***
 div.addEventListener('click', ()=>{  
     div.classList.toggle('active')  // switch div's className
 })
