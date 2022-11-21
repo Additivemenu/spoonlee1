@@ -1,5 +1,6 @@
 python
 
+[Python 官方文档](https://docs.python.org/3/)
 
 Chapter | Topic |
 ------ | ----- |
@@ -9,3 +10,13 @@ Chapter | Topic |
 [C4: Python Exception](./c4_Python_Exception/README.MD) |
 [C3: Python IO](./c5_Python_IO/README.MD) | Input, Output
 
+terminal指令:
++ terminal中运行py file: 
+    ```bash
+    python3 filename.py
+    ```
++ check python版本:
+    ```bash
+    python3
+    ```
++ 打断点, debug python file (not run python file)

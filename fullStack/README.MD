@@ -22,6 +22,10 @@
 
 ---
 
+ubantu:
++ sudo apt update
+
+---
 
 # 快捷键
 + vscode的setting中搜索save,勾选保存时格式化，这样按Ctrl + S自动保存时会格式化代码比如换行
