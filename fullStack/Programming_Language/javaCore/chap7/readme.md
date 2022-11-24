@@ -1,4 +1,34 @@
-[TOC]
+- [1. Introduction to exception handling](#1-introduction-to-exception-handling)
+- [2. try-throw-catch](#2-try-throw-catch)
+  - [2.1 try](#21-try)
+    - [2.1.1 :full\_moon: try-throw-catch mechanism](#211-full_moon-try-throw-catch-mechanism)
+  - [2.2 catch](#22-catch)
+  - [2.3 throw](#23-throw)
+    - [2.3.1 Using the getMessage Method](#231-using-the-getmessage-method)
+- [3. :full\_moon:Exception classes](#3-full_moonexception-classes)
+  - [3.1 Exception Classes from Standard Packages](#31-exception-classes-from-standard-packages)
+    - [3.1.1 base exception class](#311-base-exception-class)
+    - [3.1.2 predefined derived exception classes](#312-predefined-derived-exception-classes)
+  - [3.2:full\_moon:Defining Exception Classes](#32full_moondefining-exception-classes)
+    - [3.2.1 Programmer-Defined Exception Class Guidelines](#321-programmer-defined-exception-class-guidelines)
+  - [3.3 Other message types](#33-other-message-types)
+- [4. :full\_moon:Multiple catch block](#4-full_moonmultiple-catch-block)
+  - [e.g.](#eg)
+- [5. :full\_moon:Throwing exceptions from methods](#5-full_moonthrowing-exceptions-from-methods)
+  - [5.1 Methods throws without catching](#51-methods-throws-without-catching)
+- [6. Advanced topics](#6-advanced-topics)
+  - [6.1 Hierarchy of throwable objects](#61-hierarchy-of-throwable-objects)
+    - [6.1.1 e.g.](#611-eg)
+    - [6.1.2 What happens if an exception is never caught?](#612-what-happens-if-an-exception-is-never-caught)
+    - [6.1.3 When to use exceptions](#613-when-to-use-exceptions)
+  - [6.2 Event driven programming (作了解)](#62-event-driven-programming-作了解)
+  - [6.3 Nested try-catch blocks (作了解)](#63-nested-try-catch-blocks-作了解)
+  - [6.4 :moon:The finally block](#64-moonthe-finally-block)
+  - [6.5 :star: Exception controlled loops](#65-star-exception-controlled-loops)
+  - [6.6 :star: Practice](#66-star-practice)
+  - [6.7 Program exit values](#67-program-exit-values)
+
+
 ---
 
 These are personal notes referring to UniMelb Java week 8 learning materials
