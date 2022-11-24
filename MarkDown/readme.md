@@ -1,3 +1,7 @@
+[TOC]
+
+---
+
 extension:  
 markdown allinone,  
 markdown preview enhanced
@@ -14,6 +18,7 @@ markdown preview enhanced
 
 [markdown guide](https://www.markdownguide.org/basic-syntax#code)
 
+---
 
 # 1.标题
 e.g.

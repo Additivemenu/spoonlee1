@@ -1,4 +1,6 @@
-# 0. Overview
+[TOC]
+---
+
 These are personal notes referring to UniMelb Java week 8 learning materials
 
 # 1. Introduction to exception handling

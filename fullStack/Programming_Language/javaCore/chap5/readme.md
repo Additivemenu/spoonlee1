@@ -1,4 +1,8 @@
-# Chapter 5 Inheritance and Polymorphism
+[TOC]
+
+---
+
+Chapter 5 Inheritance and Polymorphism
 
 UniMelb Java
 

@@ -1,4 +1,7 @@
-# 0. Overview
+[TOC]
+
+---
+
 These are personal notes referring to UniMelb Java Week8 learning material
 
 # 1.Interfaces

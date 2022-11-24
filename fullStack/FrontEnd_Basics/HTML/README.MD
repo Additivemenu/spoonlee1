@@ -1,8 +1,9 @@
 
+Content
+[TOC]
 
+---
 [HTML精简笔记](https://www.wolai.com/topcoderdoc/qxVBEVDrfSzif4djdw4hGm)
-
-主要标签(tag)就4部分: 1)文本相关; 2)heading; 3) multi-media; 4) HTML list
 
 标签格式:
 ```html
@@ -10,8 +11,11 @@
 ```
 + html content 可以是text, 也可以是html tag, 比如一个表示image的tag
 + tag 后面的class， 可以用来区分相同类型的tag
+---
 
-# 1. HTML基本语法
+
+# 1. HTML basic tags
+根据HTML基本标签, 先分割UI design, 写出一个HTML框架作为第一步.
 
 ## 1.1. 文本相关
 
@@ -63,7 +67,7 @@ alt="Grapefruit slice atop a pile of other slices">
 HTML <table> 快过时了, 因为现在有了新的布局工具
 
 
-# 1.2 注意特殊语法:
+# 1.2 注意特殊语法
 + p.active 和p .acitve 的区别 （2h08min-）
 前者指p本级有个叫active的class，后者指p下属所有级适用的叫active的class
 注解:本级，下属级指代写html时的分属关系，如<p> <em></em>  </p> 中em下属于p
