@@ -1,13 +1,13 @@
 # Contents
 - [1. 选择器](#1-选择器)
-  -[1.1 无括号选择器](#11-无括号选择器)
-  -[1.2 有括号选择器](#12-有括号选择器)
-  -[1.3 特殊语法  class::](#13-特殊语法-class宏) 
+  - [1.1 无括号选择器](#11-无括号选择器)
+  - [1.2 有括号选择器](#12-有括号选择器)
+  - [1.3 特殊语法  class::](#13-特殊语法-class宏) 
 - [2. Block element](#2-moon-block-element)
-  -[2.1 Basics of Block](#21-basics-of-block)
-  -[2.2 Position of Block](#22-star-position-of-block)
-  -[2.3 Dimension of Block](#23-dimension-of-block)
-  -[2.4 FlexBox](#24-starflexbox) 
+  - [2.1 Basics of Block](#21-basics-of-block)
+  - [2.2 Position of Block](#22-star-position-of-block)
+  - [2.3 Dimension of Block](#23-dimension-of-block)
+  - [2.4 FlexBox](#24-starflexbox) 
 
 ---
 
