@@ -75,6 +75,65 @@ String | str | Ordered sequence of characters: "hello", 'happy'
 + |: bit-wise "OR"
 + ">>", "<<": right shift, left shift
 ## 1.4 Control flow
+和其他主流编程语言不同, python采用冒号和空格来区分control flow的层级, 而不是采用{ }
+
+
+### 1.4.1 if-else
+
+```python
+x = 42
+if x < 0:
+   x = 0
+   print(‘Negative changed to zero’)  
+elif x == 0:
+   print(‘Zero’)
+elif x == 1:
+   print(‘Single’)
+else:
+   print(‘More’)
+
+```
+
++ Python中, 逻辑运算符用 or, and直接表示, 而不是 ||, && 
+```python
+if a > 0 or b > 0 and c < 0:  print(1)
+else:
+print(0)
+
+```
+
+
+### 1.4.2 loop 
+
+```python
+# while loop
+i = 0 # Initialisation of variable i  
+while i < 10:
+   print(i)  i += 1
+
+```
+
+```python
+# for loop
+for i in range(1, 7):
+   for j in range(1, 7):
+      print(i, j)
+
+
+```
+
++ Break statement – stop the loop
++ Continue statement – jump to the next iteration
++ Pass statement – placeholder (用来占行的, 有跟没有一个样)
+
+```python
+for num in range(2, 10):  
+   if num % 2 == 0:
+      print(“Found an even number”, num)
+      break       # change this to continue, pass to see difference
+   print(“Found a number”, num)
+
+```
 
 
 
@@ -94,59 +153,150 @@ Tuple | tup | Ordered **immutable** sequence of objects | (10, "hello2", 200.3)
 Set | set | Unordered collection of **unique** objects | {"a", "b", "c"}
 
 
-## 2.1 List
-### 2.1.1 List 初始化
-List的元素用square bracket括起来
+## 2.1 :star: List
++  List 初始化
+   List的元素用square bracket括起来
 
-```python
-fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
-empty_list = []
-empty_list = list()
-```
+   ```python
+   fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
+   empty_list = []
+   empty_list = list()
+   ```
 
-### 2.1.2 CRUD on List
++ CRUD on List
 
-Access element:
-+ python index也是从0开始, 并且可以是负的.
+   Access element:
+   python index也是从0开始, 并且可以是负的.
 
-```python
-# Access element
-fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
-print(fruits[0])
-print(fruits[1])
-print(fruits[2])
-print(fruits[-1])
-print(fruits[-2])
-```
-
-
-```python
-# add element
-fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
-print(fruits)
-fruits.append(’cherry’)
-print(fruits)
-```
+   ```python
+   # Access element
+   fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
+   print(fruits[0])
+   print(fruits[1])
+   print(fruits[2])
+   print(fruits[-1])
+   print(fruits[-2])
+   ```
 
 
-```python
-# remove element
-fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
-print(fruits)
-fruits.remove(‘banana’)
-fruits.pop()
-fruits.pop(0)
-del fruits[-1]
-```
+   ```python
+   # add element
+   fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
+   print(fruits)
+   fruits.append(’cherry’)
+   print(fruits)
+   ```
 
+
+   ```python
+   # remove element
+   fruits = [‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’]
+   print(fruits)
+   fruits.remove(‘banana’)
+   fruits.pop()
+   fruits.pop(0)
+   del fruits[-1]
+   ```
+
+   <img src="../Src/listMethods.png" width = 80%>
 
 ## 2.2 Tuple
+Tuple is useful for storing  data that is required to be unmodified.
+
++ Tuple初始化
+   ```python
+   fruits = (‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’)
+   empty_tuple = ()
+   empty_tuple = tuple()
+   empty_tuple = (1,)
+   ```
+
++ CRUD on Tuple
+   ```python
+   # access element
+   fruits = (‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’)
+   print(fruits[0])
+   print(fruits[1])
+   print(fruits[2])
+   print(fruits[-1])
+   print(fruits[-2])
+   ```
+
+   ```python
+   # add element
+   fruits = (‘apple’, ‘orange’, ‘banana’, ‘grapes’, ‘strawberry’)
+   print(fruits)
+   fruit = (‘peach’,)
+   fruits += fruit
+   ```
+
+   ```python
+   # You couldn’t remove an item in a tuple because it is unmodified  
+   # (a.k.a. immutable in Python idioms)
+   ```
 
 
+## 2.3 :star: Dictionary
+A dictionary is a collection which is unordered, changeable and  indexed. In python, dictionaries are written with curly brackets,  and they have keys and values
 
-## 2.3 Dictionary
++ dictionary 初始化
+   ```python
+   students = {‘name’: ‘Tom’, ‘major’: ‘IT’, ‘age’: 18}
+   empty_dict = {}
+   empty_dict = dict()
+   ```
+
++ CRUD on dictionary
+
+   ```python
+   # access element
+   students = {‘name’: ‘Tom’, ‘major’: ‘IT’, ‘age’: 18}
+   students[‘name’]
+
+   catelog = {1: ‘Drinks’, 2: ‘International Foods’, 3: ‘Liquor’}
+   catelog[3]
+   # pay attention here, catelog[3] does not mean the third key-value  pair of catelog. Rather it accesses the value with a key of 3.
+   ```
+
+   ```python
+   # add element
+   students = {‘name’: ‘Tom’, ‘major’: ‘IT’, ‘age’: 18}  # first way
+   students[‘height’] = 165  # second way
+   student_height = {‘height’:165}
+   students.update(student_height)
+   ```
+
+   ```python
+   # delete element
+   students.pop(‘major’) # key
+   students.popitem()
+   del students[‘age’]
+   ```
+
+   <img src="../Src/dictMethods.png" width = 80%>
 
 
+## 2.4 :star: set
+A set is a collection which is unordered and unindexed. In Python  sets are written with curly brackets. A set contains distinct objects.
 
-## 2.4 Set
++ set初始化
+  ```python
+   nums = {9, 1, 12.6, 78, 5}
+   empty_set = {1} # {} empty dictionary
+   empty_set = set()
+  ```
 
++ CRUD on set
+  ```python
+   # Can’t access elements in set based on index.
+   # Could only retrieves all items or drop all items.
+  ```
+
+  ```python
+  # add element
+   nums.add(89)
+   nums.update({100})      # add more than one element
+
+  ```
+
+   <img src="../Src/setMethods.png" width = 80%>
