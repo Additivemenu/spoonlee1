@@ -1,13 +1,40 @@
-# Contents
+Contents
+
 - [1. 选择器](#1-选择器)
   - [1.1 无括号选择器](#11-无括号选择器)
   - [1.2 有括号选择器](#12-有括号选择器)
-  - [1.3 特殊语法  class::](#13-特殊语法-class宏) 
-- [2. Block element](#2-moon-block-element)
+  - [1.3 特殊语法 class::宏](#13-特殊语法-class宏)
+- [2. :moon: Block element](#2-moon-block-element)
   - [2.1 Basics of Block](#21-basics-of-block)
-  - [2.2 Position of Block](#22-star-position-of-block)
+    - [2.1.1 block 基本属性](#211-block-基本属性)
+    - [2.1.2 设置html, body margin \& padding](#212-设置html-body-margin--padding)
+    - [2.1.3 border \& border-radius](#213-border--border-radius)
+    - [2.1.4 :full\_moon:文档流](#214-full_moon文档流)
+      - [2.1.5 Display属性](#215-display属性)
+  - [2.2 :star: Position of Block](#22-star-position-of-block)
+    - [2.2.1 static (by default)](#221-static-by-default)
+    - [2.2.2 :star: relative](#222-star-relative)
+    - [2.2.3 absolute](#223-absolute)
+    - [2.2.4 :star: relative \& absolute: 位移属性参照物](#224-star-relative--absolute-位移属性参照物)
+    - [2.2.5 fixed](#225-fixed)
+    - [2.2.6 sticky](#226-sticky)
+    - [2.2.7 :star: block的覆盖关系: z-index](#227-star-block的覆盖关系-z-index)
   - [2.3 Dimension of Block](#23-dimension-of-block)
-  - [2.4 FlexBox](#24-starflexbox) 
+  - [2.4 :star:Flexbox](#24-starflexbox)
+    - [2.4.1 Display: Flex](#241-display-flex)
+    - [2.4.2 Flex flow](#242-flex-flow)
+    - [2.4.3 align-content](#243-align-content)
+    - [2.4.4 flex-grow/flex-shrink](#244-flex-growflex-shrink)
+    - [2.4.5 :star:content, item \& self](#245-starcontent-item--self)
+      - [2.4.5.1 Only flex flow](#2451-only-flex-flow)
+      - [2.4.5.2 content](#2452-content)
+      - [2.4.5.3 item](#2453-item)
+      - [2.4.5.4 self](#2454-self)
+    - [2.4.6 order](#246-order)
+
+
+---
+学习资源
 
 ---
 
@@ -22,7 +49,7 @@ Demo |
 [wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)|
 
 
-## 1.1 无括号选择器:
+## 1.1 无括号选择器
 allow us to reach down to branch of tag tree
 
 + ‘>’ 表示下一层. 
@@ -115,7 +142,7 @@ block变成circle
   }
 ```
 
-### 2.1.4 :star:文档流
+### 2.1.4 :full_moon:文档流
 
 设置两个block, 会发现block2并不是出现在block1的右边, 而是在它下面
 
@@ -143,7 +170,7 @@ border-radius: 10px;
 }
 ```
 
-#### 2.1.5 :star:Display属性
+#### 2.1.5 Display属性
 block的display属性, 默认是block, 即服从上面的文档流, 一个block结束了, 下一个block从下一行开始;
 
 如果将display设为inline-block, block对外会呈现出inline的性质, 像text一样从左向右排列, 一行满了再去下一行.
@@ -328,11 +355,9 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 ## 2.3 Dimension of Block
 
-
-
 <img src="Src/block_dimension.png" width = 50%>
 
-由内向外, 依次是: content, padding, border, margin, position; margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子, 
+由内向外, 依次是: content, padding, border, margin, position. ( margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子)
 
 + Margin属性，表示该block与其他block之间的最小距离。用margin-left, 还可以单独定义某一边的margin; 下图中，block3(margin为50px)与block4(margin为30px)的距离是50px
 <img src="Src/block_margin.png" width="100%">

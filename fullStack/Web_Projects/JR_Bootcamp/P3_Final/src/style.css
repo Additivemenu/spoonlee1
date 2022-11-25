@@ -27,6 +27,7 @@ html,body{
     width: 100%;
     min-height: 100vh;
     padding: 100px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +37,7 @@ html,body{
     transition: 0.5s;
 }
 
-.showcase header{  /*space bar means all header under showcase*/
+.showcase header{  /*whiteSpace means all header under showcase*/
     position: absolute;
     top: 0;
     left: 0;
@@ -50,9 +51,9 @@ html,body{
     transition: 0.5s;
 }
 
-.showcase.active{ /*watch: no space; it means only when showcase & active 
-    appears in html, then employ below settings; we will use js to control how to add 
-    active in html to activate below settings*/ 
+.showcase.active{ /*watch: no space; it means that only when showcase & active 
+    show up in the same time in the class name, then employ below settings; we will use js to control how to add 
+    active in html tag class name to activate below settings*/ 
     right:var(--menu-width); /**showcase至上一级position为absolute右边框的距离*/
     width: calc(100% - var(--menu-width)); /**即新的showcase的宽度*/
 }
