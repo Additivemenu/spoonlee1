@@ -59,15 +59,15 @@ allow us to reach down to branch of tag tree
 + nth:child(int)
 
 ## 1.2 有括号选择器
-select tag element based on text filter
+select tag element based on class name filter
 
 + 直接选择
-  [ = ]
+   `=`
 + 相关性选择
-  [ *= ]
+  `*=`
 + 头尾选择
-  [ ^= ]: 开头
-  [ $= ]: 结尾
+  `^=`: 开头
+  `$=`: 结尾
 + 多个选择器合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 

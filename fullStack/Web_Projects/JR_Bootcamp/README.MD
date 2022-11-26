@@ -35,26 +35,26 @@ P3最终效果:
 /*===================定义全局属性=======================*/
 :root{
     /*定义各种变量*/
+    --font-color: white;
 }
 
 
 html,body{
-
+    width: 100vw;       /*100% viewport width*/
+    height: 100vh;      /*100% viewport height*/
+    ...
 }
 
 *{
     box-sizing: border-box; /*dimension defined include border, padding, content*/
     margin: 0;
     padding: 0;
-    font-family: 'poppins', sans-serif;
+    ...
 } /*global settings, normaly we do this*/
 
 /*===============自定义class属性=================*/
 .class1{
-    position
-    dimension
-    layout
-    other properties...
+    
 }
 
 .class1 Class1_subClass1{
@@ -82,31 +82,43 @@ html,body{
 ## 对于一个CSS class的模板
 ```css
 .class1{
-    /*定位属性*/
+    /*------------------position property-----------------*/
     position: ;
     left: ;
     top: ;
     ...
 
-    /*block dimension*/
+    /*-----------------dimensional property-------------*/
     width: 100px;
     height: 100%;
     padding: ;
     ...
 
-    /*布局属性*/
-    display: flex;
+    /*-----------------layout property------------------*/
+    display: flex/inline-block;
     align-content: ;
     justify-content: ;
     ...
 
-    /*其他渲染属性: color, z-index, transition... */
+    /*-------------------other property--------------*/
+    /*text style*/
+    font-size: ;
+    font-weight: ;
+    letter-spacing: ;
+    text-decoration: ;
+    text-transform: ; 
+    list-style: ;
+
+    /*depth, color*/
     z-index: ;
     color: ;
     background: ;
+    filter: ;
 
+    /*cursor, dynamic effect*/
     cursor: ;
     transition: ;
+
     ...
 }
 
