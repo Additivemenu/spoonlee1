@@ -1,3 +1,14 @@
+跳转
+
++ [CSS selector](./CSS_Sample/Selector/CSS_Selector.html)
++ [block element](./CSS_Sample/Block_Element/Block.html)
++ [block dimension](./CSS_Sample/Block_Dimension/Block_Dimension.html)
++ [block position](./CSS_Sample/Block_Position/Block_Position.html)
++ [flexbox](./CSS_Sample/Flexbox/flexbox.html)
+
+
+---
+
 Contents
 
 - [1. 选择器](#1-选择器)
@@ -89,13 +100,6 @@ select tag element based on class name filter
 ```html
 <div class="block1"></div>
 ```
-
-Demo |
------- |
-[block demo](CSS_Sample/Block_Element/Block.html)   |
-[block position demo](CSS_Sample/Block_Position/Block_Position.html) |
-[block dimension demo](CSS_Sample/Block_Dimension/Block_Dimension.html) |
-
 
 ## 2.1 Basics of Block
 ### 2.1.1 block 基本属性
@@ -213,7 +217,7 @@ html,body{
 
 + 简言之, static的block的位移属性作废, relative与absolute的block的位移属性才生效.
 + absolute的block不参与文档流, relative的block参与文档流
-+ absolute的block的位移参照物为其上级中最近的position=relative的block 
++ 参与文档流的block的位移参照物为其上级中最近的position不是static的block 
 
 ### 2.2.1 static (by default)
 ```css
