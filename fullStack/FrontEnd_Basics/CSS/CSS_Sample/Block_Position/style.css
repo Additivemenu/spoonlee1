@@ -1,33 +1,92 @@
+:root{
+    /*定义各种变量*/
+    --block1-width: 500px;
+    --block1-height: 500px;
+
+    --subBlock-size: 100px;
+}
+
 html,body{
     margin:0;
     padding:0;
+
+    width: 100vw;       /*100% viewport width*/
+    height: 100vh;      /*100% viewport height*/
 }
 
 .block1{
-    width: 500px;
-    height: 500px;
+    position: relative;
+    /* top: 100px;
+    left: 100px; */
+
+    width:  50%;
+    height: var(--block1-height);
+
     background: red;
 }
 
 .sub_block1{
-    width: 100px;
-    height: 100px;
+    width: var(--subBlock-size);
+    height: var(--subBlock-size);
+}
+
+.sub_block1:nth-child(1){
+
     background: yellow;
+}
+
+.sub_block1:nth-child(2){
+    position: absolute;
+    right:0;
+    top: 0;
+
+    background: lightgreen;
+    /* position: absolute; */
+}
+
+.sub_block1:nth-child(3){
+    position: relative;
+    left: 50px;
+    top: 50px;
+
+    background: purple;
+}
+
+/*==========================================*/
+.block2{
+    position: absolute;
+    top:0;
+    right:0;
+
+    width: 40%;
+    height: 500px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+
+    background: pink;
 }
 
 .sub_block2{
     width: 100px;
     height: 100px;
-    background: lightgreen;
-    /* position: absolute; */
 }
 
-.sub_block3{
-    width: 100px;
-    height: 100px;
-    background: purple;
+.sub_block2:nth-child(1){
+
+    background: green;
+}
+
+.sub_block2:nth-child(2){
+
+    background: red;
+}
+
+.sub_block2:nth-child(3){
     position: relative;
-    left: 50px;
-    top: 50px;
-    
+
+    background: blue;
 }

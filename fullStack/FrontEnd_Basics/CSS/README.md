@@ -275,7 +275,8 @@ html,body{
 ```css
 position: absolute;
 ```
-position为absolute的block将会从文档流中脱离出来
+position为absolute的block将会从文档流中脱离出来. 一般当我们想要将某个block移动到某个想要位置时会用position: absolute;
+
 + **文档流**这里指的是，默认情况下，一个block从左上角开始，其实是占一行，下一个block直接从下一行开始而不是接着上一个block的右边开始，当然你可以通过将display属性从默认的block改为inline-block，使得下一个block接着上一个block的右边开始。总之文档流指的是一种文档的布局排布序列，从上到下，从左到右。
 + **脱离文档流**的意思是，不影响接下来block的布局排序，但其自身还是遵从文档流，跟着上一个block, 如蓝色的block还是在绿色的block的下一行
 
@@ -334,8 +335,10 @@ html,body{
 ### 2.2.4 :star: relative & absolute: 位移属性参照物
 
 即使position是absolute, 也需要一个参照物来进行计算位移属性; 属性为absolute的block的位移参照物会从上一级的block属性查看。
-+ 如果position为absolute的block的上一级block的position属性是static（不写position默认就是static），那么absolute就不会看上一层的，而会再往上一层去看直到block的position不是static（如果不是才会将其选择为位移参照物）, 如果上一层block的position属性一直都是static, 则会选取整个文档作为参照物，来计算位移属性。有时候发现block没有对齐, 可能就是这个原因!
++ 如果position为absolute的block的上一级block的position属性是static（不写position默认就是static），那么absolute就不会看上一层的，而会再往上一层去看直到block的position**不是static**（如果不是才会将其选择为位移参照物)
+  + 如果上一层block的position属性一直都是static, 则会选取整个文档作为参照物，来计算位移属性。有时候发现block没有对齐, 可能就是这个原因!
 + 如果position为absolute的sub-block的上一级block的position属性是relative, 则该sub-block会以上一级的block为参照物来计算位移属性. **因此，一般parent block的position设定习惯上直接写relative，这样child block会选取mother block为位移参照物。**
++ 如果position为absolute的sub-block的上一级block的position属性是absolute, 则该sub-block会以上一级的block作为参照物来计算位移属性. 但注意此时, 上一级的block是独立于文档流的
 
 
 ### 2.2.5 fixed
@@ -436,6 +439,8 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 
 ### 2.4.2 Flex flow
+
+在定义了display: flex 之后, 还必须定义flex flow, 这样才能够使得sub-blocks在视口变化时"流动"起来, 后面的justify, align的效果才能生效.
 
 + 可变视口
   调节body, html中height与width为相对100vh,100vw; 再将block1的height, width调节成相对值, 这样block1便可继承body,html的dimension. 当改变浏览器视口大小时, block1的大小也会随着改变

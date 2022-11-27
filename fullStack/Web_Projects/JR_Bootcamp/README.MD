@@ -46,7 +46,7 @@ html,body{
 }
 
 *{
-    box-sizing: border-box; /*dimension defined include border, padding, content*/
+    box-sizing: border-box; /*block width and height defined would include border, padding, content*/
     margin: 0;
     padding: 0;
     ...
