@@ -1,3 +1,19 @@
+Contents:
+- [1. 定义与使用function](#1-定义与使用function)
+  - [1.1 Primitive type data as function argument](#11-primitive-type-data-as-function-argument)
+  - [1.2 Array as function argument](#12-array-as-function-argument)
+  - [1.3 Object type as function argument](#13-object-type-as-function-argument)
+- [2. 箭头函数](#2-箭头函数)
+  - [2.1 箭头函数的定义](#21-箭头函数的定义)
+- [3. 定义object内部的function](#3-定义object内部的function)
+  - [3.1 标准写法](#31-标准写法)
+  - [3.2 简略写法](#32-简略写法)
+
+---
+学习资源
+<<JS高级程序设计>>第10章
+
+---
 
 > 注意JS中写函数的语法和C,Java不同， JS中服从格式:
 > 函数名 = function(){...}  OR
@@ -5,7 +21,31 @@
 
 # 1. 定义与使用function
 
-## 1.1 Primitive type as function argument
+A JavaScript function is defined with the `function` keyword, followed by a name, followed by parentheses ().
+
+
+```js
+function name(parameter1, parameter2, parameter3) {
+  // code to be executed
+}
+```
+
++ Accessing a function without () will return the function object instead of the function result.
+
+  ```js
+  function toCelsius(fahrenheit) {    //华氏度to摄氏度
+    return (5/9) * (fahrenheit-32);
+  }
+
+  document.getElementById("demo").innerHTML = toCelsius(77);    // return results
+
+  document.getElementById("demo").innerHTML = toCelsius;  // return function object
+
+  ```
++ Local variable also holds for JS: variable defined within a function can only be used in that function
+  
+  
+## 1.1 Primitive type data as function argument
 因为primitive type argument所需的内存大小已知, 不需要引用
 
 ```js

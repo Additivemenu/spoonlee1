@@ -1,12 +1,14 @@
 Contents
 
 - [Part1 理解对象](#part1-理解对象)
-  - [1.1 属性的类型](#11-属性的类型)
-    - [1.1.1 数据属性](#111-数据属性)
       - [Object.defineProperty()](#objectdefineproperty)
     - [1.1.2 访问器属性](#112-访问器属性)
   - [1.2 定义多个属性](#12-定义多个属性)
   - [1.3 读取属性的特性](#13-读取属性的特性)
+  - [1.4 合并对象](#14-合并对象)
+  - [1.5 对象标识及相等判定](#15-对象标识及相等判定)
+  - [1.6 增强的对象语法](#16-增强的对象语法)
+  - [1.7 对象解构](#17-对象解构)
 - [2. 修改或增加已存在的object的某个field](#2-修改或增加已存在的object的某个field)
 - [3. 关于object的引用](#3-关于object的引用)
   - [3.1 使用展开: {...obj}来传递object的值](#31-使用展开-obj来传递object的值)
@@ -33,33 +35,44 @@ Contents
 ECMA-262将对象定义为一组属性的无序集合. 对象的每个属性或方法都由一个key来标识, 这个key映射到一个value, 可以把ECMAScript的对象想象成一张散列表, 其中的内容就是一组key-value pair, 值可以是数据或者函数. 
 
 + :star:JS中的object与java中的略有不同 
-  + JS中object可以直接创建而不需要instantiate class
-  ```js
-  // old way: 实例化Object, 再添加属性和方法
-  let person = new Object();
+  + JS中object可以直接创建而不需要非得instantiate class, 有以下3种方式:
+    ```js
+    // 方式1 old way: 实例化Object, 再添加属性和方法
+    let person = new Object();
 
-  person.name = "Nicholas";
-  person.age = 29;
-  person.job = "Software Engineer"
-  person.sayName = function(){
-    console.log(this.name);
-  }
-  ```
+    person.name = "Nicholas";
+    person.age = 29;
+    person.job = "Software Engineer"
+    person.sayName = function(){
+      console.log(this.name);
+    }
+    ```
 
-  ```js
-  // 使用对象字面量来创建一个object
-  let obj = {
-      name: "shawn",
-      age: 18,
-      income: 0,
-      arc: {
-          a: 222,
-          b: 333,
-      },
-  };
-  console.log(obj);
-  console.table(obj);
-  ```
+    ```js
+    // 方式2: 使用对象字面量来创建一个object(最常用)
+    let obj = {
+        name: "shawn",
+        age: 18,
+        income: 0,
+        arc: {
+            a: 222,
+            b: 333,
+        },
+    };
+    console.log(obj);
+    console.table(obj);
+    ```
+
+    ```JS
+    // 方式3: 采用Object.defineProperties()来为undefined object定义多个属性
+    // 由于使用了Object.defineProperties(), 注意此时数据属性的configurable, enumerable,writable的值默认是false
+    let book = {};
+
+    Object.defineProperties(book, {
+      ...
+    })
+    ```
+
 
 ## 1.1 属性的类型
 属性即object的一个key-value pair, 比如person.name是person这个object的一个属性. object的每一个属性都还有特性, 这些特性规定了object的对应属性的行为
@@ -137,12 +150,63 @@ console.log(book.edition);    // 2
 console.log(book.year);
 ```
 
-
 ## 1.2 定义多个属性
+ECMAScript提供`Object.defineProperties()`来一次性为object定义多个属性. 它有两个argument: 1)想要操作的object名; 2) 一个描述符对象
+
+
+:gem: e.g.1 如下, 在book对象上定义了两个数据属性, 一个访问器属性. 注意数据属性的configurable, enumerable和writable的值在这里都是false.
+
+```JS
+  // 采用Object.defineProperties()来为undefined object定义多个属性
+  let book = {};
+
+  Object.defineProperties(book, {
+
+    year_:{     // 数据属性 ----------------
+      value: 2017
+    },
+
+    edition：{  // 数据属性 ---------------
+      value: 1
+    },
+
+    year:{      // 访问器属性 -------------
+      get(){
+        return this.year_;
+      },
+      set(newValue){
+        if(newValue > 2017){
+          this.year_ = newValue;
+          this.edition += newValue-2017; 
+        }
+      }
+    }
+
+  })
+  ```
 
 
 
 ## 1.3 读取属性的特性
+
+
+
+
+
+
+## 1.4 合并对象
+
+
+
+
+
+## 1.5 对象标识及相等判定
+
+
+## 1.6 增强的对象语法
+
+## 1.7 对象解构
+
 
 # 2. 修改或增加已存在的object的某个field
 

@@ -1,8 +1,31 @@
+- [1. 变量与打印](#1-变量与打印)
+  - [1.1 Let](#11-let)
+  - [1.2 const](#12-const)
+- [2. 变量的数据类型](#2-变量的数据类型)
+  - [2.1 String](#21-string)
+  - [2.2 数据类型转化](#22-数据类型转化)
+  - [2.3 Boolean \& if statement](#23-boolean--if-statement)
+- [3. Operator](#3-operator)
+  - [3.1 数值运算符](#31-数值运算符)
+  - [3.2 比较运算符](#32-比较运算符)
+  - [3.3 三联运算符](#33-三联运算符)
+  - [3.4 逻辑运算符](#34-逻辑运算符)
+  - [3.5 严格模式](#35-严格模式)
+- [4. Control flow](#4-control-flow)
+  - [4.1 switch case](#41-switch-case)
+  - [4.2 Loop](#42-loop)
+- [5. Array](#5-array)
+  - [5.1 初始化Array](#51-初始化array)
+  - [5.2 定义新的数组元素](#52-定义新的数组元素)
+    - [5.2.1 为Array加入object元素](#521-为array加入object元素)
+
+---
+
 # 1. 变量与打印
 [variable.js](./variable.js)
 
 ## 1.1 Let
-定义变量时无需声明类型, 用let:
+定义变量时无需声明类型, 直接用let:
 ```js
 let my_name = "shawn";
 console.log(my_name);
@@ -43,7 +66,7 @@ password = 'aasaaa';         // 会报错
 
 ## 2.1 String
 
-+ "" & '': 用于纯string
++ `""` & `''`: 用于纯string
 + ``: 适用性更广, 可以引用变量
 
 ```js
@@ -64,7 +87,7 @@ console.log(b2);
 let b3 = "he said: 'this'";
 console.log(b3);
 
-// `` -----------------------------
+// `` 更广的适用性-----------------------------
 let b4 = `he said: "a",'b'`;    // `` allows coexisting of '' & ""
 console.log(b4);
 
