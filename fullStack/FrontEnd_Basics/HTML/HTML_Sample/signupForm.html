@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+  </head>
+  <body>
+    <h1 style="text-align: center">Sign Up</h1>
+
+    <form action="xxx.php">
+      <fieldset>
+        <legend>Your basic info</legend>
+
+        <label for="firstname">First Name: </label>
+        <!--for定位id="firstname"-->
+        <input type="text" id="firstname"  />
+
+        <label for="lastname">Last Name: </label>
+        <input type="text" id="lastname" />
+
+        <label for="email">Email: </label>
+        <input type="email" id="email" />
+
+        <label for="username">Username: </label>
+        <input type="text" id="username" />
+
+        <label for="password">Password: </label>
+        <input type="password" id="password" />
+      </fieldset>
+
+      <fieldset>
+        <legend>Other details</legend>
+
+        <label for="birthday">Birth Date: </label>
+        <input type="Date" id="birthday"  />
+        <br/>
+
+        <label> gender:</label>
+        <br/>
+    
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">male</label>
+        <br/>
+        
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">female</label>
+        <br/>
+        
+        <input type="radio" id="other" name="gender" value="other">
+        <label for="other">other</label>
+
+      </fieldset>
+
+      <fieldset>
+        <label for="country">Country</label>
+        <br/>
+        <select name="country" id="country">
+            <option value="">USA</option>
+            <option value="">UK</option>
+            <option value="">China</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <div>
+            <input type="checkbox" id="terms" required>
+            <label for="terms">I'm accepting terms and conditions</label>
+            <br/>
+        </div>
+        
+        <button type="submit">submit</button>
+      </fieldset>
+
+
+    </form>
+  </body>
+</html>

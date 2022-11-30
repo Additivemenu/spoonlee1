@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <table border="1" align="center" cellpadding="0" cellspacing="2">
+      <tr>
+        <th>name</th>
+        <th>age</th>
+        <th>gender</th>
+      </tr>
+
+      <tr>
+        <td>ben</td>
+        <td>20</td>
+        <td>male</td>
+      </tr>
+
+      <tr>
+        <td>alise</td>
+        <td>21</td>
+        <td>female</td>
+      </tr>
+    </table>
+
+    <form action="" method="post">
+      user name:
+      <input
+        type="text"
+        name="username"
+        placeholder="please enter your name"
+        autocomplete="off"
+        required
+        disabled        
+      />
+      <br />
+      password: <input type="text" name="pwd" />
+      <br />
+      <!--单选按钮必须有相同的name, 才能实现多选一-->
+      gender: male <input type="radio" name="sex" value="male" checked /> female
+      <input type="radio" name="sex" value="female" />
+      <br />
+      hobby: eating <input type="checkbox" name="hobby" /> sleeping
+      <input type="checkbox" name="hobby" />
+      <br />
+      <input type="reset" value="reset" />
+      <!--还原form到初始状态-->
+      <input type="button" value="button" />
+      <br />
+      upload file <input type="file" />
+      <br />
+      <input type="submit" value="submit" />
+    </form>
+
+    <textarea name="" id="" cols="30" rows="10"></textarea>
+  </body>
+</html>

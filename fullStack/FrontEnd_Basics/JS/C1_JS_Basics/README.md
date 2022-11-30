@@ -3,11 +3,11 @@
   - [1.2 const](#12-const)
 - [2. 变量的数据类型](#2-变量的数据类型)
   - [2.1 String](#21-string)
-  - [2.2 数据类型转化](#22-数据类型转化)
+  - [2.2 :star:字符串连接](#22-star字符串连接)
   - [2.3 Boolean \& if statement](#23-boolean--if-statement)
 - [3. Operator](#3-operator)
   - [3.1 数值运算符](#31-数值运算符)
-  - [3.2 比较运算符](#32-比较运算符)
+  - [3.2 :star:比较运算符](#32-star比较运算符)
   - [3.3 三联运算符](#33-三联运算符)
   - [3.4 逻辑运算符](#34-逻辑运算符)
   - [3.5 严格模式](#35-严格模式)
@@ -25,7 +25,7 @@
 [variable.js](./variable.js)
 
 ## 1.1 Let
-定义变量时无需声明类型, 直接用let:
+定义变量时无需声明类型, 直接用let, 相当于声明变量开辟内存, 之后再次用到变量时不用再let了.
 ```js
 let my_name = "shawn";
 console.log(my_name);
@@ -99,9 +99,10 @@ console.log(b5);
 ![](Src/JS_variable1.png)
 
 
-## 2.2 数据类型转化
+## 2.2 :star:字符串连接
 + 当一个str和一个num相加时，结果的数据类型和被加数一致(和java的print一致)
   + 特别地，+”1”代表将str类型的1转化为num类型. 但是其中的双引号内必须只有数字。
++ JS的`console.log()`支持多个argument(用`,`分隔), 打印结果顺序连接; 而Java中`print()`中只支持1个String, 需要用`+`连接
 
 ```js
 // data type conversion
@@ -203,9 +204,11 @@ xx %= 5;
 xx ?? 5; // what is it?
 ```
 
-## 3.2 比较运算符
+## 3.2 :star:比较运算符
 
-+ =, ==, ===
+[Mozilla doc: === & ==](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)
+
++ =, ==, ===(strict equality)
 + !=, !==
 + 大于,小于
 
