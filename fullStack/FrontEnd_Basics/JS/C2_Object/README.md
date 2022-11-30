@@ -32,6 +32,11 @@ Contents
 
 # Part1 理解对象
 
+> 重点:
+> + object的属性, 属性的特性(包括属性的get(), set()函数)
+> + `Object.assign()` API 的原理
+> + Object增强语法: 简写属性名, 动态属性名, 简写方法名
+
 ECMA-262将对象定义为一组属性的无序集合. 对象的每个属性或方法都由一个key来标识, 这个key映射到一个value, 可以把ECMAScript的对象想象成一张散列表, 其中的内容就是一组key-value pair, 值可以是数据或者函数. 
 
 + :star:JS中的object与java中的略有不同 
@@ -43,6 +48,7 @@ ECMA-262将对象定义为一组属性的无序集合. 对象的每个属性或�
     person.name = "Nicholas";
     person.age = 29;
     person.job = "Software Engineer"
+
     person.sayName = function(){
       console.log(this.name);
     }
@@ -50,6 +56,7 @@ ECMA-262将对象定义为一组属性的无序集合. 对象的每个属性或�
 
     ```js
     // 方式2: 使用对象字面量来创建一个object(最常用)
+    // 此时对象的属性的configurable, enumerable, writable默认是true
     let obj = {
         name: "shawn",
         age: 18,
@@ -120,8 +127,8 @@ console.log(person.name);   // still "Nicholas"
 访问器属性有4个特性描述它们的行为:
 + [\[Configurable]]: 表示属性是否可以通过delete删除并重新定义, 是否可以修改它的特性, 以及是否可以把它改为数据属性. 默认值为true.
 + [\[Enumerable]]: 表示属性是否可以通过for-in loop返回. 默认为true.
-+ [\[Get]]: 获取函数, 在读取属性时调用. 默认为undefined
-+ [\[Set]]: 设置函数, 在写入属性时调用. 默认为undefined
++ :star:[\[Get]]: 获取函数, 在读取属性时调用. 默认为undefined
++ :star:[\[Set]]: 设置函数, 在写入属性时调用. 默认为undefined
 
 同样, 访问器属性不能直接定义, 必须通过Object.defineProperty()来定义.
 
@@ -188,22 +195,128 @@ ECMAScript提供`Object.defineProperties()`来一次性为object定义多个属�
 
 
 ## 1.3 读取属性的特性
+使用`Object.getOwnPropertyDescriptor()`方法可以取得指定属性的属性描述符. 它接收两个argument: 1) 属性所在的对象; 2) 要取得其描述符的属性名.
 
+略
 
 
 
 
 
 ## 1.4 合并对象
+合并(merge)对象: 把源对象所有的本地属性一起复制(copy)到目标对象上.
 
+`Object.assign()`方法实现对象合并. 它接收1)一个目标对象;  2)一个或多个源对象 作为参数,  这个API有以下的行为:
++ 将每个源对象中可枚举(Object.propertyIsEnumerable()返回true)和自由(Object.hasOwnProperty()返回true)属性复制到目标对象. 
+  + Object.assign()既修改目标对象, 同时也返回修改后的目标对象 (见下e.g.) 
++ 以字符串和符号为key的属性会被复制. 
++ **该API原理: 对每个符合条件的属性, 这个方法会先使用源对象上的[\[Get]]取得属性的值, 然后使用目标对象上的[\[Set]]设置属性的值.** (见下e.g.) 
 
+:gem:[e.g.1 Object.assign()](./ObjectAssign.js)
 
++ Object.assign()实际上对每个源对象**的属性**执行的是**shadowCopy**. 即将src object**的属性的引用**赋给dest object的对应属性, 但注意dest和src本身的引用可不同(因为dest, src是我们提前声明好的Object, 然后才用dest, src参与Object.assign())
+  + 如果多个源对象都有相同的属性, 则使用最后一个复制的值. 原因见该API的原理.
+  + 此外, 从源对象访问器属性取得的值, 比如获取函数, 会作为一个静态值赋给目标对象. 换句话说, 不能在两个对象间转移get函数和set函数.
+
+:gem: [e.g.2 Object.assign() 覆盖属性和属性引用](./ObjectAssign2.js)
+
++ 注意`Object.assign()`没有"rollback"的概念. 如果赋值期间出现错误, 则操作会终止, 退出并抛出错误. dest object中已经被赋值的属性会被保留, Object.assign()不会保留assign之前的值.
 
 
 ## 1.5 对象标识及相等判定
 
+在ECMAScript6之前, 有些特殊情况即使是===也无能为力:
+```js
+// 这些===结果是对的
+console.log(true === 1);  // false
+console.log({} === {});   // false
+console.log("2" === 2);   // false
 
-## 1.6 增强的对象语法
+// 这些===结果是错的
+console.log(+0 === -0) ;  // true
+console.log(+0 === 0);    // true 
+console.log(-0 === 0);    // true
+
+// 要确定NaN的相等性, 必须用isNaN()
+console.log(NaN === NaN);   // false
+console.log(isNaN(NaN));    // true
+```
+
+
+ECMAScript6 规范新增了Object.is(), 这个方法和===很像, 但同时也考虑到了上述边界情形. 
+
+```js
+console.log(Object.is(true, 1));  // false
+console.log(Object.is({}, {}));   // false
+console.log(Object.is("2",2));    // false
+
+// 正确的0, -0, +0 相等/不等判定
+console.log(Object.is(+0, -0));   // false
+console.log(Object.is(+0, 0));    // true
+console.log(Object.is(-0, 0));    // false
+
+// 正确的NaN相等判定
+console.log(Object.is(NaN, NaN)); //  true
+```
+
+
+## 1.6 :moon:增强的对象语法
+ECMAScript6新增了很多语法糖特性, 来使得定义和操作对象更为方便.
+
+### 1.6.1 属性值简写
+```js
+let name = 'matt';
+let person = {
+  name: name      // *******************
+};
+console.log(person);    // {name: 'Matt' }
+
+// 以下和上面等效 ---------------------
+// 属性名和变量名相同的情况简写:
+let name = 'Matt';
+let person = {
+  name           // ********************
+};
+console.log(person);    // {name: 'Matt' }
+```
+
+```js
+// 属性名和变量名相同的情况简写:
+function makePerson(name){
+  return {
+    name
+  };
+}
+
+let person = makePerson('Matt');
+
+console.log(person.name);     // Matt
+```
+
+### 1.6.2 :moon:可计算属性(动态属性名)
+如果想要使用变量的值作为属性名, 那么必须先声明对象, 然后使用中括号语法来添加属性. 换句话说, 不能直接在对象字面量中直接动态命名属性.
+
+```js
+// 即把对象字面量中的属性名换成[计算表达式], 即可实现动态属性名
+function getUniqueKey(key){
+    return `${key}`;
+}
+
+let nameKey = "name";
+let obj = {
+  [getUniqueKey(nameKey)]: 'shawn'
+}
+```
+
+:gem: [e.g. 动态属性名](./computableProperty.js)
+
++ 注意, 如果计算属性的表达式抛出错误, 那么之前完成的计算是不能rollback的.
+
+### 1.6.3 简写方法名
+看至此处
+
+
+
 
 ## 1.7 对象解构
 
