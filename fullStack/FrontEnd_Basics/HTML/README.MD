@@ -9,6 +9,7 @@ Contents
     - [1.2.3 Audio](#123-audio)
   - [1.3 :full\_moon:Hyper-link](#13-full_moonhyper-link)
   - [1.4 注释和特殊字符](#14-注释和特殊字符)
+  - [1.5 :full\_moon:Form](#15-full_moonform)
 - [2. 注意特殊语法](#2-注意特殊语法)
 
 ---
@@ -25,16 +26,19 @@ HTML核心
 ```
 + html content 可以是text, 也可以是html tag, 比如一个表示image或hyper link的tag
 + tag 后面的class name， 可以用来区分相同类型的tag. 在JS中有对应函数可以操纵class name
++ tag的id属性可以uniquely identify某个具体的tag
 ---
 
 
 # 1. HTML basic tags
 根据HTML基本标签, 先分割UI design, 再结合`文档流`写出一个HTML框架作为写web project的第一步
-
-+ 块(block-level)级元素
-无论内容多少, 一个标签占一行
-+ 行内(inline-level)元素
-一行内可以放多个标签元素
++ HTML tag element可以分为两类:
+  + 块(block-level)级元素
+  无论内容多少, 一个标签占一行
+  + 行内(inline-level)元素
+  一行内可以放多个标签元素
++ HTML标签本身也可以具有属性, 
+如class, id(用来uniquely identify某个标签, 可以是String), name....
 
 ## 1.1. 文本相关
 
@@ -61,13 +65,13 @@ HTML核心
 [HTML List demo](./HTML_Sample/HTML_LIST.html) (注意其中nested list的写法)
 ![result](Src/htmlist1.png)
 
-+ table & form
-  + HTML `<table>` 快过时了, 因为现在有了新的布局工具
-  + HTML `<form>`
++ table
+HTML `<table>` 快过时了, 因为现在有了新的布局工具
 
-:gem: [table & form](./HTML_Sample/HTML_form.html)
 
-:gem: [sign up form](./HTML_Sample/signupForm.html)
+:gem: [table](./HTML_Sample/HTML_table.html)
+
+
 
 + `<div>` 与 `<span>`: 没有语义, 只是盒子, 用来布局
     + `<div>`: 一个`<div>`标签占一行
@@ -120,22 +124,46 @@ alt="Grapefruit slice atop a pile of other slices">     <!--表示当src unavail
 [document: audio tag](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio)
 
 ## 1.3 :full_moon:Hyper-link
-
+语法
 ```HTML
+<a href="path" target="目标窗口位置"> text or image </a>
+
 <a href="https://www.w3schools.com" target="_blank">Visit W3Schools.com!</a>
 ```
 
-+ 页面跳转
+可实现:
++ 页面跳转 
+  + 用target属性定义是在self打开新页面还是另开一个blank page打开新页面
 + 页内跳转(锚链接)
-+ 无跳转: href = "#"
+  + 采用id + href="#..."来链接页内跳转标签
+    ```html
+    <h5 id="is_specified">this is h5</h5>
 
-:gem: 待写例子: 跳转 20:40
+    <a hrerf="#id_specified">this is a hyperlink</a>
+    ```
+  + 无跳转: href = "#" 
++ 功能性链接
+  + Email
+  + QQ
+  + MSN... 
+
+:gem: [hyperlink](./HTML_Sample/HTML_hyperlink.html)
 
 ## 1.4 注释和特殊字符
 + 空格： &nbsp
 + 大于号: &gt
 + 小于号: &lt
-+ 商标
++ 引号: &quot
++ 版权符号: &copy
+
+:gem: [特殊字符](./HTML_Sample/HTML_Special_String.html)
+
+## 1.5 :full_moon:Form
+HTML5的重要元素, 用来作为用户输入
+
+:gem: [HTML form](./HTML_Sample/HTML_form.html)
+
+:gem: [Practice: sign up form](./HTML_Sample/signupForm.html)
 
 
 # 2. 注意特殊语法

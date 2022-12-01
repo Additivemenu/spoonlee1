@@ -8,7 +8,9 @@
 <h2 id="class2">222222</h2>
 ```
 
-20:42: 注释和特殊符号 PPT P25
+20:42(1h04min): 注释和特殊符号 PPT P25
+
+---
 
 21:05: form, input
 
@@ -20,5 +22,9 @@
 
 21:43: HTML结构元素 & 语义化标签 P54
 
-21:48: practice
+---
+
+21:48: practice： sign up form
 what is name used for?
+
+fieldset之间的间距如何实现?
