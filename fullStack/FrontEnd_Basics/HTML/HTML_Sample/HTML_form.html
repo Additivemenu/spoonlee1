@@ -7,6 +7,19 @@
     <title>Document</title>
   </head>
   <body>
+    <form  method="get" action="result.html">
+      <p>  名字：<input name="name" type="text" >  </p>
+      <p>  密码：<input name="pass" type="password" >  </p>
+      <p>
+         <input type="submit" name="button" value="提交"/>
+         <input type="reset" name="reset" value="重填"/> 
+      </p>
+    </form>
+
+    <br/>
+    <hr/>
+    <br/>
+
     <form action="" method="post">
       user name:
       <input
@@ -18,7 +31,7 @@
         disabled        
       />
       <br />
-      password: <input type="text" name="pwd" />
+      password: <input type="password" name="pwd" size="30" maxlength="50" />
       <br />
       <!--单选按钮必须有相同的name, 才能实现多选一-->
       gender: male  

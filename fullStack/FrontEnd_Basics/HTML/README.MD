@@ -9,7 +9,9 @@ Contents
     - [1.2.3 Audio](#123-audio)
   - [1.3 :full\_moon:Hyper-link](#13-full_moonhyper-link)
   - [1.4 注释和特殊字符](#14-注释和特殊字符)
-  - [1.5 :full\_moon:Form](#15-full_moonform)
+  - [1.5 :full\_moon:`<Form>` \&  `<input>`](#15-full_moonform---input)
+    - [`<input>` tag](#input-tag)
+  - [1.6 HTML结构元素](#16-html结构元素)
 - [2. 注意特殊语法](#2-注意特殊语法)
 
 ---
@@ -33,10 +35,15 @@ HTML核心
 # 1. HTML basic tags
 根据HTML基本标签, 先分割UI design, 再结合`文档流`写出一个HTML框架作为写web project的第一步
 + HTML tag element可以分为两类:
+<img src="./Src/block-inline.png" width=40%>
   + 块(block-level)级元素
   无论内容多少, 一个标签占一行
+  <img src="./Src/block_elements.png" width=50%>
   + 行内(inline-level)元素
   一行内可以放多个标签元素
+  <img src="./Src/inline-element.png" width=50%>
+
+
 + HTML标签本身也可以具有属性, 
 如class, id(用来uniquely identify某个标签, 可以是String), name....
 
@@ -158,12 +165,93 @@ alt="Grapefruit slice atop a pile of other slices">     <!--表示当src unavail
 
 :gem: [特殊字符](./HTML_Sample/HTML_Special_String.html)
 
-## 1.5 :full_moon:Form
+## 1.5 :full_moon:`<Form>` &  `<input>`
 HTML5的重要元素, 用来作为用户输入
 
-:gem: [HTML form](./HTML_Sample/HTML_form.html)
+主要由`<form>`与内嵌的`<input>`及其它辅助标签组成
+```html
+<!--method属性:规定如何发送表单数据, 常用值：get  | post -->
+<!--action属性: 表示向何处发送表单数据-->
+<form  method="get" action="result.html">
+   <p>  名字：<input name="name" type="text" >  </p>
+   <p>  密码：<input name="pass" type="password" >  </p>
+   <p>
+      <input type="submit" name="button" value="提交"/>
+      <input type="reset" name="reset" value="重填“/> 
+   </p>
+</form>
+```
+
+<img src="./Src/HTML_form1.png" width=50%>
+
+
+### `<input>` tag
+
+```html
+<input  type="text"  name="fname" value="text"/>
+```
+
+<img src="./Src/HTML_form_input.png" width = 60%>
+
++ 单多选
+  + type="radio" 为单选, 但要确保input标签的name一致
+  + type="checkbox"为多选
++ 按钮
+  + type="submit"为提交按钮
+  + type="button"为普通按钮
+  + type="reset"为重置按钮
+  + type="file"为上传文件按钮
++ 下拉列表: `<select>` & `<option>`
+```HTML
+<select name="列表名称" size="行数">
+<option value="选项的值" selected="selected">…</option >
+<option value="选项的值">…</option >
+</select>
+```
+
++ 文本相关
+  + `<textarea>`
+  ```html
+  <textarea  name="showText"  cols="x"  rows="y">文本内容 </textarea  >
+  ```
+  + 只读和禁用
+  ```html
+  <input name="name" type="text" value="张三"  readonly>
+  <input type="submit "  disabled   value="保存" >
+  ```
+  + autocomplete (on/off)属性, 
+  + placeholder属性
+  文本框底部文字, 用来提醒输入
+  + required属性
+  表明该输入是必须的, 不能为空
+
+
+
+:gem: [e.g. HTML form](./HTML_Sample/HTML_form.html)
 
 :gem: [Practice: sign up form](./HTML_Sample/signupForm.html)
+
+这个practice中额外的辅助标签:
++ `<fieldset>`
++ `<legned>`
++ `<label>`
+
+## 1.6 HTML结构元素
+
+一些常用的语义化(semantic)结构元素:
+
+tag | description
+-----|-----
+header  | 标题头部区域的内容（用于页面或页面中的一块区域）
+footer | 标记脚部区域的内容（用于整个页面或页面的一块区域）
+section | Web页面中的一块独立区域
+article | 独立的文章内容
+aside | 相关内容或应用（常用于侧边栏）
+nav | 导航类辅助内容
+
+
+
+<img src="./Src/HTML_structural_elements.png" width=60%>
 
 
 # 2. 注意特殊语法
