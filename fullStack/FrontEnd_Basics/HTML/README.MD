@@ -19,7 +19,10 @@ Contents
 
 [HTML精简笔记](https://www.wolai.com/topcoderdoc/qxVBEVDrfSzif4djdw4hGm)
 
+[JR camp](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
+
 ---
+
 HTML核心
 
 标签格式:
@@ -35,7 +38,7 @@ HTML核心
 # 1. HTML basic tags
 根据HTML基本标签, 先分割UI design, 再结合`文档流`写出一个HTML框架作为写web project的第一步
 + HTML tag element可以分为两类:
-<img src="./Src/block-inline.png" width=40%>
+<img src="./Src/block_inline.png" width=40%>
   + 块(block-level)级元素
   无论内容多少, 一个标签占一行
   <img src="./Src/block_elements.png" width=50%>
@@ -197,6 +200,7 @@ HTML5的重要元素, 用来作为用户输入
   + type="radio" 为单选, 但要确保input标签的name一致
   + type="checkbox"为多选
 + 按钮
+按钮类的input tag中value属性的值会反映在按钮上
   + type="submit"为提交按钮
   + type="button"为普通按钮
   + type="reset"为重置按钮
@@ -233,8 +237,10 @@ HTML5的重要元素, 用来作为用户输入
 
 这个practice中额外的辅助标签:
 + `<fieldset>`
+分块
 + `<legned>`
 + `<label>`
+点击label转移到input元素
 
 ## 1.6 HTML结构元素
 

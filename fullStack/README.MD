@@ -14,6 +14,7 @@ Table of Contents:
   - [Spelling checks extensions:](#spelling-checks-extensions)
 
 ---
+
 其他学习资源:
 [JR 笔记](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
 
