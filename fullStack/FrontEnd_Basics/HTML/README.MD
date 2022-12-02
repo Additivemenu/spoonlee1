@@ -2,7 +2,8 @@
 Contents
 
 - [1. HTML basic tags](#1-html-basic-tags)
-  - [1.1. 文本相关](#11-文本相关)
+  - [1.0 布局标签](#10-布局标签)
+  - [1.1 文本相关](#11-文本相关)
   - [1.2 :star: multi-media](#12-star-multi-media)
     - [1.2.1 Image](#121-image)
     - [1.2.2 Video](#122-video)
@@ -50,7 +51,16 @@ HTML核心
 + HTML标签本身也可以具有属性, 
 如class, id(用来uniquely identify某个标签, 可以是String), name....
 
-## 1.1. 文本相关
+
+## 1.0 布局标签
+没有语义, 只是盒子, 用来布局; 
+
+注意不要全都是`<div>`, 要多使用semantic tag, 来增加代码的可读性
++ `<div>`: 一个`<div>`标签占一行; 
++ `<span>`: 一行可以放多个`<span>`标签 
+
+
+## 1.1 文本相关
 
 + Heading
         从`<h1>` 到`<h6>` 由大到小有各种不同的 Heading，为页面创造视觉层级效果
@@ -76,20 +86,13 @@ HTML核心
 ![result](Src/htmlist1.png)
 
 + table
-HTML `<table>` 快过时了, 因为现在有了新的布局工具
+table head, table row
+
+  HTML `<table>` 快过时了, 因为现在有了新的布局工具
+
+  :gem: [table](./HTML_Sample/HTML_table.html)
 
 
-:gem: [table](./HTML_Sample/HTML_table.html)
-
-
-
-+ `<div>` 与 `<span>`: 没有语义, 只是盒子, 用来布局
-    + `<div>`: 一个`<div>`标签占一行
-    + `<span>`: 一行可以放多个`<span>`标签 
-
-+ 其他常用tag
-  
-  + `<section>`, `<header>`, `<footer>`...
 
 ## 1.2 :star: multi-media
 ### 1.2.1 Image
