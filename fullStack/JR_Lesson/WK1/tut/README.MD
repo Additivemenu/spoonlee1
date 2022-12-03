@@ -42,7 +42,7 @@ Interview question
   + flex, block, inline-block, float, 即布局别抄
 
 ## CSS practice 43min-1h40min
-
+:question:回头再看这部分
 
 模仿写网页:
 https://www.figma.com/file/4XMQESq03eAA0ADkgyMN7W/Dating-Website?node-id=145%3A0
@@ -56,15 +56,18 @@ https://www.figma.com/file/4XMQESq03eAA0ADkgyMN7W/Dating-Website?node-id=145%3A0
 
 [CSS_practice](./index2.html)
 
-:question: div中的字体如何居中?
+:question: div.showcase中<a>字体如何居中(不用absolute硬托到中间)? 考虑到<a>是inline-element
+如何选中nth-child?
 
 ### Practice结果展示和讲解 1h20min-1h40min
 
 
----
-
 # 继续讲 1h40min
+
 SEO 相关
+html的title需要优化, 来让做出的网页通过搜索引擎更容易被别人搜索到
++ Extra HTML tags
+Favicon, <title>, <meta name="description/">, <meta charset="utf-8">
 
 img compression
 + https://compressor.io/
@@ -74,7 +77,6 @@ img compression
 
 快捷键(editor shortcut) 1h59min-
 
----
 
 # 结语:
 assignment (P1,P2,P3)最重要, start ASAP
@@ -90,7 +92,6 @@ homework可以之后再做
 3. P1限定只用jquery(自学)+css+html
    + cant't use: React, vue (P2才用这些)
 
----
 
 # Q&A 2h12min-
 

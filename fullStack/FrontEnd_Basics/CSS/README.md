@@ -11,7 +11,7 @@
 
 Contents
 
-- [1. 选择器](#1-选择器)
+- [1. :full\_moon:选择器](#1-full_moon选择器)
   - [1.1 无括号选择器](#11-无括号选择器)
   - [1.2 有括号选择器](#12-有括号选择器)
   - [1.3 特殊语法 class::宏](#13-特殊语法-class宏)
@@ -49,26 +49,24 @@ Contents
 
 ---
 
-# 1. 选择器
+# 1. :full_moon:选择器
 [Learning Material: wc3 selector](https://www.w3schools.com/CSSref/css_selectors.php)
 
-用来修饰HTML元素的格式, 但首先你得选择特定的HTML标签来施加修饰, 这就需要选择器:
+用来修饰HTML元素的格式, 但首先你得选择特定的HTML标签来施加修饰, 这就需要选择器. 选择器作为对HTML element施加样式的基础, 如果写错了, 后面不容易debug
 
-Demo |
------- |
-[选择器demo](CSS_Sample/Selector/CSS_Selector.html)   |
-[wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)|
+
+:gem: [选择器demo](CSS_Sample/Selector/CSS_Selector.html)   
+
 
 
 ## 1.1 无括号选择器
 allow us to reach down to branch of tag tree
 
 + ‘>’ 表示下一层. 
-
 + 空格表示下属所有.
-
 + nth:child(int)
-
+  + 需要你首先限定是哪个group的元素 
+  + 如果不限定, 那就选择所有组别的nth element
 + 固有标签不需要加.前缀, className前需要.来作为前缀
 
 > 注意写选择器时一定要仔细, 一个符号的差异可能带来完全不同的选择结果, 导致debug时很困难
@@ -113,6 +111,11 @@ ol.website li a{
     ...
   }
   ```
+
+:gem: e.g.3  
+[wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)
+
+
 
 ## 1.2 有括号选择器
 select tag element based on class name filter
