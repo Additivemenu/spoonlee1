@@ -2,9 +2,12 @@
 - [CSS 40min-](#css-40min-)
   - [CSS practice 43min-1h40min](#css-practice-43min-1h40min)
     - [Practice结果展示和讲解 1h20min-1h40min](#practice结果展示和讲解-1h20min-1h40min)
-- [继续讲 1h40min](#继续讲-1h40min)
-- [结语:](#结语)
-- [Q\&A 2h12min-](#qa-2h12min-)
+- [SEO 相关 1h40min](#seo-相关-1h40min)
+  - [Accessibility](#accessibility)
+  - [Loading time request](#loading-time-request)
+- [Editor 1h51min-](#editor-1h51min-)
+- [作业相关 1h54min-2h04min](#作业相关-1h54min-2h04min)
+- [Q\&A 2h04min-](#qa-2h04min-)
 
 
 ---
@@ -62,30 +65,48 @@ https://www.figma.com/file/4XMQESq03eAA0ADkgyMN7W/Dating-Website?node-id=145%3A0
 ### Practice结果展示和讲解 1h20min-1h40min
 
 
-# 继续讲 1h40min
+# SEO 相关 1h40min
 
-SEO 相关
-html的title需要优化, 来让做出的网页通过搜索引擎更容易被别人搜索到
-+ Extra HTML tags
-Favicon, <title>, <meta name="description/">, <meta charset="utf-8">
+## Accessibility
+做出的web在搜索引擎界面显示出来的title和description需要优化, 来让做出的网页通过搜索引擎更容易被别人搜索到
+
+Extra HTML tags
++ Favicon 网站图标
++ `<title>` 搜索引擎页面的title
++ `<meta name="description/">` 搜索引擎界面title下面的小字
++  `<meta charset="utf-8">`
+
+## Loading time request
+
+对SEO的排名有关, 如果loading太慢, 别人搜索你的web可能都排到老后面了
 
 img compression
-+ https://compressor.io/
+图片资源太大(>256kb)需要压缩
++ [compressor.io](https://compressor.io/)
 + sprite sheet
+  将一系列相同大小的图片合成在一张图片里, 之后利用css可以选择这一张图片中不同的区域来extract小图片
   + https://draeton.github.io/stitches/
 
 
-快捷键(editor shortcut) 1h59min-
+# Editor 1h51min-
+
+快捷键(editor shortcut) 
 
 
-# 结语:
-assignment (P1,P2,P3)最重要, start ASAP
+# 作业相关 1h54min-2h04min
+assignment (P1,P2,P3)最重要, start ASAP, 因为你可以拿着P1,P2,P3去找工作的.
 
 homework可以之后再做
 
-关于P1说明: P1 1月交
+关于P1说明: P1 1月15号交, 12月15, 29, 1月12号mid check
+在week2把P1的Html的基本布局做出来
+最后P1做完放到github上
+
+P2: 1月中旬往后会带着做
+
 1. Copy design unless you are a designer
    + 去themeforest > personal website直接抄 design
+     + 先把别人的html整个抄下来自己再慢慢改, 一点点拼的话会很丑 
    + option1: 找匠人以外的人
    + option2: 同学之间互相做
 2. Will review next week
@@ -93,9 +114,11 @@ homework可以之后再做
    + cant't use: React, vue (P2才用这些)
 
 
-# Q&A 2h12min-
+# Q&A 2h04min-
 
-什么叫不能responsive
+什么叫不能responsive: 给了个e.g.
+
+
 
 img与icon的区别
 

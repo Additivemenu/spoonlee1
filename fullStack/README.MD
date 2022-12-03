@@ -46,7 +46,9 @@ Table of Contents:
 + 使用 ctrl + / 可以注释
 + 使用ctrl + f 可以打开vscode的搜索bar
 + 按住ctrl + z可以返回指令原来的样子，按ctrl + shift + z再切换回去
-+ ctrl + shift + p
++ `ctrl + shift + p`
++ `ctrl + p`, search file by name, 可以实现在文档间快速切换
++ `alt + shift + 鼠标左键点击两个地方`, 选中多行同时打字
 + 快速打字:
   + 输入!按tap, 出现一个html模板
   + 快速写: 键入“section.main-structure” + tap:

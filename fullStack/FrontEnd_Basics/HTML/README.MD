@@ -57,7 +57,7 @@ HTML核心
 
 注意不要全都是`<div>`, 要多使用semantic tag, 来增加代码的可读性
 + `<div>`: 一个`<div>`标签占一行; 
-+ `<span>`: 一行可以放多个`<span>`标签 
++ `<span>`: 一行可以放多个`<span>`标签, 一般用在p, h1..内部用来标识某个特殊内容 
 
 :gem: [div, section, article区别](https://www.jianshu.com/p/b818ceeedd13)
 
