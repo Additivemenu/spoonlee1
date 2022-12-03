@@ -59,6 +59,8 @@ HTML核心
 + `<div>`: 一个`<div>`标签占一行; 
 + `<span>`: 一行可以放多个`<span>`标签 
 
+:gem: [div, section, article区别](https://www.jianshu.com/p/b818ceeedd13)
+
 
 ## 1.1 文本相关
 

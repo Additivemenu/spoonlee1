@@ -69,6 +69,51 @@ allow us to reach down to branch of tag tree
 
 + nth:child(int)
 
++ 固有标签不需要加.前缀, className前需要.来作为前缀
+
+> 注意写选择器时一定要仔细, 一个符号的差异可能带来完全不同的选择结果, 导致debug时很困难
+
+:gem: e.g.1
+如下, 选中所有classname为website的ol标签下的所有li下的所有a元素
+```css
+ol.website li a{
+    text-decoration: none;
+}
+```
+
+:gem: e.g.2
+```html
+<header>
+  <section class="header_left">
+    ...
+  </section>
+
+  <section class="header_right">
+    ...
+  </section>
+</header>
+```
+要选中header下面那个classname为header_left的section元素: 
++ 最准确的写法
+  ```css
+  header>section.header_left{
+    ...
+  }
+  ```
++ 省略写法(确保header下只有一个classname为"header_left"的元素)
+  ```css
+  header .header_left{
+    ...
+  }
+  ```
++ 错误写法, 啥也选不中
+  ```css
+  /*选中className为"header_left"的header元素， 可是html中根本没有这个元素*/
+  header.header_left{ 
+    ...
+  }
+  ```
+
 ## 1.2 有括号选择器
 select tag element based on class name filter
 

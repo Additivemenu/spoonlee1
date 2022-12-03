@@ -1,7 +1,7 @@
 - [HTML practice 15min-40min](#html-practice-15min-40min)
 - [CSS 40min-](#css-40min-)
   - [CSS practice 43min-1h40min](#css-practice-43min-1h40min)
-- [看到这里!](#看到这里)
+    - [Practice结果展示和讲解 1h20min-1h40min](#practice结果展示和讲解-1h20min-1h40min)
 - [继续讲 1h40min](#继续讲-1h40min)
 - [结语:](#结语)
 - [Q\&A 2h12min-](#qa-2h12min-)
@@ -43,17 +43,22 @@ Interview question
 
 ## CSS practice 43min-1h40min
 
-# 看到这里! 
 
 模仿写网页:
 https://www.figma.com/file/4XMQESq03eAA0ADkgyMN7W/Dating-Website?node-id=145%3A0
 
-抠图: 按住ctrl, 选择图片框 -> 点左侧menu中的frame -> export img
-![](../Src_md/pick_img.png)
+:question: 为毛这个网页上的元素的position全是absolute?
 
++ 抠图: 按住ctrl, 选择图片框 -> 点左侧menu中的frame -> export img
++ 选中某个元素, 直接copy它的css即可
+
+![](../Src_md/pick_img.png)
 
 [CSS_practice](./index2.html)
 
+:question: div中的字体如何居中?
+
+### Practice结果展示和讲解 1h20min-1h40min
 
 
 ---

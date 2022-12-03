@@ -72,6 +72,11 @@ Table of Contents:
   div.block1*7, then hit tap
   ```
 
+<img src="./Src_img/vs_showcut_windows.png" >
+
+<img src="./Src_img/vs_shortcut_mac.png" >
+
+
 # 代码模板
 vscode: File ---> preferences ---> configure user snippets ---> define a JSON file
 
