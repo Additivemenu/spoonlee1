@@ -77,9 +77,9 @@ PPT p8
 code sandbox, 可以在Inspector里试代码, 好了再放进代码里
 
 
-## 背景
 
-22-25
+
+
 
 # :moon: block element 1h44min-
 
@@ -99,15 +99,61 @@ PPT 22 1h46min-
 
 
 21 1h58min-2h03min
-+ 方法一: line-height+text-align
-+ 方法二: Display: flex
++ 方法一: line-height(和height匹配) + text-align
++ 方法二: Display: flex; justify-content:center; align-items: center;
 PPT 23
 
+休息 2h03min-2h10min
 
-休息 2h03min-
+唠嗑 2h10min-2h16min
 
-## box model
+## 背景
 
+
+22 2h16min-2h23min
+
+23 2h23min-2h39min
++ background-position
+  + x,y默认值是center
+
+
+24 2h39min-
+
+25 2h42min-2h51min
+
+## :moon: CSS三大特性 2h51min-3h
+
+:question: 讲的啥????
+
+PPT 24
+
+26 层叠性
+
+27 继承性
+
+28 优先性
+
+29 权重注意点
+
+30 权重的叠加
+
+## :moon: box model 3h-
+31 定义padding, border, margin会改变box的大小 3h-
+
+32 border-box
++ h1不指定宽度, 继承其parent的宽度, 定义的padding加不上去
++ h1指定宽度, 定义的padding才能加上去
+
+33 3h13min-
+
+
+34
 
 
 ## flex
+35 3h17min-3h25min
+
+[flexbox playground](https://codepen.io/ndangelo/pen/BaamRam)
+
+
+作业在哪里?

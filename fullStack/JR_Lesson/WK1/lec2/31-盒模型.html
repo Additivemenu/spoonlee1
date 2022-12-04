@@ -17,11 +17,30 @@
       给box4加上 上5px,下10px， 左20px， 右30px 
       思考：加border和padding后，如何不影响盒子大小
       */
+      .box1{
+        padding: 5px;
+      }
+
+      .box2{
+        padding: 5px 10px;    /*上下 左右*/
+        /*也可以分开写*/
+      }
+
+      .box3{
+        padding: 5px 10px 20px;    /*上 左右 下*/
+      }
+
+      .box4{
+        padding: 5px 30px 10px 20px;  /*顺时针, 从'上'开始*/
+      }
+
     </style>
   </head>
+
   <body>
     <div class="box1">hello world</div>
     <div class="box2">hello world</div>
     <div class="box3">hello world</div>
+    <div class="box4">hello world</div>
   </body>
 </html>
