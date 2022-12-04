@@ -7,9 +7,22 @@
     <title>CSS文本外观之行间距</title>
     <style>
       /* 让h1盒子里面的文字水平居中对齐,加下划线，文字颜色rgb(255, 0, 255) */
+      h1{
+        text-align: center;
+        text-decoration: underline;
+        color:rgb(255, 0, 255);
+      }
       /* 取消a默认的下划线 */
+      a{
+        text-decoration: none;
+      }
       /* 给p标签加line height 26px， 请问上间距和下间距分别是多少？ */
+      /*inline-height = 上间距+font-size+下间距*/
+      p{
+        line-height: 26px;
+      }
     </style>
+    
   </head>
   <body>
     <h1>Get the best deals!</h1>

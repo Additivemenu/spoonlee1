@@ -7,6 +7,21 @@
     <title>CSS字体属性之复合属性</title>
     <style>
       /* 想要div文字变倾斜 加粗 字号设置为16像素 并且 字体Arial */
+      div{
+        font-style: italic;
+        font-weight: bold;
+
+        font-size: 16px;
+        font-family: Arial;
+      }
+
+      /*也可以合到一起写, 和上面效果一样*/
+      /*带单位的一定要写上单位 e.g.px*/
+      div{
+        font: italic bold 16px Arial
+      }
+
+
     </style>
   </head>
   <body>
