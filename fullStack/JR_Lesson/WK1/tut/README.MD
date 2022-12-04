@@ -60,7 +60,8 @@ https://www.figma.com/file/4XMQESq03eAA0ADkgyMN7W/Dating-Website?node-id=145%3A0
 [CSS_practice](./index2.html)
 
 :question: div.showcase中<a>字体如何居中(不用absolute硬托到中间)? 考虑到<a>是inline-element
-如何选中nth-child?
+:question:如何选中nth-child?
+:question: 给的网页里元素的定位的参照物都是body, html吗?
 
 ### Practice结果展示和讲解 1h20min-1h40min
 
