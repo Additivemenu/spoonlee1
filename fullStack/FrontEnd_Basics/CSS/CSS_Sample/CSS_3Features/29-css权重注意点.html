@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>css权重注意点</title>
+    <style>
+      /* 父亲的权重是 100  */
+      #father {
+        color: red !important;
+      }
+      /* p继承的权重为 0 */
+      /* 自己写的颜色权重更高 */
+      p {
+        color: pink;
+      }
+      body {
+        color: red;
+      }
+      /* a链接浏览器默认指定了一个自己的默认样式 蓝色的 有下划线  a {color: blue;}*/
+      /* 给a标签添加绿色 */
+    </style>
+  </head>
+  <body>
+    <div id="father">
+      <p>child</p>
+    </div>
+    <a href="#">我是单独的样式</a>
+  </body>
+</html>

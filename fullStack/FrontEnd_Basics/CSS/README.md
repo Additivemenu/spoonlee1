@@ -18,11 +18,22 @@ Contents
     - [1.2.2 结构伪类选择器](#122-结构伪类选择器)
   - [1.3 优先级](#13-优先级)
   - [1.4 属性选择器](#14-属性选择器)
-  - [1.5 伪类(pseudo class)](#15-伪类pseudo-class)
+  - [1.5 :star: 伪类(pseudo class)](#15-star-伪类pseudo-class)
+    - [1.5.1 `<a>`的伪类](#151-a的伪类)
+  - [1.6 CSS三大特性](#16-css三大特性)
+    - [1.6.1 层叠性](#161-层叠性)
+    - [1.6.2 :star: 继承性](#162-star-继承性)
+    - [1.6.3 优先级](#163-优先级)
+    - [1.6.4 权重](#164-权重)
 - [2. Text](#2-text)
   - [2.1 常用的Text Properties](#21-常用的text-properties)
   - [2.2 施加CSS的三种方式](#22-施加css的三种方式)
-- [3. :moon: Block element](#3-moon-block-element)
+  - [2.3 CSS属性单位](#23-css属性单位)
+    - [2.3.1 长度属性](#231-长度属性)
+    - [2.3.2 颜色属性](#232-颜色属性)
+- [3. Background](#3-background)
+- [4.0 :full\_moon: HTML tag element mode](#40-full_moon-html-tag-element-mode)
+- [4. :moon: Block element](#4-moon-block-element)
   - [2.1 Basics of Block](#21-basics-of-block)
     - [2.1.1 block 基本属性](#211-block-基本属性)
     - [2.1.2 设置html, body margin \& padding](#212-设置html-body-margin--padding)
@@ -161,17 +172,18 @@ ol.website li a{
 ## 1.4 属性选择器
 select tag element based on class name filter
 
-+ 直接选择
-   `=`
-+ 相关性选择
-  `*=`
-+ 头尾选择
-  `^=`: 开头
-  `$=`: 结尾
-+ 多个选择器合并选择
+selector|description
+-----|-----
+E[attr] | 选择匹配具有属性attr的E元素
+直接选择: E[attr=val] | 选择匹配具有属性attr的E元素,并且属性值为val（其中val区分大小写）
+开头选择: E[attr^=val] | 选择匹配元素E，且E元素定义了属性attr，其属性值是以val开头的任意字符串
+结尾选择: E[attr$=val] | 选择匹配元素E，且E元素定义了属性attr，其属性值是以val结尾的任意字符串
+相关性选择: E[attr*=val] | 选择匹配元素E，且E元素定义了属性attr，其属性值包含了“val”，换句话说，字符串val与属性值中的任意位置相匹配
+
++ 多个属性选择器可以合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 
-## 1.5 伪类(pseudo class)
+## 1.5 :star: 伪类(pseudo class)
 注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
 
 可使用 class::宏来渲染段落的某部分
@@ -184,6 +196,41 @@ select tag element based on class name filter
 .pseudo::after{}: 在元素后跟随
 
 
+### 1.5.1 `<a>`的伪类
+
+代表`<a>`的某种状态, 可以理解为`<a>`的状态选择器(state selector)
+
+伪类名称|含义|实例
+-----|-----|-----
+a:link|未单击hyperlink时的状态| a:link{color:#9ef5f9;}
+a:visited|单击hyperlink后的状态| a:visited {color:#333;}
+a:hover|鼠标悬浮在Hyperlink时的状态| a:hover{color:#ff7300;}
+a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
+
+
+## 1.6 CSS三大特性
+### 1.6.1 层叠性
++ 样式冲突，后定义的覆盖之前定义的
++ 样式不冲突，不会重叠
+
+:gem: [](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
+
+### 1.6.2 :star: 继承性
++ 子标签会继承父标签的text相关样式，比如Text-, font-, line-和color属性会继承。
++ 高度和盒模型内外边距等**则不会**继承
+
+:gem: [CSS层叠性](./CSS_Sample/CSS_3Features/27-css%E7%BB%A7%E6%89%BF%E6%80%A7.html)
+
+### 1.6.3 优先级
+
+
+:gem: [CSS优先级](./CSS_Sample/CSS_3Features/28-css%E4%BC%98%E5%85%88%E7%BA%A7.html)
+### 1.6.4 权重
+
+:gem: [权重注意点](./CSS_Sample/CSS_3Features/29-css%E6%9D%83%E9%87%8D%E6%B3%A8%E6%84%8F%E7%82%B9.html)
+
+:gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
+
 # 2. Text 
 ## 2.1 常用的Text Properties
 + color          	
@@ -191,6 +238,12 @@ select tag element based on class name filter
 + text-indent: 缩进       
 + text-decoration 
 + line-height: top + font-size + bottom
+  + 让box内的text的line-height和box height相等, 可以实现box中的text在box内竖直居中
+  <img src="./Src/line-height.png" width=50%> 
++ 修饰text中的特定字段:
+  ```HTML
+  <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
+  ```
 
 ## 2.2 施加CSS的三种方式
 + 行内样式(只控制一个标签)
@@ -207,7 +260,39 @@ select tag element based on class name filter
 + 外部样式表(可以控制多个页面, 最常用)
   在HTML文件的`<head>`下挂载`<link>`
 
-# 3. :moon: Block element
+## 2.3 CSS属性单位
+### 2.3.1 长度属性
+
+### 2.3.2 颜色属性
+用十六进制数方式表示颜色值
++ 用rgb()函数方式表示颜色值
+  + 每个参数大小0~255 
++ 用rgba()函数方式表示颜色值
+  + 比rgb()多了个透明度选项(0~1)
+
+
+
+# 3. Background
+往`<div>`中加入background
+
+:gem: [background no repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
+:gem: [background position](./CSS_Sample/Background/23-backgroundPosition.html)
+:gem: [background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
+:gem: [background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
+ 
+
+# 4.0 :full_moon: HTML tag element mode
+元素模式|元素排列|设置样式|默认宽度|包含
+-----|-----|-----|-----|-----
+块级元素 block |  一行只能放1个block元素 | 可以设置宽高 | 容器的100%| 可以包含任何标签
+行内元素inline |  一行内可以放多个inline元素 | 不可以直接设置宽高 | 本身内容的宽度 | 容纳文本或其他行内元素
+行内块元素inline-block |  一行内可以放多个inline-block元素 | 可以设置宽高 | 本身内容的宽度 | 
+
++ 元素的模式是可以相互转化的!
+
+:gem: [tag element mode](./CSS_Sample/Element_mode/20-elementModeConversion.html)
+
+# 4. :moon: Block element
 即div tag
 ```html
 <div class="block1"></div>
