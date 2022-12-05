@@ -12,10 +12,17 @@
 Contents
 
 - [1. :full\_moon:选择器](#1-full_moon选择器)
-  - [1.1 无括号选择器](#11-无括号选择器)
-  - [1.2 有括号选择器](#12-有括号选择器)
-  - [1.3 特殊语法 class::宏](#13-特殊语法-class宏)
-- [2. :moon: Block element](#2-moon-block-element)
+  - [1.1. 基本选择器](#11-基本选择器)
+  - [1.2 层次选择器](#12-层次选择器)
+    - [1.2.1 基本层级选择器](#121-基本层级选择器)
+    - [1.2.2 结构伪类选择器](#122-结构伪类选择器)
+  - [1.3 优先级](#13-优先级)
+  - [1.4 属性选择器](#14-属性选择器)
+  - [1.5 伪类(pseudo class)](#15-伪类pseudo-class)
+- [2. Text](#2-text)
+  - [2.1 常用的Text Properties](#21-常用的text-properties)
+  - [2.2 施加CSS的三种方式](#22-施加css的三种方式)
+- [3. :moon: Block element](#3-moon-block-element)
   - [2.1 Basics of Block](#21-basics-of-block)
     - [2.1.1 block 基本属性](#211-block-基本属性)
     - [2.1.2 设置html, body margin \& padding](#212-设置html-body-margin--padding)
@@ -58,16 +65,46 @@ Contents
 :gem: [选择器demo](CSS_Sample/Selector/CSS_Selector.html)   
 
 
+selector| 代码模板| e.g.| description|
+-----|-----|-----|----|
+通用选择器| * | *{}|选择所有元素
+属性选择器|[<条件>]| [href]{}、[attr=”val”]{}|根据属性选择元素
+并级选择器|<选择器>，<选择器>|em,strong{} | 同时匹配多个选择器，取多个选择器的并集
+后代选择器|<选择器>  <选择器>|.asideNav  li {} |先匹配第二个选择器的元素，并且属于第一个选择器内
+子代选择器|<选择器>  ><选择器>|ul>li{} | 匹配匹配第二个选择器，且为第一个选择器的元素的后代
+兄弟选择器|<选择器>+<选择器>|p+a{} |匹配紧跟第一个选择器并匹配第二个选择器的元素，如紧跟p元素后的a元素
+伪选择器|: :<伪元素> OR: <伪类>|p::first-line{}、a:hover{} |伪选择器不是直接对应HTML中定义的元素，而是向选择器增加特殊的效果
 
-## 1.1 无括号选择器
+
+
+
+
+## 1.1. 基本选择器
+
++ 标签选择器 
+固有标签不需要加.前缀, 
++ 类选择器 
+className前需要.来作为前缀
+  + 在同一页面可以多次使用(最常用) 
++ ID选择器
+  + 同一页面只能使用1次  
+
+## 1.2 层次选择器
 allow us to reach down to branch of tag tree
 
-+ ‘>’ 表示下一层. 
-+ 空格表示下属所有.
+### 1.2.1 基本层级选择器
+
++ `A>B{...}`, 用`>`连接两个元素, 表示选中A的子代B, A与B之间只有`>`没有其他任何符号. 
++ `A B{...}`, 用空格连接两个元素, 表示选中A下属所有(后代)B.
+
+### 1.2.2 结构伪类选择器
+
+<img src="./Src/structural_pseudo_class_selector.png" width=80%>
+
 + nth:child(int)
   + 需要你首先限定是哪个group的元素 
   + 如果不限定, 那就选择所有组别的nth element
-+ 固有标签不需要加.前缀, className前需要.来作为前缀
+
 
 > 注意写选择器时一定要仔细, 一个符号的差异可能带来完全不同的选择结果, 导致debug时很困难
 
@@ -116,8 +153,12 @@ ol.website li a{
 [wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)
 
 
+## 1.3 优先级
+优先级: ID selector>类selector>标签selector>通配符选择器; 
 
-## 1.2 有括号选择器
+  + 优先级高的会覆盖优先级低的
+
+## 1.4 属性选择器
 select tag element based on class name filter
 
 + 直接选择
@@ -130,7 +171,7 @@ select tag element based on class name filter
 + 多个选择器合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 
-## 1.3 特殊语法 class::宏 
+## 1.5 伪类(pseudo class)
 注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
 
 可使用 class::宏来渲染段落的某部分
@@ -143,7 +184,30 @@ select tag element based on class name filter
 .pseudo::after{}: 在元素后跟随
 
 
-# 2. :moon: Block element
+# 2. Text 
+## 2.1 常用的Text Properties
++ color          	
++ Text-align         
++ text-indent: 缩进       
++ text-decoration 
++ line-height: top + font-size + bottom
+
+## 2.2 施加CSS的三种方式
++ 行内样式(只控制一个标签)
+  ```css
+  <p style="font-size:14px; color:green;">直接在HTML标签中设置的样式</p>
+  ```
++ 内部样式表(只控制一个页面)
+  写在HTML文件的`<head>`下的`<style>`里
+  ```css
+  <style>
+    h1{color: green; }
+  </style>
+  ```
++ 外部样式表(可以控制多个页面, 最常用)
+  在HTML文件的`<head>`下挂载`<link>`
+
+# 3. :moon: Block element
 即div tag
 ```html
 <div class="block1"></div>
