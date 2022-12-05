@@ -1,0 +1,34 @@
+.sidebar {
+    position: relative;
+    margin:200px auto;
+    width: 400px;
+    height: 400px;
+    background-color: #f0f0f0;
+}
+
+.sidebar::before{
+    position: absolute;
+    /* content:'';
+    width: 2px;
+    height: 400px;
+    background-color: red; */
+    content:'';
+    width: 50px;
+    height: 50px;
+    background-color: #f0f0f0;
+    transform: translateX(-50%) rotate(45deg);
+    top: 100px;
+    z-index: -1;
+}
+
+.sidebar .title {
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #555;
+}
+
+.sidebar .content {
+    padding: 20px;
+}

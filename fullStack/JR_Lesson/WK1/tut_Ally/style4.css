@@ -1,0 +1,28 @@
+.nav {
+  border:3px solid blue;
+  padding: 0px 18px;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+h2 {
+  flex: 1;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap:12px;
+}
+
+@media screen and (max-width: 800px) {
+  .nav {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .nav-links {
+    flex-direction: column;
+  }
+}

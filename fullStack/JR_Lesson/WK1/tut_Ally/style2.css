@@ -1,0 +1,15 @@
+
+.box{
+  margin:20px auto;
+  width: 400px;
+  height:600px;
+  border:1px solid;
+  
+}
+
+p {
+  background: -webkit-linear-gradient(#085c73,#73d9f5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

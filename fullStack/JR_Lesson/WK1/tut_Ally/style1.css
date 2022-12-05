@@ -1,0 +1,24 @@
+.container {
+  margin: 0 auto;
+  width: 600px;
+  height: 100px;
+  background-color: bisque;
+  display: flex;
+  border:dashed;
+  }
+.box {
+  width:100px;
+  height: 100px;
+
+}
+ .left {
+  flex:1;
+}
+
+.box2 {
+  width:200px;
+  height:200px;
+  padding:10px;
+  border: 1px solid #000;
+  display: inline;
+}
