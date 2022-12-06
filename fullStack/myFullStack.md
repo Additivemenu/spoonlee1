@@ -49,7 +49,8 @@ Table of Contents:
 + 使用ctrl + f 可以打开vscode的搜索bar
 + 按住ctrl + z可以返回指令原来的样子，按ctrl + shift + z再切换回去
 + `ctrl + shift + p`
-+ `ctrl + p`, search file by name, 可以实现在文档间快速切换
++ `ctrl + p`, search file by name, 可以实现在文档间快速切换; 
+  +  把readme.md改成myCamel.md的形式, 方便直接用`ctrl+p`来跳转md文档
 + `alt + shift + 鼠标左键点击两个地方`, 选中多行同时打字
 + 快速打字:
   + 输入!按tap, 出现一个html模板
@@ -95,6 +96,8 @@ With tabstops, you can make the editor cursor move inside a snippet. Use $1, $2 
 
 
 # Extensions on VSCode
+打开vscode json setting: 左下角的小齿轮图标 -->settings --> 右上角的open settings(json), 可以configure设置
+
 ## Theme extensions:
 + Dracula official (老师用的这个)
 + Atom one dark theme
@@ -107,3 +110,5 @@ With tabstops, you can make the editor cursor move inside a snippet. Use $1, $2 
 + Icon extensions:
 + Fluent icons
 + Icons
+
+

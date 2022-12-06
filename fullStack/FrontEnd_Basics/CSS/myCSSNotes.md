@@ -28,9 +28,8 @@ Content
   - [1.2 层次选择器](#12-层次选择器)
     - [1.2.1 基本层级选择器](#121-基本层级选择器)
     - [1.2.2 结构伪类选择器](#122-结构伪类选择器)
-  - [1.3 优先级](#13-优先级)
   - [1.4 属性选择器](#14-属性选择器)
-  - [1.5 :star: 伪类(pseudo class)](#15-star-伪类pseudo-class)
+  - [1.5 :full\_moon: 伪类(pseudo class)](#15-full_moon-伪类pseudo-class)
     - [1.5.1 元素的伪类](#151-元素的伪类)
 - [2. CSS基本语法与特性](#2-css基本语法与特性)
   - [2.1 施加CSS的三种方式](#21-施加css的三种方式)
@@ -39,7 +38,7 @@ Content
     - [2.2 继承性](#22-继承性)
     - [2.3 优先级](#23-优先级)
       - [2.3.1 权重](#231-权重)
-  - [2.3 :full\_moon: HTML tag element mode(元素模式)](#23-full_moon-html-tag-element-mode元素模式)
+  - [2.3 :full\_moon: 元素模式的转化](#23-full_moon-元素模式的转化)
   - [2.4 Emmet语法](#24-emmet语法)
 - [3. :moon: Block element](#3-moon-block-element)
   - [2.0 box model (盒模型)](#20-box-model-盒模型)
@@ -70,7 +69,7 @@ Content
     - [2.4.6 order](#246-order)
 - [4. 其他渲染属性](#4-其他渲染属性)
   - [4.1 :full\_moon: Text](#41-full_moon-text)
-    - [4.1.1 常用的Text Properties](#411-常用的text-properties)
+    - [4.1.1 常用的Text相关Properties](#411-常用的text相关properties)
     - [4.1.2 text属性单位](#412-text属性单位)
       - [4.1.2.1 长度属性](#4121-长度属性)
       - [4.1.2.2 颜色属性](#4122-颜色属性)
@@ -123,6 +122,22 @@ className前需要.来作为前缀
   ```css
   #id1{...}     /*选中id="id1"的那一个元素*/
   ```
+
+优先级: ID selector>类selector>标签selector>通配符选择器; 
+ + 优先级高的会覆盖优先级低的
+
+
+:gem: [multi-className selector](./CSS_Sample/Selector/06-multiClassNameSelector.html)
+:gem: [select all](./CSS_Sample/Selector/08-selectAll.html)
+
+---
+
+Q&A: ID与name属性的区别
++ ID具有唯一性
++ name属性
+  + 可以结合JS中的getElementByName()来查找元素
+  + 当HTML的`<input>`的type="radio"时, 多个相同name的`<input>`才能被算为一组实现单选功能
+    + class属性也可实现将不同种类的的标签归为一个类别. 不同标签可以使用相同的类名, 主要用于css选择
 
 ## 1.2 层次选择器
 allow us to reach down to branch of tag tree
@@ -190,11 +205,6 @@ ol.website li a{
 [wc3 Selector: nth-child demo](https://www.w3schools.com/CSSref/tryit.php?filename=trycss3_nth-child)
 
 
-## 1.3 优先级
-优先级: ID selector>类selector>标签selector>通配符选择器; 
-
-  + 优先级高的会覆盖优先级低的
-
 ## 1.4 属性选择器
 select tag element based on class name filter
 
@@ -209,7 +219,7 @@ E[attr] | 选择匹配具有属性attr的E元素
 + 多个属性选择器可以合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 
-## 1.5 :star: 伪类(pseudo class)
+## 1.5 :full_moon: 伪类(pseudo class)
 注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
 
 可使用 class::宏来渲染段落的某部分
@@ -235,9 +245,16 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 + 类似的, .className:hover{...}代表用标签选择器选中的元素的悬浮伪类
 
+:gem: [`<a>`的伪类选择器1](./CSS_Sample/Selector/17-pseudoClassSelector1.html)
+:gem: [`<a>`的伪类选择器2](./CSS_Sample/Selector/17-pseudoClassSelector2.html)
+:gem: [`<input>` 的 foucs selector](./CSS_Sample/Selector/18-focusSelector.html)
+
+利用元素的伪类可以实现很多花哨的特效, further reading: 
+[mozilla Pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
+
+
 
 # 2. CSS基本语法与特性
-
 
 ## 2.1 施加CSS的三种方式
 + 行内样式(只控制一个标签)
@@ -278,22 +295,59 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
 
-## 2.3 :full_moon: HTML tag element mode(元素模式)
+## 2.3 :full_moon: 元素模式的转化
+
+[myHTMLNotes: #1. HTML basic tags](../HTML/myHTMLNotes.md)
+
 元素模式|元素排列|设置样式|默认宽度|包含
 -----|-----|-----|-----|-----
 块级元素 block |  一行只能放1个block元素 | 可以设置宽高 | 容器的100%| 可以包含任何标签
-行内元素inline |  一行内可以放多个inline元素 | 不可以直接设置宽高 | 本身内容的宽度 | 容纳文本或其他行内元素
+行内元素inline |  一行内可以放多个inline元素 | 不可以直接设置宽高(强行设置会被忽略掉) | 本身内容的宽度 | 容纳文本或其他行内元素
 行内块元素inline-block |  一行内可以放多个inline-block元素 | 可以设置宽高 | 本身内容的宽度 | 
 
 + 元素的模式是可以相互转化的!
++ `<img>`, `<input>`,`<td>`都属于inline-block element :question:和HTML notes冲突了
++ `<a>`虽然作为inline element,  但a里不能再放a了, 但a里可以放block element
 
-:gem: [tag element mode](./CSS_Sample/Element_mode/20-elementModeConversion.html)
+
+:gem: [inline-block element](./CSS_Sample/Element_mode/19-inline-block_element.html)
+:gem::star: [tag element mode conversion](./CSS_Sample/Element_mode/20-elementModeConversion.html)
+
+
 
 
 ## 2.4 Emmet语法
+
 快速生成HTML结构的语法
+```css
+div*5
 
+div>span
 
+div+p   
+
+div.class1
+
+div#id1
+
+ul>li#id2
+
+div.demo$*5 /*class name中的数递增*/
+
+div{hello}  /*tag内容*/
+
+div{$}*5    /*内容中的数字递增*/
+```
+
+CSS简写: 只打首字母
+```css
+text-align: center; 
+/* type in tac */
+
+text-indent:2em;
+/* type in ti2 */
+
+```
 
 # 3. :moon: Block element
 即div tag
@@ -960,7 +1014,7 @@ body,html{
 # 4. 其他渲染属性
 
 ## 4.1 :full_moon: Text 
-### 4.1.1 常用的Text Properties
+### 4.1.1 常用的Text相关Properties
 + color          	
 + Text-align         
 + text-indent: 缩进       
@@ -977,6 +1031,9 @@ body,html{
   <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
   ```
 
+:gem: [font style](./CSS_Sample/Text/09-font.html)
+
+:gem: [text](./CSS_Sample/Text/10-text.html)
 
 ### 4.1.2 text属性单位
 #### 4.1.2.1 长度属性

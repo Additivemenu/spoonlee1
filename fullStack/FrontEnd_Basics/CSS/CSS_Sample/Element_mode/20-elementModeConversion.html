@@ -7,6 +7,7 @@
     <title>元素显示模式转换</title>
     <style>
       /* 给 a 设宽150px,高50px，独占一行 */
+      /* a本身是inline element, 要独占一行, 需要转化为block element*/
       a {
         background-color: pink;
 
@@ -14,16 +15,18 @@
         width: 150px;
         height: 50px;
       }
+
       /* 把 div 块级元素转换为行内元素 */
       div {
         width: 300px;
         height: 100px;
         background-color: purple;
 
-        display: inline;
+        display: inline;    /*width & height 变为内容的宽高, 设置的宽高无效*/
       }
 
       /* 给span 设宽150px,高50px，一行多个 */
+      /*能一行多个, 又能设置宽高, inline-block element*/
       span {
         background-color: skyblue;
 
@@ -38,8 +41,10 @@
   <body>
     <a href="#">hello world</a>
     <a href="#">hello world</a>
+
     <div>hello world</div>
     <div>hello world</div>
+
     <span>hello world</span>
     <span>hello world</span>
   </body>

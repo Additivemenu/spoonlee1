@@ -4,7 +4,6 @@ JR-wk1-lec2
 唠嗑
 + 解决一个问题, 可以多选几个方法
 
-
 ---
 
 # Selector 14min-
@@ -17,7 +16,6 @@ JR-wk1-lec2
   + 使用很少
 
 优先级: ID selector>类selector>标签selector>通配符选择器; 
-
   + 优先级高的会覆盖优先级低的
 
 :question: 上节课的name, id的区别 17min-
@@ -62,7 +60,6 @@ text-indent:2em;
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
 
-
 1h34min-
 json setting, autoformat, autosave
 
@@ -78,13 +75,12 @@ PPT p8
 code sandbox, 可以在Inspector里试代码, 好了再放进代码里
 
 
-
-
-
-
 # :moon: block element 1h44min-
 
+
 19 1h44min-1h53min
+
+
 
 20 1h53min-1h58min
 
@@ -98,6 +94,8 @@ PPT 22 1h46min-
 + inline-block
   + `<img>`, `input`, `td`
 
+
+# 看到这里!
 
 21 1h58min-2h03min
 + 方法一: line-height(和height匹配) + text-align
