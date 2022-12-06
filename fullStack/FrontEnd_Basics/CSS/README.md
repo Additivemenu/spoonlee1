@@ -19,21 +19,23 @@ Contents
   - [1.3 优先级](#13-优先级)
   - [1.4 属性选择器](#14-属性选择器)
   - [1.5 :star: 伪类(pseudo class)](#15-star-伪类pseudo-class)
-    - [1.5.1 `<a>`的伪类](#151-a的伪类)
-  - [1.6 :moon: CSS三大特性](#16-moon-css三大特性)
-    - [1.6.1 层叠性](#161-层叠性)
-    - [1.6.2 :star: 继承性](#162-star-继承性)
-    - [1.6.3 优先级](#163-优先级)
-    - [1.6.4 权重](#164-权重)
+    - [1.5.1 元素的伪类](#151-元素的伪类)
+- [2. :moon: CSS基本语法与特性](#2-moon-css基本语法与特性)
+  - [2.1 施加CSS的三种方式](#21-施加css的三种方式)
+  - [2.2 CSS三大特性](#22-css三大特性)
+    - [2.1 层叠性](#21-层叠性)
+    - [2.2 :star: 继承性](#22-star-继承性)
+    - [2.3 优先级](#23-优先级)
+      - [2.3.1 权重](#231-权重)
 - [2. Text](#2-text)
   - [2.1 常用的Text Properties](#21-常用的text-properties)
-  - [2.2 施加CSS的三种方式](#22-施加css的三种方式)
   - [2.3 CSS属性单位](#23-css属性单位)
     - [2.3.1 长度属性](#231-长度属性)
     - [2.3.2 颜色属性](#232-颜色属性)
 - [3. Background](#3-background)
 - [4.0 :full\_moon: HTML tag element mode](#40-full_moon-html-tag-element-mode)
 - [4. :moon: Block element](#4-moon-block-element)
+  - [2.0 box model (盒模型)](#20-box-model-盒模型)
   - [2.1 Basics of Block](#21-basics-of-block)
     - [2.1.1 block 基本属性](#211-block-基本属性)
     - [2.1.2 设置html, body margin \& padding](#212-设置html-body-margin--padding)
@@ -65,7 +67,22 @@ Contents
 ---
 学习资源
 
+[mozilla CSS](https://developer.mozilla.org/en-US/docs/Web)
+
 ---
+
+position
+
+dimension
+
+layout
+
+other properties
+- text
+- background
+- color
+
+
 
 # 1. :full_moon:选择器
 [Learning Material: wc3 selector](https://www.w3schools.com/CSSref/css_selectors.php)
@@ -196,9 +213,9 @@ E[attr] | 选择匹配具有属性attr的E元素
 .pseudo::after{}: 在元素后跟随
 
 
-### 1.5.1 `<a>`的伪类
+### 1.5.1 元素的伪类
 
-代表`<a>`的某种状态, 可以理解为`<a>`的状态选择器(state selector)
+以`<a>`为例: `<a>`的伪类代表`<a>`的某种状态, 可以理解为`<a>`的状态选择器(state selector)
 
 伪类名称|含义|实例
 -----|-----|-----
@@ -207,29 +224,52 @@ a:visited|单击hyperlink后的状态| a:visited {color:#333;}
 a:hover|鼠标悬浮在Hyperlink时的状态| a:hover{color:#ff7300;}
 a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
++ 类似的, .className:hover{...}代表用标签选择器选中的元素的悬浮伪类
 
-## 1.6 :moon: CSS三大特性
-### 1.6.1 层叠性
+
+# 2. :moon: CSS基本语法与特性
+
+
+## 2.1 施加CSS的三种方式
++ 行内样式(只控制一个标签)
+  ```css
+  <p style="font-size:14px; color:green;">直接在HTML标签中设置的样式</p>
+  ```
++ 内部样式表(只控制一个页面)
+  写在HTML文件的`<head>`下的`<style>`里
+  ```css
+  <style>
+    h1{color: green; }
+  </style>
+  ```
++ 外部样式表(可以控制多个页面, 最常用)
+  在HTML文件的`<head>`下挂载`<link>`
+
+## 2.2 CSS三大特性
+### 2.1 层叠性
 + 样式冲突，后定义的覆盖之前定义的
 + 样式不冲突，不会重叠
 
 :gem: [](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
 
-### 1.6.2 :star: 继承性
+### 2.2 :star: 继承性
 + 子标签会继承父标签的text相关样式，比如Text-, font-, line-和color属性会继承。
 + 高度和盒模型内外边距等**则不会**继承
 
 :gem: [CSS层叠性](./CSS_Sample/CSS_3Features/27-css%E7%BB%A7%E6%89%BF%E6%80%A7.html)
 
-### 1.6.3 优先级
+### 2.3 优先级
 
+:question: 没明白再看视频
 
 :gem: [CSS优先级](./CSS_Sample/CSS_3Features/28-css%E4%BC%98%E5%85%88%E7%BA%A7.html)
-### 1.6.4 权重
+#### 2.3.1 权重
 
 :gem: [权重注意点](./CSS_Sample/CSS_3Features/29-css%E6%9D%83%E9%87%8D%E6%B3%A8%E6%84%8F%E7%82%B9.html)
 
 :gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
+
+
 
 # 2. Text 
 ## 2.1 常用的Text Properties
@@ -245,20 +285,6 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
   <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
   ```
 
-## 2.2 施加CSS的三种方式
-+ 行内样式(只控制一个标签)
-  ```css
-  <p style="font-size:14px; color:green;">直接在HTML标签中设置的样式</p>
-  ```
-+ 内部样式表(只控制一个页面)
-  写在HTML文件的`<head>`下的`<style>`里
-  ```css
-  <style>
-    h1{color: green; }
-  </style>
-  ```
-+ 外部样式表(可以控制多个页面, 最常用)
-  在HTML文件的`<head>`下挂载`<link>`
 
 ## 2.3 CSS属性单位
 ### 2.3.1 长度属性
@@ -270,10 +296,46 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 用rgba()函数方式表示颜色值
   + 比rgb()多了个透明度选项(0~1)
 
+颜色渐变:
++ 线性渐变
+颜色沿着一条直线过渡：从左到右、从右到左、从上到下等
+```css
+linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方向, color1: 起始颜色, color2: 终点颜色*/
+```
++ 径向渐变
+圆形或椭圆形渐变，颜色不再沿着一条直线变化，而是从一个起点朝所有方向混合
 
 
 # 3. Background
-往`<div>`中加入background
+这里的background指往`<div>`中加入background
+
+常用的background属性
++ `background-color`
++ `background-image`
+可以通过URL指定值来设定绝对或相对路径指定网页的背景图像，例如，background-image：url（图片路径）
++ `background-repeat`
+默认情况下, background image会repeat来占据`<div>`声明的区域
+  + repeat-x:图像横向平铺
+  + repeat-y:图像纵向平铺
+  + no-repeat：不平铺
++ `background-attachment`
+  + scroll：背景图像是随内容滚动的(默认);
+  + fixed：背景图像固定，即内容滚动而图像不动
++ `background-position`
+背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
+  + 该属性可取Xpos和Ypos, 单位是px，分别表示水平位置和垂直位置。还可以使用百分比表示背景的位置, 即X%和Y% 
+  + 可以用X、Y方向关键词来表示,
+    + 水平方向的关键词有左对齐(left), 右对齐（right)和水平居中(center),
+    + 垂直方向的关键词有顶部(top)底部(bottom)和垂直居中(center)
++ `background-size`
+  + auto(默认值，使用背景图片保持原样)
+  + percentage(当使用百分值时，不是相对于背景的尺寸大小来计算的，而是相对于元素宽度来计算的)
+  + cover(整个背景图片放大填充了整个元素)
+  + contain(让背景图片保持本身的宽高比例，将背景图片缩放到宽度或者高度正好适应所定义背景的区域)
++ `background`
+该属性实际上对应上面几个具体属性的取值
+  + 如background：url（xxx.jpg）就等价于background-image：url（xxx.jpg）
+
 
 :gem: [background no repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
 :gem: [background position](./CSS_Sample/Background/23-backgroundPosition.html)
@@ -297,6 +359,28 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 ```html
 <div class="block1"></div>
 ```
+
+## 2.0 box model (盒模型)
+
+<img src="./Src/box_model.png" width=80%>
+
+如图, 一个box由外而内依次是
++ top, left...等定位属性
++ margin 
+  + 一般用来定义box之间的间隔
+  + 还可以用来让box水平居中, 满足两个条件:
+    + box已经定义了width
+    + box左右外边距都为auto
+  ```css
+  Margin: 0 auto;
+  ``` 
++ border 
++ padding 
++ content 
+
+一般情况下, 我们希望...border-sizing: border-box;
+
+网页元素很多都带有默认的内外编剧，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距。
 
 ## 2.1 Basics of Block
 ### 2.1.1 block 基本属性
