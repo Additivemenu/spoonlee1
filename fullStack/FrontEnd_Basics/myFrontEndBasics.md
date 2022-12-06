@@ -1,7 +1,7 @@
 跳转:
-+ [HTML](./HTML/README.MD)  
-+ [CSS](./CSS/README.md) 
-+ [JS](./JS/README.MD) 
++ [HTML](./HTML/myHTMLNotes.md)  
++ [CSS](./CSS/myCSSNotes.md) 
++ [JS](./JS/myJSNotes.md) 
 
 ---
 
