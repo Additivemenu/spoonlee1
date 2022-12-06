@@ -9,7 +9,19 @@
 
 ---
 
-Contents
+Content
+
+一个选择器内的CSS属性大致分为4类:
++ position(定位)
++ dimension(大小)
++ layout(布局)
++ 其他渲染属性
+  + text
+  + background
+
+因而这里我们也采用这种顺序来组织笔记, chap1-2介绍CSS基本语法思想; chap3介绍block element的position, dimension以及layout的控制语句; chap4介绍其他渲染属性(包括text, background)
+
+
 
 - [1. :full\_moon:选择器](#1-full_moon选择器)
   - [1.1. 基本选择器](#11-基本选择器)
@@ -20,21 +32,16 @@ Contents
   - [1.4 属性选择器](#14-属性选择器)
   - [1.5 :star: 伪类(pseudo class)](#15-star-伪类pseudo-class)
     - [1.5.1 元素的伪类](#151-元素的伪类)
-- [2. :moon: CSS基本语法与特性](#2-moon-css基本语法与特性)
+- [2. CSS基本语法与特性](#2-css基本语法与特性)
   - [2.1 施加CSS的三种方式](#21-施加css的三种方式)
-  - [2.2 CSS三大特性](#22-css三大特性)
+  - [2.2 :full\_moon: CSS三大特性](#22-full_moon-css三大特性)
     - [2.1 层叠性](#21-层叠性)
-    - [2.2 :star: 继承性](#22-star-继承性)
+    - [2.2 继承性](#22-继承性)
     - [2.3 优先级](#23-优先级)
       - [2.3.1 权重](#231-权重)
-- [2. Text](#2-text)
-  - [2.1 常用的Text Properties](#21-常用的text-properties)
-  - [2.3 CSS属性单位](#23-css属性单位)
-    - [2.3.1 长度属性](#231-长度属性)
-    - [2.3.2 颜色属性](#232-颜色属性)
-- [3. Background](#3-background)
-- [4.0 :full\_moon: HTML tag element mode](#40-full_moon-html-tag-element-mode)
-- [4. :moon: Block element](#4-moon-block-element)
+  - [2.3 :full\_moon: HTML tag element mode(元素模式)](#23-full_moon-html-tag-element-mode元素模式)
+  - [2.4 Emmet语法](#24-emmet语法)
+- [3. :moon: Block element](#3-moon-block-element)
   - [2.0 box model (盒模型)](#20-box-model-盒模型)
   - [2.1 Basics of Block](#21-basics-of-block)
     - [2.1.1 block 基本属性](#211-block-基本属性)
@@ -50,18 +57,24 @@ Contents
     - [2.2.5 fixed](#225-fixed)
     - [2.2.6 sticky](#226-sticky)
     - [2.2.7 :star: block的覆盖关系: z-index](#227-star-block的覆盖关系-z-index)
-  - [2.3 Dimension of Block](#23-dimension-of-block)
-  - [2.4 :star:Flexbox](#24-starflexbox)
-    - [2.4.1 Display: Flex](#241-display-flex)
-    - [2.4.2 Flex flow](#242-flex-flow)
-    - [2.4.3 align-content](#243-align-content)
-    - [2.4.4 flex-grow/flex-shrink](#244-flex-growflex-shrink)
-    - [2.4.5 :star:content, item \& self](#245-starcontent-item--self)
-      - [2.4.5.1 Only flex flow](#2451-only-flex-flow)
-      - [2.4.5.2 content](#2452-content)
-      - [2.4.5.3 item](#2453-item)
-      - [2.4.5.4 self](#2454-self)
+  - [2.3 :star:Flexbox](#23-starflexbox)
+    - [2.3.1 Display: Flex](#231-display-flex)
+    - [2.3.2 Flex flow](#232-flex-flow)
+    - [2.3.3 align-content](#233-align-content)
+    - [2.3.4 flex-grow/flex-shrink](#234-flex-growflex-shrink)
+    - [2.3.5 :star:content, item \& self](#235-starcontent-item--self)
+      - [2.3.5.1 Only flex flow](#2351-only-flex-flow)
+      - [2.3.5.2 content](#2352-content)
+      - [2.3.5.3 item](#2353-item)
+      - [2.3.5.4 self](#2354-self)
     - [2.4.6 order](#246-order)
+- [4. 其他渲染属性](#4-其他渲染属性)
+  - [4.1 :full\_moon: Text](#41-full_moon-text)
+    - [4.1.1 常用的Text Properties](#411-常用的text-properties)
+    - [4.1.2 text属性单位](#412-text属性单位)
+      - [4.1.2.1 长度属性](#4121-长度属性)
+      - [4.1.2.2 颜色属性](#4122-颜色属性)
+  - [4.2 :full\_moon: Background](#42-full_moon-background)
 
 
 ---
@@ -70,18 +83,6 @@ Contents
 [mozilla CSS](https://developer.mozilla.org/en-US/docs/Web)
 
 ---
-
-position
-
-dimension
-
-layout
-
-other properties
-- text
-- background
-- color
-
 
 
 # 1. :full_moon:选择器
@@ -97,33 +98,41 @@ selector| 代码模板| e.g.| description|
 -----|-----|-----|----|
 通用选择器| * | *{}|选择所有元素
 属性选择器|[<条件>]| [href]{}、[attr=”val”]{}|根据属性选择元素
-并级选择器|<选择器>，<选择器>|em,strong{} | 同时匹配多个选择器，取多个选择器的并集
-后代选择器|<选择器>  <选择器>|.asideNav  li {} |先匹配第二个选择器的元素，并且属于第一个选择器内
-子代选择器|<选择器>  ><选择器>|ul>li{} | 匹配匹配第二个选择器，且为第一个选择器的元素的后代
-兄弟选择器|<选择器>+<选择器>|p+a{} |匹配紧跟第一个选择器并匹配第二个选择器的元素，如紧跟p元素后的a元素
-伪选择器|: :<伪元素> OR: <伪类>|p::first-line{}、a:hover{} |伪选择器不是直接对应HTML中定义的元素，而是向选择器增加特殊的效果
-
-
-
+并级选择器|选择器,选择器|em,strong{} | 同时匹配多个选择器，取多个选择器的并集
+后代选择器|选择器 选择器|.asideNav  li {} |先匹配第二个选择器的元素，并且属于第一个选择器内
+子代选择器|选择器>选择器|ul>li{} | 匹配匹配第二个选择器，且为第一个选择器的元素的后代
+兄弟选择器|选择器+选择器|p+a{} |匹配紧跟第一个选择器并匹配第二个选择器的元素，如紧跟p元素后的a元素
+伪选择器|: :伪元素 OR: 伪类|p::first-line{}、a:hover{} |伪选择器不是直接对应HTML中定义的元素，而是向选择器增加特殊的效果
 
 
 ## 1.1. 基本选择器
 
 + 标签选择器 
-固有标签不需要加.前缀, 
+固有标签不需要加.前缀
+  ```css
+  p, div{...}
+  ```
 + 类选择器 
 className前需要.来作为前缀
   + 在同一页面可以多次使用(最常用) 
+  ```css
+  .imageContainer{...}  /*选中所有class="imageContainer"的元素*/
+  ```
 + ID选择器
   + 同一页面只能使用1次  
+  ```css
+  #id1{...}     /*选中id="id1"的那一个元素*/
+  ```
 
 ## 1.2 层次选择器
 allow us to reach down to branch of tag tree
 
 ### 1.2.1 基本层级选择器
 
-+ `A>B{...}`, 用`>`连接两个元素, 表示选中A的子代B, A与B之间只有`>`没有其他任何符号. 
-+ `A B{...}`, 用空格连接两个元素, 表示选中A下属所有(后代)B.
++ 子类(child)选择器
+  + `A>B{...}`, 用`>`连接两个元素, 表示选中A的子代B, A与B之间只有`>`没有其他任何符号. 
++ 后代(descendant)选择器
+  + `A B{...}`, 用空格连接两个元素, 表示选中A下属所有(后代)B.
 
 ### 1.2.2 结构伪类选择器
 
@@ -227,7 +236,7 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 类似的, .className:hover{...}代表用标签选择器选中的元素的悬浮伪类
 
 
-# 2. :moon: CSS基本语法与特性
+# 2. CSS基本语法与特性
 
 
 ## 2.1 施加CSS的三种方式
@@ -245,14 +254,14 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 外部样式表(可以控制多个页面, 最常用)
   在HTML文件的`<head>`下挂载`<link>`
 
-## 2.2 CSS三大特性
+## 2.2 :full_moon: CSS三大特性
 ### 2.1 层叠性
 + 样式冲突，后定义的覆盖之前定义的
 + 样式不冲突，不会重叠
 
 :gem: [](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
 
-### 2.2 :star: 继承性
+### 2.2 继承性
 + 子标签会继承父标签的text相关样式，比如Text-, font-, line-和color属性会继承。
 + 高度和盒模型内外边距等**则不会**继承
 
@@ -269,81 +278,7 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
 
-
-
-# 2. Text 
-## 2.1 常用的Text Properties
-+ color          	
-+ Text-align         
-+ text-indent: 缩进       
-+ text-decoration 
-+ line-height: top + font-size + bottom
-  + 让box内的text的line-height和box height相等, 可以实现box中的text在box内竖直居中
-  <img src="./Src/line-height.png" width=50%> 
-+ 修饰text中的特定字段:
-  ```HTML
-  <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
-  ```
-
-
-## 2.3 CSS属性单位
-### 2.3.1 长度属性
-
-### 2.3.2 颜色属性
-用十六进制数方式表示颜色值
-+ 用rgb()函数方式表示颜色值
-  + 每个参数大小0~255 
-+ 用rgba()函数方式表示颜色值
-  + 比rgb()多了个透明度选项(0~1)
-
-颜色渐变:
-+ 线性渐变
-颜色沿着一条直线过渡：从左到右、从右到左、从上到下等
-```css
-linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方向, color1: 起始颜色, color2: 终点颜色*/
-```
-+ 径向渐变
-圆形或椭圆形渐变，颜色不再沿着一条直线变化，而是从一个起点朝所有方向混合
-
-
-# 3. Background
-这里的background指往`<div>`中加入background
-
-常用的background属性
-+ `background-color`
-+ `background-image`
-可以通过URL指定值来设定绝对或相对路径指定网页的背景图像，例如，background-image：url（图片路径）
-+ `background-repeat`
-默认情况下, background image会repeat来占据`<div>`声明的区域
-  + repeat-x:图像横向平铺
-  + repeat-y:图像纵向平铺
-  + no-repeat：不平铺
-+ `background-attachment`
-  + scroll：背景图像是随内容滚动的(默认);
-  + fixed：背景图像固定，即内容滚动而图像不动
-+ `background-position`
-背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
-  + 该属性可取Xpos和Ypos, 单位是px，分别表示水平位置和垂直位置。还可以使用百分比表示背景的位置, 即X%和Y% 
-  + 可以用X、Y方向关键词来表示,
-    + 水平方向的关键词有左对齐(left), 右对齐（right)和水平居中(center),
-    + 垂直方向的关键词有顶部(top)底部(bottom)和垂直居中(center)
-+ `background-size`
-  + auto(默认值，使用背景图片保持原样)
-  + percentage(当使用百分值时，不是相对于背景的尺寸大小来计算的，而是相对于元素宽度来计算的)
-  + cover(整个背景图片放大填充了整个元素)
-  + contain(让背景图片保持本身的宽高比例，将背景图片缩放到宽度或者高度正好适应所定义背景的区域)
-+ `background`
-该属性实际上对应上面几个具体属性的取值
-  + 如background：url（xxx.jpg）就等价于background-image：url（xxx.jpg）
-
-
-:gem: [background no repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
-:gem: [background position](./CSS_Sample/Background/23-backgroundPosition.html)
-:gem: [background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
-:gem: [background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
- 
-
-# 4.0 :full_moon: HTML tag element mode
+## 2.3 :full_moon: HTML tag element mode(元素模式)
 元素模式|元素排列|设置样式|默认宽度|包含
 -----|-----|-----|-----|-----
 块级元素 block |  一行只能放1个block元素 | 可以设置宽高 | 容器的100%| 可以包含任何标签
@@ -354,33 +289,62 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 
 :gem: [tag element mode](./CSS_Sample/Element_mode/20-elementModeConversion.html)
 
-# 4. :moon: Block element
+
+## 2.4 Emmet语法
+快速生成HTML结构的语法
+
+
+
+# 3. :moon: Block element
 即div tag
 ```html
 <div class="block1"></div>
 ```
 
+这部分介绍block element的position, dimension以及layout的控制语句
+
+
 ## 2.0 box model (盒模型)
+
+先介绍dimension properties of a block
 
 <img src="./Src/box_model.png" width=80%>
 
+margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子
+
 如图, 一个box由外而内依次是
 + top, left...等定位属性
-+ margin 
-  + 一般用来定义box之间的间隔
-  + 还可以用来让box水平居中, 满足两个条件:
++ margin (邻居间的间隔), 外边距
+  + Margin属性，表示该block与其他block之间的最小距离。用margin-left, 还可以单独定义某一边的margin; 下图中，block3(margin为50px)与block4(margin为30px)的距离是50px
+  <img src="Src/block_margin.png" width="100%"> 
+  + margin 还可以用来让box水平居中, 满足两个条件:
     + box已经定义了width
     + box左右外边距都为auto
+    ```css
+    Margin: 0 auto;
+    ``` 
++ border (栅栏)
++ padding  (自家院子), 内边距
++ content (自家房子)
+
+---
+
+盒模型注意事项:
++ 网页元素很多都带有默认的内外编剧，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距.
   ```css
-  Margin: 0 auto;
-  ``` 
-+ border 
-+ padding 
-+ content 
+  body,html{
+    padding: 0;
+    margin: 0;
+  }
+  ```
++ 默认情况下, content就是我们定义div时的width和height(即默认width和height是定义我们的房子占地大小). 但我们可以定义 
+  ```css
+  box-sizing： border-box
+  ```
+  来使得定义div的width和height为包含boder, padding和content的总体dimension (即转而认为width和height定义了我们家(房子+ 院子+栅栏)的占地大小). 	一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
+  + 如下, 定义一个500*500px的block, 当设定其box-sizing: border-box后, 它的border+padding+content=500
+  <img src="Src/boxsizing.png" width=50%>
 
-一般情况下, 我们希望...border-sizing: border-box;
-
-网页元素很多都带有默认的内外编剧，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距。
 
 ## 2.1 Basics of Block
 ### 2.1.1 block 基本属性
@@ -641,25 +605,8 @@ html,body{
 HTML中后面生成的block会优先显示（压在之前的block上）; 但z-index可以调节同层级的优先覆盖关系， z-index一般取值0-999 
 
 
-## 2.3 Dimension of Block
 
-<img src="Src/block_dimension.png" width = 50%>
-
-由内向外, 依次是: content, padding, border, margin, position. ( margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子)
-
-+ Margin属性，表示该block与其他block之间的最小距离。用margin-left, 还可以单独定义某一边的margin; 下图中，block3(margin为50px)与block4(margin为30px)的距离是50px
-<img src="Src/block_margin.png" width="100%">
-
-+ 默认情况下, content就是我们定义div时的width和height. 但我们可以定义 
-  ```css
-  box-sizing： border-box
-  ```
-  来使得定义div的width和height为包含boder, padding和content的总体dimension. 	一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
-  + 如下, 定义一个500*500px的block, 当设定其box-sizing: border-box后, 它的border+padding+content=500
-  <img src="Src/boxsizing.png" width=50%>
-
-
-## 2.4 :star:Flexbox
+## 2.3 :star:Flexbox
 + 前面的我们如果写多个block, 它们按文档流依次排列下来
 
   <img src="Src/before_flexbox1.png" width=80%>
@@ -670,7 +617,7 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 现在我们来看看如何使得block流动, 呈现一种动态布局
 
-### 2.4.1 Display: Flex
+### 2.3.1 Display: Flex
 
 
 + 在parent block中未启用display:flex; sub-blocks按文档流竖着排下来
@@ -723,7 +670,7 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
   ```
 
 
-### 2.4.2 Flex flow
+### 2.3.2 Flex flow
 
 在定义了display: flex 之后, 还必须定义flex flow, 这样才能够使得sub-blocks在视口变化时"流动"起来, 后面的justify, align的效果才能生效.
 
@@ -790,7 +737,7 @@ body,html{
 
 ```
 
-### 2.4.3 align-content
+### 2.3.3 align-content
 参见下图(flex flow中的第一个图):
 <img src="Src/flexflow1.png" width=50%>
 其中sub-block在两行之间是有空隙的, 这是因为align-content默认值为stretch, 会把sub-block在在竖直方向上均匀地排布在parent block中, 例如现在sub-block有两行, 那么每一行地高度都为parent block.height/2
@@ -820,7 +767,7 @@ body,html{
 <img src="Src/flex-start.png" width=80%>
 
 
-### 2.4.4 flex-grow/flex-shrink
+### 2.3.4 flex-grow/flex-shrink
 单独定义给某个sub-block：
 + flex-grow: 当sub-block的dimension超过原本定义的dimension后继续拉伸, 该sub-block的拉伸速率为原来的n倍
 + flex-shrink: 与flex-grow类似, 收缩速率为原来n倍数
@@ -832,7 +779,7 @@ body,html{
 }
 ```
 
-### 2.4.5 :star:content, item & self
+### 2.3.5 :star:content, item & self
 
 简言之:
 + 前标justify: 表示水平方向上布局
@@ -840,7 +787,7 @@ body,html{
 + content优先级高于item (详见2.4.5.3 items)
 + content, items 定义在parent block中, self定义在sub-block中
 
-#### 2.4.5.1 Only flex flow
+#### 2.3.5.1 Only flex flow
 初始情况：只是设置了flex flow的direction和wrap， 不设置任何和content, item, self有关的属性时（当然他们有默认设置）
 
 <img src="Src/onlyflexflow1.png" width=40%><img src="Src/onlyflexflow2.png" width=40%>
@@ -856,7 +803,7 @@ body,html{
 }
 ```
 
-#### 2.4.5.2 content
+#### 2.3.5.2 content
 
 1. Justify-content: center/flex-start/flex-end 
 
@@ -932,7 +879,7 @@ body,html{
     }
     ```
 
-#### 2.4.5.3 item
+#### 2.3.5.3 item
 疑问：content, item, self各是什么？
 
 比喻：content是整体合力做事儿，item是统一做某个个体的事儿，self是个体做自己的事儿
@@ -981,7 +928,7 @@ body,html{
       }
       ```
 
-#### 2.4.5.4 self
+#### 2.3.5.4 self
 
 1. align-self
    + Align-self是单独定义一个sub block的布局，因此必须写在sub-block里，而不是mother block里；前面的flex-flow, flex-direction等等定义的是mother block内的sub block的布局，因此必须写在mother block里。
@@ -1008,3 +955,85 @@ body,html{
 ![](Src/order-table.png)
 
 默认order 为0。按上图图二中order取值的顺序排列
+
+
+# 4. 其他渲染属性
+
+## 4.1 :full_moon: Text 
+### 4.1.1 常用的Text Properties
++ color          	
++ Text-align         
++ text-indent: 缩进       
++ text-decoration 
++ line-height: top + font-size + bottom
+  + 让box内的text的line-height和box height相等, 可以实现box中的text在box内竖直居中
+  <img src="./Src/line-height.png" width=50%> 
+
+---
+
+特殊的:
++ 修饰text中的特定字段:
+  ```HTML
+  <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
+  ```
+
+
+### 4.1.2 text属性单位
+#### 4.1.2.1 长度属性
+长度单位有相对长度单位和绝对长度单位两种类型。
++ 绝对长度单位: px
++ 相对长度单位指相对于另一长度的长度，主要有em、ex、ch、rem、%和可视区百分比长度单位vw、vh、vmin、vmax
+
+
+#### 4.1.2.2 颜色属性
+用十六进制数方式表示颜色值
++ 用rgb()函数方式表示颜色值
+  + 每个参数大小0~255 
++ 用rgba()函数方式表示颜色值
+  + 比rgb()多了个透明度选项(0~1)
+
+颜色渐变:
++ 线性渐变
+颜色沿着一条直线过渡：从左到右、从右到左、从上到下等
+```css
+linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方向, color1: 起始颜色, color2: 终点颜色*/
+```
++ 径向渐变
+圆形或椭圆形渐变，颜色不再沿着一条直线变化，而是从一个起点朝所有方向混合
+
+
+## 4.2 :full_moon: Background
+这里的background指往`<div>`中加入background
+
+常用的background属性
++ `background-color`
++ `background-image`
+可以通过URL指定值来设定绝对或相对路径指定网页的背景图像，例如，background-image：url（图片路径）
++ `background-repeat`
+默认情况下, background image会repeat来占据`<div>`声明的区域
+  + repeat-x:图像横向平铺
+  + repeat-y:图像纵向平铺
+  + no-repeat：不平铺
++ `background-attachment`
+  + scroll：背景图像是随内容滚动的(默认);
+  + fixed：背景图像固定，即内容滚动而图像不动
++ `background-position`
+背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
+  + 该属性可取Xpos和Ypos, 单位是px，分别表示水平位置和垂直位置。还可以使用百分比表示背景的位置, 即X%和Y% 
+  + 可以用X、Y方向关键词来表示,
+    + 水平方向的关键词有左对齐(left), 右对齐（right)和水平居中(center),
+    + 垂直方向的关键词有顶部(top)底部(bottom)和垂直居中(center)
++ `background-size`
+  + auto(默认值，使用背景图片保持原样)
+  + percentage(当使用百分值时，不是相对于背景的尺寸大小来计算的，而是相对于元素宽度来计算的)
+  + cover(整个背景图片放大填充了整个元素)
+  + contain(让背景图片保持本身的宽高比例，将背景图片缩放到宽度或者高度正好适应所定义背景的区域)
++ `background`
+该属性实际上对应上面几个具体属性的取值
+  + 如background：url（xxx.jpg）就等价于background-image：url（xxx.jpg）
+
+
+:gem: [background no repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
+:gem: [background position](./CSS_Sample/Background/23-backgroundPosition.html)
+:gem: [background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
+:gem: [background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
