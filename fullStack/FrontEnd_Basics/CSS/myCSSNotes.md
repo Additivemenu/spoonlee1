@@ -36,8 +36,7 @@ Content
   - [2.2 :full\_moon: CSS三大特性](#22-full_moon-css三大特性)
     - [2.1 层叠性](#21-层叠性)
     - [2.2 继承性](#22-继承性)
-    - [2.3 优先级](#23-优先级)
-      - [2.3.1 权重](#231-权重)
+    - [2.3 优先级(权重)](#23-优先级权重)
   - [2.3 :full\_moon: 元素模式的转化](#23-full_moon-元素模式的转化)
   - [2.4 Emmet语法](#24-emmet语法)
 - [3. :moon: Block element](#3-moon-block-element)
@@ -125,7 +124,7 @@ className前需要.来作为前缀
 
 优先级: ID selector>类selector>标签selector>通配符选择器; 
  + 优先级高的会覆盖优先级低的
-
++ 关于优先级具体参见[2.3 优先级(权重)](#23-优先级权重)
 
 :gem: [multi-className selector](./CSS_Sample/Selector/06-multiClassNameSelector.html)
 :gem: [select all](./CSS_Sample/Selector/08-selectAll.html)
@@ -219,7 +218,19 @@ E[attr] | 选择匹配具有属性attr的E元素
 + 多个属性选择器可以合并选择
   一般用于text的多重filter, 比如先筛出来href和"google"相关的, 再筛出来href是以".com.au"结尾的
 
+```css
+a[href="https://example.org"]
+{
+  color: green;
+}
+```
+
 ## 1.5 :full_moon: 伪类(pseudo class)
+
+[mozilla pseudo class](https://developer.mozilla.org/en-US/docs/Web/CSS/:active)
+
+[mozilla pseudo element](https://developer.mozilla.org/en-US/docs/Web/CSS/::after)
+
 注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
 
 可使用 class::宏来渲染段落的某部分
@@ -276,20 +287,38 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 样式冲突，后定义的覆盖之前定义的
 + 样式不冲突，不会重叠
 
-:gem: [](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
+:gem: [CSS层叠性](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
 
 ### 2.2 继承性
-+ 子标签会继承父标签的text相关样式，比如Text-, font-, line-和color属性会继承。
-+ 高度和盒模型内外边距等**则不会**继承
++ 子标签会继承父标签的**text相关样式**，比如Text-, font-, line-和color属性会继承。
++ 高度和盒模型内外边距(margin, padding)等**则不会**继承
 
-:gem: [CSS层叠性](./CSS_Sample/CSS_3Features/27-css%E7%BB%A7%E6%89%BF%E6%80%A7.html)
+:gem: [CSS继承性](./CSS_Sample/CSS_3Features/27-css%E7%BB%A7%E6%89%BF%E6%80%A7.html)
 
-### 2.3 优先级
+### 2.3 优先级(权重)
+当一个标签的同一个属性在不同的选择器中被同时定义了多次时, 由优先级来确定到底启用哪一个被定义的属性.
 
-:question: 没明白再看视频
+除去层叠性带来的优先级(后定义的覆盖之前定义的), 以下优先级等级(权重)也被用来解决定义属性冲突的问题:
+
+<img src="./Src/CSS_priority.png" width=70%>
+
++ 上表的解读
+  + 通过ID选择器定义的属性的权重为B
+  + 通过class/attribute选择器定义的属性的权重为C
+  + 通过标签/伪类选择器定义的属性的权重为D
+  + 继承下来的属性没有权重.
++ 权重最高的才会被采用 (A>B>C>D>none); 
++ 如果是权重相同的选择器, 越具体的选择器优先级越高, 这也符合直觉常理
+  ```css
+  ul li{...}  /*优先级高于li{...}*/
+
+  li{...}
+  ``` 
++ 权重可以被`!important`来被忽略掉
+  + 一般情况下, `!important`的使用非常谨慎, 用的很少 
+  +  :question: `!important`被忽略掉到底啥意思, 是指权重为0吗? 还是指-1? 实例告诉我们忽略掉权重也大于0
 
 :gem: [CSS优先级](./CSS_Sample/CSS_3Features/28-css%E4%BC%98%E5%85%88%E7%BA%A7.html)
-#### 2.3.1 权重
 
 :gem: [权重注意点](./CSS_Sample/CSS_3Features/29-css%E6%9D%83%E9%87%8D%E6%B3%A8%E6%84%8F%E7%82%B9.html)
 
@@ -360,6 +389,8 @@ text-indent:2em;
 
 ## 2.0 box model (盒模型)
 
+
+
 先介绍dimension properties of a block
 
 <img src="./Src/box_model.png" width=80%>
@@ -384,20 +415,25 @@ margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于
 ---
 
 盒模型注意事项:
-+ 网页元素很多都带有默认的内外编剧，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距.
++ 网页元素很多都带有默认的内外边距，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距.
   ```css
   body,html{
-    padding: 0;
-    margin: 0;
+    padding: 0;   /*内边距*/
+    margin: 0;    /*外边距*/
   }
   ```
-+ 默认情况下, content就是我们定义div时的width和height(即默认width和height是定义我们的房子占地大小). 但我们可以定义 
++ 默认情况下, content就是我们定义div时的width和height(即默认width和height是定义我们的房子占地大小), 此时去定义padding和border会改变box的大小(我们能看到的上了颜色的box即border围起来的那部分). 但我们可以定义 
   ```css
   box-sizing： border-box
   ```
   来使得定义div的width和height为包含boder, padding和content的总体dimension (即转而认为width和height定义了我们家(房子+ 院子+栅栏)的占地大小). 	一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
   + 如下, 定义一个500*500px的block, 当设定其box-sizing: border-box后, 它的border+padding+content=500
   <img src="Src/boxsizing.png" width=50%>
+
+:gem: [box model](./CSS_Sample/Block_Dimension/31-boxModel.html)
+:gem::question: [padding不影响盒子大小的情况](./CSS_Sample/Block_Dimension/32-padding%E4%B8%8D%E4%BC%9A%E5%BD%B1%E5%93%8D%E7%9B%92%E5%AD%90%E5%A4%A7%E5%B0%8F%E6%83%85%E5%86%B5.html)
+:gem: [margin水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
+:gem: [margin合并塌陷](./CSS_Sample/Block_Dimension/34-margin合并塌陷.html)
 
 
 ## 2.1 Basics of Block
@@ -1035,6 +1071,8 @@ body,html{
 
 :gem: [text](./CSS_Sample/Text/10-text.html)
 
+:gem: [block内的内容居中(2种方式)](./CSS_Sample/Text/21-divTextCenter.html)
+
 ### 4.1.2 text属性单位
 #### 4.1.2.1 长度属性
 长度单位有相对长度单位和绝对长度单位两种类型。
@@ -1060,7 +1098,7 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 
 
 ## 4.2 :full_moon: Background
-这里的background指往`<div>`中加入background
+这里的background指往block element(块级元素, 并不仅是`<div>`)中加入background
 
 常用的background属性
 + `background-color`
@@ -1077,11 +1115,16 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 + `background-position`
 背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
   + 该属性可取Xpos和Ypos, 单位是px，分别表示水平位置和垂直位置。还可以使用百分比表示背景的位置, 即X%和Y% 
-  + 可以用X、Y方向关键词来表示,
+  + 可以用X、Y方向关键词来表示
     + 水平方向的关键词有左对齐(left), 右对齐（right)和水平居中(center),
     + 垂直方向的关键词有顶部(top)底部(bottom)和垂直居中(center)
+    ```css
+    /*第一个参数表示水平方向上位置, 第二个参数表示竖直方向上位置*/
+    background-position: left center;   /*水平左对齐, 竖直居中*/  
+    ```
 + `background-size`
-  + auto(默认值，使用背景图片保持原样)
+定义背景图片的大小和block element的关系
+  + auto(默认值，使用背景图片保持图片的原样)
   + percentage(当使用百分值时，不是相对于背景的尺寸大小来计算的，而是相对于元素宽度来计算的)
   + cover(整个背景图片放大填充了整个元素)
   + contain(让背景图片保持本身的宽高比例，将背景图片缩放到宽度或者高度正好适应所定义背景的区域)
@@ -1090,7 +1133,9 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
   + 如background：url（xxx.jpg）就等价于background-image：url（xxx.jpg）
 
 
-:gem: [background no repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
-:gem: [background position](./CSS_Sample/Background/23-backgroundPosition.html)
-:gem: [background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
-:gem: [background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
+:gem: [Background-repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
+:gem: [Background-position](./CSS_Sample/Background/23-backgroundPosition.html)
+:gem: [Background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
+:gem::star: [Background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
+
+:question: 最后这个练习里, .hero::before{}和.hero的层级关系是什么?

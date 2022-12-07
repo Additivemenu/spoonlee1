@@ -95,7 +95,6 @@ PPT 22 1h46min-
   + `<img>`, `input`, `td`
 
 
-# 看到这里!
 
 21 1h58min-2h03min
 + 方法一: line-height(和height匹配) + text-align
@@ -137,14 +136,18 @@ PPT 24
 30 权重的叠加
 
 ## :moon: box model 3h-
+
+
+
 31 定义padding, border, margin会改变box的大小 3h-
 
-32 border-box
-+ h1不指定宽度, 继承其parent的宽度, 定义的padding加不上去
+# 看到这里
+
+32 border-box  3h08min-
++ h1不指定宽度, 继承其parent的宽度, 定义的padding加不上去 :question: 讲错了吧, 能加上去阿
 + h1指定宽度, 定义的padding才能加上去
 
 33 3h13min-
-
 
 34
 

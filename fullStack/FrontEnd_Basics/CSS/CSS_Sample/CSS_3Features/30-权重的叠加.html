@@ -9,22 +9,32 @@
       /* 复合选择器会有权重叠加的问题 */
       /* 权重虽然会叠加,但是永远不会有进位 */
       /* li会显示什么颜色？ */
+      
+      /*比li{...}优先级更高, 因为更为具体*/
       ul li {
         color: green;
       }
-      li {
-        color: red;
-      }
+
+      /*通过class选择器定义的属性权重为C*/
       .nav li {
         color: pink;
       }
+
+      /*通过标签选择器定义的属性权重为D*/
+      li {
+        color: red;
+      }
+
     </style>
+
   </head>
   <body>
+
     <ul class="nav">
       <li>cat</li>
       <li>dog</li>
       <li>pig</li>
     </ul>
+
   </body>
 </html>

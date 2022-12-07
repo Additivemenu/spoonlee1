@@ -6,20 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>padding不会影响盒子大小的情况</title>
     <style>
-
-      body, html{
+      
+      /*body, html{
         padding: 0px;
         margin: 0px;
-      }
+      }*/
 
-      /*h1 属于block element*/
-      /*h1 不指定width, 其width继承自其parent, 此时padding定义不起作用*/
-      /*h1 指定width, 此时定义的padding才可以起作用*/
       h1 {
+        width: 100%;
         height: 200px;
         background-color: pink;
 
-        padding: 100px;
+        padding: 30px;
       }
 
       div {
@@ -40,5 +38,6 @@
     <div>
       <p></p>
     </div>
+
   </body>
 </html>

@@ -7,11 +7,12 @@
     <title>Document</title>
     <style>
       /* 背景图https://placekitten.com/1200/800 */
-      /* 背景透明，文字居中不透明 */
+      /* 背景透明，但文字居中不透明 */
       .hero {
         height: 100vh;
         width: 100%;
 
+        /*文字居中*/
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,32 +21,36 @@
 
       }
 
+      /*想一想, 为什么需要把background和opacity写在.hero::before{}中, 而不是.hero{}中*/
+      /*answer: 如果把background和opacity都写在.hero{}中, 那么background和h1的内容会同时透明; 这里我们需要将它们分开来定义渲染属性*/
       .hero::before{
         content: '';
         background-image: url("http://placekitten.com/1200/800");
-        background-size: cover;
+        background-size: cover;   /*整个页面都是background图片*/
         position: absolute;
 
         top: 0px;
         bottom: 0px;
         left: 0px;
         right: 0px;
+
         opacity: 0.5;
       }
 
       h1{
+        position: relative;     /*注意你还必须写上这句, 才能让背景透明而文字不透明, why????*/
         color: black;
         font-size: 14rem;
       }
 
-
-
-
     </style>
   </head>
+
   <body>
+
     <div class="hero">
       <h1>Cute kittehs everywhere!</h1>
     </div>
+
   </body>
 </html>
