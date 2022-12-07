@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /*rem是相对于root(即最高父级)*/
+      html {
+        font-size: 10px;      /*默认1rem =16 如果你不声明root元素的font-size*/
+      }
+      .parent {
+        font-size: 4rem;      /*40px*/
+        width: 30rem;         /*300px*/
+        height: 30rem;        
+        border: solid 1px black;
+      }
+      .child {
+        font-size: 2rem;      /*20px*/
+        width: 15rem;         /*150px*/
+        height: 15rem;        /*150px*/
+        border: solid 1px red;
+      }
+      .grandchild {
+        font-size: 1.5rem;
+        width: 10rem;         /*100px*/
+        height: 10rem;
+        border: solid 1px blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parent">
+      parent
+      <div class="child">
+        child
+        <div class="grandchild">grandchild</div>
+      </div>
+    </div>
+  </body>
+</html>

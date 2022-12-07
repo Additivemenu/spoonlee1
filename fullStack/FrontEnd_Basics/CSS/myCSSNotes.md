@@ -16,8 +16,11 @@ Content
 + dimension(大小)
 + layout(布局)
 + 其他渲染属性
-  + text
-  + background
+  + text-
+  + font-
+  + line-
+  + background-
+  + ...
 
 因而这里我们也采用这种顺序来组织笔记, chap1-2介绍CSS基本语法思想; chap3介绍block element的position, dimension以及layout的控制语句; chap4介绍其他渲染属性(包括text, background)
 
@@ -257,7 +260,9 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 类似的, .className:hover{...}代表用标签选择器选中的元素的悬浮伪类
 
 :gem: [`<a>`的伪类选择器1](./CSS_Sample/Selector/17-pseudoClassSelector1.html)
+
 :gem: [`<a>`的伪类选择器2](./CSS_Sample/Selector/17-pseudoClassSelector2.html)
+
 :gem: [`<input>` 的 foucs selector](./CSS_Sample/Selector/18-focusSelector.html)
 
 利用元素的伪类可以实现很多花哨的特效, further reading: 
@@ -340,6 +345,7 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 
 :gem: [inline-block element](./CSS_Sample/Element_mode/19-inline-block_element.html)
+
 :gem::star: [tag element mode conversion](./CSS_Sample/Element_mode/20-elementModeConversion.html)
 
 
@@ -1175,8 +1181,11 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 
 
 :gem: [Background-repeat](./CSS_Sample/Background/22-backgroundNoRepeat.html)
+
 :gem: [Background-position](./CSS_Sample/Background/23-backgroundPosition.html)
+
 :gem: [Background fixing](./CSS_Sample/Background/24-backgroundFixing.html)
-:gem::star: [Background semi-transparent](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
+
+:gem::star: [Background semi-transparent while text remain solid](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
 
 :question: 最后这个练习里, .hero::before{}和.hero的层级关系是什么?
