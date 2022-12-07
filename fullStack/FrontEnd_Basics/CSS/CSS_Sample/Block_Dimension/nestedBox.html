@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .smallBox{
+            width: 100px;
+            height: 100px;
+
+            box-sizing: border-box;
+            border: 1px solid;
+
+            margin: 10px;
+
+            background-color: greenyellow;
+        }
+
+        .bigBox{
+            width: 500px;
+            height: 500px;
+
+            background-color: red;
+
+            padding: 50px;
+            border: 5px solid;
+        }
+
+        .bigBox_borderBox{
+            width: 500px;
+            height: 500px;
+
+            background-color: aqua;
+
+            box-sizing: border-box;
+            padding: 50px;
+            border: 5px solid;
+        }
+
+    </style>
+    
+    <title>Document</title>
+</head>
+<body>
+    <div class="bigBox">
+        bigBox without border-box
+        <div class="smallBox">small box1</div>
+        <div class="smallBox">small box2</div>
+        <div class="smallBox">small box3</div>
+    </div>
+
+    <div class="bigBox_borderBox">
+        bigBox with border-box
+        <div class="smallBox">small box1</div>
+        <div class="smallBox">small box2</div>
+        <div class="smallBox">small box3</div>
+    </div>
+</body>
+</html>

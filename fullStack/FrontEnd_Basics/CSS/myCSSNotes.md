@@ -397,20 +397,33 @@ text-indent:2em;
 
 margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于自家院子里的草坪宽, content相当于自己的房子
 
+:gem: [box model](./CSS_Sample/Block_Dimension/31-boxModel.html)
+
 如图, 一个box由外而内依次是
 + top, left...等定位属性
 + margin (邻居间的间隔), 外边距
-  + Margin属性，表示该block与其他block之间的最小距离。用margin-left, 还可以单独定义某一边的margin; 下图中，block3(margin为50px)与block4(margin为30px)的距离是50px
-  <img src="Src/block_margin.png" width="100%"> 
-  + margin 还可以用来让box水平居中, 满足两个条件:
+Margin属性，表示该block与其他block之间的最小距离. e.g.如果block1(margin:30px)与block2(margin:50px), 那么他们俩之间实际间距是50px;
+  + margin的'重载'
+    ```css
+    margin: 上下 左右;      /*2个argument*/
+    margin: 上 左右 下;     /*3个argument*/
+    margin: 上 右 下 左;    /*4个argument*/
+    ```
+    + 除了使用margin一起定义上下左右, 还可以单独定义某一边的margin (如margin-left...);
+  + margin 还可以用来让**box水平居中**(而不是box中的内容水平居中, 见[text居中](#41-full_moon-text)), 满足两个条件:
     + box已经定义了width
     + box左右外边距都为auto
     ```css
-    Margin: 0 auto;
+    Margin: 0 auto;   /*上下外边距为0, 左右外边距auto*/
     ``` 
-+ border (栅栏)
+    :gem: [用margin实现box水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
+  + [mozilla: margin collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) :question: 没太懂
+    :gem: [margin合并塌陷](./CSS_Sample/Block_Dimension/34-margin合并塌陷.html) 
 + padding  (自家院子), 内边距
+  + padding的'重载', 和margin类似
 + content (自家房子)
+
+
 
 ---
 
@@ -422,18 +435,31 @@ margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于
     margin: 0;    /*外边距*/
   }
   ```
-+ 默认情况下, content就是我们定义div时的width和height(即默认width和height是定义我们的房子占地大小), 此时去定义padding和border会改变box的大小(我们能看到的上了颜色的box即border围起来的那部分). 但我们可以定义 
-  ```css
-  box-sizing： border-box
-  ```
-  来使得定义div的width和height为包含boder, padding和content的总体dimension (即转而认为width和height定义了我们家(房子+ 院子+栅栏)的占地大小). 	一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
++ 区分几个概念
+  + 看到的方块
+  即border+padding+content
+  + box
+  即width, height所定义的区域
+  
++ box
+  + 默认box是只包含content. 
+    + 此时box不等于看到的方块, 因而此时定义padding, border后会看到方块会变大
+  + 定义: `box-sizing: border-box;`后, box延伸到包含border (即此时box = border + padding + content).
+    + 此box就是我们看到的方块. 
+    + 一般工作中，我们直接全局定义box-sizing, 这样方便一些. 
   + 如下, 定义一个500*500px的block, 当设定其box-sizing: border-box后, 它的border+padding+content=500
   <img src="Src/boxsizing.png" width=50%>
 
-:gem: [box model](./CSS_Sample/Block_Dimension/31-boxModel.html)
++ 嵌套的box结构
+  + 里面的box占据外面的box的content 
+    + 不管有没有定义`box-sizing: border-box;` 里面的box都是用外面的box的**content部分**作为边框进行嵌套 
+  :gem: [nested boxes](./CSS_Sample/Block_Dimension/nestedBox.html) 
+
+
+
 :gem::question: [padding不影响盒子大小的情况](./CSS_Sample/Block_Dimension/32-padding%E4%B8%8D%E4%BC%9A%E5%BD%B1%E5%93%8D%E7%9B%92%E5%AD%90%E5%A4%A7%E5%B0%8F%E6%83%85%E5%86%B5.html)
-:gem: [margin水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
-:gem: [margin合并塌陷](./CSS_Sample/Block_Dimension/34-margin合并塌陷.html)
+
+
 
 
 ## 2.1 Basics of Block
@@ -697,6 +723,8 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 
 ## 2.3 :star:Flexbox
+[mozilla: flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+
 + 前面的我们如果写多个block, 它们按文档流依次排列下来
 
   <img src="Src/before_flexbox1.png" width=80%>
@@ -762,6 +790,8 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 ### 2.3.2 Flex flow
 
+
+
 在定义了display: flex 之后, 还必须定义flex flow, 这样才能够使得sub-blocks在视口变化时"流动"起来, 后面的justify, align的效果才能生效.
 
 + 可变视口
@@ -786,16 +816,20 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 
 flex flow包含两个子属性: flex-direction, flex-wrap; 分别定义他们两个或者直接定义flex flow都可, 但一般我们都分别定义. 写的时候不用管flex-direction, flex-wrap的先后顺序.
 
-+ flex-direction
++ `flex-direction`: 流动方向
+  定义了flexbox的main-axis, cross-aix runs perpendicular to the main axis; **而main-axis则决定了container内的元素的流向** 后面的一切都和main- & cross axis有关
+  + `align-` align elements along the cross-axis
+  + `justify-` align elements along the main-axis
+
   ```css
   flex-direction: row/row-reverse/column/column-reverse
   ```
-  + row: 从左向右排
-  + row-reverse： 从右向左排
-  + column: 从上向下排
-  + column-reverse: 从下向上排
+  + row: main-axis runs from left to right
+  + row-reverse: main-axis runs from right to left
+  + column: main-axis runs from top to bottom
+  + column-reverse: main-axis runs from bottom to top
 
-+ flex-wrap
++ `flex-wrap`
   ```css
   flex-wrap: wrap/wrap-reverse
   ```
@@ -828,6 +862,13 @@ body,html{
 ```
 
 ### 2.3.3 align-content
+[mozilla: align-](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox#alignment_justification_and_distribution_of_free_space_between_items)
+
+`align-` align elements along the cross-axis
+
+`justify-` align elements along the main-axis
+
+
 参见下图(flex flow中的第一个图):
 <img src="Src/flexflow1.png" width=50%>
 其中sub-block在两行之间是有空隙的, 这是因为align-content默认值为stretch, 会把sub-block在在竖直方向上均匀地排布在parent block中, 例如现在sub-block有两行, 那么每一行地高度都为parent block.height/2
@@ -872,8 +913,8 @@ body,html{
 ### 2.3.5 :star:content, item & self
 
 简言之:
-+ 前标justify: 表示水平方向上布局
-+ 前标align: 表示竖直方向上布局
++ 前标justify: 表示main-axis方向上布局
++ 前标align: 表示cross-axis方向上布局
 + content优先级高于item (详见2.4.5.3 items)
 + content, items 定义在parent block中, self定义在sub-block中
 
@@ -1077,7 +1118,7 @@ body,html{
 #### 4.1.2.1 长度属性
 长度单位有相对长度单位和绝对长度单位两种类型。
 + 绝对长度单位: px
-+ 相对长度单位指相对于另一长度的长度，主要有em、ex、ch、rem、%和可视区百分比长度单位vw、vh、vmin、vmax
++ 相对长度单位指相对于另一长度的长度，主要有em、ex、ch、rem(1rem=16px)、%和可视区百分比长度单位vw、vh、vmin、vmax
 
 
 #### 4.1.2.2 颜色属性

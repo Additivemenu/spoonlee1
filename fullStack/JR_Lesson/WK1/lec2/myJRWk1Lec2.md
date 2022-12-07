@@ -141,7 +141,6 @@ PPT 24
 
 31 定义padding, border, margin会改变box的大小 3h-
 
-# 看到这里
 
 32 border-box  3h08min-
 + h1不指定宽度, 继承其parent的宽度, 定义的padding加不上去 :question: 讲错了吧, 能加上去阿
