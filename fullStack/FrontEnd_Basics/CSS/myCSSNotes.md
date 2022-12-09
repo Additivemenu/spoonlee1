@@ -720,13 +720,14 @@ html,body{
   + 如果祖先元素均无定位, 则选root element作为位移属性参照物.
 + 对于position: relative的element, 参与其父级元素的文档流
   + 选取由其父级元素的文档流决定的原来位置作为位移属性参照物, 不用管其父级元素是否是有定位的.
++ 对于position: fixed的element, 位移属性参照物为browser的viewport, 和父级元素无关, 也不参与任何文档流
 
 :gem: [文档流与位移参照物](./CSS_Sample/Block_Position/Block_Position.html)
 
 
 
 ### 2.2.5 fixed
-固定，像狗皮膏药一样贴在一个网页视口的一个地方一动不动, 不管你如果scroll up and down
+固定，像狗皮膏药一样贴在一个网页视口的一个地方一动不动, 不管你如何scroll up and down
 
 :gem: [fixed](./CSS_Sample/Block_Position/08-fixed.html)
 
@@ -738,7 +739,10 @@ html,body{
 An element with position: sticky; is positioned based on the user's scroll position.
 
 A sticky element toggles between `relative` and `fixed`, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed).
-+ 除了position: sticky, 还需额外定义一个位移属性(滚动后的位置)才能实现sticky
+
++ 以浏览器的可视窗口为参照移动元素 （fixed特点）
++ 粘性定位占有原先的位置 （relative特点）
++ 除了position: sticky, 还需至少定义一个位移属性(滚动后的位置)才能实现sticky的效果
 
 :gem: [sticky](./CSS_Sample/Block_Position/10-sticky.html)
 
@@ -1257,6 +1261,10 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 `transition`使得原本instant的变化变得continuous
   +  注意变化本身不是transition定义的
 
+定义
++ 变化过程的持续时间
++ 变化开始前的延迟时间
+
 ```css
 /*所有属性连续变化*/
 transition: all 0.5s;
@@ -1266,4 +1274,7 @@ transition: width 1s ease 0s, height .5s ease 1s;
 ```
 
 :gem: [transition](./CSS_Sample/Transition/11-transition.html)
+
 :gem: [Practice: health bar](./CSS_Sample/Transition/11-transitionPractice.html)
+
+a:hover b 实 现一个元素触发另一个元素的变化, 或者通过JS的event

@@ -1,0 +1,92 @@
+body {
+  font-size: 15px;
+  color: blue;
+}
+
+ul {
+  font-size: 16px;
+}
+ul li {
+  list-style: none;
+}
+
+/**/
+div.box {
+  background-color: #555;
+}
+
+h1.page-header {
+  border: 1px solid #555;
+}
+
+h2.page-header {
+  border: 1px solid #555;
+}
+
+/**/
+.nav {
+  height: 100px;
+}
+.nav ul {
+  margin: 0;
+}
+.nav ul li {
+  padding: 5px;
+}
+.nav ul a {
+  display: block;
+  color: #000;
+}
+.nav ul a:hover {
+  background-color: blue;
+  color: #000;
+}
+
+.nav {
+  border: 1px solid #000;
+  border-left: 0;
+  border-right: 0;
+}
+
+/**/
+.alert-warning {
+  color: #000;
+}
+.alert-warning a {
+  color: pink;
+}
+
+/**/
+.alert-info {
+  color: #333;
+  background-color: green;
+}
+
+.button, .button-info {
+  padding: 15px;
+  width: 200px;
+  height: 30px;
+}
+
+.button-info {
+  background-color: yellow;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.cat-icon {
+  background-image: url("./images/cat.png");
+}
+
+.dog-icon {
+  background-image: url("./images/dog.png");
+}
+
+.pig-icon {
+  background-image: url("./images/pig.png");
+}
+
+/*# sourceMappingURL=style.css.map */

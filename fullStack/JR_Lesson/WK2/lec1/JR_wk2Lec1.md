@@ -75,7 +75,9 @@ a:hover b 实 现一个元素触发另一个元素的变化, 或者通过JS的ev
 
 中间休息
 
-# SASS 2h06min-3h05min
+# SCSS 2h06min-3h05min
+
+# 看到这里!
 
 ```bash
 npm install -g sass         // intall sass npm
