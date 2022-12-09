@@ -2,14 +2,6 @@
 
 + [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
 
-
-+ [CSS selector](./CSS_Sample/Selector/CSS_Selector.html)
-+ [block element](./CSS_Sample/Block_Element/Block.html)
-+ [block dimension](./CSS_Sample/Block_Dimension/Block_Dimension.html)
-+ [block position](./CSS_Sample/Block_Position/Block_Position.html)
-+ [flexbox](./CSS_Sample/Flexbox/flexbox.html)
-
-
 ---
 
 Content
@@ -56,9 +48,9 @@ Content
     - [2.2.1 static (by default)](#221-static-by-default)
     - [2.2.2 :star: relative](#222-star-relative)
     - [2.2.3 absolute](#223-absolute)
-    - [2.2.4 :star: 位移属性参照物](#224-star-位移属性参照物)
-    - [2.2.5 fixed](#225-fixed)
-    - [2.2.6 sticky](#226-sticky)
+    - [2.2.4 fixed](#224-fixed)
+    - [2.2.5 sticky](#225-sticky)
+    - [2.2.6 :star: 位移属性参照物](#226-star-位移属性参照物)
     - [2.2.7 :star: block的覆盖关系: z-index](#227-star-block的覆盖关系-z-index)
   - [2.3 :star:Flexbox](#23-starflexbox)
     - [2.3.1 Display: Flex](#231-display-flex)
@@ -418,6 +410,9 @@ margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于
 
 :gem: [box model](./CSS_Sample/Block_Dimension/31-boxModel.html)
 
+:gem: [block dimension](./CSS_Sample/Block_Dimension/Block_Dimension.html)
+
+
 如图, 一个box涉及到的dimension由外而内依次是:
 + top, left...等位移属性, 是相对于位移属性参照物而言, 见[2.2.4 位移属性参照物](#224-star-位移属性参照物)
 + margin (邻居间的间隔), 外边距
@@ -523,13 +518,16 @@ html,body{
 
 inline-element可以在一行内接连出现
 
+:gem: [block element, inline element](./CSS_Sample/Block_Element/Block.html)
+
+
 总之, 文档流是页面元素的排布顺序(可能是用array的形式存储的?), 从左到右, 从上到下
 
 + 表示文档流的数据结构可以认为是父元素的一个field
   + 如果一个页面有多个同级别的父元素, 每个父元素下有多个子元素, 则子元素加入对应父元素的文档流
   + 另外记得如果是block element的嵌套, 子元素都是以父元素的content部分作为外边框来排布, 不管有没有定义`box-sizing: border-box;`
 
-:gem: [文档流与位移属性参照物](./CSS_Sample/Block_Position/Block_Position.html)
+:gem::gem: [文档流与位移属性参照物](./CSS_Sample/Block_Position/Block_Position.html)
 
 
 #### 2.1.3 Display属性
@@ -646,108 +644,65 @@ position: absolute;
 ```
 position为absolute的block将会从文档流中脱离出来. 一般当我们想要将某个block移动到某个想要位置时会用position: absolute;
 
-+ **文档流**这里指的是，默认情况下，一个block element从左上角开始占一行，下一个block直接从下一行开始(当然你可以通过将display属性从默认的block改为inline-block，使得下一个block接着上一个block的右边开始). 总之文档流指的是元素的布局排布序列，从上到下，从左到右。
-+ **脱离文档流**的意思是，不影响接下来block的布局排序，但其自身还是遵从文档流，跟着上一个在文档流中的element, 如下面e.g.中蓝色的block还是在绿色的block的下一行
++ [文档流](#212-full_moon文档流)
++ **脱离文档流**的意思是, 该元素不加入其父元素的表示文档流的数据接结构, 不影响接下来block的布局排序，但其自身还是遵从文档流，跟着上一个在文档流中的element, 如下面e.g.中蓝色的block还是在绿色的block的下一行
 
 > :question:疑问：如果连写俩absolute sub block会怎么样？还是各自一行吗？还是重叠在一起？我倾向于重叠在一起
 
-```html
-<div class="block1">
-    <div class="sub_block1"></div>
-    <div class="sub_block2"></div>
-    <div class="sub_block3"></div>
-</div>
-```
-```css
-html,body{
-    margin:0;
-    padding:0;
-}
-
-.block1{
-    background: red;
-
-    width: 500px;
-    height: 500px;
-}
-
-.sub_block1{
-    background: yellow;
-
-    width: 100px;
-    height: 100px;
-}
+:gem: [position: absolute](./CSS_Sample/Block_Position/absolute.html)
 
 
-.sub_block2{
-    position: absolute;     /*isolate sub_block2 from document flow*/
-
-    width: 100px;
-    height: 100px;
-
-    background: lightgreen;
-}
-
-.sub_block3{
-    position: relative;     /*now that displacement attributes works*/
-    left: 50px;
-    top: 50px;
-
-    width: 100px;
-    height: 100px;
-
-    background: purple;
-}
-```
-
-将sub_block2从文档流独立出去, sub_block3的位置紧跟上一个在文档流中的元素(sub_block1)
+将sub_block2(绿色)从文档流独立出去, sub_block3(紫色)的位置紧跟上一个在文档流中的元素(sub_block1)
 
 <img src="Src/position_absolute.png" width="50%">
 
-如果将sub_block2算入文档流, 则sub_block3的位置紧跟上一个在文档流中的元素(sub_block2)
+如果将sub_block2(绿色)算入文档流, 则sub_block3(紫色)的位置紧跟上一个在文档流中的元素(sub_block2)
 
 
 <img src="Src/position_absolute2.png" width="50%">
 
-### 2.2.4 :star: 位移属性参照物
-一个元素有没有定位会影响到它的子元素的位移属性的参照物如何选择
-+ position属性为relative/absolute/fixed的元素是有定位的
-+ position为其他的元素是无定位的. 
-
-**位移属性参照物的选择:**
-+ 对于position:absolute的element, 其不参与任何元素的文档流 
-  + 如果祖先元素有定位(relative,absolute,fixed), 则选取最近一级的有定位的祖先元素为位移属性参照物. 
-  + 如果祖先元素均无定位, 则选root element作为位移属性参照物.
-+ 对于position: relative的element, 参与其父级元素的文档流
-  + 选取由其父级元素的文档流决定的原来位置作为位移属性参照物, 不用管其父级元素是否是有定位的.
-+ 对于position: fixed的element, 位移属性参照物为browser的viewport, 和父级元素无关, 也不参与任何文档流
-
-:gem: [文档流与位移参照物](./CSS_Sample/Block_Position/Block_Position.html)
 
 
-
-### 2.2.5 fixed
+### 2.2.4 fixed
 固定，像狗皮膏药一样贴在一个网页视口的一个地方一动不动, 不管你如何scroll up and down
 
 :gem: [fixed](./CSS_Sample/Block_Position/08-fixed.html)
 
 :gem: [Practice: 固定side window到版心右侧](./CSS_Sample/Block_Position/09-%E5%9B%BA%E5%AE%9A%E5%AE%9A%E4%BD%8D%E6%8A%80%E5%B7%A7-%E5%9B%BA%E5%AE%9A%E5%88%B0%E7%89%88%E5%BF%83%E5%8F%B3%E4%BE%A7.html)
 
-### 2.2.6 sticky
+### 2.2.5 sticky
 [w3school: sticky](https://www.w3schools.com/howto/howto_css_sticky_element.asp)
 
 An element with position: sticky; is positioned based on the user's scroll position.
 
 A sticky element toggles between `relative` and `fixed`, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed).
 
+sticky的特点:
 + 以浏览器的可视窗口为参照移动元素 （fixed特点）
 + 粘性定位占有原先的位置 （relative特点）
 + 除了position: sticky, 还需至少定义一个位移属性(滚动后的位置)才能实现sticky的效果
 
 :gem: [sticky](./CSS_Sample/Block_Position/10-sticky.html)
 
-### 2.2.7 :star: block的覆盖关系: z-index
 
+### 2.2.6 :star: 位移属性参照物
+一个元素有没有定位会影响到它的子元素的位移属性的参照物如何选择
++ position属性为relative/absolute/fixed的元素是有定位的
++ position为其他的元素是无定位的. 
+
+**位移属性参照物的选择:**
++ 对于position:absolute的element, 其不参与任何元素的文档流 
+  + 如果**没有为**position:absolute的元素声明位移属性, 则该元素选取由文档流决定的原来位置为位移属性参照物(:question:位移属性如果不设置, 默认为0吗?我觉得是的), 但其本身并不参与文档流.
+  + 如果为position: absolute的元素声明了位移属性 
+    + 如果祖先元素有定位(relative,absolute,fixed), 则选取最近一级的有定位的祖先元素为位移属性参照物. 
+    + 如果祖先元素均无定位, 则选root element作为位移属性参照物. 
++ 对于position: relative的element, 它参与其父级元素的文档流
+  + 选取由其父级元素的文档流决定的原来位置作为位移属性参照物, 不用管其父级元素是否是有定位的.
++ 对于position: fixed的element, 位移属性参照物为browser的viewport, 和父级元素无关, 也不参与任何文档流
+
+:gem::gem: [文档流与位移参照物](./CSS_Sample/Block_Position/Block_Position.html)
+
+### 2.2.7 :star: block的覆盖关系: z-index
 
 <img src="Src/block_zindex.png" width="80%">
 
@@ -758,6 +713,8 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 ## 2.3 :star:Flexbox
 [mozilla: flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
 
+
+
 + 前面的我们如果写多个block, 它们按文档流依次排列下来
 
   <img src="Src/before_flexbox1.png" width=80%>
@@ -765,6 +722,9 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 + 使用overflow: hidden 来隐藏掉overflow的block
   
   <img src="Src/before_flexbox2.png" width=80%>
+
+:gem: [Demo: flexbox](./CSS_Sample/Flexbox/flexbox.html)
+
 
 现在我们来看看如何使得block流动, 呈现一种动态布局
 

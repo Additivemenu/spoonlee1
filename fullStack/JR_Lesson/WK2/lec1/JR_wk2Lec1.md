@@ -6,7 +6,6 @@ margin合并塌陷 9min-
 + 加padding也可
 + 其他方法: 浮动, 固定, 绝对定位的盒子不会出现塌陷问题
 
-
 这节课开始 14min-
 # 01 em 15min-
 + 子元素的字体大小的em是相对于父元素的字体大小.
@@ -46,7 +45,7 @@ JS的基础打好很重要
 
 sticky不算做有定位, 有定位只有3中relative, absolute, fixed
 
-:question: fixed会影响文档流吗?
+:question: fixed会影响文档流吗? -- 不会
 
 :question: 再理解理解代码
 

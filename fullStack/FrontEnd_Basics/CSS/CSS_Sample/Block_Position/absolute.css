@@ -1,0 +1,35 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+.block{
+    background: red;
+
+    width: 500px;
+    height: 500px;
+}
+
+.sub_block{
+    background: yellow;
+
+    width: 100px;
+    height: 100px;
+}
+
+
+.sub_block:nth-child(2){
+    position: absolute;     /*isolate sub_block2 from document flow*/
+    bottom: 0;
+    right:0;
+
+    background: lightgreen;
+}
+
+.sub_block:nth-child(3){
+    position: relative;     /*now that displacement attributes works*/
+    left:50px;
+    top:50px;
+
+    background: purple;
+}
