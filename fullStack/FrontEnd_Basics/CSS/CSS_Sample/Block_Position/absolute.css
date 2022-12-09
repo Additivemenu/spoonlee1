@@ -17,19 +17,18 @@ html,body{
     height: 100px;
 }
 
-
 .sub_block:nth-child(2){
     position: absolute;     /*isolate sub_block2 from document flow*/
-    bottom: 0;
-    right:0;
+    /* left:0;
+    top:0; */
 
     background: lightgreen;
 }
 
 .sub_block:nth-child(3){
     position: relative;     /*now that displacement attributes works*/
-    left:50px;
-    top:50px;
+    left:20px;
+    top:20px;
 
     background: purple;
 }

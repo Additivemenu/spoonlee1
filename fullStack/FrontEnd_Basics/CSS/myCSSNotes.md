@@ -71,7 +71,7 @@ Content
       - [4.1.2.2 颜色属性](#4122-颜色属性)
   - [4.2 :full\_moon: Background](#42-full_moon-background)
 - [5. CSS动态效果](#5-css动态效果)
-  - [5.1 media query](#51-media-query)
+  - [5.1 media query - responsive web page](#51-media-query---responsive-web-page)
 
 
 ---
@@ -692,7 +692,7 @@ sticky的特点:
 
 **位移属性参照物的选择:**
 + 对于position:absolute的element, 其不参与任何元素的文档流 
-  + 如果**没有为**position:absolute的元素声明位移属性, 则该元素选取由文档流决定的原来位置为位移属性参照物(:question:位移属性如果不设置, 默认为0吗?我觉得是的), 但其本身并不参与文档流.
+  + 如果**没有为**position:absolute的元素声明位移属性, 则该元素选取由文档流决定的原来位置为位移属性参照物(:question:位移属性如果不设置, 默认为0吗?我觉得是的), 但其本身并不参与文档流. 即它们所说的**默认靠左上不重叠**.
   + 如果为position: absolute的元素声明了位移属性 
     + 如果祖先元素有定位(relative,absolute,fixed), 则选取最近一级的有定位的祖先元素为位移属性参照物. 
     + 如果祖先元素均无定位, 则选root element作为位移属性参照物. 
@@ -1191,7 +1191,7 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 
 # 5. CSS动态效果
 
-## 5.1 media query
+## 5.1 media query - responsive web page
 
 + min-width 表示使得{}中语句有效的min width
 + max-width 表示使得{}中语句有效的max width

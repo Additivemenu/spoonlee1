@@ -9,9 +9,10 @@
   + 最后要结合project练习, 经常翻阅自己的笔记(最重要)!
 
 对于tutorial的练习
-+ 做到能自己独立复现
-
++ 做到能自己独立复现 
+  
 ---
+
 P1: 
 
 https://coderguan.com/
@@ -20,9 +21,10 @@ https://coderguan.com/
 
 progress tracking
 # WK1: 
-+ homework
-+ lec2笔记总结 (结合morilla笔记)
-  + 接下来结合代码和课堂笔记
-+ tut练习总结
-+ P1进度
++ tut练习独立复现, 以及经验总结
 + 补充视频
+
+# WK2:
++ lesson 4: JS预习
++ tut
++ P1
