@@ -1,5 +1,8 @@
 跳转
 
++ [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
+
+
 + [CSS selector](./CSS_Sample/Selector/CSS_Selector.html)
 + [block element](./CSS_Sample/Block_Element/Block.html)
 + [block dimension](./CSS_Sample/Block_Dimension/Block_Dimension.html)
@@ -26,6 +29,7 @@ Content
 
 
 
+- [0. BEM命名规范](#0-bem命名规范)
 - [1. :full\_moon:选择器](#1-full_moon选择器)
   - [1.1. 基本选择器](#11-基本选择器)
   - [1.2 层次选择器](#12-层次选择器)
@@ -45,16 +49,14 @@ Content
 - [3. :moon: Block element](#3-moon-block-element)
   - [2.0 box model (盒模型)](#20-box-model-盒模型)
   - [2.1 Basics of Block](#21-basics-of-block)
-    - [2.1.1 block 基本属性](#211-block-基本属性)
-    - [2.1.2 设置html, body margin \& padding](#212-设置html-body-margin--padding)
-    - [2.1.3 border \& border-radius](#213-border--border-radius)
-    - [2.1.4 :full\_moon:文档流](#214-full_moon文档流)
-      - [2.1.5 Display属性](#215-display属性)
+    - [2.1.1 设置html, body margin \& padding](#211-设置html-body-margin--padding)
+    - [2.1.2 :full\_moon:文档流](#212-full_moon文档流)
+      - [2.1.3 Display属性](#213-display属性)
   - [2.2 :star: Position of Block](#22-star-position-of-block)
     - [2.2.1 static (by default)](#221-static-by-default)
     - [2.2.2 :star: relative](#222-star-relative)
     - [2.2.3 absolute](#223-absolute)
-    - [2.2.4 :star: relative \& absolute: 位移属性参照物](#224-star-relative--absolute-位移属性参照物)
+    - [2.2.4 :star: 位移属性参照物](#224-star-位移属性参照物)
     - [2.2.5 fixed](#225-fixed)
     - [2.2.6 sticky](#226-sticky)
     - [2.2.7 :star: block的覆盖关系: z-index](#227-star-block的覆盖关系-z-index)
@@ -76,6 +78,8 @@ Content
       - [4.1.2.1 长度属性](#4121-长度属性)
       - [4.1.2.2 颜色属性](#4122-颜色属性)
   - [4.2 :full\_moon: Background](#42-full_moon-background)
+- [5. CSS动态效果](#5-css动态效果)
+  - [5.1 media query](#51-media-query)
 
 
 ---
@@ -84,7 +88,16 @@ Content
 [mozilla CSS](https://developer.mozilla.org/en-US/docs/Web)
 
 ---
+# 0. BEM命名规范
 
+BEM命名规范用来提高代码可读性, 用来命名class, 分为三部分:
+block__element--modifier
+
+用2\*underline和2\*dash来分隔classname
+
+:gem: [BEM命名规范](./CSS_Sample/BEM/03-bem.html)
+
+<img src="./Src/BEM_eg.png" width=70%>
 
 # 1. :full_moon:选择器
 [Learning Material: wc3 selector](https://www.w3schools.com/CSSref/css_selectors.php)
@@ -405,8 +418,8 @@ margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于
 
 :gem: [box model](./CSS_Sample/Block_Dimension/31-boxModel.html)
 
-如图, 一个box由外而内依次是
-+ top, left...等定位属性
+如图, 一个box涉及到的dimension由外而内依次是:
++ top, left...等位移属性, 是相对于位移属性参照物而言, 见[2.2.4 位移属性参照物](#224-star-位移属性参照物)
 + margin (邻居间的间隔), 外边距
 Margin属性，表示该block与其他block之间的最小距离. e.g.如果block1(margin:30px)与block2(margin:50px), 那么他们俩之间实际间距是50px;
   + margin的'重载'
@@ -425,6 +438,28 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
     :gem: [用margin实现box水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
   + [mozilla: margin collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) :question: 没太懂
     :gem: [margin合并塌陷](./CSS_Sample/Block_Dimension/34-margin合并塌陷.html) 
++ border
+  + block有圆角
+    ```css
+    .block1{
+        width: 300px;
+        height: 300px;
+        background: red;
+        border: 3px solid black;
+        border-radius: 10px;
+      }
+    ```
+
+  + block变成circle
+    ```css
+    .block1{
+        width: 300px;
+        height: 300px;
+        background: red;
+        border: 3px solid black;
+        border-radius: 50%;
+      }
+    ```
 + padding  (自家院子), 内边距
   + padding的'重载', 和margin类似
 + content (自家房子)
@@ -469,17 +504,8 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
 
 
 ## 2.1 Basics of Block
-### 2.1.1 block 基本属性
-width, height, background
-```css
-.block1{
-  width: 300px;
-  height: 300px;
-  background: red;
-}
-```
 
-### 2.1.2 设置html, body margin & padding
+### 2.1.1 设置html, body margin & padding
 
 如下设置之后, block与网页的间距会消失
 ```css
@@ -489,59 +515,24 @@ html,body{
 }
 ```
 
-### 2.1.3 border & border-radius
-  
-block有圆角
-```css
-.block1{
-    width: 300px;
-    height: 300px;
-    background: red;
-    border: 3px solid black;
-    border-radius: 10px;
-  }
-```
-
-block变成circle
-```css
-.block1{
-    width: 300px;
-    height: 300px;
-    background: red;
-    border: 3px solid black;
-    border-radius: 50%;
-  }
-```
-
-### 2.1.4 :full_moon:文档流
+### 2.1.2 :full_moon:文档流
 
 设置两个block, 会发现block2并不是出现在block1的右边, 而是在它下面
 
-事实上, 一个bolck实际上是占一行的文档。Block默认是从左上角开始出现，新的block会占新的一行，而不是出现在旧的block的右边。
+事实上, 一个block element实际上是占一行的文档。Block默认是从左上角开始出现，新的block会占新的一行，而不是出现在旧的block的右边。
 
-```html
-  <div class="block1"></div>
-  <div class="block2"></div>
-```
-```css
-.block1{
-    width: 300px;
-    height: 300px;
-    background: red;
-    border: 3px solid black;
-    border-radius: 10px;
-}
+inline-element可以在一行内接连出现
 
-.block2{
-width: 300px;
-height: 300px;
-background: yellow;
-border: 3px solid black;
-border-radius: 10px;
-}
-```
+总之, 文档流是页面元素的排布顺序(可能是用array的形式存储的?), 从左到右, 从上到下
 
-#### 2.1.5 Display属性
++ 表示文档流的数据结构可以认为是父元素的一个field
+  + 如果一个页面有多个同级别的父元素, 每个父元素下有多个子元素, 则子元素加入对应父元素的文档流
+  + 另外记得如果是block element的嵌套, 子元素都是以父元素的content部分作为外边框来排布, 不管有没有定义`box-sizing: border-box;`
+
+:gem: [文档流与位移属性参照物](./CSS_Sample/Block_Position/Block_Position.html)
+
+
+#### 2.1.3 Display属性
 block的display属性, 默认是block, 即服从上面的文档流, 一个block结束了, 下一个block从下一行开始;
 
 如果将display设为inline-block, block对外会呈现出inline的性质, 像text一样从左向右排列, 一行满了再去下一行.
@@ -583,19 +574,21 @@ html,body{
 关于block的position属性, 以及位移属性(left, top, right, bottom)
 
 + 简言之, static的block的位移属性作废, relative与absolute的block的位移属性才生效.
++ 文档流是一个表示元素排列顺序的数据结构(可能是个array?), 元素们由上到小, 由左到右排列. 不参与文档流的元素不被写入这个数据结构.
 + absolute的block不参与文档流, relative的block参与文档流
-+ 参与文档流的block的位移参照物为其上级中最近的position不是static的block 
++ 位移属性参照物的选取
 
 ### 2.2.1 static (by default)
 ```css
 position: static;
 ```
-Position属性如果是Static，则位移属性（left,right,top,bottom）无效，block的位置完全由文档流决定
++ Position属性如果是Static，则位移属性（left,right,top,bottom）无效，block的位置完全由文档流决定
++ 是的, position为static的元素只能认为没有定位, 其位移属性失效, 但元素本身还是参与文档流的
 
 ### 2.2.2 :star: relative
 
 ```css
-position: relative
+position: relative;
 ```
 此时位移定义可以生效:
 + Left: 使得原来位置在新的位置左侧; right同理
@@ -615,31 +608,36 @@ html,body{
 
 
 .block1{
+    position: relative;     /*now left, top works*/
+    left: 100px;
+    top: 100px;
+
     width: 300px;
     height: 300px;
+
+    display:block;
+
     background: red;
     border: 3px solid black;
     border-radius: 10px;
-    display:block;
-    position: relative;     /*now that left, top works*/
-    left: 100px;
-    top: 100px;
 }
 
 .block2{
     width: 300px;
     height: 300px;
+
+    display:inline-block;
+
     background: yellow;
     border: 3px solid black;
     border-radius: 10px;
-    display:inline-block;
 }
 ```
 
 <img src="Src/relative%20position.png" width=50%>
 
 + 使用位移属性, 有可能将block移出视口
-+ 位移属性优先级顺序: 同时定义了left, right, top and bottom的情况下, left, top优先, right, bottom作废
++ 位移属性优先级顺序: 如果同时定义了left, right, top and bottom的情况下, left, top优先, right, bottom作废
 
 
 ### 2.2.3 absolute
@@ -648,10 +646,10 @@ position: absolute;
 ```
 position为absolute的block将会从文档流中脱离出来. 一般当我们想要将某个block移动到某个想要位置时会用position: absolute;
 
-+ **文档流**这里指的是，默认情况下，一个block从左上角开始，其实是占一行，下一个block直接从下一行开始而不是接着上一个block的右边开始，当然你可以通过将display属性从默认的block改为inline-block，使得下一个block接着上一个block的右边开始。总之文档流指的是一种文档的布局排布序列，从上到下，从左到右。
-+ **脱离文档流**的意思是，不影响接下来block的布局排序，但其自身还是遵从文档流，跟着上一个block, 如蓝色的block还是在绿色的block的下一行
++ **文档流**这里指的是，默认情况下，一个block element从左上角开始占一行，下一个block直接从下一行开始(当然你可以通过将display属性从默认的block改为inline-block，使得下一个block接着上一个block的右边开始). 总之文档流指的是元素的布局排布序列，从上到下，从左到右。
++ **脱离文档流**的意思是，不影响接下来block的布局排序，但其自身还是遵从文档流，跟着上一个在文档流中的element, 如下面e.g.中蓝色的block还是在绿色的block的下一行
 
-> 疑问：如果连写俩absolute sub block会怎么样？还是各自一行吗？还是重叠在一起？我倾向于重叠在一起
+> :question:疑问：如果连写俩absolute sub block会怎么样？还是各自一行吗？还是重叠在一起？我倾向于重叠在一起
 
 ```html
 <div class="block1">
@@ -667,33 +665,41 @@ html,body{
 }
 
 .block1{
+    background: red;
+
     width: 500px;
     height: 500px;
-    background: red;
 }
 
 .sub_block1{
+    background: yellow;
+
     width: 100px;
     height: 100px;
-    background: yellow;
 }
 
+
 .sub_block2{
+    position: absolute;     /*isolate sub_block2 from document flow*/
+
     width: 100px;
     height: 100px;
+
     background: lightgreen;
-    position: absolute;     /*isolate sub_block2 from document flow*/
 }
 
 .sub_block3{
-    width: 100px;
-    height: 100px;
-    background: purple;
     position: relative;     /*now that displacement attributes works*/
     left: 50px;
     top: 50px;
+
+    width: 100px;
+    height: 100px;
+
+    background: purple;
 }
 ```
+
 将sub_block2从文档流独立出去, sub_block3的位置紧跟上一个在文档流中的元素(sub_block1)
 
 <img src="Src/position_absolute.png" width="50%">
@@ -703,21 +709,38 @@ html,body{
 
 <img src="Src/position_absolute2.png" width="50%">
 
-### 2.2.4 :star: relative & absolute: 位移属性参照物
+### 2.2.4 :star: 位移属性参照物
+一个元素有没有定位会影响到它的子元素的位移属性的参照物如何选择
++ position属性为relative/absolute/fixed的元素是有定位的
++ position为其他的元素是无定位的. 
 
-即使position是absolute, 也需要一个参照物来进行计算位移属性; 属性为absolute的block的位移参照物会从上一级的block属性查看。
-+ 如果position为absolute的block的上一级block的position属性是static（不写position默认就是static），那么absolute就不会看上一层的，而会再往上一层去看直到block的position**不是static**（如果不是才会将其选择为位移参照物)
-  + 如果上一层block的position属性一直都是static, 则会选取整个文档作为参照物，来计算位移属性。有时候发现block没有对齐, 可能就是这个原因!
-+ 如果position为absolute的sub-block的上一级block的position属性是relative, 则该sub-block会以上一级的block为参照物来计算位移属性. **因此，一般parent block的position设定习惯上直接写relative，这样child block会选取mother block为位移参照物。**
-+ 如果position为absolute的sub-block的上一级block的position属性是absolute, 则该sub-block会以上一级的block作为参照物来计算位移属性. 但注意此时, 上一级的block是独立于文档流的
+**位移属性参照物的选择:**
++ 对于position:absolute的element, 其不参与任何元素的文档流 
+  + 如果祖先元素有定位(relative,absolute,fixed), 则选取最近一级的有定位的祖先元素为位移属性参照物. 
+  + 如果祖先元素均无定位, 则选root element作为位移属性参照物.
++ 对于position: relative的element, 参与其父级元素的文档流
+  + 选取由其父级元素的文档流决定的原来位置作为位移属性参照物, 不用管其父级元素是否是有定位的.
+
+:gem: [文档流与位移参照物](./CSS_Sample/Block_Position/Block_Position.html)
+
 
 
 ### 2.2.5 fixed
-固定，像狗皮膏药一样贴在一个地方不动
+固定，像狗皮膏药一样贴在一个网页视口的一个地方一动不动, 不管你如果scroll up and down
+
+:gem: [fixed](./CSS_Sample/Block_Position/08-fixed.html)
+
+:gem: [Practice: 固定side window到版心右侧](./CSS_Sample/Block_Position/09-%E5%9B%BA%E5%AE%9A%E5%AE%9A%E4%BD%8D%E6%8A%80%E5%B7%A7-%E5%9B%BA%E5%AE%9A%E5%88%B0%E7%89%88%E5%BF%83%E5%8F%B3%E4%BE%A7.html)
 
 ### 2.2.6 sticky
-相当于relative和fixed结合
+[w3school: sticky](https://www.w3schools.com/howto/howto_css_sticky_element.asp)
 
+An element with position: sticky; is positioned based on the user's scroll position.
+
+A sticky element toggles between `relative` and `fixed`, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed).
++ 除了position: sticky, 还需额外定义一个位移属性(滚动后的位置)才能实现sticky
+
+:gem: [sticky](./CSS_Sample/Block_Position/10-sticky.html)
 
 ### 2.2.7 :star: block的覆盖关系: z-index
 
@@ -1124,8 +1147,19 @@ body,html{
 #### 4.1.2.1 长度属性
 长度单位有相对长度单位和绝对长度单位两种类型。
 + 绝对长度单位: px
-+ 相对长度单位指相对于另一长度的长度，主要有em、ex、ch、rem(1rem=16px)、%和可视区百分比长度单位vw、vh、vmin、vmax
+  + 对应地, px一般用于border或者定位属性 
++ 相对长度单位指相对于另一长度的长度，主要有em、ex、ch、rem(默认1rem=16px)、%和可视区百分比长度单位vw、vh、vmin、vmax
+  + em: multiple of the font-size of the element on which it is used
+    + 子元素的字体大小的em是相对于父元素的字体大小.
+    + 元素的width/height/padding/margin用em的话是相对于该元素的font-size 
+  + rem: multiple of the given **root** font-size
+    + rem是相对于root(即最高父级), 因而更常用 
+    + 默认1 rem = 16px, 但是可以在html{font-size:}改
++ 注意浏览器会有默认最小font-size的设置, 比如chrome默认最小字体为12px
 
+:gem: [em](./CSS_Sample/Size_Unit/01-em.html)
+
+:gem: [rem](./CSS_Sample/Size_Unit/02-rem.html)
 
 #### 4.1.2.2 颜色属性
 用十六进制数方式表示颜色值
@@ -1189,3 +1223,47 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 :gem::star: [Background semi-transparent while text remain solid](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
 
 :question: 最后这个练习里, .hero::before{}和.hero的层级关系是什么?
+
+
+# 5. CSS动态效果
+
+## 5.1 media query
+
++ min-width 表示使得{}中语句有效的min width
++ max-width 表示使得{}中语句有效的max width
++ @media 后面那块为true, 才启用{ }中的语句
+
+```css
+/* 当 300px <= width  <= 600px时, 启用{ }中的语句}*/
+@media screen and (min-width:300px) and (max-width: 600px){
+  body{
+    background: aqua;
+  }
+}
+```
+
+注意:  
++ 有重叠的区间, 后写的覆盖前面写的
++ 好的规范: 写的时候区间总是先写大的, 再写小的
++ 具体区间的划分看公司的规定
+
+:gem: [@media 区间无冲突](./CSS_Sample/Media_Query/04-media.html)
+
+:gem: [@media 区间有冲突](./CSS_Sample/Media_Query/04-media2.html)
+
+
+5.2 transition
+
+`transition`使得原本instant的变化变得continuous
+  +  注意变化本身不是transition定义的
+
+```css
+/*所有属性连续变化*/
+transition: all 0.5s;
+
+/*指定属性连续变化*/
+transition: width 1s ease 0s, height .5s ease 1s;
+```
+
+:gem: [transition](./CSS_Sample/Transition/11-transition.html)
+:gem: [Practice: health bar](./CSS_Sample/Transition/11-transitionPractice.html)

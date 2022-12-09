@@ -1,0 +1,20 @@
+/*区间有冲突, 如果小区间写在前面, 那么后面写的大区间会覆盖掉前面的小区间, 导致前面的小区间失效*/
+/*应当先写大区间, 再写小区间*/
+
+/* @media screen and (max-width: 600px){
+    body{
+        background: yellow;
+    }
+} */
+
+@media screen and (max-width: 1200px){
+    body{
+        background: red;
+    }
+}
+
+@media screen and (max-width: 600px){
+    body{
+        background: yellow;
+    }
+}

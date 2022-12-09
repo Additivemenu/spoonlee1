@@ -14,6 +14,7 @@ html,body{
     height: 100vh;      /*100% viewport height*/
 }
 
+/*==========================block 1==============================================*/
 .block1{
     position: relative;
     /* top: 100px;
@@ -37,8 +38,8 @@ html,body{
 
 .sub_block1:nth-child(2){
     position: absolute;
-    right:0;
-    top: 0;
+    right:10px;
+    top: 10px;
 
     background: lightgreen;
     /* position: absolute; */
@@ -49,10 +50,10 @@ html,body{
     left: 50px;
     top: 50px;
 
-    background: purple;
+    background: green;
 }
 
-/*==========================================*/
+/*========================block 2=========================================*/
 .block2{
     position: absolute;
     top:0;
@@ -61,18 +62,18 @@ html,body{
     width: 40%;
     height: 500px;
 
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: center;
+    align-content: center; */
 
     background: pink;
 }
 
 .sub_block2{
-    width: 100px;
-    height: 100px;
+    width: var(--subBlock-size);
+    height: var(--subBlock-size);
 }
 
 .sub_block2:nth-child(1){
@@ -82,11 +83,67 @@ html,body{
 
 .sub_block2:nth-child(2){
 
+    position: absolute;     /*选取最近的有定位的祖先元素为位移属性参照物, 不影响后续文档流*/
+    left: 30px;
+    bottom: 10px;
+
     background: red;
 }
 
 .sub_block2:nth-child(3){
-    position: relative;
+    position: relative;     /*选取由其父级元素的文档流(有定位还是无定位?)决定的原来位置作为位移属性参照物*/
+    left: 30px;
+    bottom: 10px;
 
     background: blue;
+}
+
+.sub_block2:nth-child(4){   /*position为static的element也参与到其父级元素的文档流*/
+
+    background: yellow;
+}
+
+
+/* =====================block3 position: static===================================== */
+.block3{
+
+    width: 500px;
+    height: 500px;
+
+    background: black;
+}
+
+.sub_block3{
+    width: var(--subBlock-size);
+    height: var(--subBlock-size);
+}
+
+.sub_block3:nth-child(1){           /*选取最近的有定位的祖先元素作为位移属性参照物, 这里就是body了*/
+    background: pink;
+
+    position: absolute;
+    /* left: 5px;
+    top: 5px; */
+    right: 0;
+    bottom: 0px;
+}
+
+.sub_block3:nth-child(2){          /*选取由其父级元素的文档流所决定的原来位置作为位移属性的参照物, 不用管父级元素是否有定位*/
+    background: lightblue;
+
+    position: relative;
+    top: 30px;
+    left: 30px;
+}
+
+.sub_block3:nth-child(3){       /*选取最近的有定位的祖先元素作为位移属性参照物, 这里就是body了*/
+    background: purple;
+
+    position: absolute;
+    left: 30px;
+    top:30px;
+}
+
+.sub_block3:nth-child(4){
+    background: violet;
 }

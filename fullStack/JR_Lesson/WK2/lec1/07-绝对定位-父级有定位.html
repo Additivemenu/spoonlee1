@@ -6,12 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>绝对定位-父级有定位</title>
     <style>
-      .yeye {
-        position: relative;
-        width: 800px;
-        height: 800px;
 
-        background-color: hotpink;
+      body, html{
+        margin: 0;
+        padding: 0;
+      }
+
+      .grandfather {
+        position: relative;
+        width: 1000px;
+        height: 1000px;
+
+        background-color: red;
 
         padding: 50px;
       }
@@ -21,26 +27,29 @@
         width: 500px;
         height: 500px;
 
-        background-color: skyblue;
+        background-color: green;
       }
 
       .son {
-        position: absolute;
+        position: absolute;   /*change to relative to see difference*/
         left: 30px;
         bottom: 10px;
 
-        width: 200px;
-        height: 200px;
-        background-color: pink;
+        width: 250px;
+        height: 250px;
+
+        background-color: lightskyblue;
       }
     </style>
   </head>
 
   <body>
-    <div class="yeye">
+    
+    <div class="grandfather">
       <div class="father">
         <div class="son"></div>
       </div>
     </div>
+
   </body>
 </html>

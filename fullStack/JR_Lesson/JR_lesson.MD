@@ -12,6 +12,11 @@
 + 做到能自己独立复现
 
 ---
+P1: 
+
+https://coderguan.com/
+
+---
 
 progress tracking
 # WK1: 
