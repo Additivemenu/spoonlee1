@@ -1,0 +1,32 @@
+body,html{
+    margin:0;
+    padding:0;
+}
+
+form{
+    width: 620px;
+    height: 1250px;
+    margin: 0px auto;           /*form水平居中*/
+    padding: 25px;
+
+    background-color: grey;
+}
+
+h1{
+    text-align: center;
+}
+
+
+.basicInfo{
+    width: 100%;
+    /* border: none; */
+}
+
+.basicInfo input{
+    background-color: white;
+
+    width: 100%;
+
+    padding: 10px 15px;         /*加宽输入框*/
+    margin-bottom: 30px;
+}

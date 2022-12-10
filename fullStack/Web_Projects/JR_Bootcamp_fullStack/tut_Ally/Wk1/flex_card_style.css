@@ -74,7 +74,9 @@ h1{
 .card_price{
     background-color: #555;
     color: #fff;
+    
     padding: 5px 20px;
+
     border-radius: 20px;
     cursor: pointer;
     border: none;

@@ -358,27 +358,6 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 ## 2.4 Emmet语法
 
-快速生成HTML结构的语法
-```css
-div*5
-
-div>span
-
-div+p   
-
-div.class1
-
-div#id1
-
-ul>li#id2
-
-div.demo$*5 /*class name中的数递增*/
-
-div{hello}  /*tag内容*/
-
-div{$}*5    /*内容中的数字递增*/
-```
-
 CSS简写: 只打首字母
 ```css
 text-align: center; 
@@ -490,12 +469,11 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
   + 里面的box占据外面的box的content 
     + 不管有没有定义`box-sizing: border-box;` 里面的box都是用外面的box的**content部分**作为边框进行嵌套 
   :gem: [nested boxes](./CSS_Sample/Block_Dimension/nestedBox.html) 
-
+  + 如果不为div写width, height, 则默认div的宽高就是包络所有sub-element的最小矩形 
+  + 实际代码中, 多层div的嵌套运用很常用, 不同的层次的div可能有不同的作用 (见JR_Ally_Wk1tut.flexCard)
 
 
 :gem::question: [padding不影响盒子大小的情况](./CSS_Sample/Block_Dimension/32-padding%E4%B8%8D%E4%BC%9A%E5%BD%B1%E5%93%8D%E7%9B%92%E5%AD%90%E5%A4%A7%E5%B0%8F%E6%83%85%E5%86%B5.html)
-
-
 
 
 ## 2.1 Basics of Block
@@ -1216,7 +1194,11 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 :gem: [@media 区间有冲突](./CSS_Sample/Media_Query/04-media2.html)
 
 
-5.2 transition
+5.2 transform
+定义使得选中的元素在x, y方向上移动
+
+
+5.3 transition
 
 `transition`使得原本instant的变化变得continuous
   +  注意变化本身不是transition定义的

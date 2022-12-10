@@ -23,7 +23,7 @@ h1{
     /*让cards flex布局*/
     display:flex;
     flex-direction: row;
-    flex-wrap: warp;            /*让cards可以流动*/
+    flex-wrap: wrap;            /*让cards可以流动*/
 }
 
 .wrapper .card{
@@ -91,8 +91,17 @@ h1{
 }
 
 .card .imageButtonContainer button{
-    border-radius: 5px;
+    padding: 5px 20px;
+
+    border-radius: 20px;
+    border: none;
 
     background-color: grey;
     color: white;
+
+    cursor: pointer;
+    /*button里的内容上下左右居中*/
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }

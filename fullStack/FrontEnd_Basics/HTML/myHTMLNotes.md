@@ -10,10 +10,11 @@ Contents
     - [1.2.3 Audio](#123-audio)
   - [1.3 :full\_moon:Hyper-link](#13-full_moonhyper-link)
   - [1.4 注释和特殊字符](#14-注释和特殊字符)
-  - [1.5 :full\_moon:`<Form>` \&  `<input>`](#15-full_moonform---input)
-    - [`<input>` tag](#input-tag)
-  - [1.6 HTML结构元素](#16-html结构元素)
-- [2. 注意特殊语法](#2-注意特殊语法)
+  - [1.5 HTML语义化结构元素](#15-html语义化结构元素)
+- [2. :full\_moon: HTML form](#2-full_moon-html-form)
+  - [2.1 `form` tag](#21-form-tag)
+  - [2.2 `<input>` tag](#22-input-tag)
+- [3. Emmet语法](#3-emmet语法)
 
 ---
 学习资源
@@ -173,7 +174,26 @@ alt="Grapefruit slice atop a pile of other slices">     <!--表示当src unavail
 
 :gem: [特殊字符](./HTML_Sample/HTML_Special_String.html)
 
-## 1.5 :full_moon:`<Form>` &  `<input>`
+
+## 1.5 HTML语义化结构元素
+
+一些常用的语义化(semantic)结构元素:
+
+tag | description
+-----|-----
+header  | 标题头部区域的内容（用于页面或页面中的一块区域）
+footer | 标记脚部区域的内容（用于整个页面或页面的一块区域）
+section | Web页面中的一块独立区域
+article | 独立的文章内容
+aside | 相关内容或应用（常用于侧边栏）
+nav | 导航类辅助内容
+
+<img src="./Src/HTML_structural_elements.png" width=60%>
+
+# 2. :full_moon: HTML form
+
+[w3schools: HTML form](https://www.w3schools.com/html/html_forms.asp)
+
 HTML5的重要元素, 用来作为用户输入
 
 主要由`<form>`与内嵌的`<input>`及其它辅助标签组成
@@ -192,8 +212,18 @@ HTML5的重要元素, 用来作为用户输入
 
 <img src="./Src/HTML_form1.png" width=50%>
 
+## 2.1 `form` tag
 
-### `<input>` tag
+[w3schools: form attributes](https://www.w3schools.com/html/html_forms_attributes.asp)
+
+用`<form>`把`<input>`包起来, 表示一个form
+
++ action: 定义提交form之后做什么
++ target: 定义提交form之后显示什么
++ method: 声明提交form之后要用的HTML方法
++ ...
+
+## 2.2 `<input>` tag
 
 ```html
 <input  type="text"  name="fname" value="text"/>
@@ -211,29 +241,30 @@ HTML5的重要元素, 用来作为用户输入
   + type="reset"为重置按钮
   + type="file"为上传文件按钮
 + 下拉列表: `<select>` & `<option>`
-```HTML
-<select name="列表名称" size="行数">
-<option value="选项的值" selected="selected">…</option >
-<option value="选项的值">…</option >
-</select>
-```
+  ```HTML
+  <select name="列表名称" size="行数">
+    <option value="选项的值" selected="selected">…</option >
+    <option value="选项的值">…</option >
+  </select>
+  ```
 
 + 文本相关
   + `<textarea>`
-  ```html
-  <textarea  name="showText"  cols="x"  rows="y">文本内容 </textarea  >
-  ```
+    生成一个可以拉伸的文本框用来打字
+    ```html
+    <textarea  name="showText"  cols="x"  rows="y">文本内容 </textarea  >
+    ```
   + 只读和禁用
-  ```html
-  <input name="name" type="text" value="张三"  readonly>
-  <input type="submit "  disabled   value="保存" >
-  ```
-  + autocomplete (on/off)属性, 
+    ```html
+    <input name="name" type="text" value="张三"  readonly>
+    <input type="submit "  disabled   value="保存" >
+    ```
+  + autocomplete (on/off)属性
+    + 鼠标移动到input框, 是否显示autocomplete  
   + placeholder属性
   文本框底部文字, 用来提醒输入
   + required属性
   表明该输入是必须的, 不能为空
-
 
 
 :gem: [e.g. HTML form](./HTML_Sample/HTML_form.html)
@@ -242,31 +273,33 @@ HTML5的重要元素, 用来作为用户输入
 
 这个practice中额外的辅助标签:
 + `<fieldset>`
-分块
+给网页分块
 + `<legned>`
 + `<label>`
-点击label转移到input元素
-
-## 1.6 HTML结构元素
-
-一些常用的语义化(semantic)结构元素:
-
-tag | description
------|-----
-header  | 标题头部区域的内容（用于页面或页面中的一块区域）
-footer | 标记脚部区域的内容（用于整个页面或页面的一块区域）
-section | Web页面中的一块独立区域
-article | 独立的文章内容
-aside | 相关内容或应用（常用于侧边栏）
-nav | 导航类辅助内容
+点击label聚焦到input元素
 
 
 
-<img src="./Src/HTML_structural_elements.png" width=60%>
 
+# 3. Emmet语法
 
-# 2. 注意特殊语法
-+ p.active 和p .acitve 的区别 （2h08min-）
-前者指p本级有个叫active的class，后者指p下属所有级适用的叫active的class
-注解:本级，下属级指代写html时的分属关系，如<p> <em></em>  </p> 中em下属于p
-+ Vscode的emmet (快捷指令宏): e.g. 批量写p： p>span.sp-$*6，按tap
+快速生成HTML结构的语法
+```css
+div*5
+
+div>span
+
+div+p   
+
+div.class1
+
+div#id1
+
+ul>li#id2
+
+div.demo$*5 /*class name中的数递增*/
+
+div{hello}  /*tag内容*/
+
+div{$}*5    /*内容中的数字递增*/
+```

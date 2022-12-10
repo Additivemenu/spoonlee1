@@ -5,8 +5,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./signUpForm_style_redo.css">
 </head>
 <body>
-    
+    <form action="" method="get" >
+        <h1>Sign Up</h1>
+
+        <fieldset class="basicInfo">
+            <legend>Your basic info</legend>
+
+            <label for="First Name">First Name</label>
+            <br/>
+            <input type="text" id="First Name">
+            <br/>
+
+            <label for="Last Name">Last Name</label>
+            <br/>
+            <input type="text" id="Last Name">
+            <br/>
+
+            <label for="Email">Email</label>
+            <br/>
+            <input type="text" id="Email">
+            <br/>
+
+            <label for="Username">Username</label>
+            <br/>
+            <input type="text" id="Username">
+            <br/>
+
+            <label for="Password">Password</label>
+            <br/>
+            <input type="password" id="Password">
+            <br/>
+        </fieldset>
+        <br/>
+
+        <fieldset class="otherDetails">
+            <legend>Other details</legend>
+
+            <label for="Birth Date">Birth Date:</label>
+            <input type="date" id="Birth Date">
+
+            <label for="">Gender:</label>
+            <br/>
+            <input type="radio" name="gender" value="Male">
+            <label for="">Male</label>
+            <br/>
+            <input type="radio" name="gender" value="Female">
+            <label for="">Female</label>
+            <br/>
+            <input type="radio" name="gender" value="Other">
+            <label for="">Other</label>
+        </fieldset>
+        <br/>
+
+        <fieldset class="country">
+            <legend>Country</legend>
+
+            <select name="countrySelection" id="">
+                <option value="China">China</option>
+                <option value="US">US</option>
+                <option value="UK">UK</option>
+                <option value="AU">AU</option>
+            </select>
+        </fieldset>
+        <br/>
+
+        <fieldset class="submit">
+            <input type="checkbox">
+            <p>I'm accepting Terms and Conditions</p>
+
+            <button>Sign Up</button>
+        </fieldset>
+        <br/>
+
+    </form>
 </body>
 </html>
