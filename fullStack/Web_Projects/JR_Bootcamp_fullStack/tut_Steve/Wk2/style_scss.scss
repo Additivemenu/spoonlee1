@@ -22,11 +22,19 @@ a{
             border-top-left-radius: 8px;
             border-top-right-radius:8px;
         }
+
         &:last-child{
-            border-bottom-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            border-bottom: $border-style;
+            // border-bottom: $border-style;
+            // border-bottom-left-radius: 8px;
+            // border-bottom-left-radius: 8px;
+
+            //以下和上面注释的写法效果一样
+            border-bottom: $border-style{
+                left-radius: $border-radius;
+                right-radius: $border-radius;
+            };
         }
+        
         &:hover{
             background-color: red;
         }

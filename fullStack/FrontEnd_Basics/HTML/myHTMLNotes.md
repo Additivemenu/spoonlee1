@@ -275,8 +275,9 @@ HTML5的重要元素, 用来作为用户输入
 + `<fieldset>`
 给网页分块
 + `<legned>`
+fieldset的caption
 + `<label>`
-点击label聚焦到input元素
+点击label元素将聚焦到对应的input元素 (由label的for属性来查找input元素的id)
 
 
 

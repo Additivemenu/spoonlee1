@@ -11,7 +11,7 @@ content
   - [1.2 nesting](#12-nesting)
   - [1.3 Mixin](#13-mixin)
   - [1.4 Partials](#14-partials)
-  - [1.5 Extent/Inheritance](#15-extentinheritance)
+  - [1.5 Extend/Inheritance](#15-extendinheritance)
 - [2. SCSS function](#2-scss-function)
 
 
@@ -24,6 +24,7 @@ content
 ---
 
 SCSS是一种改良版的CSS写法, 可以实现一些额外的具有类似programming language特性的简洁语法, 通过把.scss文件编译为.css文件, 可以大大提高CSS的coding效率
+
 
 
 # 0. 一些SCSS相关的terminal指令
@@ -55,7 +56,7 @@ sass --watch scss:css
 
 ## 1.1 variable
 
-+ 用$前缀来标识变量
++ 用`$`前缀来标识变量. 注意声明和引用变量都得用`$`
 
 ```scss
 // scss
@@ -95,9 +96,37 @@ h2.page-header {
 ```
 
 ## 1.2 nesting
-nesting让标签结构更加一目了然
+结合BEM(block__element--modifier) class name的命名规范, nesting让标签结构同HTML相比更加一目了然
 
-e.g.1
+```scss
+// 对于一个nesting的scss选择器写法
+
+ele1{
+  //variable -------------------------------
+
+  //style for ele1 -------------------------
+
+  //style for sub-elements of ele1 ---------
+  Tag{
+    ...
+  }
+
+  &-elementName{
+    ...
+    &__modifierName{
+      ...
+    }
+  }
+
+
+  //style for pseudo class of ele1 ---------
+  &:hover{
+
+  }
+}
+```
+
+:gem: e.g.1 对元素的nesting
 
 ```scss
 .nav{
@@ -138,9 +167,12 @@ e.g.1
 }
 ```
 
-e.g.2
+:gem: e.g.2 对属性(attribute)的nesting写法
+
+当然如果不想对属性nesting写也可以
 
 ```scss
+// scss
 .nav{
     border: 1px solid #000{
         left: 0;
@@ -150,6 +182,7 @@ e.g.2
 ```
 
 ```css
+/*css */
 .nav {
   border: 1px solid #000;
   border-left: 0;
@@ -165,7 +198,9 @@ e.g.2
 
 `@mixin` & `@include`
 
-e.g.1 mixin中为全为常量
+mixin的返回值就是`{ }`括起来的代码.
+
+:gem: e.g.1 mixin中为全为常量
 
 ```scss
 // mixin 也可包含其他mixin或使用嵌套
@@ -190,7 +225,7 @@ e.g.1 mixin中为全为常量
 }
 ```
 
-e.g.2 mixin传递参数
+:gem: e.g.2 mixin传递参数
 + again, 变量用$前缀标识
 
 ```scss
@@ -259,11 +294,13 @@ body {
 }
 ```
 
-## 1.5 Extent/Inheritance
+## 1.5 Extend/Inheritance
 
-类似programming language中的类的继承, 这里的'类'是选择器
+类似programming language中的类的继承, 这里的'类'相当于是选择器
 
 `@extend`: 让一个选择器继承另外选择器的样式, 提高代码复用率
+
+如果单单只是复用代码, 还是用mixin; 如果涉及到选择器的继承再用extend, extend总体用的少.
 
 ```scss
 // scss

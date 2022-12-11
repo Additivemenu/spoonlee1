@@ -5,8 +5,8 @@ body {
 form {
   max-width: 580px;
 
-  margin: 10px auto; /*居中*/
-  padding: 10px 20px;
+  margin: 10px auto; /*form水平居中*/
+  padding: 10px 20px; /*画框效果*/
 
   background: grey;         /*颜色是啥?*/
   border: none;
@@ -33,7 +33,7 @@ select {
   border: none;
 
   padding: 15px 10px;
-  width: 100%;
+  width: 100%;                /*继承自fieldset的width*/
   color: grey;
 
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
@@ -53,8 +53,10 @@ fieldset {
 
 legend {
   margin-bottom: 10px;
+
   display: flex;
   align-items: center;
+
   font-size: 1.4em;
 }
 
@@ -90,7 +92,7 @@ button{
 }
 
 
-/*responsive: when max-width < 580px*/
+/*responsive: when max-width < 580px, 启动如下设置*/
 @media screen and (max-width:580px){
     form{
         width: 300px;

@@ -12,6 +12,12 @@
   + value是输入框内的显示内容
   + 输入框外部的内容还得用`<p>`或者`<label>`来写
   + 使用padding来使得text的输入框加宽， 使用margin来控制一系列元素之间的间隔
++ 嵌套的box, 如果对里面的box写width:100%, 则里面box的width等于外面box的content那部分的宽度(而不是外面box的宽度)
++ **border-box的使用, 我觉得上来对全部元素直接border-box更为方便**
++ **对相同的标签使用不同的类名, 方便在CSS中对同类标签分类渲染, 如表示对话框输入的input的class="textInput", 表示单多选的input的class="choice"**
++ 替换`<select>`自带的小箭头
+
+
 # 2. flex card 20:15-21:06
 
 [flex_cards](./flex_card.html)

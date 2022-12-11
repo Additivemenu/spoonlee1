@@ -40,6 +40,7 @@ Content
   - [2.4 Emmet语法](#24-emmet语法)
 - [3. :moon: Block element](#3-moon-block-element)
   - [2.0 box model (盒模型)](#20-box-model-盒模型)
+    - [盒模型注意事项:](#盒模型注意事项)
   - [2.1 Basics of Block](#21-basics-of-block)
     - [2.1.1 设置html, body margin \& padding](#211-设置html-body-margin--padding)
     - [2.1.2 :full\_moon:文档流](#212-full_moon文档流)
@@ -62,7 +63,8 @@ Content
       - [2.3.5.2 content](#2352-content)
       - [2.3.5.3 item](#2353-item)
       - [2.3.5.4 self](#2354-self)
-    - [2.4.6 order](#246-order)
+    - [2.4.6 :moon: order](#246-moon-order)
+    - [2.4.7 Flexbox Practice](#247-flexbox-practice)
 - [4. 其他渲染属性](#4-其他渲染属性)
   - [4.1 :full\_moon: Text](#41-full_moon-text)
     - [4.1.1 常用的Text相关Properties](#411-常用的text相关properties)
@@ -442,7 +444,7 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
 
 ---
 
-盒模型注意事项:
+### 盒模型注意事项:
 + 网页元素很多都带有默认的内外边距，而且不同浏览器默认的也不一样，因此我们在布局前，要先清除网页元素的默认内外边距.
   ```css
   body,html{
@@ -469,7 +471,8 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
   + 里面的box占据外面的box的content 
     + 不管有没有定义`box-sizing: border-box;` 里面的box都是用外面的box的**content部分**作为边框进行嵌套 
   :gem: [nested boxes](./CSS_Sample/Block_Dimension/nestedBox.html) 
-  + 如果不为div写width, height, 则默认div的宽高就是包络所有sub-element的最小矩形 
+  + 如果不为box写width, height, 则默认box的宽高就是包络其所有sub-element的最小矩形 
+  + 如果对内部的box声明: width:100%, 则内部box将继承外部box的content那部分的width (而不是外部box的全部width).
   + 实际代码中, 多层div的嵌套运用很常用, 不同的层次的div可能有不同的作用 (见JR_Ally_Wk1tut.flexCard)
 
 
@@ -691,7 +694,7 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
 ## 2.3 :star:Flexbox
 [mozilla: flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
 
-
+[CSS-tricks: A comprehensive guidd to flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#:~:text=Flexbox%20is%20%28aside%20from%20optional%20wrapping%29%20a%20single-direction,items%20to%20wrap%20as%20needed%20with%20this%20property.)
 
 + 前面的我们如果写多个block, 它们按文档流依次排列下来
 
@@ -1049,7 +1052,7 @@ body,html{
    其他align-self属性选项见上图. 
    + 其中边框为黑色的sub block A是我们想要设置align-self的
 
-### 2.4.6 order
+### 2.4.6 :moon: order
 甚至可以自定义排列顺序:
 
 ![](Src/order1.png)
@@ -1057,6 +1060,16 @@ body,html{
 ![](Src/order-table.png)
 
 默认order 为0。按上图图二中order取值的顺序排列
+
+### 2.4.7 Flexbox Practice
+
+:gem: [flexbox practice: flexbox frog (24个题)](http://flexboxfroggy.com/) 
+
+24题:
+
+<img src="./Src/flexFrog24_0.png" width=70%>
+
+<img  src="./Src/flexFrog24.png" width=70%>
 
 
 # 4. 其他渲染属性
