@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      const personnel = [
+        {
+          id: 5,
+          name: "Luke Skywalker",
+          pilotingScore: 98,
+          shootingScore: 56,
+          isForceUser: true,
+        },
+        {
+          id: 82,
+          name: "Sabine Wren",
+          pilotingScore: 73,
+          shootingScore: 99,
+          isForceUser: false,
+        },
+        {
+          id: 22,
+          name: "Zeb Orellios",
+          pilotingScore: 20,
+          shootingScore: 59,
+          isForceUser: false,
+        },
+        {
+          id: 15,
+          name: "Ezra Bridger",
+          pilotingScore: 43,
+          shootingScore: 67,
+          isForceUser: true,
+        },
+        {
+          id: 11,
+          name: "Caleb Dume",
+          pilotingScore: 71,
+          shootingScore: 85,
+          isForceUser: true,
+        },
+      ];
+
+
+      //get the total piloting score of force users only ------------------------------
+      // for loop, for each, for of, for in, map, filter, reducer
+      // 其中for each, map不支持break
+
+      // method1: 
+      console.log(`method1---------------------`)
+      let temp;
+      let totalScore = personnel.reduce((sum, person, index)=>{
+          temp = person.isForceUser?(person.pilotingScore+person.shootingScore):0;
+          console.log(`index${index}: `+ temp);
+        return sum + temp;
+      }, 0);
+      console.log(totalScore);    
+
+      //  method2: 连用API
+      console.log(`method2---------------------`)
+      const totalScore2 = personnel
+      .filter((person)=>{
+        return person.isForceUser;
+      })
+      .map((item)=>{
+        return item.pilotingScore+item.shootingScore
+      })
+      .reduce((acc, item)=>{
+        return acc+item
+      }, 0)
+
+      console.log(totalScore2)
+
+
+
+    </script>
+  </head>
+  <body></body>
+</html>

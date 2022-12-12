@@ -1,3 +1,7 @@
+跳转
+
+[JS与Java语法区别](./JS_Vs_Java.md)
+
 Chapter | 
 ------ | 
 [C1: JS Basics](./C1_JS_Basics/README.md)   |   

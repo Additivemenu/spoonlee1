@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // var很少用了容易出错, 很多奇怪的性质 ---------------------------------
+      // var 变量提升(hoisting)性质, 这是什么奇怪的性质???
+      console.log(foo)      // undefined, 因为在声明变量前调用了变量
+      var foo='abc'
+      // var 可以重复声明, 后声明的覆盖前面声明的结果, 奇怪的性质
+      var var1=2;
+      var var1=3;
+      console.log(var1);
+
+      var num=20;
+      function fn(){
+        var num=30;     //再度var声明num
+      }
+      fn()
+      console.log(num)      // 20
+
+      function fn1(){
+        num=30;
+      }
+      fn1()
+      console.log(num)    //30
+
+
+      // let, const 用的更广, 更符合习惯-------------------------------------
+      // let, const 暂时性死区, 在声明变量前是不能调用的
+      console.log(two)      // Uncaught reference error
+      let two='abc'
+      // let, const在同一作用域不可以重复声明
+
+      // let, const块级作用域
+      {
+        let letNum=100;
+      }
+      console.log(letNum)   // error
+
+
+    </script>
+
+  </body>
+</html>
+
+<!-- var、let、const区别总结
+
+变量提升:    var
+暂时性死区:  let const
+块级作用域:  let const
+重复声明: var
+修改声明的变量     
+-->

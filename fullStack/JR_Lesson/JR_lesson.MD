@@ -25,6 +25,9 @@ progress tracking
 + 补充视频
 
 # WK2:
-+ lesson 4: JS预习
++ lesson 4: JS笔记
 + tut与其独立复现
 + P1
+
+# WK3:
++ Java课前作业

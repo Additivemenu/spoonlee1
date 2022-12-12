@@ -1,16 +1,22 @@
+Content
+
 - [1. 变量与打印](#1-变量与打印)
+  - [1.0 Var](#10-var)
   - [1.1 Let](#11-let)
   - [1.2 const](#12-const)
 - [2. 变量的数据类型](#2-变量的数据类型)
-  - [2.1 String](#21-string)
-  - [2.2 :star:字符串连接](#22-star字符串连接)
-  - [2.3 Boolean \& if statement](#23-boolean--if-statement)
+  - [2.1 Number](#21-number)
+  - [2.2 Boolean \& if statement](#22-boolean--if-statement)
+  - [2.3 String](#23-string)
+    - [2.3.1 :star:String连接](#231-starstring连接)
+  - [2.4 Data type conversion](#24-data-type-conversion)
 - [3. Operator](#3-operator)
-  - [3.1 数值运算符](#31-数值运算符)
-  - [3.2 :star:比较运算符](#32-star比较运算符)
+  - [3.1 Arithmetic Operator](#31-arithmetic-operator)
+  - [3.2 :star: Compare Operator](#32-star-compare-operator)
   - [3.3 三联运算符](#33-三联运算符)
-  - [3.4 逻辑运算符](#34-逻辑运算符)
-  - [3.5 严格模式](#35-严格模式)
+  - [3.4 Logical Operator](#34-logical-operator)
+  - [3.5 :moon: Spread Operator](#35-moon-spread-operator)
+  - [3.6 严格模式](#36-严格模式)
 - [4. Control flow](#4-control-flow)
   - [4.1 switch case](#41-switch-case)
   - [4.2 Loop](#42-loop)
@@ -18,11 +24,27 @@
   - [5.1 初始化Array](#51-初始化array)
   - [5.2 定义新的数组元素](#52-定义新的数组元素)
     - [5.2.1 为Array加入object元素](#521-为array加入object元素)
+  - [5.3 :moon: Array Decomposition](#53-moon-array-decomposition)
+  - [5.4 :full\_moon: JS array API](#54-full_moon-js-array-api)
+    - [5.4.1 map()](#541-map)
+    - [5.4.2 filter()](#542-filter)
+    - [5.4.3 reduce()](#543-reduce)
 
 ---
 
 # 1. 变量与打印
 [variable.js](./variable.js)
+
+## 1.0 Var
+
+var很少再使用了, 因为它具有很多奇怪的特性, 代码多了容易出错
+
+
+以下做了解
+
+![](../Src/varLetConst.png)
+
+:gem: [var-let-const区别](./01-let_const_var.html)
 
 ## 1.1 Let
 定义变量时无需声明类型, 直接用let, 相当于声明变量开辟内存, 之后再次用到变量时不用再let了.
@@ -30,12 +52,7 @@
 let my_name = "shawn";
 console.log(my_name);
 ```
-注意别再使用var来定义变量了:
-```js
-var something = "abc"; // no more using var now because it is not strict with grammar, use let instead
-console.log(something);
 
-```
 打印连接两个变量:
 ```js
 let firstName = "shawn",
@@ -50,6 +67,7 @@ firstName = null; //a type of data, defined but value is null
 console.log(firstName);
 ```
 
+
 ## 1.2 const
 
 ```js
@@ -62,9 +80,60 @@ password = 'aasaaa';         // 会报错
 + const 限定一个object type variable, 只是表示这个variable的object type固定无法改, 但object内部的field依然可以改动. 本质上const只是限定变量需要的内存大小.
 
 # 2. 变量的数据类型
-变量的数据类型在JS中是implicit的
+变量的数据类型在JS中是implicit的, 不需要explicitly声明
 
-## 2.1 String
+JS基本数据类型
+data type | description | default value
+-----|------|-----
+Number|包含int 和 float类型   | 0
+Boolean|    | false
+String|   | ""
+Undefined| 声明了变量但没给值, int a, a=undefined  | undefined
+Null|声明变量为空, int a=null     | null
+
+JS高级数据类型
+data type | description | default value
+-----|------|-----
+Symbol|| 
+Bigint|| 
+Object|| 
+
+
+## 2.1 Number
+
+## 2.2 Boolean & if statement
++ True: 字符串(包括字符串0)都是true
++ False: 数字0, null, undefined都是false
+```js
+//boolean
+let c = "0";
+let d = undefined;
+let e = null;
+
+if (c) {                // c: true
+console.log("good");
+}
+
+if (!d) {               // d: false
+console.log("bad");
+} 
+
+if (!e) {               // e: false
+console.log("OK");
+} 
+
+```
+
+```js 
+If(statement){
+}else if(statement){
+}else if(statement){
+}else{
+}
+
+```
+
+## 2.3 String
 
 + `""` & `''`: 用于纯string
 + ``: 适用性更广, 可以引用变量
@@ -99,7 +168,7 @@ console.log(b5);
 ![](Src/JS_variable1.png)
 
 
-## 2.2 :star:字符串连接
+### 2.3.1 :star:String连接
 + 当一个str和一个num相加时，结果的数据类型和被加数一致(和java的print一致)
   + 特别地，+”1”代表将str类型的1转化为num类型. 但是其中的双引号内必须只有数字。
 + JS的`console.log()`支持多个argument(用`,`分隔), 打印结果顺序连接; 而Java中`print()`中只支持1个String, 需要用`+`连接
@@ -131,43 +200,56 @@ console.log(b11, typeof b11);   // 1 'number'
 ```
 
 
-
-## 2.3 Boolean & if statement
-+ True: 字符串(包括字符串0)都是true
-+ False: 数字0, null, undefined都是false
+## 2.4 Data type conversion
+numToString
 ```js
-//boolean
-let c = "0";
-let d = undefined;
-let e = null;
+// 1. 把数字型转换为字符串型
+let num = 10;
+// ----
+let str = num.toString();
+console.log(str, typeof(str))
+// ----
+console.log(String(num))
+// ----
+console.log(num+"")
+```
+StringToNum
+```js
+// 把 字符型的转换为数字型 得到是整数?
+console.log(parseInt(`3.14`))       // 3
+console.log(parseInt(`120px`))      // 120
+console.log(parseInt(`rem120px`))   // NaN
+// 2. 把 字符型的转换为数字型 得到是小数 浮点数?
+console.log(parseFloat(`3.1415926`))    // 3.1415926
 
-if (c) {                // c: true
-console.log("good");
-}
+// 3. 利用 Number(变量)
+var str = "123";
+console.log(Number(str))    // 123
 
-if (!d) {               // d: false
-console.log("bad");
-} 
-
-if (!e) {               // e: false
-console.log("OK");
-} 
+// 4.
+console.log(typeof(`12`-0))     // number
 
 ```
 
-```js 
-If(statement){
-}else if(statement){
-}else if(statement){
-}else{
-}
+Boolean
+```js
+//what's the output?
+console.log(Boolean(""));         //false
+console.log(Boolean(0));          // number 0: false
+console.log(Boolean(NaN));        // not a number: false
+console.log(Boolean(null));       // false
+console.log(Boolean(undefined));  // false
+console.log("------------------------------");
+console.log(Boolean("123"));      // true
+console.log(Boolean("hello"));    // true
 
 ```
+
 
 # 3. Operator
 [operator.js](./operator.js)
 
-## 3.1 数值运算符
+## 3.1 Arithmetic Operator
 + 加减乘除, 幂数运算, 取余取商
 + 自增自减
 ```js
@@ -204,7 +286,7 @@ xx %= 5;
 xx ?? 5; // what is it?
 ```
 
-## 3.2 :star:比较运算符
+## 3.2 :star: Compare Operator
 
 [Mozilla doc: === & ==](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)
 
@@ -251,7 +333,7 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
 ```
 
 
-## 3.4 逻辑运算符
+## 3.4 Logical Operator
 + True: 字符串(包括字符串0)都是true
 + False: 数字0, null, undefined都是false
 
@@ -300,12 +382,20 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
   console.log(!2)  //return false
   ```
 
+## 3.5 :moon: Spread Operator
+JS的特色: 用来代表一个array片段
 
-## 3.5 严格模式
+:gem: [Demo: Spread Operator](./10-spread_operator.html)
+
+
+## 3.6 严格模式
 
 ```js
 "use strict"  //开启严格模式会开启诸多语法的严格限制
 ```
+
+
+
 
 # 4. Control flow
 ## 4.1 switch case
@@ -332,8 +422,13 @@ const roles = ["student", "teacher", "boss"];
 
 ```
 ## 4.2 Loop
+while, for loop语法和Java基本一致
+
++ while loop
+
+
+
 + for loop
-  格式和java一样
   ```js
   let newArrayNumber = [];
   for (let i = 0; i < 10; i++) {
@@ -429,3 +524,80 @@ array[101].name = "shawn";  // 再instantiate该object
 console.log(array[101]);    // now array[101].name displayed
 ```
 <img src="../Src/JS_array_addObject.png" width=100%>
+
+## 5.3 :moon: Array Decomposition
+
+:gem: [Demo: array decomposition](./11-arrayDecomposition.html)
+
+
+
+## 5.4 :full_moon: JS array API
+本质上还是for loop实现某种功能, 只不过封装好代码更加简洁, 直接对array操作
+
+以下API中用到的function()一般为了简洁采用箭头函数
+
+### 5.4.1 map()
+manipulate over every elements and in the array, return a new array holding the results
+
+:book: [w3schools: map()](https://www.w3schools.com/jsref/jsref_map.asp)
+
++ `map()` **returns a new array** from calling a function for every array element.
++ `map()` does not change the original array.
+
+```js
+// syntax
+array.map(function(currentValue, index, arr), thisValue)
+
+function(currentValue, index, arr){
+  ...
+  return calculationResultOverAnElement;
+}
+```
+
+:gem: [Demo: map()](./17-map.html)
+
+### 5.4.2 filter()
+
+从一个array中筛选符合条件的元素
+
+:book: [w3school: filter()](https://www.w3schools.com/jsref/jsref_filter.asp)
+
++ The `filter()` method **returns a new array** filled with elements that pass a test provided by a function.
++ The `filter()` method does not change the original array.
+
+```js
+// syntax
+array.filter(function(currentValue, index, arr), thisValue)
+
+function(currentValue, index, arr){
+  ...
+  return filtering_booleanCondition;
+}
+```
+
+:gem: [Demo: filter()](./18-filter.html)
+
+### 5.4.3 reduce()
+
+从一个array中提取aggregate信息
+
+:book: [w3school: reduce()](https://www.w3schools.com/jsref/jsref_reduce.asp)
+
++ The `reduce()` method executes a reducer function for array element.
++ The `reduce()` method **returns a single value**: the function's accumulated result.
++ The `reduce()` method does not change the original array.
+
+```js
+// syntax
+array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
+
+function(total, currentValue, currentIndex, arr){
+  ...
+  return 在每个iteration的aggregation语句;
+}
+```
+
+:gem: [Demo: reduce()](./19-reduce.html)
+
+:gem::gem: [Practice: reduce()](./20-map_filter_reduce.html)
+

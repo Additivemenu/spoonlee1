@@ -9,6 +9,15 @@
       // continue 关键字   退出本次（当前次的循环）  继续执行剩余次数循环
 
       // 1. 求1~100 之间， 除了能被7整除之外的整数和
+      let sum=0;
+      let x = 1;
+      for(x; x<=100; x++){
+        if(x%7===0){
+          continue;
+        }
+        sum=sum+x;
+      }
+      console.log(sum);
 
       // break 退出整个循环
     </script>

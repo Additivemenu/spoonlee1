@@ -16,6 +16,25 @@
       };
 
       let arr = ["lin", "is", "handsome"];
+      
+      // shadow copy obj --------------------------------
+      let newObj = {};
+      Object.assign(newObj, obj);     // shadow copy
+      console.log(newObj);
+      newObj.msg.age = 20;
+      console.log(obj)                // change newObj also change obj
+
+      // shadow copy array method3=1 -------------------
+      const newArr = Array.from(arr)    // shadow copy
+      console.log(newArr)
+
+      // shadow copy array method2 ---------------------
+      const newArr2 = [...arr];
+      console.log(newArr2);
+
+      
+
+
     </script>
   </head>
   <body></body>

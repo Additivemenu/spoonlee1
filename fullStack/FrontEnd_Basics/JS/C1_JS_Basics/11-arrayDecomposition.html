@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // 基础类型解构
+      let [a,b,c]=[1,2,3]
+      console.log(a,b,c)
+
+      // 对象数组解构
+      let[a2, b2, c2] = [{name:"1"},{name:"2"},{name:"3"}]
+      console.log(a2)
+
+      // ...解构
+      let[first, ...rest]=[1,2,3,5];
+      console.log(first);
+      console.log(rest);
+
+      // 嵌套解构
+      let[a3,[b3],d]=[1,[2,3],4];
+      console.log(a3,b3,d)      // 1,2,4
+
+      // 解构不成功为undefined
+      let [a4,b4,c4]=[1];
+      console.log(a4,b4,c4);    // 1 undefine undefine
+      // 解构默认赋值
+
+
+      // 对象属性解构
+      let {f1, f2} = {f1:"test1", f2:"test2"}
+      console.log(f1,f2)
+
+    </script>
+  </head>
+  <body></body>
+</html>

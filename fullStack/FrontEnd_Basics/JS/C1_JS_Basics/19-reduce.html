@@ -28,13 +28,23 @@
           years: 22,
         },
       ];
-      //output  1.totalYears of pilots
+      //1. get the totalYears of pilots
       const totalYears = pilots.reduce((acc, pilot) => acc + pilot.years, 0);
+      console.log(totalYears);
 
       //2. find which pilot is the most experienced one
       const mostExpPilot = pilots.reduce(function (oldest, pilot) {
         return (oldest.years || 0) > pilot.years ? oldest : pilot;
       }, {});
+
+      // 上面的更易理解的写法
+      const mostExpPilot2 = pilots.reduce(function (oldest, pilot) {
+        return oldest.years > pilot.years ? oldest : pilot;
+      }, {years: 0});
+      
+      console.log(mostExpPilot2);
+
+
     </script>
   </head>
   <body></body>

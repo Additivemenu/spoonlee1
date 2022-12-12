@@ -30,7 +30,7 @@ variable 18min-52min
 
 ---
 
-数据类型 52min-
+数据类型 52min-1h13min
 
 
 PPT 20
@@ -65,6 +65,8 @@ PPT 20
 
 ---
 
+# 看到这里!
+
 解构1h42min-
 
 11
@@ -75,11 +77,65 @@ PPT 20
 
 剩余参数1h57min-
 
-# 看到这里!
 
 12
 
+---
+
+control flow 2h05min-2h30min
+
+
+
+
+---
+数组自带的一些操作方法API:
+
+map 2h30min-
+
+array的方法, map()返回array
+
+[w3schools: map](https://www.w3schools.com/jsref/jsref_map.asp)
+
+17
+
+filter 2h38min-
+
+从一个array中筛选符合条件的元素
+
+18
+
+reduce 2h46min-3h02min
+
+从一个array中聚合信息
+
+[w3school: reduce](https://www.w3schools.com/jsref/jsref_reduce.asp)
+
+19
+
+20
+
+21
+
+---
+object 3h02min-
 
 ---
 
-control flow
+arrow function 3h04min-3h12min(end)
+
+arrow function是匿名函数, 不绑定arguments
+
+匿名函数和explicit函数的区别 Ally_tut2 25min-
+```js
+  const getArrMax = function(arr){      // 把匿名函数赋给变量getARRMax
+    ...
+  }
+```
+
+
+---
+shadowCopy & deepCopy Ally_tut2 30min-50min
+
+
+---
+async 

@@ -6,9 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
+      const fn=(...rest)=>{
+        console.log(rest); // [1,2,3]
+      }
+      fn(1,2,3)
+
       // 如果函数体中只有一句代码，并且代码的执行结果就是返回值，可以沈略大括号和return
+      const fn1=(n1,n2) => n1+n2;
+      const result = fn1(1,2) 
+      console.log(result);
 
       // 只有一个形参，小括号可以省略
+      const fn3 = n1 => n1+20;
+
+
     </script>
   </head>
   <body></body>
