@@ -2,7 +2,6 @@
 lec4接着讲 0-50min
 
 ---
-md跟课没跟出来
 
 grid card practice 50min-
 

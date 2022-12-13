@@ -26,8 +26,9 @@ progress tracking
 
 # WK2:
 + lesson 4: JS笔记
-+ tut与其独立复现
++ tut与其独立复现: grid
 + P1
-
++ 龙哥P1代码demo
+  
 # WK3:
 + Java课前作业

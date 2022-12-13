@@ -63,8 +63,10 @@ Content
       - [2.3.5.2 content](#2352-content)
       - [2.3.5.3 item](#2353-item)
       - [2.3.5.4 self](#2354-self)
-    - [2.4.6 :moon: order](#246-moon-order)
-    - [2.4.7 Flexbox Practice](#247-flexbox-practice)
+    - [2.3.6 :moon: order](#236-moon-order)
+    - [2.3.7 Flexbox Practice](#237-flexbox-practice)
+  - [2.4 grid](#24-grid)
+    - [2.4.1 display: grid](#241-display-grid)
 - [4. 其他渲染属性](#4-其他渲染属性)
   - [4.1 :full\_moon: Text](#41-full_moon-text)
     - [4.1.1 常用的Text相关Properties](#411-常用的text相关properties)
@@ -1052,7 +1054,7 @@ body,html{
    其他align-self属性选项见上图. 
    + 其中边框为黑色的sub block A是我们想要设置align-self的
 
-### 2.4.6 :moon: order
+### 2.3.6 :moon: order
 甚至可以自定义排列顺序:
 
 ![](Src/order1.png)
@@ -1061,7 +1063,7 @@ body,html{
 
 默认order 为0。按上图图二中order取值的顺序排列
 
-### 2.4.7 Flexbox Practice
+### 2.3.7 Flexbox Practice
 
 :gem: [flexbox practice: flexbox frog (24个题)](http://flexboxfroggy.com/) 
 
@@ -1070,6 +1072,73 @@ body,html{
 <img src="./Src/flexFrog24_0.png" width=70%>
 
 <img  src="./Src/flexFrog24.png" width=70%>
+
+
+## 2.4 grid
+
+:book: [w3school: grid](https://www.w3schools.com/css/css_grid.asp)
+
+:book: [mozilla: grid (更详尽)](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
+
+grid是另一种布局方式, 把container的区域划分为column by column (甚至可以grid by grid), 再定义container内部的元素占几个column(e.g.my monash那个界面就是grid做的)
+
+### 2.4.1 display: grid
+
+:gem: [grid cards](./CSS_Sample/Grid/gridCard.html)
+
+以上面这个Demo为例子: 
+
+---
+step1:  
+container划分区域
++ `grid-template-columns`: 定义container要通过何种格式的columns划分成多少columns
++ `grid-gap`: container的column之间的距离
+
+```css
+main{
+    display: grid;  
+    grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction*/
+    grid-gap: 40px;
+    padding: 60px 0;
+}
+```
+
+---
+step2:  
+定义container内的items如何span
++ `grid-column`:
+  +  定义grid items从第几个column开始, 直到哪个column结束
+  ```css
+  grid-column: 1 / 3;   /*grid item从column 1开始, 到column 3结束 */
+  ```  
+  +  定义grid items如何span, 基于container的columns
++ container采用grid也可以嵌套
+```css
+.cards {
+  /* start on column 2, span 12 columns结束 */
+    grid-column: 2 / span 12;    
+    
+    display: grid;
+    grid-template-columns: repeat(12, minmax(auto, 60px));      /*定义cards这个container如何被它的columns分割*/  
+    grid-gap:40px;
+} 
+```
+
+---
+step3(optional):  
+container的嵌套， 重复step2
+```css
+.card{
+    /*每张card span 4 columns*/
+    grid-column-end: span 4;
+
+    display: flex;
+    flex-direction: column;
+
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+```
 
 
 # 4. 其他渲染属性

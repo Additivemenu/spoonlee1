@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // 深拷贝 
+      // method1: JSON.parse(JSON.stringify(object))
+      // 但这个方法会忽略undefine, symbol, function的值
+
+      // method2: lodash的库方法(更常用): cloneDeep
+      // method3: browser自带的方法: structuredClone()
+
+      const obj = {
+        person: {
+          name: "lin",
+        },
+      };
+
+      const newObj = JSON.parse(JSON.stringify(obj)); // deep copy
+      console.log(newObj);
+      newObj.person.name = "newObj"; // obj, newObj相互独立
+      console.log(obj);
+
+      const newObj2 = structuredClone(obj);
+      newObj2.person.name = "newObj2"; // obj, newObj相互独立
+      console.log(obj);
+    </script>
+  </head>
+  <body></body>
+</html>

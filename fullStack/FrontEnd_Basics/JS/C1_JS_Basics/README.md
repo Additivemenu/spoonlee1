@@ -29,6 +29,7 @@ Content
     - [5.4.1 map()](#541-map)
     - [5.4.2 filter()](#542-filter)
     - [5.4.3 reduce()](#543-reduce)
+- [5.5 shadowCopy \& deepCopy](#55-shadowcopy--deepcopy)
 
 ---
 
@@ -601,3 +602,22 @@ function(total, currentValue, currentIndex, arr){
 
 :gem::gem: [Practice: reduce()](./20-map_filter_reduce.html)
 
+# 5.5 shadowCopy & deepCopy
+
+针对object或array
+
++ shadow copy
+  复制体和本体share address, 相互关联. 
+  + `Object.assign()`
+  + `Array.from()`
+  + `[...arr]`
+
+  :gem: [shadow copy](./23-shadowCopy.html)
+
++ deep copy
+  复制体和本体在内存中各自独立, 相互不影响
+  + `JSON.parse(JSON.stringify(obj))`
+    + 但这个方法在copy时会忽略undefine, symbol, function的值 
+  + lodash的库方法(更常用): `cloneDeep`
+  + browser自带的方法: `structuredClone()`
+  :gem: [deep copy](./24-deepCopy.html)
