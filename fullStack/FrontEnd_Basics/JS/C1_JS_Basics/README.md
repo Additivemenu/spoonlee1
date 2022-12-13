@@ -29,6 +29,7 @@ Content
     - [5.4.1 map()](#541-map)
     - [5.4.2 filter()](#542-filter)
     - [5.4.3 reduce()](#543-reduce)
+  - [5.4.4 forEach()](#544-foreach)
 - [5.5 shadowCopy \& deepCopy](#55-shadowcopy--deepcopy)
 
 ---
@@ -388,6 +389,8 @@ JS的特色: 用来代表一个array片段
 
 :gem: [Demo: Spread Operator](./10-spread_operator.html)
 
+:gem: [函数的剩余参数](./12-%E5%89%A9%E4%BD%99%E5%8F%82%E6%95%B0.html)
+
 
 ## 3.6 严格模式
 
@@ -397,7 +400,7 @@ JS的特色: 用来代表一个array片段
 
 
 
-
+==
 # 4. Control flow
 ## 4.1 switch case
 和java一样
@@ -462,11 +465,11 @@ while, for loop语法和Java基本一致
 
   > For和forEach的区别(自己查): forEach是个迭代器; 但是forEach比普通的for loop运行慢很多, 不考虑性能的情况下使用forEach更方便
 
-+ for in & for out
-  (自己查)
++ for in & for of
 
-练习, 用JS打印9*9乘法表：
-[loop.js](./loop.js)
+
+
+:gem: [Practice: 打印9*9乘法表](./loop.js)
 
 
 
@@ -601,6 +604,8 @@ function(total, currentValue, currentIndex, arr){
 :gem: [Demo: reduce()](./19-reduce.html)
 
 :gem::gem: [Practice: reduce()](./20-map_filter_reduce.html)
+
+## 5.4.4 forEach()
 
 # 5.5 shadowCopy & deepCopy
 

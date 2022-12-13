@@ -25,8 +25,8 @@ progress tracking
 + 补充视频
 
 # WK2:
-+ lesson 4: JS笔记
-+ tut与其独立复现: grid
++ lesson4 PPT移植
++ 独立复现: grid
 + P1
 + 龙哥P1代码demo
   

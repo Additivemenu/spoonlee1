@@ -12,15 +12,17 @@ Chapter |
 ---
 学习资源
 
-[mozilla (讲的比W3全面些)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+1. [b站尚硅谷JS视频笔记](https://github.com/limingzhong61/LearningNotes/blob/master/JSNote/JavaScript/JavaScript.md) 
+   可以从中窥探JS重点框架, 先浏览这个再去看MDN文档
 
-[W3 JS (但是讲的比较浅)](https://www.w3schools.com/js/default.asp)
+2. [mozilla (讲的比W3全面些)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
+   + **尚硅谷视频笔记看完后主要看这个, MDN看熟了以后查文档也顺手**
+   + JS红宝书拿来作为参考书籍辅助看原理, 但看书做笔记根本记不住啊而且很耗费时间,
 
-- 学完JS后可以把它当作dictionary来查
+3. [W3 JS (但是讲的比较浅)](https://www.w3schools.com/js/default.asp)
 
-<<JavaScript高级程序设计>> 
-
-- 先大致浏览一下, 挑最实质的章节部分做精练的笔记, 切忌从头到尾抄到底写一大堆(写太多你也不看呢).
+4. <<JavaScript高级程序设计>> 
+- 作为补充性质的参考书目
 
 ---
 

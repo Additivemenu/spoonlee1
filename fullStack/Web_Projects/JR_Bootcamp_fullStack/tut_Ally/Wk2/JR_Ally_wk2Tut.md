@@ -7,7 +7,7 @@ grid card practice 50min-
 
 :gem: [grid card](./gridCard.html)
 
-[w3](https://www.w3schools.com/css/css_grid.asp)
+https://www.w3schools.com/css/css_grid.asp
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/grid
 

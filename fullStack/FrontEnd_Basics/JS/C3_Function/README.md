@@ -3,7 +3,7 @@ Contents:
   - [1.1 Primitive type data as function argument](#11-primitive-type-data-as-function-argument)
   - [1.2 Array as function argument](#12-array-as-function-argument)
   - [1.3 Object type as function argument](#13-object-type-as-function-argument)
-- [2. 箭头函数](#2-箭头函数)
+- [2. :moon: 箭头函数](#2-moon-箭头函数)
   - [2.1 箭头函数的定义](#21-箭头函数的定义)
 - [3. 定义object内部的function](#3-定义object内部的function)
   - [3.1 标准写法](#31-标准写法)
@@ -25,7 +25,13 @@ A JavaScript function is defined with the `function` keyword, followed by a name
 
 
 ```js
+// type1: standard way to define a function
 function name(parameter1, parameter2, parameter3) {
+  // code to be executed
+}
+
+// type2: anonymous function
+let fn = function(){    // 将匿名函数赋值给一个名为fn的变量
   // code to be executed
 }
 ```
@@ -43,6 +49,7 @@ function name(parameter1, parameter2, parameter3) {
 
   ```
 + Local variable also holds for JS: variable defined within a function can only be used in that function
++ a function without `return` statement will return `undefined` 
   
   
 ## 1.1 Primitive type data as function argument
@@ -163,20 +170,20 @@ func2("apple");
 
 
 
-# 2. 箭头函数
-对于一般的function定义方式（如下面）, Function的使用可以在其定义之前, 也可以在定义之后, 因为定义的函数会被存在一个表里,与主函数代码平行来被调用
+# 2. :moon: 箭头函数
+JS的特色
 
-但是对于const 函数则不能这样, 只有在定义函数之后才能使用, 否则报错. 这是应为这种函数是常量，必须先定义后使用:
-```js
-// function name is at the left hand side of =. 
-// function() is at the right hand side of =
-const func8 = function () { 
-    console.log("func8");
-};
-func8();
-```
++ 对于标准的function定义方式, function的使用可以在其定义之前, 也可以在定义之后, 因为定义的函数会被存在一个表里,与主函数代码平行来被调用
 
-**箭头函数同样如此, 必须先定义后使用，因为箭头函数也是常量**
+
++ 但是对于anonymous function则不能这样, 只有在定义了函数之后才能使用, 否则报错. 这是应为这种函数是常量，必须先定义后使用:
+  ```js
+  const func8 = function () {   // 将匿名函数赋值给一个名为func8的常量
+      console.log("func8");
+  };
+  func8();
+  ```
+  **箭头函数同样如此, 必须先定义后使用，因为箭头函数也是anonymous function**
 
 ## 2.1 箭头函数的定义
 
@@ -209,6 +216,7 @@ array.forEach(array_func4)  //forEach()括号内可以是箭头函数
 
 ```
 <img src="../Src/JS_ArrowFunction.png" width = 70%>
+
 
 
 # 3. 定义object内部的function
