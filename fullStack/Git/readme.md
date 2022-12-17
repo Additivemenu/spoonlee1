@@ -2,6 +2,19 @@
 [git](./git.md)
 
 ---
+- [Intro](#intro)
+- [Hands on 17min-](#hands-on-17min-)
+  - [step 0: 一个点的历史 git set up](#step-0-一个点的历史-git-set-up)
+    - [Git Global Setup](#git-global-setup)
+    - [Set up repository](#set-up-repository)
+  - [step 1: 一条线的历史 commit 47min-](#step-1-一条线的历史-commit-47min-)
+    - [:full\_moon: git undo changes 1h17min-](#full_moon-git-undo-changes-1h17min-)
+  - [step 2: 两条线的历史 branch \& merge  1h38min-](#step-2-两条线的历史-branch--merge--1h38min-)
+    - [branch](#branch)
+    - [:full\_moon: merge branch 1h47min-2h13min](#full_moon-merge-branch-1h47min-2h13min)
+  - [step 3: 多条线的历史 远程协作 2h25min-](#step-3-多条线的历史-远程协作-2h25min-)
+
+
 
 ray ma intro: 
 + git, agile, interview, mock interview
@@ -11,7 +24,8 @@ ray ma intro:
 
 Git PPT
 
-# 为什么使用git
+# Intro
+为什么使用git
 + 撤销改动或回滚版本
 + 回溯历史(A complete long-term history of every file that provides traceability)
   + 理解复杂模块的开发历程
@@ -34,7 +48,7 @@ git vs. github
   + online git shared repo
 
 
-# hands on 17min-
+# Hands on 17min-
 
 ## step 0: 一个点的历史 git set up
 + `git`
@@ -54,6 +68,8 @@ git vs. github
 + `git config --global merge.conflictstyle diff3`
 + `git config --global core.editor "code --wait"`
 + and more ...
+  
+如果上面的指令不带`--global`, 那么就是在local的config
 
 ### Set up repository
 + `git init`
@@ -70,7 +86,9 @@ OR
 
 + `git status` 显示在哪个路径, 有哪些文件在stage
 + `git log` 显示当前repo的所有commit的log
-  + 用git history extension可以做到图形化访问log 
+  + 用git history extension可以更方便地做到图形化访问log, 查看branch之间的merge历史
++ `git diff`
+
 
 ## step 1: 一条线的历史 commit 47min-
 
@@ -84,27 +102,162 @@ working directory ---`git add`---> stage ---`git commit`---> git repo
   + `git add ./filename` 添加当前路径下指定文件至stage
   + `git remove --cached ./filename` 将stage中的指定文件移除出stage 
 + `git commit -m"git message"`
+    + commit changes to repo (创建一个commit对象节点) , 往后很多command都是基于commit对象节点而操作的
     + git message要有意义
 + `git rm`
   + 慎用 
-+ `git stash` 暂存区
-多人协作时, 代码写到一半, 突然老板让Bugfix, 我希望暂存现在的代码 (因为代码写到一般还不能commit), 就用这个command 
++ `git stash (push) -m"stash message"` 暂存区
+[git stash doc](https://www.git-scm.com/docs/git-stash)
+暂存当前代码为新的stash加入stash list, 并回退到上个commit时的代码状态(下图中的1,2两步); 最新创建的stash放在stash@{0}, stash@{1}是在其之前创建的, 其实就是个stack
+  + `git stash list` 显示stash list
+  + `git stash pop` pop off stash[0] from the stash list
+  + `git stash apply index` apply stash with specified index, 回到指定stash所暂存的代码状态(如下图)
+这些command在vscode的左侧边栏的source control也可以做到
 
+<img src="./Src_md/git_stash.PNG" width=80%>
 
-这些在vscode的左侧边栏的source control也可以做到
+stage是在本地还是在云端? --本地啊
 
 ---
 
-### git undo changes
-#看至1h17min
+### :full_moon: git undo changes 1h17min-
 
 
-## step 2: 两条线的历史 branch & merge
++ `git checkout`: 辗转branch
++ `git clean`: 清理目录, 很危险!
+
+---
+
++ `git revert commit_id`
+  用一个新的commit对历史记录进行回滚, 这个新的commit是指定commit的反操作(e.g. 指定commit中删除了style.css文件, 现在revert那个commit, 就是恢复了style.css文件)
+  + 不会删除commit
+
+  <img src="./Src_md/git_revert.png" width=70%>
+
++ `git reset commit_id`
+  从log中删除指定commit及之后的所有commit,  因而非常危险!
+  + soft reset: put commit into stage, 还没丢失
+  + hard reset: 直接删除
+  <img src="./Src_md/git_reset.png" width=70%>
+
+
+## step 2: 两条线的历史 branch & merge  1h38min-
+一般每个人是在自己的branch上工作, 工作完成后大家的branch会汇总到main-branch上.
+
+node代表一个commit对象， 创建新的branch就是在branch上创建新的node
+
+### branch
+
++ `git branch`: 显示当前路径下有哪些branch
++ `git branch -d`:  删除指定的branch
++ `git checkout -b branch_name`: 创建新的branch
++ `git checkout branch_name`: 切换到指定branch
+  + vscode中点击左下角的branch name, 就可以切换branch
+
+
+Semantic branch names
+`<type>/<ticket-number>-<title>`
+e.g. feat/JR-101-create-header-for-home-papge
+
+---
+
+### :full_moon: merge branch 1h47min-2h13min
+
+<img src="../Git/Src_md/merge.png" width=70%>
+
++ `git merge branch_name`: 将branch_name合并到当前所在的branch上; 这个command本质上包含两步操作: 
+  1. auto-merging: 将branch_name中的代码merge到当前所在的branch上(期间有可能发生conflict, 此时需要manual merge和manual commit); 
+  2. commit: 在当前所在的branch上commit第一步的结果. commit之后可以在history里查看merge branch的历程
+
+
+注意:
+
+
++ :book: [lesson7: git merge conflict and how to resolve it](https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git#:~:text=How%20to%20Resolve%20Merge%20Conflicts%20in%20Git%3F%201,a%20new%20merge%20commit%20to%20finalize%20the%20merge):  A merge conflict is an event that takes place when Git is unable to automatically resolve differences in code between two commits. **Git can merge the changes automatically only if the commits are on different lines or branches. (即不同branch的相同文件的同一行如果不一样, merge时会产生conflict)**
+  + 我的理解:  一般工作中commit可不是随随便便的, 最好两个人别负责同一个文件的同一个函数模块的编辑, 不然太容易出conflict了. 
+  + 公司不会让程序员直接去master branch上编程， 因为master branch是product environment. 程序员都是在branch上工作, 在merge工作到main branch之前, 需要先把master-branch pull到本地, 把本地的master-branch merge到自己负责的branch上, 然后在其上做一系列严格的test, 之后才能被批准将自己的branch merge到main branch上 
++ branch 和main-branch合并成功后, branch依旧可以独自运作而不影响main-branch, 因为git merge的本质只是把sub-branch的代码合并到master-branch上然后再在master branch上commit, `git merge`执行时**不存在建立两个branch的dependency**
+
+
+---
+git graph 2h13min-
+使用command来实现类似git history extension能做的图形化visualization (一般也没人用command)
+
+`git log --all --decorate --oneline --graph`
+
+---
+git conflict 2h15min-2h25min
+
+
+如果不想解决冲突:
++ `git merge <branch name> --abort`:
++ `git merge <branch name> --overwrite-ignore`: 以master branch为准
++ `git merge <branch name> --no-overwrite-ignore`: 
 
 
 
+## step 3: 多条线的历史 远程协作 2h25min-
+step3之前的都是在local上的操作, 这里就需要引入github: a remote repository
+
++ `git clone <url>`: 从github clone remote repo onto local
+
+---
+
+直接对remote repo的操作(一般不会用到的): 
++ `git remote add <name><url>`
++ `git remote rm <name>`
++ `git remote rename <old-name> <new-name>`
+
+---
+
+update remote from local
+
++ `git push`: 建立本地repo和github remote repo之间的联系
++ + `git push <name><branch>`
++ `git push <name><local_branch>:<remote_branch>`
+
+update local from remote
++ `git fetch`: get information(告诉我local repo是提前还是落后remote repo几个commit), 但不会push OR pull
++ `git pull`: 如果github remote repo比local repo新, 用这个来pull remote repo 多出来的commit到local repo
+
+---
+
+remote branch 2h39min-
+create branch --> doing something at that branch --> commit --> publish branch (then you can see the branch on github)
 
 
+pull request
+在github上做Merge, 通过pull request(PR)
++ add reviewer --> create PR
 
-## step 3: 多条线的历史 远程协作
+Q&A
+local 与 remote repo的branch name的匹配
 
+
+---
+merge vs. rebase 3h-3h06min
++ merge: commit之间是多线结构
++ rebase: 另一种merge的方法, commit之间是单线结构, 追溯历史更加直观, 工作中用的更多
+
+[git visualizer](https://git-school.github.io/visualizing-git/)
+
+---
+
+git ignore 3h06min-
+
+
+在`.gitignore`文件中specify哪种类型的文件(e.g. .exe, .dll...)不希望被version control
++ 使用通配符, 路径来选定哪个文件夹下的哪种文件应该被ignore
+
+---
+
+force push 3h10min-
+强制push
++ 危险的操作!
+
+---
+
+Q&A 3h11min-
+
+`git config --local --list`: 显示local的git config list
+`git config --list`: 显示global和local的git config list
