@@ -4,7 +4,7 @@ Content
   - [1.0 Var](#10-var)
   - [1.1 Let](#11-let)
   - [1.2 const](#12-const)
-- [2. 变量的数据类型](#2-变量的数据类型)
+- [2. :moon: 变量的数据类型](#2-moon-变量的数据类型)
   - [2.1 Number](#21-number)
   - [2.2 Boolean \& if statement](#22-boolean--if-statement)
   - [2.3 String](#23-string)
@@ -39,12 +39,13 @@ Content
 
 ## 1.0 Var
 
-var很少再使用了, 因为它具有很多奇怪的特性, 代码多了容易出错
++ var很少再使用了, 因为它具有很多奇怪的特性, 代码多了容易出错
++ 一般无脑用const, 看情况使用let
+  + 因为我们基本不希望别的程序员中途改动自己定义的变量
++ 面试还是会问var, let, const的区别
 
 
-以下做了解
-
-![](../Src/varLetConst.png)
+![var, let, const diff](../Src/varLetConst.png)
 
 :gem: [var-let-const区别](./01-let_const_var.html)
 
@@ -80,7 +81,7 @@ password = 'aasaaa';         // 会报错
 + const 限定一个primitive type的data后，无法更改，如果更改，就会报错。但是let就没有如此的限制。
 + const 限定一个object type variable, 只是表示这个variable的object type固定无法改, 但object内部的field依然可以改动. 本质上const只是限定变量需要的内存大小.
 
-# 2. 变量的数据类型
+# 2. :moon: 变量的数据类型
 变量的数据类型在JS中是implicit的, 不需要explicitly声明
 
 JS primitive data type
@@ -99,7 +100,9 @@ data type | description | default value
 -----|------|-----
 Object|| 
 
-数值与boolean
+---
+
+:star: 数值与boolean
 | 数值类型 | Boolean |
 | ---- | ---- |
 | undefined | false |
@@ -107,6 +110,53 @@ Object||
 | 数字 | 0， NaN (Not a Number) 都是false， 其他是true |
 | 字符串 | 空字符串是false， 否则为true |
 | 对象 | true |
+
+基于JS中数值与boolean的转化关系, 我们可以写出更加简洁的代码:
++ primitive type 
+  ```js
+  const a =1;
+  // 完全写法
+  if(a !== undefined && a !== null && a !== 0 && a !== ''){
+      ...
+  }
+  // 简洁写法
+  if(a){
+      ...
+  }
+
+  ```
++ object type
+  ```js
+  // 完全写法
+  function getArrayLength(arr){
+      if(array !== undefined && array !== null){
+          return array.length;
+      }
+
+      return undefined;
+  }
+
+  // 简洁写法, 由于JS的数值和boolean转化关系
+  function getArrayLength(arr){
+      if(arr){
+          return arr.length;
+      }
+
+      return undefined;
+  }
+
+  // 更简洁写法, 也很常用, 利用 &&的工作原理
+  function getArrayLength(arr){
+      return arr && arr.length;   // && 只有左边为true的情况下, 才会跑右边的东西; 否则只跑左边的东西
+  }
+
+  // 更更简洁写法, 用optional chaining
+  function getArrayLength(arr){
+      return arr?.length;         // ? 用来检测arr是否为true, 是的话才看后面 (optional chaining)
+  }
+  ```
+
+---
 
 ## 2.1 Number
 
@@ -304,9 +354,10 @@ xx ?? 5; // what is it?
 
 ## 3.2 :star: Compare Operator
 
-[Mozilla doc: === & ==](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)
+:book: [MDN: === & ==](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)
 
 + =, ==, ===(strict equality)
+  + 一般我们无脑用===, 很少用== 
 + !=, !==
 + 大于,小于
 

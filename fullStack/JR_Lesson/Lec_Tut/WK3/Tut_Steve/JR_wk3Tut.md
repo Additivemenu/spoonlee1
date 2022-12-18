@@ -20,7 +20,7 @@ const addOne = (number)=>{
     return number+1;
 }
 
-//简介写法, 只有一个变量(最好别去掉argument的括号), 函数体若只有1行可以省略return 和 { }
+//箭头函数简洁写法, 只有一个变量(最好别去掉argument的括号), 函数体若只有1行可以省略return 和 { }
 const addOne = (number) => number+1;
 ```
 

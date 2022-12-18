@@ -36,7 +36,6 @@ progress tracking
 + 补充视频
 
 # WK2:
-+ lesson4 PPT移植
 + 独立复现: grid
 
 # WK3:

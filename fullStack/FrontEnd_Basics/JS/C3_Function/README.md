@@ -220,6 +220,40 @@ array.forEach(array_func4)  //forEach()括号内可以是箭头函数
 <img src="../Src/JS_ArrowFunction.png" width = 70%>
 
 
+e.g.
+```js
+//命名函数写法
+function addOne(number){
+    return number+1;
+}
+
+//标准的箭头函数写法
+const addOne = (number)=>{
+    return number+1;
+}
+
+//箭头函数简洁写法, 只有一个变量(最好别去掉argument的括号), 函数体若只有1行可以省略return 和 { }
+const addOne = (number) => number+1;
+```
+e.g.
+```js
+const add = (a,b)=>a+b;
+
+const getCircleArea = (r)=> 3.14*r*r;
+```
+e.g.
+```js
+// 返回一个object
+// 用()包住{}, 告诉编译器里面的{}不是代表代码块
+const createProfile = (name, age, title)=>({
+    name:name, 
+    age: age, 
+    title:title})
+
+// 当object属性名和函数argument同名时, ES6语法糖写法:
+const createProfile = (name, age, title) => ({name, age, title}) 
+```
+
 
 # 3. 定义object内部的function
 
