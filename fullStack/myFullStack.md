@@ -8,6 +8,10 @@
 projects练习:
 
 + [Web projects practice](./Web_Projects/myWebProjects.md)
+
+JR lesson:
++ [JR lesson](./JR_Lesson/JR_lesson.md)
+
 ---
 Table of Contents: 
 - [Ubantu](#ubantu)
@@ -29,6 +33,10 @@ Table of Contents:
 + [b站李立超](https://space.bilibili.com/1500126264?spm_id_from=333.337.0.0)
 
 + [b站Raymond ==> project练习](https://space.bilibili.com/208444454?spm_id_from=333.337.0.0)
+
++ [fullstack roadmap](https://github.com/kamranahmedse/developer-roadmap)
+
++ [鱼皮roadmap](https://github.com/liyupi/code-roadmap)
 
 学习以跟做project为核心, 遇到不懂得再查书做笔记: 
 学习>做笔记>做项目>反思>循环

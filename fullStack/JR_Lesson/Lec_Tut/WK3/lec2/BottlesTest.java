@@ -4,6 +4,7 @@
  *   - (Optional) create a java project with Gradle 7+
  *   - junit 5+(a package) version
  *   - implement Bottles.java and make sure all tests pass without changing this test file
+ *   - 根据test, 反推Bottles.java怎么写
  */
 
 // package com.jiangren.bootcamp.java;

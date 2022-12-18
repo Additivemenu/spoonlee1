@@ -131,9 +131,54 @@ const addAgeAttributeToPerson = (age, {firstName, lastName})=> ({
 
 // 更简洁写法: 用spread operator; 注意只有1层的Object, spread operator相当于深拷贝
 const addAgeAttributeToPerson = (age, person)=> ({...person, age })
-
-
 ```
 
 # JS基础 1h52min-
 看到这里
+
+trucy falsy
+
+```js
+const a =1;
+
+if(a){
+    ...
+}
+
+if(a !== undefined && a !== null && a !== 0 && a !== ''){
+    ...
+}
+
+```
+
+```js
+// 完全写法
+function getArrayLength(arr){
+    if(array !== undefined && array !== null){
+        return array.length;
+    }
+
+    return undefined;
+}
+
+// 简洁写法, 由于JS的数值和boolean转化关系
+function getArrayLength(arr){
+    if(arr){
+        return arr.length;
+    }
+
+    return undefined;
+}
+
+// 更简洁写法, 也很常用
+function getArrayLength(arr){
+    return arr && arr.length;   // && 只有左边为true的情况下, 才会跑右边的东西; 否则只跑左边的东西
+}
+
+// 更更简洁写法, 用optional chaining
+function getArrayLength(arr){
+    return arr?.length;         // ? 用来检测arr是否为true, 是的话才看后面 (optional chaining)
+}
+```
+
+在JS中经常用===, 基本不怎么用==
