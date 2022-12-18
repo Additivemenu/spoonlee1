@@ -11,13 +11,15 @@ Contents:
 
 ---
 学习资源
-<<JS高级程序设计>>第10章
++ [MDN: function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions)
++ <<JS高级程序设计>>第10章
 
 ---
+> JS函数分为命名函数和匿名函数
+> + 命名函数: 函数的调用可以在函数定义之前或之后
+> + 匿名函数: 函数的调用必须在函数定义之后
 
-> 注意JS中写函数的语法和C,Java不同， JS中服从格式:
-> 函数名 = function(){...}  OR
-> 函数名 = ()=>{...}
+
 
 # 1. 定义与使用function
 

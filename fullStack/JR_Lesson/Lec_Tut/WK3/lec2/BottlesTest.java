@@ -7,7 +7,7 @@
  */
 
 // package com.jiangren.bootcamp.java;
-package WK3.lec2;
+package Lec_Tut.WK3.lec2;
 
 import org.junit.jupiter.api.Test;    // junit测试框架
 import static org.junit.jupiter.api.Assertions.assertEquals;

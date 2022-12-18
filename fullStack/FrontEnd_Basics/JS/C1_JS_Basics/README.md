@@ -8,7 +8,7 @@ Content
   - [2.1 Number](#21-number)
   - [2.2 Boolean \& if statement](#22-boolean--if-statement)
   - [2.3 String](#23-string)
-    - [2.3.1 :star:String连接](#231-starstring连接)
+    - [2.3.1 :star:String拼接](#231-starstring拼接)
   - [2.4 Data type conversion](#24-data-type-conversion)
 - [3. Operator](#3-operator)
   - [3.1 Arithmetic Operator](#31-arithmetic-operator)
@@ -29,7 +29,7 @@ Content
     - [5.4.1 map()](#541-map)
     - [5.4.2 filter()](#542-filter)
     - [5.4.3 reduce()](#543-reduce)
-  - [5.4.4 forEach()](#544-foreach)
+    - [5.4.4 forEach()](#544-foreach)
 - [5.5 shadowCopy \& deepCopy](#55-shadowcopy--deepcopy)
 
 ---
@@ -75,31 +75,38 @@ console.log(firstName);
 ```js
 const password = "kjjk";
 password = 'aasaaa';         // 会报错
-
 ```
 
-+ const 限定一个普通变量后，无法更改，如果更改，就会报错。但是let就没有如此的限制。
++ const 限定一个primitive type的data后，无法更改，如果更改，就会报错。但是let就没有如此的限制。
 + const 限定一个object type variable, 只是表示这个variable的object type固定无法改, 但object内部的field依然可以改动. 本质上const只是限定变量需要的内存大小.
 
 # 2. 变量的数据类型
 变量的数据类型在JS中是implicit的, 不需要explicitly声明
 
-JS基本数据类型
+JS primitive data type
 data type | description | default value
 -----|------|-----
 Number|包含int 和 float类型   | 0
-Boolean|    | false
-String|   | ""
+Boolean| 你懂的   | false
+String| 你懂的  | ""
 Undefined| 声明了变量但没给值, int a, a=undefined  | undefined
 Null|声明变量为空, int a=null     | null
-
-JS高级数据类型
-data type | description | default value
------|------|-----
 Symbol|| 
 Bigint|| 
+
+JS object date type
+data type | description | default value
+-----|------|-----
 Object|| 
 
+数值与boolean
+| 数值类型 | Boolean |
+| ---- | ---- |
+| undefined | false |
+| null | false |
+| 数字 | 0， NaN (Not a Number) 都是false， 其他是true |
+| 字符串 | 空字符串是false， 否则为true |
+| 对象 | true |
 
 ## 2.1 Number
 
@@ -170,7 +177,7 @@ console.log(b5);
 ![](Src/JS_variable1.png)
 
 
-### 2.3.1 :star:String连接
+### 2.3.1 :star:String拼接
 + 当一个str和一个num相加时，结果的数据类型和被加数一致(和java的print一致)
   + 特别地，+”1”代表将str类型的1转化为num类型. 但是其中的双引号内必须只有数字。
 + JS的`console.log()`支持多个argument(用`,`分隔), 打印结果顺序连接; 而Java中`print()`中只支持1个String, 需要用`+`连接
@@ -204,6 +211,8 @@ console.log(b11, typeof b11);   // 1 'number'
 
 ## 2.4 Data type conversion
 numToString
++ `.toString()`
++ `String()`
 ```js
 // 1. 把数字型转换为字符串型
 let num = 10;
@@ -215,7 +224,11 @@ console.log(String(num))
 // ----
 console.log(num+"")
 ```
+
 StringToNum
++ `parseInt()`
++ `parseFloat()`
++ `Number(String)`
 ```js
 // 把 字符型的转换为数字型 得到是整数?
 console.log(parseInt(`3.14`))       // 3
@@ -234,6 +247,7 @@ console.log(typeof(`12`-0))     // number
 ```
 
 Boolean
++ `Boolean()`
 ```js
 //what's the output?
 console.log(Boolean(""));         //false
@@ -475,6 +489,8 @@ while, for loop语法和Java基本一致
 
 # 5. Array
 
+:book: [MDN: Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
 [Array.js](./Array.js)
 
 ## 5.1 初始化Array
@@ -605,7 +621,7 @@ function(total, currentValue, currentIndex, arr){
 
 :gem::gem: [Practice: reduce()](./20-map_filter_reduce.html)
 
-## 5.4.4 forEach()
+### 5.4.4 forEach()
 
 # 5.5 shadowCopy & deepCopy
 

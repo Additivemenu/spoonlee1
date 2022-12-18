@@ -20,3 +20,6 @@ const officerIds = officers.map((officer)=>{
 
 ## array
 + {...} 展开
+  + 如果object只有1层, spread operator相当于深拷贝
+  + {...person, name: 'li'} vs. {name:'li', ...person} 的区别
+    + 后写的属性覆盖前面写的属性 

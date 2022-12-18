@@ -1,3 +1,14 @@
+跳转:
+
++ [P1, P2, P3](./JR_Projects/JR_projects.md)
+
+---
+学习资料
++ [JR official website](https://learn.jiangren.com.au/my-study/program/63293cf52734a87ca079a6d5)
++ [JR 笔记](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
+
+---
+
 学习要求:
 
 对于课堂笔记的处理
@@ -27,8 +38,7 @@ progress tracking
 # WK2:
 + lesson4 PPT移植
 + 独立复现: grid
-+ P1
-+ 龙哥P1代码demo
-  
+
 # WK3:
 + Java课前作业
++ P1

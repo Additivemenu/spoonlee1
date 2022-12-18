@@ -24,6 +24,8 @@ Contents
 
 <<JavaScript高级程序设计>> 第八章
 
+先看MDN上的教程吧, 看书做笔记效率好低
+
 ---
 
 [object.js](./object.js)

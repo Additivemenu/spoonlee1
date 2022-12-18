@@ -5,9 +5,8 @@
 
 ---
 
-学习资源 (多刷几遍)
-
-+ [W3 HTML](https://www.w3schools.com/html/default.asp)
-+ [W3 CSS](https://www.w3schools.com/css/default.asp)
-+ [W3 JS](https://www.w3schools.com/js/default.asp)
-+ [Free code camp](https://www.freecodecamp.org/)
+学习资源 
++ :book::star: [JR 笔记](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
++ :book::star:[MDN](https://developer.mozilla.org/en-US/) 讲的比W3更细, 但仅有前端
++ :book:[w3school](https://www.w3schools.com/html/default.asp) 什么都有
++ :book:[Free code camp](https://www.freecodecamp.org/)

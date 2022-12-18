@@ -1,11 +1,12 @@
 跳转
 
-[JS与Java语法区别](./JS_Vs_Java.md)
++ [JS与Java语法区别](./JS_Vs_Java.md)
++ [steve的JS笔记](./Js.md)
 
 Chapter | 
 ------ | 
 [C1: JS Basics](./C1_JS_Basics/README.md)   |   
-[C2: JS Object-Oriented](./C2_Object/README.md) |
+[C2: JS Object-Oriented](./C2_Object/JS_object.md) |
 [C3: JS Function](./C3_Function/README.md) |
 [C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md) |
 
@@ -21,8 +22,8 @@ Chapter |
 
 3. [W3 JS (但是讲的比较浅)](https://www.w3schools.com/js/default.asp)
 
-4. <<JavaScript高级程序设计>> 
-- 作为补充性质的参考书目
+4. <<JavaScript高级程序设计>> 4th edition
+   - 作为补充性质的参考书目
 
 ---
 
