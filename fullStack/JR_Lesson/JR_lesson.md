@@ -39,6 +39,11 @@ progress tracking
 + 独立复现: grid
 
 # WK3:
-+ Java课前作业
++ Java1课前作业
++ Java1笔记
 + P1
-+ git 作业
++ git 理解merge vs. rebase, git stash
++ git 作业  -almost done
++ Ally tut 独立复现
+
+# WK4

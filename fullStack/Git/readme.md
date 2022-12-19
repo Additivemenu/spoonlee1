@@ -1,18 +1,28 @@
 
 [git](./git.md)
+[gitPractice](./Git_Practice/gitPractice.md)
 
 ---
+
 - [Intro](#intro)
 - [Hands on 17min-](#hands-on-17min-)
   - [step 0: 一个点的历史 git set up](#step-0-一个点的历史-git-set-up)
     - [Git Global Setup](#git-global-setup)
     - [Set up repository](#set-up-repository)
   - [step 1: 一条线的历史 commit 47min-](#step-1-一条线的历史-commit-47min-)
+    - [常用 git command](#常用-git-command)
     - [:full\_moon: git undo changes 1h17min-](#full_moon-git-undo-changes-1h17min-)
   - [step 2: 两条线的历史 branch \& merge  1h38min-](#step-2-两条线的历史-branch--merge--1h38min-)
     - [branch](#branch)
     - [:full\_moon: merge branch 1h47min-2h13min](#full_moon-merge-branch-1h47min-2h13min)
   - [step 3: 多条线的历史 远程协作 2h25min-](#step-3-多条线的历史-远程协作-2h25min-)
+    - [Update remote from local](#update-remote-from-local)
+    - [Update local from remote](#update-local-from-remote)
+    - [:full\_moon: remote branch 2h39min-](#full_moon-remote-branch-2h39min-)
+    - [:full\_moon: merge vs. rebase 3h-3h06min](#full_moon-merge-vs-rebase-3h-3h06min)
+    - [git ignore 3h06min-](#git-ignore-3h06min-)
+    - [force push 3h10min-](#force-push-3h10min-)
+    - [Q\&A 3h11min-](#qa-3h11min-)
 
 
 
@@ -96,6 +106,7 @@ git 工作原理
 
 working directory ---`git add`---> stage ---`git commit`---> git repo
 
+### 常用 git command 
 
 + `git add`
   + `git add .` 添加当前路径下所有文件至stage
@@ -106,7 +117,7 @@ working directory ---`git add`---> stage ---`git commit`---> git repo
     + git message要有意义
 + `git rm`
   + 慎用 
-+ `git stash (push) -m"stash message"` 暂存区
++ `git stash (push) -m"stash message"` 本地暂存区
 [git stash doc](https://www.git-scm.com/docs/git-stash)
 暂存当前代码为新的stash加入stash list, 并回退到上个commit时的代码状态(下图中的1,2两步); 最新创建的stash放在stash@{0}, stash@{1}是在其之前创建的, 其实就是个stack
   + `git stash list` 显示stash list
@@ -165,9 +176,9 @@ e.g. feat/JR-101-create-header-for-home-papge
 
 <img src="../Git/Src_md/merge.png" width=70%>
 
-+ `git merge branch_name`: 将branch_name合并到当前所在的branch上; 这个command本质上包含两步操作: 
++ `git merge branch_name`: 将branch_name合并到当前所在的branch上; **这个command本质上包含两步操作:** 
   1. auto-merging: 将branch_name中的代码merge到当前所在的branch上(期间有可能发生conflict, 此时需要manual merge和manual commit); 
-  2. commit: 在当前所在的branch上commit第一步的结果. commit之后可以在history里查看merge branch的历程
+  2. commit: 在当前所在的branch上commit第一步的结果(即在当前branch上产生一个新的commit node). commit之后可以在history里查看merge branch的历程
 
 
 注意:
@@ -210,19 +221,19 @@ step3之前的都是在local上的操作, 这里就需要引入github: a remote 
 
 ---
 
-update remote from local
+### Update remote from local
 
 + `git push`: 建立本地repo和github remote repo之间的联系
-+ + `git push <name><branch>`
++ `git push <name><branch>`
 + `git push <name><local_branch>:<remote_branch>`
 
-update local from remote
+### Update local from remote
 + `git fetch`: get information(告诉我local repo是提前还是落后remote repo几个commit), 但不会push OR pull
 + `git pull`: 如果github remote repo比local repo新, 用这个来pull remote repo 多出来的commit到local repo
 
 ---
 
-remote branch 2h39min-
+### :full_moon: remote branch 2h39min-
 create branch --> doing something at that branch --> commit --> publish branch (then you can see the branch on github)
 
 
@@ -235,29 +246,38 @@ local 与 remote repo的branch name的匹配
 
 
 ---
-merge vs. rebase 3h-3h06min
-+ merge: commit之间是多线结构
-+ rebase: 另一种merge的方法, commit之间是单线结构, 追溯历史更加直观, 工作中用的更多
+### :full_moon: merge vs. rebase 3h-3h06min
++ `git merge`: commit之间是多线结构
+  + 一旦branch多了, 很难梳理commit之间的关系 
+  + merge是合并两个分支最新的状态生成一个新的commit
++ `git rebase`: 另一种merge的方法, commit之间是单线结构, 
+  + 追溯历史更加直观, 工作中用的更多
+  + rebase是把所有的commit在另一个分支上replay一遍，会丢失历史状态
+  + 千万别在公共分支上rebase
+  + `git rebase <branch_name>`: 将commit chain rebase on specified branch上 
 
-[git visualizer](https://git-school.github.io/visualizing-git/)
+
+:tv: [ali could blibili: git merge vs. git rebase](https://www.bilibili.com/video/BV1Xb4y1773F/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+:tv: [git merge vs. git rebase](https://www.bilibili.com/video/BV1VG411F7rB/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+:gem: [git visualizer](https://git-school.github.io/visualizing-git/)
 
 ---
 
-git ignore 3h06min-
-
+### git ignore 3h06min-
 
 在`.gitignore`文件中specify哪种类型的文件(e.g. .exe, .dll...)不希望被version control
 + 使用通配符, 路径来选定哪个文件夹下的哪种文件应该被ignore
 
 ---
 
-force push 3h10min-
+### force push 3h10min-
 强制push
 + 危险的操作!
 
 ---
 
-Q&A 3h11min-
+### Q&A 3h11min-
 
 `git config --local --list`: 显示local的git config list
 `git config --list`: 显示global和local的git config list
