@@ -4,26 +4,36 @@
 
 These are personal notes referring to UniMelb Java Week8 learning material
 
-# 1.Interfaces
+# 1.Interfaces (接口)
+在Java中, interface is not class, 而是对希望符合这个Interface的class的一组需求. 
 
-An interface is essentially a set of methods that a class promises to implement.
 
-It is something like an extreme case of an abstract class. However, an interface is not a class. It is a type that can be satisfied by any class that "implements" the interface (i.e., defines the required methods).
-
-## 1.1 :moon: Define an interface
-
-The syntax for defining an interface is similar to that of defining a class, except the word interface is used in place of class.
-
-An interface specifies a set of methods that any class that implements the interface **must** have.
-
-- It contains method headings and constant definitions only.
-
-- It contains no instance variables nor any complete method definitions
-
-> Motivation of using interface
+> Motivation of using interface: 多重继承
 > Note: Some languages (like C++) allow one class to be derived from two or more different base classes. This multiple inheritance is not allowed in Java. Instead, Java's way of approximating multiple inheritance is through interfaces.
 >
 > Example: Given a base class Vehicle, we may want to make classes AirPlane, Boat and Car. But what if a vehicle is both an airplane and a boat? Instead, we could define interfaces Flyable and Floatable, and create a class like Seaplane which extends Vehicle, but also implements the Flyable and Floatable interfaces.
+
+## 1.1 :moon: Define an interface
+
+
+An interface specifies a set of methods that any class that implements the interface **must** have.
+
+- 能有的: It contains method headings and constant definitions only.
+- 不能有的: It contains no instance variables nor any complete method definitions
+  - 提供实例字段和方法的实现都应该由实现Interface的那个class来完成; 因此可以将interface看作是没有实例字段的abstract class. 
++  **an interface is not a class.** 
+   + 不能用new 来实例化 interface
+      ```java
+      x = new Comparable();    // error
+      ```
+
+
+为了让某个class实现一个interface:
++ step1: 在class的声明中写上implements interface...
++ step2: 在class中定义具体的interface中提到的**所有**方法
+
+
+
 
 ### Public methods
 
@@ -196,3 +206,32 @@ Another more subtle problem is that both interfaces can have the same method hea
 + For example, a method same can be intended in one interface to return true if two objects have equal value (like equals) and in the other interface be intended to return true if two references refer to the same object (like ==).  A class implementing  boolean same (Object o) will satisfy the required syntax of both interfaces (i.e., it will be legal), but will probably cause unintended behaviour.
 
 + Alternatively, an interface could capture the idea of partial ordering.  For example, (a,b) < (c,d) if a<c and b<d,  (a,b) > (c,d) if a>c and b>d, but they are "incomparable" otherwise.  If a programmer carelessly required a method compareTo of this class to return 0 for incomparable pairs, then a class implementing both this interface and Comparable would run into trouble in a binary search.  (What trouble?) For this reason, it is good practice not to reuse the names of methods of standard java interfaces.  If in doubt, search the web for the name you are considering and see if you find it in an existing interface.
+
+
+# 2. lambda
+动机: 在java中传递代码块并不是容易的事情, 你不能直接传递代码块. 因为java是面向对象的编程语言, 要想传递代码块, 我们所以必须先构造一个对象, 这个对象的类需要有一个方法包含所需要的代码块.
+
+lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式变成那样可以使得代码块之后被执行一次或多次. 
+
+基本语法:
+像JS中的箭头函数
+```java
+(para1, para2) -> expressions     // 这个整体我们成为lambda表达式
+```
+
+## 2.1 functional interface
+对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口成为**函数式接口(functional interface)**
+
+
+:gem: e.g.1
+考虑Arrays.sort(), 它的第二个argument是一个Comparator实例, Comparator就是函数式接口. 所以我们可以提供一个lambda表达式, 更加简洁:
+
+```java
+Arrays.sort(words, (first, second) -> first.length()-second.length());
+```
+**最好把lambda表达式看作一个函数, 而不是一个对象.**
+
+## 2.2 method reference
+
+
+## 2.3 constructor reference

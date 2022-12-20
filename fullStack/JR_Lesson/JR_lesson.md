@@ -40,7 +40,11 @@ progress tracking
 
 # WK3:
 + Java1课前作业
-+ Java1笔记
++ Java1笔记: 
+  + interface --> comparator 
+  + lambda, Collection --> stream --> optional class
+  + I/O --> serializable
+
 + P1
 + git 理解merge vs. rebase, git stash
 + git 作业  -almost done

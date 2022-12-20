@@ -28,7 +28,7 @@ road map 19:56-20:24
 
 课程安排偏前端
 + 澳洲junior backend职位很少, 澳洲full stack也主要偏前端, 匠人的课程也偏前端
-+ 现阶段先精通一个方向, 现阶段不用想要精通两个方向
++ 现阶段先精通一个方向, 现阶段想要精通两个方向不现实
 
 
 # java basics 20:24-
@@ -86,7 +86,11 @@ operators
 Map
 + effective java Item64: refer to objects by their interface
 
+# java 进阶内容
+
 ## 序列化(serializable)和反序列化 21:49
+:book: **javacore2 chap2**
+
 I/O操作相关, 网络传输, 数据库读写
 
 + 序列化: 将对象以二进制的形式保存在硬盘上或进行网络传输
@@ -98,6 +102,8 @@ A lambda expression is like syntactic sugar for an anonymous class with one meth
 
 
 ## Java 8 optional class 21:57 :star: 再看, 没太明白
+:book: **javaCore2 chap1**
+
 optional class in the java.util package for avoiding null return values (and thus NullPointerException)
 
 ```java
@@ -109,6 +115,8 @@ return ...
 ```
 
 ## Java 8 stream 22:11-22:41 :star:
+:book: **JavaCore2 chap1**
+
 采用类似SQL的语法对数据集合进行运算, 可以有效地减少for loop, if else...
 .filter() .sort()  .map()
 
