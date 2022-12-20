@@ -5,56 +5,69 @@
 These are personal notes referring to UniMelb Java Week8 learning material
 
 # 1.Interfaces (接口)
-在Java中, interface is not class, 而是对希望符合这个Interface的class的一组需求. 
+在Java中, interface is not class, 而是对希望符合这个Interface的class的**一组需求**. 通常, interface的名字是一个形容词, 如Comparable, Cloneable...表示是否能够实现某种功能, 有时是一个名词, 如Comparator
 
 
-> Motivation of using interface: 多重继承
-> Note: Some languages (like C++) allow one class to be derived from two or more different base classes. This multiple inheritance is not allowed in Java. Instead, Java's way of approximating multiple inheritance is through interfaces.
->
-> Example: Given a base class Vehicle, we may want to make classes AirPlane, Boat and Car. But what if a vehicle is both an airplane and a boat? Instead, we could define interfaces Flyable and Floatable, and create a class like Seaplane which extends Vehicle, but also implements the Flyable and Floatable interfaces.
-
-## 1.1 :moon: Define an interface
+## 1.1 :moon: interface的性质
 
 
 An interface specifies a set of methods that any class that implements the interface **must** have.
 
-- 能有的: It contains method headings and constant definitions only.
-- 不能有的: It contains no instance variables nor any complete method definitions
-  - 提供实例字段和方法的实现都应该由实现Interface的那个class来完成; 因此可以将interface看作是没有实例字段的abstract class. 
-+  **an interface is not a class.** 
-   + 不能用new 来实例化 interface
-      ```java
-      x = new Comparable();    // error
-      ```
+- **能有的:** 
+  - method headings (自动设置为public)
+  - constant definitions (自动设置为public static final)
+  ```java
+  public interface Powered extends Moveable{
+    double milesPerGallon();    // method heading
+    double SPEED_LIMIT = 95;    // a public static final constants
+  }
+  ```
+- **不能有的:** 
+  - any instance variables 
+  - any complete method definitions(except default method)
+
+提供实例字段和方法的实现都应该由实现Interface的那个class来完成; 因此可以将interface看作是没有实例字段的abstract class, 但interface不是class, 它们有很重要的区别:
++ 无法使用new来实例化interface
+  ```java
+    x = new Comparable();    // error
+  ```
++ 每个class只能有1个超类, 但是却可以implements多个interface; 这也是为什么我们需要interface的原因, 一个class无法继承多个abstract class
+  + C++允许一个class继承多个class, 即multiple inheritance. 但Java则不允许这么做, 因为multiple inheritance会让语言很复杂. 
++ abstract class可以有instance variable和一部分method的实现, 而interface中不能有instance variable和具体的method实现(除了default method)
+  ```java
+    public interface Comparable<T>{
+      default int compareTo(T other){return 0;} // by default, all elements are the same
+    }
+  ```
+---
+
++ `instanceof` 检查一个对象是否implement某个特定interface
+  ```java
+  if(anObject instanceof Comparable){...}
+  ```
++ interface可以被扩展
+  ```java
+  public interface Moveable{
+    void move (double x, double y);  // only method heading
+  }
+
+  public interface Powered extends Moveable{
+    double milePerGallon();     // only method heading
+  }
+  ```
 
 
-为了让某个class实现一个interface:
-+ step1: 在class的声明中写上implements interface...
-+ step2: 在class中定义具体的interface中提到的**所有**方法
-
-
-
-
-### Public methods
-
-**An interface and all of its method headings should be declared public: they cannot be given private, protected, or package access.**
-
-When a class implements an interface, it must make all the methods in the interface public (just as a derived class cannot give a more restrictive permission to any overridden method).
-
-Because an interface is a type, a method may be written with a parameter of an interface type. That parameter will accept as an argument an object of any class that implements the interface.
-
-### Example: The Ordered interface
+:gem: e.g. The Ordered interface
 
 ```java
+/**
+ For objects o1 and o2 of the class, we should have
+  o1.follows(o2) == o2.precedes(o1)
+  However, neither the compiler nor run-time system will ensure this.
+  It is only advisory to the programmer implementing the interface to make sure that the Object satisfy such property
+*/
 public interface Ordered {
     public boolean precedes (Object other);     // don't forget the semicolon
-
-    /**
-     For objects o1 and o2 of the class, we should have
-     o1.follows(o2) == o2.precedes(o1)
-     However, neither the compiler nor run-time system will ensure this.
-     It is only advisory to the programmer implementing the interface.
-    */
     public boolean follows (Object other);
 }
 ```
@@ -63,16 +76,10 @@ public interface Ordered {
 
 To implement an interface, a concrete class (non-abstract class) must do two things:
 
-- It must include the phrase
 
-  ```java
-  implements Interface_Name
-  ```
-
-  at the start of the class definition. If more than one interface is implemented, each is listed, separated by commas.
-
-- The class **must implement all** the method headings listed in the definition(s) of the interfaces(s). 
-  + Abstract class implementing the interface can just give an abstract method.
+为了让某个class实现一个interface:
++ step1: 在class的声明中写上implements interface...
++ step2: 在class中定义具体的interface中提到的**所有**方法
 
 ### e.g.1
 
@@ -89,16 +96,11 @@ Note the use of Object as the parameter type in the following examples.
 
 [Demo: abstract class implementing interfaces](UniMelb/abstractClass_impleInterf.java)
 
-## 1.3 Derived interface
 
-Like classes, an interface may be derived from a base interface.  This is called extending the interface.  The derived interface must include the phrase
-```java
-extends BaseInterfaceName
-```
-
-A concrete class that implements a derived interface must have definitions for any methods in the derived interface as well as any methods in the base interface.
 
 ## 1.4 The comparable interface
+
+> JavaCore1 p235 待看
 
 即给object排序 (前提是given class implements comparable interface)
 
@@ -175,15 +177,11 @@ It is common to want to find an item in a sorted list.  The most efficient way t
 
 This ability to write generic code is important for writing complex software without having to have very repetitive code, and is one of the strengths of object oriented programming.
 
-## 1.5 Defined constants in interfaces
 
-Although an interface cannot contain any member variables, it can contain defined constants in addition to or instead of method headings.
 
-**Any variables defined in an interface must be public, static, and final.** Because this is understood, Java allows these modifiers to be omitted.
+## 1.6 :full_moon:Inconsistent interface (interfaces 冲突)
 
-Any class that implements the interface has access to these defined constants.
-
-## 1.6 :full_moon:Inconsistent interface
+> JavaCore1 P231 解决默认方法冲突 待看
 
 In Java, a class can have only one base class.  This prevents any inconsistencies arising from different definitions having the same method heading.
 
