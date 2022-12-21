@@ -31,6 +31,8 @@ An interface specifies a set of methods that any class that implements the inter
   ```java
     x = new Comparable();    // error
   ```
+  :gem: [stackoverflow: instantiate interface?](https://stackoverflow.com/questions/16750772/instantiating-interfaces-in-java)
+
 + 每个class只能有1个超类, 但是却可以implements多个interface; 这也是为什么我们需要interface的原因, 一个class无法继承多个abstract class
   + C++允许一个class继承多个class, 即multiple inheritance. 但Java则不允许这么做, 因为multiple inheritance会让语言很复杂. 
 + abstract class可以有instance variable和一部分method的实现, 而interface中不能有instance variable和具体的method实现(除了default method)
@@ -213,20 +215,21 @@ Another more subtle problem is that both interfaces can have the same method hea
 + Alternatively, an interface could capture the idea of partial ordering.  For example, (a,b) < (c,d) if a<c and b<d,  (a,b) > (c,d) if a>c and b>d, but they are "incomparable" otherwise.  If a programmer carelessly required a method compareTo of this class to return 0 for incomparable pairs, then a class implementing both this interface and Comparable would run into trouble in a binary search.  (What trouble?) For this reason, it is good practice not to reuse the names of methods of standard java interfaces.  If in doubt, search the web for the name you are considering and see if you find it in an existing interface.
 
 
-# 2. lambda
+# 2. Lambda
 [尚硅谷Java8 P666-692](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 动机: 在java中传递代码块并不是容易的事情, 你不能直接传递代码块. 因为java是面向对象的编程语言, 要想传递代码块, 我们所以必须先构造一个对象, 这个对象的类需要有一个方法包含所需要的代码块.
 
-lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式变成那样可以使得代码块之后被执行一次或多次. 
+lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式(它本质是一个匿名函数)那样可以使得代码块之后被执行一次或多次. 
 
 基本语法:
 像JS中的箭头函数
 ```java
-(para1, para2) -> expressions     // 这个整体我们成为lambda表达式
+(para1, para2) -> your_codes     // 这个整体我们成为lambda表达式
 ```
 
-## 2.1 functional interface
+
+## 2.1 Functional Interface
 对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口称为**函数式接口(functional interface)**
 
 
@@ -236,9 +239,28 @@ lambda表达式正是为了能够更方便地传递代码块而被发明的, 它
 ```java
 Arrays.sort(words, (first, second) -> first.length()-second.length());
 ```
-**最好把lambda表达式看作一个函数, 而不是一个对象.**
+**最好把lambda表达式看作一个函数, 而不是一个对象.** nm尚硅谷说的是相反的:
 
-## 2.2 :full_moon: method reference
+<img src="../Src_md/GuiguShang_functionalInterface.png" width = 70%>
+
+---
+functional interface的object 一般会作为 一个method的argument, 来使得这个method具有更广的作用. 即一个method(指functional interface的object中的abstract method)作为另一个method的argument, 很神奇. 具体见尚硅谷的代码示例.
+
+Java内置的functional interface: 
+
+<img src="../Src_md/java_inherit_functionalInterfaces.png" width=70%>
+
++ Consumer<T> 消费型interface, 只接收参数, 不return
++ Supplier<T> 供给型interface, 只return, 不接收参数
++ Function<T, R>, 函数型interface, 接收类型为T的参数, return类型为R的参数
++ Predicate<T>, 断定型接口, 接收类型为T的参数, return boolean值 
+
+<img src="../Src_md/java_otherFuntionalInterface.png" width=70%>
 
 
-## 2.3 constructor reference
+## 2.2 :full_moon: Method Reference
+https://www.bilibili.com/video/BV1Kb411W75N?p=673&vd_source=c6866d088ad067762877e4b6b23ab9df
+
+该看这个了!
+
+## 2.3 Constructor Reference
