@@ -7,8 +7,8 @@ OOB 与 模块化
 + [chap5 Inheritance & Polymorph](./chap5/readme.md) 
 + [chap6 Interface, lambda & inner class ](./chap6/readme.md)
 
-Event
-+ [chap7 Exception](./chap7/readme.md) 
+异常与debug
++ [chap7 Exception, assertion, log](./chap7/readme.md) 
 
 其他
 + [chap8 Generics](./chap8/readme.md)
