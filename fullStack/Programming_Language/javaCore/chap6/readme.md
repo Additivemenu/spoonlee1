@@ -13,7 +13,7 @@ These are personal notes referring to UniMelb Java Week8 learning material
 
 An interface specifies a set of methods that any class that implements the interface **must** have.
 
-- **能有的:** 
+- **Interface能有的:** 
   - method headings (自动设置为public)
   - constant definitions (自动设置为public static final)
   ```java
@@ -22,11 +22,11 @@ An interface specifies a set of methods that any class that implements the inter
     double SPEED_LIMIT = 95;    // a public static final constants
   }
   ```
-- **不能有的:** 
+- **Interface不能有的:** 
   - any instance variables 
   - any complete method definitions(except default method)
 
-提供实例字段和方法的实现都应该由实现Interface的那个class来完成; 因此可以将interface看作是没有实例字段的abstract class, 但interface不是class, 它们有很重要的区别:
+提供实例字段和方法的实现都应该由实现Interface的那个class来完成; 因此可以将interface看作是没有实例字段的abstract class, 但interface并不是class, 它们有很重要的区别:
 + 无法使用new来实例化interface
   ```java
     x = new Comparable();    // error
@@ -40,7 +40,14 @@ An interface specifies a set of methods that any class that implements the inter
     }
   ```
 ---
-
++ 尽管不能用interface构造对象, 但我们可以声明interface的变量:
+  ```java
+  Comparable x;   // ok
+  ```
+  + 而interface变量必须引用implement了这个interface的类对象
+    ```java
+    x = new Employee(); // ok if provided Employ implements Comparable
+    ```
 + `instanceof` 检查一个对象是否implement某个特定interface
   ```java
   if(anObject instanceof Comparable){...}
@@ -207,6 +214,8 @@ Another more subtle problem is that both interfaces can have the same method hea
 
 
 # 2. lambda
+[尚硅谷Java8 P666-692](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
 动机: 在java中传递代码块并不是容易的事情, 你不能直接传递代码块. 因为java是面向对象的编程语言, 要想传递代码块, 我们所以必须先构造一个对象, 这个对象的类需要有一个方法包含所需要的代码块.
 
 lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式变成那样可以使得代码块之后被执行一次或多次. 
@@ -218,7 +227,7 @@ lambda表达式正是为了能够更方便地传递代码块而被发明的, 它
 ```
 
 ## 2.1 functional interface
-对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口成为**函数式接口(functional interface)**
+对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口称为**函数式接口(functional interface)**
 
 
 :gem: e.g.1
@@ -229,7 +238,7 @@ Arrays.sort(words, (first, second) -> first.length()-second.length());
 ```
 **最好把lambda表达式看作一个函数, 而不是一个对象.**
 
-## 2.2 method reference
+## 2.2 :full_moon: method reference
 
 
 ## 2.3 constructor reference

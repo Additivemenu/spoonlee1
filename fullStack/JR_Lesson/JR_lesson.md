@@ -1,11 +1,18 @@
+Java or NodeJs?
+- 给自己3天时间跟进度, 届时看看能不能跟上锤姐讲的内容. 如果还是很吃力, 那就转NodeJs
+
+
+
+---
+
 跳转:
 
 + [P1, P2, P3](./JR_Projects/JR_projects.md)
 
 ---
 学习资料
-+ [JR official website](https://learn.jiangren.com.au/my-study/program/63293cf52734a87ca079a6d5)
-+ [JR 笔记](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
++ :computer: [JR official website](https://learn.jiangren.com.au/my-study/program/63293cf52734a87ca079a6d5)
++ :book: [JR 笔记](https://github.com/australiaitgroup/full-stack-bootcamp-wiki)
 
 ---
 
@@ -51,3 +58,4 @@ progress tracking
 # WK4
 + Java 第二节课: JVM & mechanism
 + Java 第一节课作业
++ 跟Java进度: java8...

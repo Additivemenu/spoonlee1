@@ -1,6 +1,3 @@
-跳转
-
-:book: [javaCore2](../javaCore2/myJavaCore2.md)
 
 Basics
 + [chap3 Java basics](./chap3/README.md) 

@@ -1,7 +1,7 @@
 跳转:
 + [FrontEnd](./FrontEnd_Basics/myFrontEndBasics.md)
 + [Web Projects](./Web_Projects/README.MD)
-+ [Programming Language](./Programming_Language/readme.md)
++ [Programming Language](./Programming_Language/myPrograLang.md)
 + [Git](./Git/readme.md)
 
 
@@ -13,6 +13,7 @@ JR lesson:
 + [JR lesson](./JR_Lesson/JR_lesson.md)
 
 ---
+
 Table of Contents: 
 - [Ubantu](#ubantu)
 - [快捷键](#快捷键)
