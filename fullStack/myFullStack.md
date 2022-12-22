@@ -1,3 +1,7 @@
+**学无止境, 你所学到的可能只是沧海之一粟, Java要学的东西有很多很多...stay hungary, stay foolish**
+
+---
+
 跳转:
 + [FrontEnd](./FrontEnd_Basics/myFrontEndBasics.md)
 + [Web Projects](./Web_Projects/README.MD)
@@ -29,7 +33,7 @@ Table of Contents:
 
 + [mozilla developer](https://developer.mozilla.org/en-US/docs/Web)
 
-+ [b站尚硅谷](https://search.bilibili.com/all?keyword=%E5%B0%9A%E7%A1%85%E8%B0%B7&from_source=webtop_search&spm_id_from=333.1007&search_source=5)
++ [b站尚硅谷](https://search.bilibili.com/all?keyword=%E5%B0%9A%E7%A1%85%E8%B0%B7&from_source=webtop_search&spm_id_from=333.1007&search_source=5) 尚硅谷的Java全套教程还是不错的.
 
 + [b站李立超](https://space.bilibili.com/1500126264?spm_id_from=333.337.0.0)
 

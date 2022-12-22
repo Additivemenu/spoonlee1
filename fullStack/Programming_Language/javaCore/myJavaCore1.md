@@ -13,7 +13,7 @@ OOB 与 模块化
 其他
 + [chap8 Generics](./chap8/readme.md)
 
-+ [chap9 sets](./chap9/readme.md)
++ [chap9 集合与常用类](./chap9/readme.md)
 ---
 Contents
 - [学习资料](#学习资料)

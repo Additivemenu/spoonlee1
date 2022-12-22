@@ -16,6 +16,7 @@ optional class
     - [筛选与切片](#筛选与切片)
     - [映射](#映射)
     - [排序](#排序)
+  - [Step3: Stream API 终止操作](#step3-stream-api-终止操作)
     - [匹配与查找](#匹配与查找)
     - [归约](#归约)
     - [收集](#收集)
@@ -45,7 +46,13 @@ Why Stream API?
   + 而Stream是有关计算的, 主要是面向CPU, 通过CPU来实现计算
 
 什么是Stream?
-是数据渠道(管道), 用于操作数据源(集合, 数组)所生成的元素序列. 可以想象stream是一个处理数据的管道或者传送带, 而集合相当于一筐筐的原材料. 我们把一箱箱的原材料倒入管道或者传送带, 数据才会被加工处理(即计算), 这些加工处理我们称之为Stream API的中间操作
+是数据渠道(管道), 用于操作数据源(集合, 数组)所生成的元素序列. 可以想象stream是一个处理数据的管道或者传送带, 而集合相当于一筐筐的原材料. 我们把一箱箱的原材料倒入管道或者传送带, 数据才会被加工处理(即计算), 这些加工处理我们称之为Stream API的中间操作. 集合和stream一般都需要指定其内部元素的类型
+```java
+ArrayList<Character>
+
+Stream<Integer>
+```
+
 **集合讲的是数据, 而Stream讲的是计算, 这体现在:**
 - Stream自己不会存储元素
 - Stream不会改变源对象. 相反, 它们只会返回一个持有结果的新Stream
@@ -77,15 +84,29 @@ Stream的操作3个步骤:
 ### 映射
 <img src="../Src_md/Stream_map.png" width=70%>
 
+map会对stream中的每个元素进行操作
 
 ### 排序
 <img src="../Src_md/Stream_sort.png" width=70%>
 
+:question: Comparator 是functional interface, 但它里面怎么不止一个method?
+
+
+## Step3: Stream API 终止操作
+
 ### 匹配与查找
 
+<img src="../Src_md/StreamAPI_match_find.png" width=70%>
+
 ### 归约
+<img src="../Src_md/streamAPI_reduce.png" width=70%>
+
+https://www.bilibili.com/video/BV1Kb411W75N?p=683
 
 ### 收集
+<img src="../Src_md/streamAPI_collect.png" width=70%>
+
+
 
 ## Optional Class
 
