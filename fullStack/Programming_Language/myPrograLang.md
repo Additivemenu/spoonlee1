@@ -20,6 +20,8 @@ roadmap
   + [code wars](https://www.codewars.com/dashboard) (不是算法题, 只是编程题) 
 
 ---
+尚硅谷b站Java教程 (包含全套Java学习路线都开源了)
+
 :computer: [尚硅谷Java8 P666-692](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df) 提到的java8 新特性:
 + JavaCore1-chap6: lambda表达式, 函数式接口, 方法/构造器引用  
 + JavaCore2-chap1: Stream API, Optional 类 

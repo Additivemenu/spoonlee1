@@ -222,6 +222,11 @@ Another more subtle problem is that both interfaces can have the same method hea
 
 lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式(它本质是一个匿名函数)那样可以使得代码块之后被执行一次或多次. 
 
+> 本质上Lambda就是Java想引入函数式编程的一些特点来使得代码更加紧凑, 通过实例化functional interface, 我们可以直接建立一些可复用的"函数对象"(如一个Employee object的generator)
+> + Lambda表达式本质是functional interface的instance
+> + Lambda表达式可以改写成method reference的形式, 它们是等价的
+>   + constructor reference是method reference的特殊情况
+
 基本语法:
 像JS中的箭头函数
 ```java
@@ -259,8 +264,9 @@ Java内置的functional interface:
 
 
 ## 2.2 :full_moon: Method Reference
-https://www.bilibili.com/video/BV1Kb411W75N?p=673&vd_source=c6866d088ad067762877e4b6b23ab9df
 
-该看这个了!
+
+
+
 
 ## 2.3 Constructor Reference
