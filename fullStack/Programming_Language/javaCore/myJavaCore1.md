@@ -1,7 +1,7 @@
 跳转:
 
 IDEA
-+ [chap0 IDEA的使用]()
++ [chap0 IDEA的使用](./chap0/readme.md)
 
 Basics
 + [chap3 Java basics](./chap3/README.md) 
@@ -15,8 +15,14 @@ OOB 与 模块化
 + [chap7 Exception, assertion, log](./chap7/readme.md) 
 
 Java进阶内容
-+ [chap8 Generics](./chap8/readme.md)
++ [chap8 Generics & reflection](./chap8/readme.md)
 + [chap9 集合与常用类](./chap9/readme.md)
++ [chap12 并发](./chap12/readme.md) 
+
+Java用户界面
++ [chap10 GUI]()
++ [chap11 Swing]()
+
 
 Stream, I/O stream见JavaCore2
 

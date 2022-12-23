@@ -241,7 +241,7 @@ Another more subtle problem is that both interfaces can have the same method hea
 
 lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式(它本质是一个匿名函数)那样可以使得代码块之后被执行一次或多次. 
 
-> 本质上Lambda就是Java想引入函数式编程的一些特点来使得代码更加紧凑.将函数作为另一个函数的argument, 我们在需要时便可以随时更改函数的实现代码来支持特定功能. 在一些API(尤其是stream API)的argument中实例化functional interface, 我们可以直接建立一些可复用的, 具有特定功能的"函数对象". 
+> 本质上Lambda就是Java想引入函数式编程的一些特点来使得代码更加紧凑.将函数作为另一个函数的argument, 我们在需要时便可以随时更改函数的实现代码来支持特定功能. 在一些API(尤其是stream API)的argument中实例化functional interface, 我们可以直接建立一些可复用的, 具有特定功能的"函数对象". API只提供规范, 具体的函数内容我们可以在规范的基础上进行编辑.
 > + Lambda表达式本质是functional interface的instance
 > + Lambda表达式可以改写成method reference的形式, 它们是等价的
 >   + constructor reference是method reference的特殊情况

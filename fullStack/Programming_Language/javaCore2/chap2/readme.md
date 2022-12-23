@@ -1,3 +1,7 @@
+[尚硅谷: I/O stream](./GuiguShang.md)
+
+---
+
 - [1.Introduction](#1introduction)
   - [1.1 Stream objects](#11-stream-objects)
     - [1.1.1 System streams](#111-system-streams)
@@ -78,7 +82,7 @@
 
 [Online tutorial](https://www.tutorialspoint.com/java/java_files_io.htm)
 
-:computer:[Bilibili 尚硅谷: I/O stream 582-608](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
 
 ---
 

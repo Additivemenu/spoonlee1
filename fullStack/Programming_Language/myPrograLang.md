@@ -8,8 +8,9 @@
   + chap6: lambda表达式, 函数式接口, 方法/构造器引用  
 + [JavaCore2](./javaCore2/myJavaCore2.md)
   + chap1: Stream API, Optional 类(减少空指针异常) 
-+ [Python](./Python/readme.md)
++ [Java projects](./javaProjects/javaProjects.md)
 + [刷题](./%E5%88%B7%E9%A2%98/newCoder.md)
++ [Python](./Python/readme.md)
 ---
 roadmap
 
