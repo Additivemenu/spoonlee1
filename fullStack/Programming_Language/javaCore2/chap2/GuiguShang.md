@@ -141,9 +141,16 @@ output stream |  `OutputStream`  | `Writer`
 + 之后的流: 都是处理流
 + 做到看到一个stream class的名字, 就知道是input/output stream, byte/char stream
 
-看至585, 得回去看file class
+
 
 # 3. 节点流(文件流)
+
+I/O stream的使用一般都分成4步:
+
++ step 1. instantiate File class 
++ step 2. instantiate FileReader stream
++ step 3. read
++ step 4. close stream
 
 
 注意:
@@ -155,10 +162,12 @@ output stream |  `OutputStream`  | `Writer`
   + Exception from step3: loading `fr.read();`
 如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里: 
 
+:gem: e.g. 一个标准的FileReader的使用模板
+`read()`: 一次只读取一个char
 ```java
 /**
      * load hello.txt into main memory and display the content
-     * 1. read(): return 读入的一个char. 如果达到文件末尾, return -1
+     * 1. read(): return 读入的一个char对应的int. 如果达到文件末尾, return -1
      * 2. Exception handling: 为了保证流资源一定可以执行close(), 需要使用try-catch-finally
      * 3. 读入的文件必须存在, 否则Step2 ` fr = new FileReader(file);`会throw FileNotFoundException
      *
@@ -196,7 +205,68 @@ output stream |  `OutputStream`  | `Writer`
 
 > `ctrl`+`alt`+`t`: surround with key map
 
-看至586
+---
+
+`read(char[])`: 一次读取一个char[]
++ 注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在.
+```java
+/**
+  * 对read()操作升级: 使用read重载方法
+  *      read(char[]):  loop over char in the file, write them into char[] every time
+  *                      return the number of char read into cbuf; return -1 if reaching end of the file
+  */
+@Test
+public void testFileReader1()  {
+    FileReader fr = null;
+    try {
+        // 1. instantiate File class
+        File file = new File("hello.txt");
+
+        // 2. instantiate FileReader stream
+        fr = new FileReader(file);
+
+        // 3. read(char[]) 批量读取
+        // read(char[] cbuf): return the number of char read into cbuf; return -1 if reaching end of the file
+
+        char[] cbuf = new char[5];      // char[] buffer
+        int len;
+        while( (len=fr.read(cbuf)) != -1){          // 每读取5个char打印一次 TODO: fr.read(cbuf)每次把file中的char[5]写入cbuf中
+            // 方式一 错误写法 !!!!!!
+//          for(int i=0; i<cbuf.length; i++){       // for loop 是loop over all elements of char[5]
+//              System.out.print(cbuf[i]);
+//          }
+            // 方式二 正确写法 ------------------------------------------
+            for(int i=0; i<len; i++){       // cbuf取了几个char就打印几个
+                System.out.print(cbuf[i]);
+            }
+
+//          // 方式三 错误写法!!!! 错误原理和方式一相同
+//          String str = new String(cbuf);      // String constructor: char[] -> String
+//          System.out.println(str);
+
+            // 方式四 正确写法, 对应方式二 ---------------------------------------
+            String str1 = new String(cbuf,0,len);
+            System.out.print(str1);
+        }
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } finally {
+        if(fr != null){
+            try {
+                // 4. close stream
+                fr.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+}
+```
+
+
+该看587 FileWriter了
+
 
 # 4. 缓冲流
 
