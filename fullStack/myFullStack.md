@@ -1,4 +1,4 @@
-**学无止境, 你所学到的可能只是沧海之一粟, Java要学的东西有很多很多...stay hungary, stay foolish**
+**学无止境, 你所学到的可能只是沧海之一粟, Java要学的东西有很多很多...stay hungry, stay foolish**
 
 ---
 
@@ -61,6 +61,14 @@ Table of Contents:
 ---
 
 # 快捷键
+
+Intellij
+
++ `alt` + `insert`: 生成constructor, getter, setter
+
+---
+VsCode
+
 + vscode的setting中搜索save,勾选保存时格式化，这样按Ctrl + S自动保存时会格式化代码比如换行
 + 使用 ctrl + / 可以注释
 + 使用ctrl + f 可以打开vscode的搜索bar

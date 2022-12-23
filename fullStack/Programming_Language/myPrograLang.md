@@ -13,7 +13,7 @@
 ---
 roadmap
 
-[鱼皮快乐编程roadmap](https://github.com/liyupi/code-roadmap) 
+:full_moon: [鱼皮快乐编程roadmap](https://github.com/liyupi/code-roadmap) 
 + 参考java roadmap的路线学习
 + 巩固java知识阶段, 集合刷题
   + [牛客网](https://www.nowcoder.com/exam/intelligent?questionJobId=10&tagId=21000) (单选, 多选) 第一次刷一个题都没对!还差的很远!
@@ -26,6 +26,8 @@ roadmap
 + JavaCore1-chap6: lambda表达式, 函数式接口, 方法/构造器引用  
 + JavaCore2-chap1: Stream API, Optional 类 
 
----
-编程没你想得那么容易!做什么事情都不简单!得静下心来踏踏实实地去学习, 有不懂的就研究透它!
+:computer:[尚硅谷Java web](https://www.bilibili.com/video/BV1Y7411K7zz/?vd_source=c6866d088ad067762877e4b6b23ab9df) 讲前端的一些内容, 和JR的课程有重叠
 
+:computer: [尚硅谷Spring boot2](https://www.bilibili.com/video/BV19K4y1L7MT/?vd_source=c6866d088ad067762877e4b6b23ab9df) 框架
+
+:computer: [尚硅谷 JVM](https://www.bilibili.com/video/BV1PJ411n7xZ/?vd_source=c6866d088ad067762877e4b6b23ab9df) 高级篇章, 工作后可以深入了解

@@ -1,3 +1,7 @@
+跳转:
+
+IDEA
++ [chap0 IDEA的使用]()
 
 Basics
 + [chap3 Java basics](./chap3/README.md) 
@@ -10,20 +14,16 @@ OOB 与 模块化
 异常与debug
 + [chap7 Exception, assertion, log](./chap7/readme.md) 
 
-其他
+Java进阶内容
 + [chap8 Generics](./chap8/readme.md)
-
 + [chap9 集合与常用类](./chap9/readme.md)
----
-Contents
-- [学习资料](#学习资料)
-- [学习方法](#学习方法)
-- [IDE相关](#ide相关)
-- [configure class path in VSCode:](#configure-class-path-in-vscode)
-- [debugging](#debugging)
 
+Stream, I/O stream见JavaCore2
 
 ---
+
+
+
 # 学习资料
 
 + JDK是最好的参考资料 (docs.oracle.com)

@@ -1,4 +1,23 @@
-[TOC]
+- [1.Interfaces (接口)](#1interfaces-接口)
+  - [1.1 :moon: interface的性质](#11-moon-interface的性质)
+  - [1.2 :full\_moon:Implementing an interface](#12-full_moonimplementing-an-interface)
+    - [e.g.1](#eg1)
+    - [1.2.1 Abstract classes implementing interfaces](#121-abstract-classes-implementing-interfaces)
+  - [1.4 The comparable interface](#14-the-comparable-interface)
+    - [1.4.1 Semantics](#141-semantics)
+    - [1.4.2 Example application: sorting](#142-example-application-sorting)
+    - [1.4.3 Example application: searching](#143-example-application-searching)
+  - [1.6 :full\_moon:Inconsistent interface (interfaces 冲突)](#16-full_mooninconsistent-interface-interfaces-冲突)
+    - [1.6.1 Problem](#161-problem)
+    - [1.6.2 Problem](#162-problem)
+- [2. :moon: Lambda](#2-moon-lambda)
+  - [2.1 Functional Interface](#21-functional-interface)
+  - [2.2 Method Reference](#22-method-reference)
+    - [Constructor Reference](#constructor-reference)
+
+
+
+
 
 ---
 
@@ -215,14 +234,14 @@ Another more subtle problem is that both interfaces can have the same method hea
 + Alternatively, an interface could capture the idea of partial ordering.  For example, (a,b) < (c,d) if a<c and b<d,  (a,b) > (c,d) if a>c and b>d, but they are "incomparable" otherwise.  If a programmer carelessly required a method compareTo of this class to return 0 for incomparable pairs, then a class implementing both this interface and Comparable would run into trouble in a binary search.  (What trouble?) For this reason, it is good practice not to reuse the names of methods of standard java interfaces.  If in doubt, search the web for the name you are considering and see if you find it in an existing interface.
 
 
-# 2. Lambda
-[尚硅谷Java8 P666-692](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
+# 2. :moon: Lambda
+:computer: [尚硅谷Java8: Lambda P666-690 (685-690复习)](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 动机: 在java中传递代码块并不是容易的事情, 你不能直接传递代码块. 因为java是面向对象的编程语言, 要想传递代码块, 我们所以必须先构造一个对象, 这个对象的类需要有一个方法包含所需要的代码块.
 
 lambda表达式正是为了能够更方便地传递代码块而被发明的, 它就像函数式(它本质是一个匿名函数)那样可以使得代码块之后被执行一次或多次. 
 
-> 本质上Lambda就是Java想引入函数式编程的一些特点来使得代码更加紧凑.很多时候, functional interface instance会作为一个函数的argument(尤其是在用Stream API的时候), 即将函数作为另一个函数的argument. 通过实例化functional interface, 我们可以直接建立一些可复用的, 具有特定功能的"函数对象". 
+> 本质上Lambda就是Java想引入函数式编程的一些特点来使得代码更加紧凑.将函数作为另一个函数的argument, 我们在需要时便可以随时更改函数的实现代码来支持特定功能. 在一些API(尤其是stream API)的argument中实例化functional interface, 我们可以直接建立一些可复用的, 具有特定功能的"函数对象". 
 > + Lambda表达式本质是functional interface的instance
 > + Lambda表达式可以改写成method reference的形式, 它们是等价的
 >   + constructor reference是method reference的特殊情况
@@ -239,7 +258,7 @@ lambda表达式正是为了能够更方便地传递代码块而被发明的, 它
 
 
 :gem: e.g.1
-考虑Arrays.sort(), 它的第二个argument是一个Comparator实例, Comparator就是函数式接口. 所以我们可以提供一个lambda表达式, 更加简洁:
+考虑Arrays.sort(), 它的第二个argument是一个Comparator interface instance, Comparator就是函数式接口. 所以我们可以提供一个lambda表达式, 更加简洁:
 
 ```java
 Arrays.sort(words, (first, second) -> first.length()-second.length());
@@ -263,10 +282,6 @@ Java内置的functional interface:
 <img src="../Src_md/java_otherFuntionalInterface.png" width=70%>
 
 
-## 2.2 :full_moon: Method Reference
+## 2.2 Method Reference
 
-
-
-
-
-## 2.3 Constructor Reference
+### Constructor Reference
