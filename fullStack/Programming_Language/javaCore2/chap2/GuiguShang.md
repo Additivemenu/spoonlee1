@@ -145,6 +145,59 @@ output stream |  `OutputStream`  | `Writer`
 
 # 3. 节点流(文件流)
 
+
+注意:
++ main function中相对路径是针对当前project而言
++ unit test中的相对路径是针对当前module而言
+
+:star: 注意处理I/O stream中的可能会被throw Exception:
+  + Exception from step2: instantiate I/O stream `fr = new FileReader(file);`
+  + Exception from step3: loading `fr.read();`
+如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里: 
+
+```java
+/**
+     * load hello.txt into main memory and display the content
+     * 1. read(): return 读入的一个char. 如果达到文件末尾, return -1
+     * 2. Exception handling: 为了保证流资源一定可以执行close(), 需要使用try-catch-finally
+     * 3. 读入的文件必须存在, 否则Step2 ` fr = new FileReader(file);`会throw FileNotFoundException
+     *
+     */
+    @Test
+    public void testFileReader() {
+        FileReader fr = null;
+        try {
+            //  step1: instantiate File class, point out which file you want to manipulate over
+            File file = new File("hello.txt");      // unit test中相对路径相较于当前Module(C:\1_Java\GuiguShang_Bilibili\IO_Stream)
+            // step2: provide stream
+            fr = new FileReader(file);      // TODO: might throw FileNotFoundException
+            // step3: load data
+            //          read(): return 读入的一个字符. 如果达到文件末尾, return -1
+            int data = fr.read();           // char 也对应int值     TODO: might throw Exception
+            while(data != -1){
+                System.out.print((char)data);
+                data = fr.read();           // 相当于i++, condition for next loop  TODO: might throw Exception
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // step4: close stream  千万别忘!  因为JVMl垃圾回收对于物理连接无能为力
+            try {
+                if(fr != null){     // TODO:in case fr is not instantiated when `fr = new FileReader(file)` throws exception
+                    fr.close();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+```
+
+> `ctrl`+`alt`+`t`: surround with key map
+
+看至586
+
 # 4. 缓冲流
 
 # 5. 转换流
