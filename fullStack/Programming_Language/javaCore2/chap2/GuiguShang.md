@@ -51,13 +51,13 @@ File(File parentFile, String childPath)
 + `public String getName()`
 + `public String getParent`: 获取上层文件的目录路径. 若无, 返回null
 
-如下两个方法适用于文件目录
 + `public long length()`: 获取文件长度(in bytes). 不能获取目录长度
 + `public long lastModified()`: 获取最后一次修改时间, 毫秒值  
 
+如下两个方法适用于文件目录
 
-+ `public String[] list()`: return指定目录下的所有文件或者文件目录的**名称**构成的数组
-+ `public File[] listFiles()`: return指定目录下的所有文件或者文件目录的**File(绝对路径的形式)**构成的数组
++ `public String[] list()`: return指定目录下的所有文件或者文件目录的**名称**构成的数组 (不会遍历到更深层的文件或文件夹)
++ `public File[] listFiles()`: return指定目录下的所有文件或者文件目录的**File(绝对路径的形式)**构成的数组 (同样不会遍历到更深层的文件或文件夹)
 
 ---
 

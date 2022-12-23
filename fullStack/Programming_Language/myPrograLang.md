@@ -32,3 +32,5 @@ roadmap
 :computer: [尚硅谷Spring boot2](https://www.bilibili.com/video/BV19K4y1L7MT/?vd_source=c6866d088ad067762877e4b6b23ab9df) 框架
 
 :computer: [尚硅谷 JVM](https://www.bilibili.com/video/BV1PJ411n7xZ/?vd_source=c6866d088ad067762877e4b6b23ab9df) 高级篇章, 工作后可以深入了解
+
+:book: [尚硅谷课程材料](http://www.atguigu.com/download.shtml)
