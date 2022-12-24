@@ -14,7 +14,11 @@
   - [stream的分类](#stream的分类)
   - [IO stream体系结构](#io-stream体系结构)
 - [3. 节点流(文件流)](#3-节点流文件流)
-- [4. 缓冲流](#4-缓冲流)
+  - [3.1 Char stream](#31-char-stream)
+  - [3.2 Byte stream](#32-byte-stream)
+- [4. 缓冲流(buffered stream)](#4-缓冲流buffered-stream)
+  - [4.1 缓冲流 vs. 节点流](#41-缓冲流-vs-节点流)
+  - [4.2 Practice](#42-practice)
 - [5. 转换流](#5-转换流)
 - [6. 标准输入, 输出流](#6-标准输入-输出流)
 - [7. 打印流](#7-打印流)
@@ -152,17 +156,20 @@ I/O stream的使用一般都分成4步:
 + step 3. read
 + step 4. close stream
 
-
 注意:
 + main function中相对路径是针对当前project而言
 + unit test中的相对路径是针对当前module而言
 
+## 3.1 Char stream
+
 :star: 注意处理I/O stream中的可能会被throw Exception:
   + Exception from step2: instantiate I/O stream `fr = new FileReader(file);`
   + Exception from step3: loading `fr.read();`
-如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里: 
+如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里, 保证stream一定会被关掉.
 
-:gem: e.g. 一个标准的FileReader的使用模板
+:gem: e.g. 一个标准的FileReader的使用模板, 写的时候先不写try-catch-finally, 最后再加上, 也分两步: 1) step1,2,3放进try-catch-finally 中的try block; 2) step4 放入finally block
+> `ctrl`+`alt`+`t`: surround with key map
+
 `read()`: 一次只读取一个char
 ```java
 /**
@@ -203,12 +210,11 @@ I/O stream的使用一般都分成4步:
     }
 ```
 
-> `ctrl`+`alt`+`t`: surround with key map
 
 ---
 
-`read(char[])`: 一次读取一个char[]
-+ 注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在.
+`read(char[])`: 一次读取一个char[]; 需要用到辅助变量char[]作为buffer
++ 注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在. **一般遵循一个原则: 读了几个char就操作几个char** 
 ```java
 /**
   * 对read()操作升级: 使用read重载方法
@@ -263,20 +269,156 @@ public void testFileReader1()  {
 
 }
 ```
+---
+
+FileWriter
+```java
+/**
+  * export data from main memory into hard drive
+  * Note:
+  * 1. output stream, corresponding file in the hard drive is allowed to be not existed.
+  *            If not existing, create the file automatically
+  *            If existing, depending on the second argument of FileWriter constructor (append, false by default)
+  *                                 append = true, append the file not overwrite
+  *                                 append = false, overwrite the file
+  *
+  */
+@Test
+public void testFileWriter()  {
+  FileWriter fw = null;
+  try {
+      // 1. instantiate file class
+      File file = new File("hello1.txt");
+      // 2. instantiate writer stream
+      fw = new FileWriter(file);
+      // 3. write
+      fw.write("I have a dream!\n".toCharArray());
+      fw.write("you need to have a dream!");
+  } catch (IOException e) {
+      throw new RuntimeException(e);
+  } finally {
+      // 4. close writer stream
+      if(fw != null){
+          try {
+              fw.close();
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
+      }
+  }
+}
+```
 
 
-该看587 FileWriter了
+---
+:gem: practice: copy a file 
+```java
+/**
+  *
+  * copy a file
+  * 注意: 
+  * 1. 当创建了一系列的I/O Stream, 最好按创建时的倒序来close它们
+  */
+@Test
+public void testFileReaderFileWriter() {
+    FileReader  fr = null;
+    FileWriter fw = null;
+    try {
+        // 1. instantiate File class
+        File srcFile = new File("hello.txt");
+        File destFile = new File("helloCopy.txt");
+
+        // 2. instantiate I/O stream
+        fr = new FileReader(srcFile);
+        fw = new FileWriter(destFile);
+
+        // 3. read & write
+        char[] cbuf = new char[5];
+        int len;        // record the number of char read into cbuf
+        while((len=fr.read(cbuf))!=-1){
+            fw.write(cbuf, 0, len);     // export len char just read
+        }
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } finally {
+        // 4. close stream      TODO: better close in the reverse order of creating streams
+        try {
+            if(fw != null)
+                fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            if(fr != null)
+                fr.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Char stream(字符流) is not suitable to deal with picture, because picture (e.g. .jpg) is binary file. Sometimes using char stream to deal with binary file will lead to error!
+
+## 3.2 Byte stream 
+形式和char stream一致, 还是分4步.
 
 
-# 4. 缓冲流
+
+# 4. 缓冲流(buffered stream)
+为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant DEFAULT_BUFFER_SIZE (see source code)决定
+
++ step2 instantiate stream中, 先instantiate节点流, 再instantiate对应的处理流
++ step4 close stream中, 先close outer stream, 再close inner stream. 但实际上, close outer stream时, inner stream会自动close
+
+byte stream:
++ `BufferedInputStream`
+  + `read(btye[] buffer)` 
++ `BufferedOutputStream`
+  + `write(btye[] buffer, 0, len])` 
+  
+char stream:
++ `BufferedReader`
+  + `read(char[] cbuf)`
+  + `readLine()`
++ `BufferedWriter`
+  + `write(char[] cbuf, 0, len)` 
+## 4.1 缓冲流 vs. 节点流
+
+用了缓冲流速度果然变快了(使用相同的buffer size时)
+
+
+
+## 4.2 Practice
+:gem: buffered stream practice 1: 图片加密
+```java
+e.g.
+int b =0;
+while((b=fis.read()) != -1){
+  fos.write(b^5); // XOR
+}
+```
+:gem: buffered stream practice 1: 统计txt file中每个字符出现的次数
+
 
 # 5. 转换流
+598
+
+
+
 
 # 6. 标准输入, 输出流
+601
+
 
 # 7. 打印流
 
+602
+
 # 8. 数据流
+603
+
 
 # 9. 对象流
 
