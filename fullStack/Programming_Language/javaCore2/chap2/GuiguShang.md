@@ -403,13 +403,16 @@ while((b=fis.read()) != -1){
 
 
 # 5. 转换流
-598
+提供byte stream 与 char stream之间的转换
 
 
+<img src="../Src_md/IOStream_conversion.png" width=80%>
+
+该看599
 
 
 # 6. 标准输入, 输出流
-601
+
 
 
 # 7. 打印流
