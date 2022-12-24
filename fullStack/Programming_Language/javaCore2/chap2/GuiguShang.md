@@ -1,6 +1,6 @@
 :computer: [尚硅谷: Java file class 575-578](https://www.bilibili.com/video/BV1Kb411W75N?p=577&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
-:computer: [Bilibili 尚硅谷: I/O stream 583-608](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
+:computer: [Bilibili 尚硅谷: I/O stream 583-608 (604-608 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 ---
 - [1. File class](#1-file-class)
@@ -20,6 +20,7 @@
   - [4.1 缓冲流 vs. 节点流](#41-缓冲流-vs-节点流)
   - [4.2 Practice](#42-practice)
 - [5. 转换流](#5-转换流)
+  - [5.1 charSet](#51-charset)
 - [6. 标准输入, 输出流](#6-标准输入-输出流)
 - [7. 打印流](#7-打印流)
 - [8. 数据流](#8-数据流)
@@ -403,16 +404,39 @@ while((b=fis.read()) != -1){
 
 
 # 5. 转换流
-提供byte stream 与 char stream之间的转换
+提供byte stream 与 char stream之间的转换. 下图的上半部分其实还是节点流读写.
 
 
 <img src="../Src_md/IOStream_conversion.png" width=80%>
 
-该看599
+:gem: test1
 
+:gem: test2
+
+## 5.1 charSet
+常见编码表:
++ ASCII: 美国标准信息交换码, 用一个byte的7 bits可以表示
++ ISO8859-1: 拉丁码表. 欧洲码表. 用一个byte的8 bits表示
++ GB2312: 中国的中文编码表. 最多两个byte编码所有字符
++ GBK: 中国的中文编码表升级, 融合了更多的中文文字符号. 最多2个byte编码
++ Unicode: 国际标准码, 融合了目前人类使用的所有字符. 为每个字符分配唯一的字符码. **所有的文字都用2个byte来表示.** 注意Unicode只是定义了charSet, 并不是具体的编码方式.
++ UTF-8: 变长的编码方式, 可用1-4个byte表示一个字符(char), 修正后可以用6个byte表示一个字符
+
+Unicode与UTF-8的关系:
+
+<img src="../Src_md/IOStream_charSets.png" width=80%>
+
+编码发展历史:
+
+<img src="../Src_md/IOStream_char_encoding_history.png" width=80%>
+
+UTF-8编码原理:
++ 先把char按Unicode标准查到对应Unicode编码值(十进制数), 再把这个数转化为二进制, 然后看这个二进制数是有几个byte, 填入对应的UTF-8编码方式里. 如下`尚`字对应二进制有2个byte(16 bits), 填入UTF-8的3个byte的编码方式(因为里面允许16个bits)里.
+
+<img src="../Src_md/IOStream_UTF8_encoding.png" width=80%>
 
 # 6. 标准输入, 输出流
-
+601
 
 
 # 7. 打印流
