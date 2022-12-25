@@ -1,8 +1,4 @@
 
-:computer: [Bilibili 尚硅谷: Exception handing 369-383](https://www.bilibili.com/video/BV1Kb411W75N?p=371&vd_source=c6866d088ad067762877e4b6b23ab9df)
-
----
-
 - [1. Introduction to exception handling](#1-introduction-to-exception-handling)
 - [2. try-throw-catch](#2-try-throw-catch)
   - [2.1 try](#21-try)

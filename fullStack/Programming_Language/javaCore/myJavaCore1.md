@@ -6,7 +6,7 @@ IDEA
 Basics
 + [chap3 Java basics](./chap3/README.md) 
 
-OOB 与 模块化
+OOP 与 模块化
 + [chap4 Object & Class](./chap4/README.md)
 + [chap5 Inheritance & Polymorph](./chap5/readme.md) 
 + [chap6 Interface, lambda & inner class ](./chap6/readme.md)
