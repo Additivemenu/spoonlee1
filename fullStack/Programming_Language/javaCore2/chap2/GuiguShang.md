@@ -1,6 +1,10 @@
 :computer: [尚硅谷: Java file class 575-578](https://www.bilibili.com/video/BV1Kb411W75N?p=577&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
-:computer: [Bilibili 尚硅谷: I/O stream 583-608 (604-608 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
+:computer: [尚硅谷: I/O stream part1 583-608 (604-608 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+:computer: [尚硅谷： I/O stream part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df) 讲对象流, 随机存取...
+
+网络编程见 [chap4: 网络编程](../chap4/readme.md)
 
 ---
 - [1. File class](#1-file-class)
@@ -540,9 +544,9 @@ UTF-8编码原理:
 # 5. 其他处理流
 
 ## 5.1 标准输入, 输出流 
-System.in: standard input
 
-System.out: standard output 
++ `System.in`: standard input, 属于byte stream
++ `System.out`: standard output , 属于byte stream
 
 
 ```java
@@ -634,18 +638,20 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 <img src="../Src_md/IOStream_datastream.png" width=70%>
 
 
-
 ## 5.4 对象流
+
+:computer: [尚硅谷： IO流与网络编程 609-633 (629-633 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
 与数据流相对应, 将对象从程序export到file, 或读取file中的对象到程序
 
-尚硅谷没讲, 自己查吧
+
+
 
 # 6. 随机存取文件
-做了解
 
-尚硅谷没讲, 自己查吧
+
+
 
 # 7. NIO.2中Path, Paths, Files class的使用
-做了解
 
-尚硅谷没讲, 自己查吧
+
