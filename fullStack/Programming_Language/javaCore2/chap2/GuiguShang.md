@@ -30,7 +30,9 @@
   - [5.1 标准输入, 输出流](#51-标准输入-输出流)
   - [5.2 打印流](#52-打印流)
   - [5.3 数据流](#53-数据流)
-  - [5.4 对象流](#54-对象流)
+  - [5.4 :full\_moon: 对象流 与 序列化机制](#54-full_moon-对象流-与-序列化机制)
+    - [5.4.1 序列化机制](#541-序列化机制)
+- [5.4.2 SerialVersionUID](#542-serialversionuid)
 - [6. 随机存取文件](#6-随机存取文件)
 - [7. NIO.2中Path, Paths, Files class的使用](#7-nio2中path-paths-files-class的使用)
 
@@ -638,20 +640,50 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 <img src="../Src_md/IOStream_datastream.png" width=70%>
 
 
-## 5.4 对象流
+## 5.4 :full_moon: 对象流 与 序列化机制
 
-:computer: [尚硅谷： IO流与网络编程 609-633 (629-633 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
+:computer: [尚硅谷： IO流 part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
-与数据流相对应, 将对象从程序export到file, 或读取file中的对象到程序
+与数据流相对应, 将基本数据类型data和对象data从程序export到file, 或读取file中的基本数据类型data和对象data
+
++ **序列化**: 用`ObjectOutputStream`类保存基本类型data或对象data的机制
++ **反序列化**: 用`ObjectInputStream`类读取基本类型data或对象data的机制
+
+注意: `ObjectOutputStream`和`ObjectInputStream`不能序列化`static`和`transient`修饰的成员变量
+
+### 5.4.1 序列化机制
+
+**对象的序列化机制**允许将*程序内存中的Java对象*转换成**与platform无关的二进制流** (与这种二进制流相对应的, 我们后面课程中还可用json file来作为序列化和反序列化的中专媒介), 从而允许把这些二进制流持久地保存在磁盘上, 或通过网络将这种二进制流传输到另一个网络节点. 当其他程序获取了这种二进制流, 就可以恢复成原来的Java对象.
+
+序列化的好处在于可将任何实现了Serializable interface的object转化为byte stream data, 使其在保存和传输时可被复原. 序列化是RMI(Remote Method Invoke - 远程方法调用)过程的参数和返回值都必须先实现的机制, 而RMI又是JavaEE的基础. 因此序列化机制是JavaEE平台的基础.
+
+自定义类可序列化(serializable)要求:
+
+如果需要让某个对象支持序列化机制, 则必须让对象所属的类及其属性是Serializable的, 即对象所属的类必须实现如下2个interface之一(否则会抛出NotSerializableException):
++ Serializable
+  + 同时当前class必须提供一个serialVersionUID来做版本控制. 
+  + 同时当前class内部涉及的class也必须implement Serializable interface
++ Externalizable
+
+# 5.4.2 SerialVersionUID
+
+凡是实现Serializable interface的class都有一个表示序列化版本(SerialVersion)标识符的static variable:
++ `private static final long serialVersionUID`
++ serialVersionUID用来表明class的不同版本之间的兼容性. 简言之, 其目的是以序列化对象进行版本控制, 有关各版本反序列化时是否兼容.
+  + Java的序列化机制是通过运行时判断class的serialVersionUID来检验class版本的一致性的. 在进行反序列化时, JVM会把传来的byte stream中的serialVersionUID与本地相应class instance的serialVersionUID相比较. 如果相同就认为是一致的, 可以进行反序列化; 否则就会出现序列化版本不一致的异常(InvalidCastException) 
++ 如果没有显示地声明serialVersionUID, 它的值是Java运行时环境根据class内部细节自动生成的. 如果class的instance做了修改, serialVersionUID可能就会发生变化, 引起兼容性问题. 故建议显示声明.
 
 
 
 
 # 6. 随机存取文件
 
+614, 615
 
-
+有需求再看
 
 # 7. NIO.2中Path, Paths, Files class的使用
 
+616, 617
 
+有需求再看

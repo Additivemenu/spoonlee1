@@ -12,6 +12,10 @@
 
 # IDEA shortcut
 
+
+
++ `ctrl`+`alt`+`t`:  surround with
++ `alt`+`insert`: generate Constructor, getter, accessor
 # IDEA template
 
 
