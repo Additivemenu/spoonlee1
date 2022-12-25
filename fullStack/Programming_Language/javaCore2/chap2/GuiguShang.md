@@ -16,17 +16,19 @@
 - [3. 节点流(文件流)](#3-节点流文件流)
   - [3.1 Char stream](#31-char-stream)
   - [3.2 Byte stream](#32-byte-stream)
-- [4. 缓冲流(buffered stream)](#4-缓冲流buffered-stream)
-  - [4.1 缓冲流 vs. 节点流](#41-缓冲流-vs-节点流)
-  - [4.2 Practice](#42-practice)
-- [5. 转换流](#5-转换流)
-  - [5.1 charSet](#51-charset)
-- [6. 标准输入, 输出流](#6-标准输入-输出流)
-- [7. 打印流](#7-打印流)
-- [8. 数据流](#8-数据流)
-- [9. 对象流](#9-对象流)
-- [10. 随机存取文件](#10-随机存取文件)
-- [11. NIO.2中Path, Paths, Files class的使用](#11-nio2中path-paths-files-class的使用)
+- [4. 常用处理流](#4-常用处理流)
+  - [4.1 缓冲流(buffered stream)](#41-缓冲流buffered-stream)
+    - [4.1.1 缓冲流 vs. 节点流](#411-缓冲流-vs-节点流)
+    - [4.1.2 Practice](#412-practice)
+  - [4.2 转换流](#42-转换流)
+    - [4.2.1 补充: charSet(字符集)](#421-补充-charset字符集)
+- [5. 其他处理流](#5-其他处理流)
+  - [5.1 标准输入, 输出流](#51-标准输入-输出流)
+  - [5.2 打印流](#52-打印流)
+  - [5.3 数据流](#53-数据流)
+  - [5.4 对象流](#54-对象流)
+- [6. 随机存取文件](#6-随机存取文件)
+- [7. NIO.2中Path, Paths, Files class的使用](#7-nio2中path-paths-files-class的使用)
 
 ---
 
@@ -149,6 +151,8 @@ output stream |  `OutputStream`  | `Writer`
 
 
 # 3. 节点流(文件流)
+**节点流直接与file相连, 完成与file之间的数据交换.** 之后可以套接处理流, 完成更加特定的输入输出任务.
+
 
 I/O stream的使用一般都分成4步:
 
@@ -366,8 +370,9 @@ Char stream(字符流) is not suitable to deal with picture, because picture (e.
 形式和char stream一致, 还是分4步.
 
 
+# 4. 常用处理流
 
-# 4. 缓冲流(buffered stream)
+## 4.1 缓冲流(buffered stream)
 为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant DEFAULT_BUFFER_SIZE (see source code)决定
 
 + step2 instantiate stream中, 先instantiate节点流, 再instantiate对应的处理流
@@ -385,13 +390,13 @@ char stream:
   + `readLine()`
 + `BufferedWriter`
   + `write(char[] cbuf, 0, len)` 
-## 4.1 缓冲流 vs. 节点流
+### 4.1.1 缓冲流 vs. 节点流
 
 用了缓冲流速度果然变快了(使用相同的buffer size时)
 
 
 
-## 4.2 Practice
+### 4.1.2 Practice
 :gem: buffered stream practice 1: 图片加密
 ```java
 e.g.
@@ -403,17 +408,114 @@ while((b=fis.read()) != -1){
 :gem: buffered stream practice 1: 统计txt file中每个字符出现的次数
 
 
-# 5. 转换流
-提供byte stream 与 char stream之间的转换. 下图的上半部分其实还是节点流读写.
+## 4.2 转换流
+`InputStreamReader`: 用来byte stream --> char stream (解码)
+`OutputStreamWriter`: 用来 char stream --> byte stream (编码)
+
+名字里代表byte stream的`InputStream`, `OutputStream`和`Reader`,`Writer`同时出现, 但本身是char stream(因为名字以Reader, Writer结尾). 
++ 比较特殊, 之前我们提到的char stream, 输入输出都是以char为最小单位, 这里`InputStreamReader`输入时以byte为最小单位处理, 输出时以char为最小单位处理.
+  
+
+转换流提供byte stream 与 char stream之间的转换. 
+
+下图中, utf8.txt必须先通过节点流才能被程序访问, test1中我们先用节点流FileInputStream()来用将utf8.txt转化为byte stream, 然后用InputStreamReader将byte stream转化为char stream, 再用char[]作为buffer来**在程序中**读取并处理这个char stream
+
 
 
 <img src="../Src_md/IOStream_conversion.png" width=80%>
 
 :gem: test1
+```java
+/**
+     * InputStreamReader: 实现字节流的输入转换为字符流的输入
+     *
+     */
+    @Test
+    public  void test1() {
+        InputStreamReader isr1  = null;
+        try {
+            // 1,2
+            FileInputStream fis = new FileInputStream("dbcp.txt");
+            //InputStreamReader isr  = new InputStreamReader(fis);        // 使用系统默认字符集(charSet), IDEA默认是UTF-8
+            // argument2 points out charSet, 具体用哪个字符集取决于文件保存的时候使用的字符集
+            isr1 = new InputStreamReader(fis,"UTF-8");
+
+            // 3
+            char[] cbuf = new char[20];
+            int len;
+            while((len = isr1.read(cbuf)) != -1){
+                String str = new String(cbuf, 0, len);
+                System.out.print(str);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 4
+            if (isr1 != null) {
+                try {
+                    isr1.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+```
 
 :gem: test2
 
-## 5.1 charSet
+```java
+/**
+     * InputStreamReader, OutputStreamWriter work together
+     *
+     */
+    @Test
+    public void test2()  {
+        InputStreamReader isr = null;
+        OutputStreamWriter osw = null;
+        try {
+            // 1.
+            File file1 = new File("dbcp.txt");
+            File file2 = new File("dbcp_gbk.txt");
+            // 2.
+            FileInputStream fis = new FileInputStream(file1);
+            FileOutputStream fos = new FileOutputStream(file2);
+
+            isr = new InputStreamReader(fis, "utf-8");
+            osw = new OutputStreamWriter(fos, "gbk");
+
+            // 3.
+            char[] cbuf = new char[20];
+            int len;
+            while((len = isr.read(cbuf)) != -1){
+                osw.write(cbuf, 0, len);
+            }
+
+            System.out.println("to gbk successfully");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 4. close
+            if (osw != null) {
+                try {
+                    osw.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (osw != null) {
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+```
+
+
+### 4.2.1 补充: charSet(字符集)
 常见编码表:
 + ASCII: 美国标准信息交换码, 用一个byte的7 bits可以表示
 + ISO8859-1: 拉丁码表. 欧洲码表. 用一个byte的8 bits表示
@@ -435,21 +537,115 @@ UTF-8编码原理:
 
 <img src="../Src_md/IOStream_UTF8_encoding.png" width=80%>
 
-# 6. 标准输入, 输出流
-601
+# 5. 其他处理流
+
+## 5.1 标准输入, 输出流 
+System.in: standard input
+
+System.out: standard output 
 
 
-# 7. 打印流
+```java
+/**
+     *
+     * 1. standard input/output stream
+     * 1.1
+     * System.in: input by keyboard by default  (注意System.in是个byte stream)
+     * System.out: output to terminal by default
+     * 1.2 重定向
+     * System class 的 setIn(InputStream in) / setOut(PrintStream out) 重新指定输入和输出的流
+     *
+     * 1.3 practice:
+     * 从键盘输入字符串, 要求将读取到的整行字符串转成大写输出. 然后继续进行输入操作, 直到输入'e' or 'exit', 退出程序
+     *  方法一: Scanner, 调用next()返回一个字符串
+     *  方法二: System.in, System.in ---> 转换流 ---> BufferedReader的readLine()
+     *  注意IDEA中unit test中无法在terminal type in
+     */
+    public static void main(String[] args)  {
+        BufferedReader br = null;
 
-602
+        try {
+            // 1,2
+            InputStreamReader isr = new InputStreamReader(System.in);       // System.in is a byte stream, need to convert it to char stream firstly
+            br = new BufferedReader(isr);
 
-# 8. 数据流
-603
+            // 3
+            String data;
+            while(true){
+                System.out.println("please type in a string: ");
+                data = br.readLine();
+                if(data.equalsIgnoreCase("e")||data.equalsIgnoreCase("exit") ){
+                    System.out.println("program exit");
+                    break;
+                }
+                String upperCase = data.toUpperCase();
+                System.out.println(upperCase);
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // close
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+    }
+```
+
+:question: step1,2 中节点流呢?谁和system.in直接连接?
++ 节点流的作用是将file转化为byte stream or char stream, 然后再套接处理流进行处理
++ 这里System.in本身就是一个byte stream, 因此可以直接套接一个处理流来处理
+
+---
+
+:gem: Practice: 自己造一个class, 功能和Scanner一样, 可以从键盘读取int, byte, double...等类型的数据
+
+思路: System.in(本身是byte stream) ---> char stream ---> BufferedReader 读取String, 针对每种数据类型再将String转换为对应类型 (e.g. Double.parseDouble())
+
+[solution](./Practice/MyInput.java)
 
 
-# 9. 对象流
+## 5.2 打印流
+做了解
+
+实现将基本数据类型的数据格式转化为String输出
+
++ `PrintStream`: byte stream
++ `PrintWrier`: char stream
 
 
-# 10. 随机存取文件
+`System.setOut(PrintStream out)`: 将System.out从terminal输出改为对应的打印流输出到指定file. 因为System.out本身是byte stream, 所以argument为属于byte stream的`PrintStream`
 
-# 11. NIO.2中Path, Paths, Files class的使用
+## 5.3 数据流
+为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据. 
+e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到程序中.
+
++ `DataInputStream`
+  + 套接在`InputStream`上 
++ `DataOutputStream`
+  + 套接在`OutputStream`上 
+
+<img src="../Src_md/IOStream_datastream.png" width=70%>
+
+
+
+## 5.4 对象流
+与数据流相对应, 将对象从程序export到file, 或读取file中的对象到程序
+
+尚硅谷没讲, 自己查吧
+
+# 6. 随机存取文件
+做了解
+
+尚硅谷没讲, 自己查吧
+
+# 7. NIO.2中Path, Paths, Files class的使用
+做了解
+
+尚硅谷没讲, 自己查吧
