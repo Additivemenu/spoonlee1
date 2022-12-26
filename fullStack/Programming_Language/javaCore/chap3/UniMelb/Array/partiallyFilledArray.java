@@ -1,4 +1,4 @@
-package UniMelb.Array;
+package javaCore.chap3.UniMelb.Array;
 
 // 数组扩容, 从length = 0开始, 每次扩充1格, 直到length = 100
 // 中间需要创建临时数组来copy原数组

@@ -76,6 +76,13 @@ Stream, I/O stream见JavaCore2
 
 [VSCode document：java project manager](https://code.visualstudio.com/docs/java/java-project)
 
+更改classpath会带来很大的不方便, 需要重新修改每个java file的package, 一旦project的文件夹架构和class path定了下来, 轻易不要更改.
+
+# unit test in vscode
+需要extension: Test Runner for Java
+
+在java test file中`import org.junit.test`
+
 ---
 
 # debugging

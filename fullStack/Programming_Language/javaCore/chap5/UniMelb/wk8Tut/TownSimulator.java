@@ -1,4 +1,4 @@
-package wk8Tut;
+package javaCore.chap5.UniMelb.wk8Tut;
 
 /**
  * A town simulator program.

@@ -1,4 +1,4 @@
-package DND_WK8;
+package javaCore.chap5.UniMelb.DND_WK8;
 
 public abstract class Player 
 {

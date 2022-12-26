@@ -1,4 +1,4 @@
-package DND;
+package javaCore.chap5.UniMelb.DND;
 
 public class Warrior extends Player{
     // fields ---------------------------------------------------------------------------------

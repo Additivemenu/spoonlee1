@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 import java.util.Arrays;
 // Java数组: 只能包含同一类型的元素, 长度一旦声明之后无法改变; 动态扩容用arrayList
 // Java声明数组: 元素类型[] 

@@ -1,3 +1,5 @@
+package javaCore2.chap2.UniMelb;
+
 
 // for input
 import java.util.Scanner;

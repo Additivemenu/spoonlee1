@@ -1,4 +1,4 @@
-package UniMelb.Array;
+package javaCore.chap3.UniMelb.Array;
 //===================================================================================================================
 // Write a to-do list object that will read lines from standard input (ending when a blank line is entered).
 // Enter these into an ArrayList, in the order they are typed.

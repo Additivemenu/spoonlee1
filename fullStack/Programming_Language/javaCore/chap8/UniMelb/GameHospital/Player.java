@@ -1,3 +1,5 @@
+package javaCore.chap8.UniMelb.GameHospital;
+
 /**
  * A class representing a Player.
  * @author Dengke Sha

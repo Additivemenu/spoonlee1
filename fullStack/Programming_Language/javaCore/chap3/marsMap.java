@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 // UniMelb Java week3 workshop
 //
 

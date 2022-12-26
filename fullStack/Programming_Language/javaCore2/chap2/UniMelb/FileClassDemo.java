@@ -1,3 +1,5 @@
+package javaCore2.chap2.UniMelb;
+
 import java.util.Scanner;
 import java.io.File;
 import java.io.PrintWriter;

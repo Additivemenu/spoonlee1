@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 public class formatPlay {
     public static void main(String[] args) {
         String s = "string";

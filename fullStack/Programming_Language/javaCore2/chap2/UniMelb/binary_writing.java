@@ -1,3 +1,5 @@
+package javaCore2.chap2.UniMelb;
+
 // All file I/O classes are in package  java.io
 import java.io.PrintWriter;         // the class that formats
 import java.io.FileOutputStream;    // the class that actually writes to the file

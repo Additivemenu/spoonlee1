@@ -1,3 +1,5 @@
+package javaCore.chap8.UniMelb.GameHospital;
+
 /**
  * An abstract class for holding Unit related features.
  * @author Dengke Sha

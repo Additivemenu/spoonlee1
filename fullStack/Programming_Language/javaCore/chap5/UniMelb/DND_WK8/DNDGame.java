@@ -1,3 +1,5 @@
+package javaCore.chap5.UniMelb.DND_WK8;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.InputMismatchException;

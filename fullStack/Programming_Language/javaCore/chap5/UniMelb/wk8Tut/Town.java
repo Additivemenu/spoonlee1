@@ -1,4 +1,4 @@
-package wk8Tut;
+package javaCore.chap5.UniMelb.wk8Tut;
 /**
  * A class representing a town. Entities can be added to the town for
  * this class to manage.

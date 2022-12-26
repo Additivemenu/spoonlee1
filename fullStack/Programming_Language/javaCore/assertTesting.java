@@ -1,3 +1,5 @@
+package javaCore;
+
 import java.util.Scanner;
 
 public class assertTesting {

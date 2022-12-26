@@ -1,3 +1,5 @@
+package javaCore.chap7.UniMelb;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 

@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 public class labelBreak {
     public static void main(String[] args)
     {

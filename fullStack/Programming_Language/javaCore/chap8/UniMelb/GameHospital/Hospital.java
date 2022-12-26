@@ -1,3 +1,5 @@
+package javaCore.chap8.UniMelb.GameHospital;
+
 /**
  * A Hospital for healing patients in.
  * @author TODO: Write your name here.

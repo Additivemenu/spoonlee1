@@ -1,3 +1,5 @@
+package javaCore.chap8.UniMelb.GameHospital;
+
 /**
  * A class representing a Monster.
  * @author Dengke Sha

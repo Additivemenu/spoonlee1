@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 // JavaCore Page 56 demo
 
 import java.io.IOException;

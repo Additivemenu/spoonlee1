@@ -1,4 +1,4 @@
-package UniMelb.Array;
+package javaCore.chap3.UniMelb.Array;
 
 // Fill in the blanks here to use an ArrayList of doubles to calculate basic statistics of some sports scores.
 // (Cricket scores can have two numbers:<runs>for<wickets>.If you are super keen,you can use an ArrayList<ArrayList<double>>to keep track of both.I'mnot that keen,so the solution doesn'tdo this.)

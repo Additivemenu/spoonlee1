@@ -1,3 +1,5 @@
+package javaCore2.chap2.UniMelb;
+
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-:book: [尚硅谷: I/O stream](./GuiguShang.md)
+:book: [尚硅谷: I/O stream](./GuiguShang/GuiguShang.md)
 
 ---
 I/O stream

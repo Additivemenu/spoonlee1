@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 import java.io.PrintWriter;
 
 public class outputJava {

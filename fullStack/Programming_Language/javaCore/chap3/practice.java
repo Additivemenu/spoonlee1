@@ -1,3 +1,5 @@
+package javaCore.chap3;
+
 // UniMelb wk2 tut practices
 
 import  java.util.Scanner;
