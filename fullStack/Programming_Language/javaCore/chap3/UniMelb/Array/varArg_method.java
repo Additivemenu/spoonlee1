@@ -1,4 +1,4 @@
-package UniMelb.Array;
+package javaCore.chap3.UniMelb.Array;
 
 public class varArg_method {
      /**

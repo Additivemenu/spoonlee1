@@ -1,7 +1,7 @@
 跳转:
 
 IDEA
-+ [chap0 IDEA的使用](./chap0/readme.md)
++ [chap0 IDEA的使用, git](./chap0/readme.md)
 
 Basics
 + [chap3 Java basics](./chap3/README.md) 
