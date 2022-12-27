@@ -108,7 +108,7 @@ File class的删除功能
 
 ---
 
-<img src="../Src_md/FileClass_schematics.png" width=80%>
+<img src="../../Src_md/FileClass_schematics.png" width=80%>
 
 + 如果File class的instance只是内存层面的(硬盘中不存在对应地文件或文件夹, 该File instance的name, path, length等属性都是默认值
 
@@ -135,7 +135,7 @@ I/O用于处理设备之间的数据传输, 如read/write, 网络通讯等. Java
   + 节点流: 直接连接文件和内存的stream
   + 处理流: 在已有的stream的基础上, 外面包的那层stream
 
-<img src="../Src_md/IOStream_classification.png" width=70%>
+<img src="../../Src_md/IOStream_classification.png" width=70%>
 
 ## IO stream体系结构
 Java的IO stream共涉及40多个class, 但实际上它们都是从如下4个抽象基类中派生的.
@@ -148,7 +148,7 @@ output stream |  `OutputStream`  | `Writer`
 
 由这4个class派生的子类名称都是以其父类名作为子类名后缀:
 
-<img src="../Src_md/IOStream_system.png" width=80%>
+<img src="../../Src_md/IOStream_system.png" width=80%>
 
 + 访问文件的四个流: 节点流
 + 之后的流: 都是处理流
@@ -428,7 +428,7 @@ while((b=fis.read()) != -1){
 
 
 
-<img src="../Src_md/IOStream_conversion.png" width=80%>
+<img src="../../Src_md/IOStream_conversion.png" width=80%>
 
 :gem: test1
 ```java
@@ -532,16 +532,16 @@ while((b=fis.read()) != -1){
 
 Unicode与UTF-8的关系:
 
-<img src="../Src_md/IOStream_charSets.png" width=80%>
+<img src="../../Src_md/IOStream_charSets.png" width=80%>
 
 编码发展历史:
 
-<img src="../Src_md/IOStream_char_encoding_history.png" width=80%>
+<img src="../../Src_md/IOStream_char_encoding_history.png" width=80%>
 
 UTF-8编码原理:
 + 先把char按Unicode标准查到对应Unicode编码值(十进制数), 再把这个数转化为二进制, 然后看这个二进制数是有几个byte, 填入对应的UTF-8编码方式里. 如下`尚`字对应二进制有2个byte(16 bits), 填入UTF-8的3个byte的编码方式(因为里面允许16个bits)里.
 
-<img src="../Src_md/IOStream_UTF8_encoding.png" width=80%>
+<img src="../../Src_md/IOStream_UTF8_encoding.png" width=80%>
 
 # 5. 其他处理流
 

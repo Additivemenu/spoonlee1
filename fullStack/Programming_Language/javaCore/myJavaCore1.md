@@ -11,10 +11,8 @@ OOP 与 模块化
 + [chap5 Inheritance & Polymorph](./chap5/readme.md) 
 + [chap6 Interface, lambda & inner class ](./chap6/readme.md)
 
-异常与debug
+API学习
 + [chap7 Exception, assertion, log](./chap7/readme.md) 
-
-Java进阶内容
 + [chap8 Generics & reflection](./chap8/readme.md)
 + [chap9 集合与常用类](./chap9/readme.md)
 + [chap12 并发](./chap12/readme.md) 
@@ -24,7 +22,7 @@ Java用户界面
 + [chap11 Swing]()
 
 
-Stream, I/O stream见JavaCore2
+Stream, I/O stream API见JavaCore2
 
 ---
 
