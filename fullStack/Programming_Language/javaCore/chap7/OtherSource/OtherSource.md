@@ -5,6 +5,8 @@
 
 
 ---
+主学 slf4j + logback
+
 - [1. 日志的概念](#1-日志的概念)
   - [1.1 日志文件](#11-日志文件)
     - [1.1.1 调试日志](#111-调试日志)
@@ -14,13 +16,16 @@
     - [2.1.1 JUL入门](#211-jul入门)
     - [2.1.2 日志的level](#212-日志的level)
     - [2.1.3 Logger之间的继承关系](#213-logger之间的继承关系)
-    - [2.1.4 日志的配置文件](#214-日志的配置文件)
+    - [2.1.4 日志的配置文件(.properties file)](#214-日志的配置文件properties-file)
     - [2.1.5 日志原理分析](#215-日志原理分析)
   - [2.2 LOG4J](#22-log4j)
   - [2.3 LOG4J2](#23-log4j2)
-  - [2.4 logback](#24-logback)
+  - [2.4 :full\_moon: logback](#24-full_moon-logback)
   - [2.5 JCL](#25-jcl)
-- [3. 门面 \& slf4j](#3-门面--slf4j)
+- [3. :full\_moon: 门面模式 \& slf4j](#3-full_moon-门面模式--slf4j)
+  - [3.1 Facade Pattern](#31-facade-pattern)
+  - [3.2 SLF4J introduction](#32-slf4j-introduction)
+  - [3.2.1 SLF4J 案例实现](#321-slf4j-案例实现)
 
 ---
 
@@ -105,7 +110,7 @@
 
 ### 2.1.3 Logger之间的继承关系
 
-### 2.1.4 日志的配置文件
+### 2.1.4 日志的配置文件(.properties file)
 在代码中设置logger以及和它link的handler很不方便, 可以采用日志配置文件来配置更加方便, 达到同样的效果
 
 从源码来讲解 :question: 没太懂
@@ -159,9 +164,17 @@ public void testLogProperties() throws Exception {
 }
 ```
 
+---
 
+日志配置文件的详细配置 09
+
+更多的在.properties file中关于logger的配置
+
+没太懂
 
 ### 2.1.5 日志原理分析
+
+
 
 ## 2.2 LOG4J
 第三方log框架
@@ -175,7 +188,10 @@ public void testLogProperties() throws Exception {
 32-38
 
 
-## 2.4 logback
+## 2.4 :full_moon: logback
+第三方log框架, 高性能, 学这个 + slf4j
+
+26-31
 
 
 ## 2.5 JCL
@@ -183,6 +199,58 @@ public void testLogProperties() throws Exception {
 
 有时间再看
 
-# 3. 门面 & slf4j 
-:computer: [动力节点: 门面 & slf4j](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df)
+# 3. :full_moon: 门面模式 & slf4j 
+:computer: [动力节点: 门面 & slf4j 60-78](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
+## 3.1 Facade Pattern
+
+门面模式(Facade Pattern), 也称之为外观模式, 其核心是: 外部(指应用程序)与一个子系统(指五花八门的日志框架)的通信必须通过一个统一的外观对象进行, 使得子系统更加易于使用.
+
+前面介绍的日志框架, 每一种日志框架都有自己独立的API, 要使用对应的框架就要使用其对应的API, 这就大大提高了应用程序代码对于日志框架的耦合性要求.
+
+为了解决这个问题, 就需要在五花八门的日志框架与应用程序之间建立一个桥梁, 对于应用程序来说, 无论底层的日志框架如何改变, 都不应该有任何感知. 只要门面服务做到足够好, 随意切换到另一个日志框架, 应用程序都不需要修改任何一行代码, 就可直接上线.
+
+<img src="../../Src_md/log_slf4j.png" width=70%>
+
+---
+
+常见的日志实现: JUL, log4j, logback, log4j2
+常见的日志门面: JCL, slf4j
+出现顺序: log4j --> JUL --> JCL --> slf4j --> logback --> log4j2
+
+## 3.2 SLF4J introduction
+Simple Logging Facade for Java(SLF4j) 主要是为了给Java日志访问提供一套标准, 规范的API框架, 其主要意义在于提供接口, 具体的实现交给其他日志框架, 例如log4j, logback等.
+
+对于一般的Java project而言, 日志框架会选择slf4j-api作为门面, 配上具体的实现框架(log4j, logback等), 中间用桥接器完成桥接. SLF4J最重要的两个功能即:
++ 对于日志框架的绑定
++ 日志框架的桥接
+
+SLF4J桥接
+
+为了解决某些日志框架不适配SLF4J API的问题(比如 log4j, JUL先于SLF4J问世), SLF4J附带了桥接模块, 这些模块会将对log4j, JCL和JUL API的调用重定向为行为, 就好像是对SLF4J API进行操作一样. 
+
+## 3.2.1 SLF4J 案例实现
+
+62 搭环境 没太懂, 视频用的Mavern
+
+[StackOverflow: How to set SLF4J in IntelliJ with Gradle](https://stackoverflow.com/questions/59178076/how-to-set-slf4j-in-intellij-with-gradle?newreg=3baca917d5404dd991527cd8af67fcc2)
+
+[SLF4J manual](https://www.slf4j.org/manual.html#swapping)
+
+[20分钟搞懂日志](https://www.bilibili.com/video/BV11J411d7Gp/?spm_id_from=333.788.recommend_more_video.2&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+[Introduction to Java Logging](https://www.baeldung.com/java-logging-intro)
+
+一般步骤:
++ step1 环境搭建: 在build.gradle file中引入日志框架的dependency
+```java
+// slf4j 核心dependency
+implementation 'org.slf4j:slf4j-log4j1:1.7.29'  
+
+// slf4j自带的简单日志实现(一般不用)
+implementation 'org.slf4j:slf4j-simple:1.7.29'
+```
+
+
++ step2 配置文件: configure对应logging framework的配置文件. 注意不同logging framework的配置文件的格式不同, 网上一搜一大把
++ step3: 用

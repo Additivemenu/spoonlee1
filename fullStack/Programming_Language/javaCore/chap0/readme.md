@@ -6,6 +6,9 @@
 
 :pencil: [尚硅谷: IDEA与git](./IDEA_git.md)
 
+:pencil: [Gradle](./IDEA_Gradle.md)
+
+
 学习资源
 
 :book: [jetbrains official doc](https://www.jetbrains.com/help/idea/getting-help.html#contact-support)
