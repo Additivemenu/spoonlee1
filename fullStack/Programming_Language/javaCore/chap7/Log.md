@@ -1,5 +1,7 @@
-
+跳转
 :pencil: [黑马程序员: Log](./Heima_Log/Heima_Log.md)
+
+:book: [Intorudction to Java Logging](https://www.baeldung.com/java-logging-intro)
 
 ---
 

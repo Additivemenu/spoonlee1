@@ -1,5 +1,8 @@
 :computer: [黑马程序员: Java Log](https://www.bilibili.com/video/BV1vA41137P2/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
+:computer: [动力节点L 门面 & slf4j (更为全面的介绍Java Log)](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df) 
+
+
 
 ---
 - [1. 日志的概念](#1-日志的概念)
@@ -17,6 +20,7 @@
   - [2.3 LOG4J2](#23-log4j2)
   - [2.4 logback](#24-logback)
   - [2.5 JCL](#25-jcl)
+- [3. 门面 \& slf4j](#3-门面--slf4j)
 
 ---
 
@@ -178,4 +182,7 @@ public void testLogProperties() throws Exception {
 第三方log框架
 
 有时间再看
+
+# 3. 门面 & slf4j 
+:computer: [动力节点: 门面 & slf4j](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
