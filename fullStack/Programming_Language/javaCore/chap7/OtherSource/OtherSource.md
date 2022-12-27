@@ -11,7 +11,7 @@
   - [1.1 日志文件](#11-日志文件)
     - [1.1.1 调试日志](#111-调试日志)
     - [1.1.2 系统日志](#112-系统日志)
-- [2. Java日志框架](#2-java日志框架)
+- [2. Part1](#2-part1)
   - [2.1 JUL](#21-jul)
     - [2.1.1 JUL入门](#211-jul入门)
     - [2.1.2 日志的level](#212-日志的level)
@@ -26,7 +26,7 @@
     - [3.1.2 SLF4J introduction](#312-slf4j-introduction)
     - [3.1.3 SLF4J 快速入门](#313-slf4j-快速入门)
     - [3.1.4 SLF4J日志绑定](#314-slf4j日志绑定)
-- [看到这里!](#看到这里)
+    - [3.1.5 slf4j日志桥接器](#315-slf4j日志桥接器)
   - [3.2 :full\_moon: logback](#32-full_moon-logback)
     - [3.2.1 logback 入门](#321-logback-入门)
     - [3.2.2 logback configuration](#322-logback-configuration)
@@ -57,7 +57,7 @@
 
 
 
-# 2. Java日志框架
+# 2. Part1
 
 > 匠人: 
 > + In production, do not use System.out as log tool
@@ -202,8 +202,6 @@ public void testLogProperties() throws Exception {
 
 20-25
 
-:computer: [动力节点: 门面 & slf4j 60-78](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df)
-
 ### 3.1.1 Facade Pattern
 
 门面模式(Facade Pattern), 也称之为外观模式, 其核心是: 外部(指应用程序)与一个子系统(指五花八门的日志框架)的通信必须通过一个统一的外观对象进行, 使得子系统更加易于使用.
@@ -281,18 +279,67 @@ SLF4J桥接
 它们需要用adaptation layer来间接地适配slf4j的API
 
 ---
+
+使用slf4j的日志绑定流程:
+1. 添加slf4j-api的依赖
+2. 使用slf4j的API在项目中进行统一的日志记录
+3. 绑定具体的日志实现框架
+   + 绑定已经实现了slf4j的日志框架时(slf4j-simple, slf4j-nop, logback), 只需导入对应日志框架的依赖
+   + 绑定还未实现slf4j的日志框架时(log4j, JUL), 先添加adapter依赖, 再添加日志框架依赖
+4. slf4j 有且仅有一个日志实现框架的绑定(如果出现多个, 默认只使用第一个) 
+
+如果要切换日志框架, 只需要替换class path上的slf4j的绑定即可.
+
+---
+以下, dependency的写法:
+
+首先必须导入slf4j核心依赖
+```java
+// slf4j core dependency=====================================
+implementation 'org.slf4j:slf4j-api:2.0.6'
+```
+
+然后, 取决于想用哪个日志框架, 再对应导入:
+
 + 只引入 slf4j-nop 
   + 不开启logger功能
+  ```java
+  // https://mavenlibs.com/maven/dependency/org.slf4j/slf4j-nop
+  implementation 'org.slf4j:slf4j-nop:2.0.6'
+  ```
 + 只引入 log4j  
-  + [how-to-bind-slf4j-with-log4j](https://stackoverflow.com/questions/25704527/how-to-bind-slf4j-with-log4j) 
+  + [apache: how-to-bind-slf4j-with-log4j](https://logging.apache.org/log4j/2.x/log4j-slf4j-impl/) 
 
-# 看到这里!
+  ```java
+  // 由于版本更新, dependency的写法和视频中不同了
+  // bind log4j==========================================
+  // -- firstly, we need to import the adapter
+  // https://mavenlibs.com/maven/dependency/org.apache.logging.log4j/log4j-slf4j-impl
+  implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
+  // -- then, import log4j
+  // https://mavenlibs.com/maven/dependency/org.apache.logging.log4j/log4j-api
+  implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+  // https://mavenlibs.com/maven/dependency/org.apache.logging.log4j/log4j-core
+  implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+  ```
++ 只引入JUL 
+  + [slf4j: bridge with JUL](https://www.slf4j.org/api/org/slf4j/bridge/SLF4JBridgeHandler.html)
+  ```java
+  // 仅需要导入adapter, 因为JUL是Java源生的
+  // https://mavenlibs.com/maven/dependency/org.slf4j/slf4j-jdk14
+  implementation 'org.slf4j:slf4j-jdk14:2.0.6'
+  ```
++ 只引入Logback
+  ```java
+  // bind logback to slf4j ====================================================
+  implementation 'ch.qos.logback:logback-classic:1.4.5'
+  ```
 
 ---
 
 注意:
 
-+ 当class-path下出现多个日志框架时, slf4j自动加载第一个来工作, 所以尽量只选择一个日志实现放在class path的dependency里.
++ 当class-path下出现多个日志框架时, slf4j自动加载第一个来工作, 所以最好只选择一个日志实现放在class path的dependency里, 避免歧义
   ```java
   SLF4J: Class path contains multiple SLF4J providers.
   SLF4J: Found provider [org.slf4j.simple.SimpleServiceProvider@6cd8737]
@@ -304,6 +351,26 @@ SLF4J桥接
   SLF4J: Ignoring binding found at [jar:file:/C:/Users/spoon/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.12/485f77901840cf4e8bf852f2abb9b723eb8ec29/slf4j-log4j12-1.7.12.jar!/org/slf4j/impl/StaticLoggerBinder.class]
   SLF4J: See https://www.slf4j.org/codes.html#ignoredBindings for an explanation.
   ```
+
+---
+slf4j 日志绑定原理
+
+24 源码讲解 没懂 有时间再看
+
+### 3.1.5 slf4j日志桥接器
+
+25
+
+通常, 你依赖的某些组件依赖于slf4j以外的日志记录API, 假设这些组件再将来依然不会切换到slf4j. 为了解决这种情况, slf4j附带了几个桥接模块, 这些模块将对log4j, JCL和JUL API的调用重定向, 就好像它们是对slf4j API一样.
+
+桥接解决的的是项目中日志的遗留问题, 当系统中存在之前的日志API, 可以通过桥接转换到slf4j的实现.
+1. 先去除之前老的日志框架的依赖
+2. 添加slf4j提供的桥接组件
+3. 为项目添加slf4j的具体实现
+
+<img src="../../Src_md/slf4j-bridging.png" width=70%>
+
+具体代码的执行案例见视频, 用到的时候再学
 
 ## 3.2 :full_moon: logback
 第三方log框架, 高性能, 学这个 + slf4j
