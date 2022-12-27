@@ -1,4 +1,4 @@
-:computer: [黑马程序员: Java Log](https://www.bilibili.com/video/BV1vA41137P2/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+:computer: [黑马程序员: Java Log (这个文档主要笔记来源)](https://www.bilibili.com/video/BV1vA41137P2/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 :computer: [动力节点L 门面 & slf4j (更为全面的介绍Java Log)](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df) 
 
@@ -19,13 +19,18 @@
     - [2.1.4 日志的配置文件(.properties file)](#214-日志的配置文件properties-file)
     - [2.1.5 日志原理分析](#215-日志原理分析)
   - [2.2 LOG4J](#22-log4j)
-  - [2.3 LOG4J2](#23-log4j2)
-  - [2.4 :full\_moon: logback](#24-full_moon-logback)
   - [2.5 JCL](#25-jcl)
-- [3. :full\_moon: 门面模式 \& slf4j](#3-full_moon-门面模式--slf4j)
-  - [3.1 Facade Pattern](#31-facade-pattern)
-  - [3.2 SLF4J introduction](#32-slf4j-introduction)
-  - [3.2.1 SLF4J 案例实现](#321-slf4j-案例实现)
+- [3. Part2](#3-part2)
+  - [3.1 :full\_moon: 门面模式 \& slf4j](#31-full_moon-门面模式--slf4j)
+    - [3.1.1 Facade Pattern](#311-facade-pattern)
+    - [3.1.2 SLF4J introduction](#312-slf4j-introduction)
+    - [3.1.3 SLF4J 快速入门](#313-slf4j-快速入门)
+    - [3.1.4 SLF4J日志绑定](#314-slf4j日志绑定)
+- [看到这里!](#看到这里)
+  - [3.2 :full\_moon: logback](#32-full_moon-logback)
+    - [3.2.1 logback 入门](#321-logback-入门)
+    - [3.2.2 logback configuration](#322-logback-configuration)
+  - [3.3 LOG4J2](#33-log4j2)
 
 ---
 
@@ -182,16 +187,8 @@ public void testLogProperties() throws Exception {
 11-17
 
 
-## 2.3 LOG4J2
-第三方log框架
-
-32-38
 
 
-## 2.4 :full_moon: logback
-第三方log框架, 高性能, 学这个 + slf4j
-
-26-31
 
 
 ## 2.5 JCL
@@ -199,10 +196,15 @@ public void testLogProperties() throws Exception {
 
 有时间再看
 
-# 3. :full_moon: 门面模式 & slf4j 
+# 3. Part2
+
+## 3.1 :full_moon: 门面模式 & slf4j 
+
+20-25
+
 :computer: [动力节点: 门面 & slf4j 60-78](https://www.bilibili.com/video/BV1Mb4y1Z74W?p=60&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
-## 3.1 Facade Pattern
+### 3.1.1 Facade Pattern
 
 门面模式(Facade Pattern), 也称之为外观模式, 其核心是: 外部(指应用程序)与一个子系统(指五花八门的日志框架)的通信必须通过一个统一的外观对象进行, 使得子系统更加易于使用.
 
@@ -210,47 +212,128 @@ public void testLogProperties() throws Exception {
 
 为了解决这个问题, 就需要在五花八门的日志框架与应用程序之间建立一个桥梁, 对于应用程序来说, 无论底层的日志框架如何改变, 都不应该有任何感知. 只要门面服务做到足够好, 随意切换到另一个日志框架, 应用程序都不需要修改任何一行代码, 就可直接上线.
 
-<img src="../../Src_md/log_slf4j.png" width=70%>
+<img src="../../Src_md/facade_log.png" width=70%>
 
 ---
 
 常见的日志实现: JUL, log4j, logback, log4j2
-常见的日志门面: JCL, slf4j
+常见的日志门面: JCL(被淘汰了), slf4j
 出现顺序: log4j --> JUL --> JCL --> slf4j --> logback --> log4j2
 
-## 3.2 SLF4J introduction
+### 3.1.2 SLF4J introduction
 Simple Logging Facade for Java(SLF4j) 主要是为了给Java日志访问提供一套标准, 规范的API框架, 其主要意义在于提供接口, 具体的实现交给其他日志框架, 例如log4j, logback等.
 
-对于一般的Java project而言, 日志框架会选择slf4j-api作为门面, 配上具体的实现框架(log4j, logback等), 中间用桥接器完成桥接. SLF4J最重要的两个功能即:
-+ 对于日志框架的绑定
-+ 日志框架的桥接
+slf4j自己也提供了功能较为简单的实现, 但一般很少被用到.
+
+对于一般的Java project而言, 日志框架会选择`slf4j-api`作为门面, 配上具体的实现框架(log4j, logback等), 中间用桥接器完成桥接. SLF4J最重要的两个功能即:
+1. **对于日志框架的绑定**
+2. **对于日志框架的桥接**
+
+https://www.slf4j.org/
+
+---
 
 SLF4J桥接
 
 为了解决某些日志框架不适配SLF4J API的问题(比如 log4j, JUL先于SLF4J问世), SLF4J附带了桥接模块, 这些模块会将对log4j, JCL和JUL API的调用重定向为行为, 就好像是对SLF4J API进行操作一样. 
 
-## 3.2.1 SLF4J 案例实现
+### 3.1.3 SLF4J 快速入门
 
-62 搭环境 没太懂, 视频用的Mavern
-
-[StackOverflow: How to set SLF4J in IntelliJ with Gradle](https://stackoverflow.com/questions/59178076/how-to-set-slf4j-in-intellij-with-gradle?newreg=3baca917d5404dd991527cd8af67fcc2)
-
-[SLF4J manual](https://www.slf4j.org/manual.html#swapping)
 
 [20分钟搞懂日志](https://www.bilibili.com/video/BV11J411d7Gp/?spm_id_from=333.788.recommend_more_video.2&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 [Introduction to Java Logging](https://www.baeldung.com/java-logging-intro)
 
 一般步骤:
-+ step1 环境搭建: 在build.gradle file中引入日志框架的dependency
-```java
-// slf4j 核心dependency
-implementation 'org.slf4j:slf4j-log4j1:1.7.29'  
++ step1 环境搭建: 在build.gradle file中引入
+  + slf4j日志门面的的dependency 与 
+  + 一个 日志实现的 dependency
+  ```java
+  // slf4j 核心dependency (日志门面)
+  implementation 'org.slf4j:slf4j-api:2.0.6'
+  // slf4j自带的简单日志实现dependency(实际中一般不用)
+  implementation 'org.slf4j:slf4j-simple:2.0.6'
+  ```
 
-// slf4j自带的简单日志实现(一般不用)
-implementation 'org.slf4j:slf4j-simple:1.7.29'
-```
+  成功之后, external resources会出现对应的包 (可以在`file`-->`setting`-->`build`中设置自动更新resources on update of dependencies)
+
+  <img src="../../Src_md/slf4j-externalresources.png" width=50%>
 
 
-+ step2 配置文件: configure对应logging framework的配置文件. 注意不同logging framework的配置文件的格式不同, 网上一搜一大把
++ step2 配置文件 (optional): configure对应logging framework的配置文件. 注意不同logging framework的配置文件的格式不同, 网上一搜一大把
 + step3: 用
+
+### 3.1.4 SLF4J日志绑定
+
+:book: [slf4j 报错信息说明](https://www.slf4j.org/codes.html#noProviders)
+
+<img src="../../Src_md/slf4j-binding.png" width=80%>
+
+上图中源生适配slf4j API的日志实现:
++ logback
++ slf4j-simple
++ slf4j-nop (no-operation): 用来暗示no provider is found
+
+不直接适配slf4j API的日志实现 (因为它们出现早于slf4j):
++ log4j
++ JUL
+
+它们需要用adaptation layer来间接地适配slf4j的API
+
+---
++ 只引入 slf4j-nop 
+  + 不开启logger功能
++ 只引入 log4j  
+  + [how-to-bind-slf4j-with-log4j](https://stackoverflow.com/questions/25704527/how-to-bind-slf4j-with-log4j) 
+
+# 看到这里!
+
+---
+
+注意:
+
++ 当class-path下出现多个日志框架时, slf4j自动加载第一个来工作, 所以尽量只选择一个日志实现放在class path的dependency里.
+  ```java
+  SLF4J: Class path contains multiple SLF4J providers.
+  SLF4J: Found provider [org.slf4j.simple.SimpleServiceProvider@6cd8737]
+  SLF4J: Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@22f71333]
+  ```
++ 注意及时更新slf4j-api 与 对应的logger framework(日志实现), 它们的版本如果不适配也会报错.
+  ```java
+  SLF4J: Class path contains SLF4J bindings targeting slf4j-api versions 1.7.x or earlier.
+  SLF4J: Ignoring binding found at [jar:file:/C:/Users/spoon/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.12/485f77901840cf4e8bf852f2abb9b723eb8ec29/slf4j-log4j12-1.7.12.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+  SLF4J: See https://www.slf4j.org/codes.html#ignoredBindings for an explanation.
+  ```
+
+## 3.2 :full_moon: logback
+第三方log框架, 高性能, 学这个 + slf4j
+
+26-31
+
+logback是log4j创始人设计的另一个开源日志组件, 性能要比log4j好
+
+Logback主要分为3个模块:
++ logback-core: 其他两个模块的基础模块
++ logback-classic: 它是log4j的一个改良版本, 同时它完整了实现了slf4j API
++ logback-access: 访问模块与Servlet容器集成, 提供通过Http来访问日志的功能
+
+后续的日志代码都是通过slf4j日志门面搭建日志系统, 所以在代码上没有区别, 主要是通过修改配置文件和dependency
+
+### 3.2.1 logback 入门
+
++ step1: 添加dependency
+```java
+// in build.gradle file:
+// --- log facade 
+implementation 'org.slf4j:slf4j-api:1.7.29'
+// --- implementation of log
+implementation
+
+```
+### 3.2.2 logback configuration
+
+
+## 3.3 LOG4J2
+第三方log框架
+
+32-38

@@ -109,6 +109,10 @@ File --> Settings
 
 注意不要误选了`file` --> `save power mode`, 不然IDEA很多功能会被disabled.
 
+---
+
+`Build, Execution, Deployment` - `Build Tools`: 勾选any changes, 这样当改变build.gradle中的dependency时, 对应external resources也会自动跟着改变
+
 ## 1.4 IDEA keymap
 411
 
