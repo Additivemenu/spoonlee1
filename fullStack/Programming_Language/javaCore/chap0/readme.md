@@ -8,6 +8,7 @@
 
 :pencil: [Gradle](./IDEA_Gradle.md)
 
+:pencil: [韩顺平: jar](./jar.md)
 
 学习资源
 
