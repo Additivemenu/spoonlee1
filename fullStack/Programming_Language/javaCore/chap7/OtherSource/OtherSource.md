@@ -30,6 +30,8 @@
   - [3.2 :full\_moon: logback](#32-full_moon-logback)
     - [3.2.1 logback 入门](#321-logback-入门)
     - [3.2.2 logback configuration](#322-logback-configuration)
+    - [3.2.3 异步日志](#323-异步日志)
+    - [3.2.4 logback 的 access模块](#324-logback-的-access模块)
   - [3.3 LOG4J2](#33-log4j2)
 
 ---
@@ -218,6 +220,8 @@ public void testLogProperties() throws Exception {
 常见的日志门面: JCL(被淘汰了), slf4j
 出现顺序: log4j --> JUL --> JCL --> slf4j --> logback --> log4j2
 
+后面我们都使用slf4j作为日志门面, 搭配一个日志实现, 即使将来更换了另一个日志实现, 代码不用改因为代码中只用写slf4j的API, 只需要改动对应日志实现的配置文件即可.
+
 ### 3.1.2 SLF4J introduction
 Simple Logging Facade for Java(SLF4j) 主要是为了给Java日志访问提供一套标准, 规范的API框架, 其主要意义在于提供接口, 具体的实现交给其他日志框架, 例如log4j, logback等.
 
@@ -396,7 +400,7 @@ Logback主要分为3个模块:
 
 :book: [logback manual](https://logback.qos.ch/manual/configuration.html)
 
-27
+27,28
 
 logback会依次读取以下类型的配置文件(在resources文件夹下):
 + logback.groovy
@@ -415,10 +419,11 @@ logback组件之间的关系:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!--1. variables-->
     <!--centralized-management property, later on we can directly change the value of a property
     format: ${name}
     -->
-    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSSS} %c %M %L [%thread] %m%n"></property>
+    <property name="pattern" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSSS} %c %M %L %thread %m %n"></property>
     <!--
         output format:
         %-5level: occupy 5 char
@@ -430,9 +435,12 @@ logback组件之间的关系:
         %m or %msg: message we want to output
         %n: turn to the next row
     -->
+    <!--centralized property for log path-->
+    <property name="log_dir" value="./logs"></property>
 
-    <!--appender-->
-    <!--console appender-->
+    <!--=====================================================================================================-->
+    <!--2. appender-->
+    <!--2.1 console appender-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!--control OutputStream instance: System.out(by default) -> System.err -->
         <target>System.err</target>
@@ -441,37 +449,125 @@ logback组件之间的关系:
             <pattern>${pattern}</pattern>
         </encoder>
     </appender>
-    <!--file appender-->
+    
+    <!--2.2 file appender-->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>testFile.log</file>
+        <!--file path-->
+        <file>${log_dir}/testFile.log</file>
         <!--append the file instead of overwritten-->
         <append>true</append>
         <!-- set immediateFlush to false for much higher logging throughput -->
         <immediateFlush>true</immediateFlush>
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
-        <encoder>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${pattern}</pattern>
         </encoder>
     </appender>
 
-    <!--logger instance: define which appenders should be added onto the logger-->
-    <!--root logger configuration-->
+    <!--2.3 html format log output appender: for better readability-->
+    <appender name="HTML_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${log_dir}/logback.html</file>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <pattern>${pattern}</pattern>
+            </layout>
+        </encoder>
+
+    </appender>
+
+    <!--2.4 RollingFileAppender-->
+    <appender name="ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--file path-->
+        <file>${log_dir}/roll_logback.log</file>
+        <!--append the file instead of overwritten-->
+        <append>true</append>
+        <!-- set immediateFlush to false for much higher logging throughput -->
+        <immediateFlush>true</immediateFlush>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+
+        <!--log break down rule-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--break down by time (continuing roll_logback.log)-->
+            <FileNamePattern>${log_dir}/rolling.%d{yyyy-MM-dd-HH-mm}.log%i.gz</FileNamePattern>
+            <!--break down by file size-->
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+
+        <!--log level filter-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--filter rule-->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+    </appender>
+
+    <!--2.5 asynchronized log-->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!--point to a specific existing appender-->
+        <appender-ref ref="ROLL_FILE"></appender-ref>
+    </appender>
+    
+    <!--=====================================================================================================-->
+    <!--3. logger instance: define which appenders should be added onto the logger-->
+    <!--3.1 root logger configuration-->
     <root level="ALL">
         <appender-ref ref="console"></appender-ref>
-        <appender-ref ref="FILE"></appender-ref>>
+<!--        <appender-ref ref="FILE"></appender-ref>>-->
+<!--        <appender-ref ref="HTML_FILE"></appender-ref>-->
+<!--        <appender-ref ref="ROLL_FILE"></appender-ref>-->
+        <appender-ref ref="ASYNC"></appender-ref>
     </root>
 
+    <!--3.2 customized logger instance
+    name: the package name that you want to apply this logger (root logger won't apply to that package)
+    additivity = false: customized logger instance will not  inherit from its parent logger
+    -->
+    <logger name="LogbackTest" level="info" additivity="false">
+        <appender-ref ref="console"></appender-ref>
+    </logger>
 </configuration>
 ```
 这里分为三个步骤:
-1. 定义集中管理属性
+1. 定义集中管理属性, 相当于CSS中打头定义变量的作用
     + optional, 只是更为方便
-2. 定义appenders
-   + 定义每个appender中的消息格式 
-3. 定义logger instance: 哪些appenders附加在logger上
+2. 定义appenders： 分别定义appender的消息格式; 
+   + appender下还可以再定义filter来精细化控制消息颗粒度
+   + 注意file appender对应的file path都是针对class path (Module)而言的, 
+   + appender种类分为:
+     + console appender
+     + file appender
+       + normal file appender
+       + html file appender
+       + :star: rolling file appender (日志文件拆分归档)
+         + rolling by time
+         + rolling by file size 
+3. 定义logger instance: 哪些appender要附加在logger上
+   + 可自定义logger  
 
 网上有很多配置文件, 直接搜拿来用也行
+
+### 3.2.3 异步日志
+
+30
+
+异步日志的性能在production environment要比普通日志提升很多
+
+### 3.2.4 logback 的 access模块
+实现将log4j.properties 转换为 logback.xml, 有需求再看
+
+31
+
+
+
+
 
 
 
