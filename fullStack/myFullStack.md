@@ -16,6 +16,9 @@ projects练习:
 JR lesson:
 + [JR lesson](./JR_Lesson/JR_lesson.md)
 
+职业发展
++ [IT career](./myITCareer.md)
+
 ---
 
 Table of Contents: 
@@ -108,6 +111,8 @@ VsCode
 
 
 # 代码模板
+[vscode java template](./myJavaVscodeTemplate.json)
+
 vscode: File ---> preferences ---> configure user snippets ---> define a JSON file
 
 [vscode snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets)

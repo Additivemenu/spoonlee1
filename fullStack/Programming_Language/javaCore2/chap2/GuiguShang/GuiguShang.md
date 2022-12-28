@@ -35,6 +35,7 @@
 - [5.4.2 SerialVersionUID](#542-serialversionuid)
 - [6. 随机存取文件](#6-随机存取文件)
 - [7. NIO.2中Path, Paths, Files class的使用](#7-nio2中path-paths-files-class的使用)
+- [8. 使用第三方jar包实现数据读写](#8-使用第三方jar包实现数据读写)
 
 ---
 
@@ -683,6 +684,10 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 
 # 7. NIO.2中Path, Paths, Files class的使用
 
-616, 617
+616
 
 有需求再看
+
+# 8. 使用第三方jar包实现数据读写
+
+617

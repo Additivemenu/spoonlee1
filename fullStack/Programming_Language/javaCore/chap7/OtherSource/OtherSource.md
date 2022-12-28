@@ -388,16 +388,91 @@ Logback主要分为3个模块:
 
 ### 3.2.1 logback 入门
 
-+ step1: 添加dependency
-```java
-// in build.gradle file:
-// --- log facade 
-implementation 'org.slf4j:slf4j-api:1.7.29'
-// --- implementation of log
-implementation
+添加dependency见3.1
 
-```
+
+
 ### 3.2.2 logback configuration
+
+:book: [logback manual](https://logback.qos.ch/manual/configuration.html)
+
+27
+
+logback会依次读取以下类型的配置文件(在resources文件夹下):
++ logback.groovy
++ logback-test.xml
++ logback.xml 
+
+如果均不存在则采用默认配置
+
+logback组件之间的关系:
++ Logger: 日志的记录器, 把它关联到应用的对应context上后, 主要用于存放日志对象, 也可定义日志类型, 级别
++ Appender: 用于指定日志输出的目的地, 目的地可以是控制台, 文件, 数据库等等
++ Layout: 负责把事件转换成字符串, 格式化的日志信息的输出. 在Logback中layout对象被封装在encoder中.
+
+:gem: e.g. of a logback.xml file: 
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--centralized-management property, later on we can directly change the value of a property
+    format: ${name}
+    -->
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSSS} %c %M %L [%thread] %m%n"></property>
+    <!--
+        output format:
+        %-5level: occupy 5 char
+        %d{yyyy-MM-dd HH:mm:ss.SSSS}: data
+        %c: class full name
+        %M: method
+        %L: row index
+        %thread: thread name
+        %m or %msg: message we want to output
+        %n: turn to the next row
+    -->
+
+    <!--appender-->
+    <!--console appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--control OutputStream instance: System.out(by default) -> System.err -->
+        <target>System.err</target>
+        <!--define log message format (layout)-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <!--file appender-->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>testFile.log</file>
+        <!--append the file instead of overwritten-->
+        <append>true</append>
+        <!-- set immediateFlush to false for much higher logging throughput -->
+        <immediateFlush>true</immediateFlush>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--logger instance: define which appenders should be added onto the logger-->
+    <!--root logger configuration-->
+    <root level="ALL">
+        <appender-ref ref="console"></appender-ref>
+        <appender-ref ref="FILE"></appender-ref>>
+    </root>
+
+</configuration>
+```
+这里分为三个步骤:
+1. 定义集中管理属性
+    + optional, 只是更为方便
+2. 定义appenders
+   + 定义每个appender中的消息格式 
+3. 定义logger instance: 哪些appenders附加在logger上
+
+网上有很多配置文件, 直接搜拿来用也行
+
 
 
 ## 3.3 LOG4J2
