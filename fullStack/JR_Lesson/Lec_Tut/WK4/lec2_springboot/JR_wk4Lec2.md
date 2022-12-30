@@ -23,21 +23,54 @@ https://start.spring.io/
 
 44min-
 
-dependency: Springboot-starter 自动follow up plungins中Springboot版本
+dependency: Springboot-starter 不写版本号是因为它自动follow up plungins中Springboot版本
 
-maven central repo: 搜索dependency
++ maven central repo: 用来搜索dependency https://mvnrepository.com/repos/central
 
-https://mvnrepository.com/repos/central
-
+---
 gradle command: 在intellij右侧的gradle面板也可
-
-
 
 
 iTerm2: 老师用的Mac上的terminal 
 
-ohmyzsh: terminal 五颜六色
+ohmyzsh: 使得terminal五颜六色
 
+---
 1h14min-
 
-构建工具
+为什么需要构建工具(build tool)?
++ 管理依赖
++ 管理构建过程
+
+Apache Ant --> maven --> gradle
+
+阅读: [maven vs. gradle](https://tomgregory.com/maven-vs-gradle-comparison/)
+
+---
+Annotation 1h19min-
+
+就是一个类或方法开头@...
+
+
+---
+代码目录结构 1h35min-2h15min
+
+配置相关
+```yaml
+server:
+  port: 8888      // 注意中间的空格
+```
+
+
+service之间可以相互调用, 而不是直接去调用别的service对应的repository, 这样边界可以划的更加清晰, 方便重用降低耦合
+
+结合PPT看
+
+---
+
+2h15min-2h21min 
+
+歇息
+
+---
+RESTful API 2h21min-
