@@ -38,3 +38,10 @@ roadmap
 :computer: [尚硅谷git (包含如何IDEA使用git)](https://www.bilibili.com/video/BV1vy4y1s7k6/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 :computer: [黑马: Java Log](https://www.bilibili.com/video/BV1vA41137P2/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+---
+学完框架后学设计模式
+
+[鱼皮设计模式导学](https://www.bilibili.com/video/BV1za411p7Ny/?spm_id_from=333.788.recommend_more_video.0&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+[尚硅谷设计模式](https://www.bilibili.com/video/BV1G4411c7N4/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)

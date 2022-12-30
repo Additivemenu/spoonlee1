@@ -5,6 +5,7 @@
   - [1.1 `String`](#11-string)
     - [1.1.1 :full\_moon: Instantiate `String`](#111-full_moon-instantiate-string)
     - [1.1.2 String拼接](#112-string拼接)
+    - [1.1.3 String class 常用方法](#113-string-class-常用方法)
   - [1.2 `StringBuffer`](#12-stringbuffer)
   - [1.3 `StringBuilder`](#13-stringbuilder)
 - [2. JDK8之前的日期和时间API](#2-jdk8之前的日期和时间api)
@@ -126,7 +127,34 @@ public class Example{
 
 <img src="../../../Src_md/String_question_demonstration.png" width=1000%>
 
-该看454了
+JVM涉及字符串的数据结构
+
+三种JVM
++ sun公司的HotSpot, 我们默认装的是这个, 我们默认提到的JVM的也是指这个
++ BEA公司的JRockit
++ IBM公司的J9 Vm
+
+Heap(堆): 一个JVM实例只存在一个堆内存, 堆内存的大小是可以调节的. 类加载器读取了类文件之后, 需要把类, 方法, 常变量放到堆内存中, 保存所有引用类型的真实信息, 以方便执行器执行, 堆内存分为三部分:
++ Young generation space 新生区
++ Tenure generation space 养老区
++ Permanent Space 永久存储区 (可以看作方法区, 规范里是认为归在heap中, 但是实施时方法区和heap是分开的)
+
+如下: StringTable在JVM中位置随3个版本的变化
+<img src="../../../Src_md/string_jvm1.png" width=30%>
+
+<img src="../../../Src_md/string_jvm2.png" width=30%>
+
+<img src="../../../Src_md/string_jvm3.png" width=30%>
+
+
+之后康师傅讲JVM调优中也会讲到
+
+
+### 1.1.3 String class 常用方法
+
+
+
+该看456
 
 
 ## 1.2 `StringBuffer`
