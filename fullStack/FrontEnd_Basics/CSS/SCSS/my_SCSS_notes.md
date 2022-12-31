@@ -48,7 +48,7 @@ sass SCSS/style.scss:CSS/style.css
 
 ```bash
 // 自动编译
-sass --watch scss:css
+sass --watch SCSS/style.scss:CSS/style.css
 ```
 自动编译为毛不需要指定路径:angry:
 
