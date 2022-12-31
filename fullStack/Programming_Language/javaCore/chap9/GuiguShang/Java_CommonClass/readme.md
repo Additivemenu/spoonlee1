@@ -6,6 +6,7 @@
     - [1.1.1 :full\_moon: Instantiate `String`](#111-full_moon-instantiate-string)
     - [1.1.2 String拼接](#112-string拼接)
     - [1.1.3 String class 常用方法](#113-string-class-常用方法)
+- [该看458](#该看458)
   - [1.2 `StringBuffer`](#12-stringbuffer)
   - [1.3 `StringBuilder`](#13-stringbuilder)
 - [2. JDK8之前的日期和时间API](#2-jdk8之前的日期和时间api)
@@ -153,8 +154,36 @@ Heap(堆): 一个JVM实例只存在一个堆内存, 堆内存的大小是可以�
 ### 1.1.3 String class 常用方法
 
 
++ `length`
++ `chatAt`
++ `isEmpty`
++ `toUpperCase`
++ `toLowerCase`
++ `trim`
 
-该看456
+---
+
++ `equals`
++ `equalsIgnoreCase`
++ `concat`
++ `compareTo`
++ `substring`
+---
+
++ `endsWith`
++ `startWith`
++ `contains`
++ `indexOf`
++ `lastIndexOf`
+
+---
+
++ `replace`
++ `matches`
++ `split`
+
+
+# 该看458
 
 
 ## 1.2 `StringBuffer`
