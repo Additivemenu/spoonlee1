@@ -74,3 +74,12 @@ service之间可以相互调用, 而不是直接去调用别的service对应的r
 
 ---
 RESTful API 2h21min-
+
+最简单的request mapping 
+
+<img src="../../../Src_md/restful1.png" width=80%>
+
+
+Post 的结果
+
+<img src="../../../Src_md/postman1.png" width=80%>

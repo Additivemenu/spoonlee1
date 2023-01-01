@@ -8,13 +8,13 @@ Basics
 
 OOP 与 模块化
 + [chap4 Object & Class](./chap4/README.md)
-+ [chap5 Inheritance & Polymorph](./chap5/readme.md) 
++ [chap5 Inheritance & Polymorph & Reflection](./chap5/readme.md) 
 + [chap6 Interface, lambda & inner class ](./chap6/readme.md)
 
 API学习
 + [chap7 Exception, assertion, log](./chap7/readme.md) 
 + [chap8 Generics & reflection](./chap8/readme.md)
-+ [chap9 集合与常用类](./chap9/readme.md)
++ [chap9 常用类, 枚举类, Annotation, 集合](./chap9/readme.md)
 + [chap12 并发](./chap12/readme.md) 
 
 Java用户界面
