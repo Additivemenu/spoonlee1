@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+}
+
 html, body{
     padding: 0px;
     margin: 0px;
@@ -18,10 +22,15 @@ a{
 
 .page1{
     height: 900px;
-    background-color: red;
+
+
+   
+    background-image: url('./Img/p1background.png');
+    
+
     .header_container{
-        height: 100px;
-        background-color: white;
+        height: 105px;
+        background-color: orange;
 
         display: flex;
         justify-content: space-around;
@@ -31,7 +40,6 @@ a{
         }
         .nav_container{
             text-decoration: none;
-
             ul{
                 display: flex;
                 justify-content: space-evenly;
@@ -47,14 +55,30 @@ a{
 
     .content_container{
         height: 800px;
-        background-color: aqua;
+        //background-color: aqua;
+        .empty_upContent{
+            height: 190px;
+            width: 1170px;
+
+            background-color: red;
+
+        }
         .content{
-            position: absolute;
-            left: 500px;
+            margin: 0 auto;
 
             height: 500px;
             width:500px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+
+
             background-color: aliceblue;
+        }
+        .empty_upContent{
+            height: 270px;
+            width: 1170px;
         }
 
     }
