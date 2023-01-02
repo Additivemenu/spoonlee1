@@ -1080,16 +1080,19 @@ body,html{
 
 :book: [mozilla: grid (更详尽)](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
 
-grid是另一种布局方式, 把container的区域划分为column by column (甚至可以grid by grid), 再定义container内部的元素占几个column(e.g.my monash那个界面就是grid做的)
+grid是另一种布局方式, 把container的区域划分为column by column (甚至可以grid by grid), 再定义container内部的元素占几个column(e.g.my monash那个界面就是grid做的). 
+
+使用grid布局的好处是, 可以明确指定元素在页面中(或其父级元素中)的位置, 同时还可以做到随页面大小变化而变化(而不是像position: absolute + left/right/top/bottom, 那样不动了)
 
 ### 2.4.1 display: grid
 
 :gem: [grid cards (Ally wk2 tut)](./CSS_Sample/Grid/gridCard.html)
 
-:gem: [grid demo to play with](./CSS_Sample/Grid/gridDemo.html)
+:gem: [grid demo to play with](./CSS_Sample/Grid/gridDemo.html) 注意里面width: 100%在何处定义的
++ grid-item并不需要再定义dimension相关属性, 因为grid-column已经定义好了dimension相关属性
 
 
-以上面这个Demo为例子, 涉及到两个要素及两个步骤:
+grid模型中主要涉及到两个要素及两个步骤:
 + container (grid container): 定义container的grid-template
 + container内的items (grid item): 基于grid-container的grid template, 定义其内部的grid item如何span
   + 注意grid item必须是有实体的才能显示grid, 一个空内容的标签不显示
@@ -1120,7 +1123,7 @@ step2:
       ```css
       grid-column: 1 / 3;   /*grid item starts from column1 till column 3 (column1 to column2 actually). */
 
-      grid-column: 1 / span 2; /*grid items starts from 1 and span 2 columns (column 1 to column 2 actually).*/
+      grid-column: 1 / span 2; /*grid item starts from 1 and span 2 columns (column 1 to column 2 actually).*/
       ```  
 
   :gem: [MDN: grid demo](./CSS_Sample/Grid/gridDemoMDN.html)

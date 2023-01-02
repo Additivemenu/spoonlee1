@@ -10,19 +10,25 @@ html, body {
 }
 
 main {
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr repeat(5, 100px) 1fr;
   grid-gap: 50px;
   padding: 100px 0px;
 }
 main .cards {
-  grid-column: 1/3;
+  grid-column: 2/span 3;
   display: grid;
-  grid-template-columns: 1fr repeat(5, minmax(auto, 30px)) 1fr;
-  grid-gap: 5px;
+  grid-template-columns: repeat(5, minmax(auto, 80px));
 }
 main .cards .card {
-  grid-column: 2/3;
+  grid-column: 1/span 3;
+}
+main .cards .card .img_container {
+  width: 100%;
+}
+main .cards .card .img_container img {
+  width: 100%;
 }
 
 /*# sourceMappingURL=gridDemo.css.map */

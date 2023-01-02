@@ -8,7 +8,7 @@ body,html{
 
     display: grid;
     grid-template-columns: repeat(6, 1fr);      /*splice into 6 even columns*/
-    /* grid-template-rows: 100px; */
+    grid-template-rows: repeat(6, 100px);
 }
 
 #item1 {
@@ -20,6 +20,7 @@ body,html{
     /* height: 100%; */
     background-color: yellow;
     grid-column: 2 / 4;             /*span from 2 till 4 (not include 4). so it actually spans across 2, 3*/
+    grid-row: 2 / 4;
 }
 
 #item3 {
