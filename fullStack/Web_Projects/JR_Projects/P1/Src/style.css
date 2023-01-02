@@ -40,25 +40,24 @@ a {
   margin: 10px;
 }
 .page1 .content_container {
-  height: 800px;
-}
-.page1 .content_container .empty_upContent {
-  height: 190px;
-  width: 1170px;
-  background-color: red;
+  height: 795px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, minmax(auto, 80px));
 }
 .page1 .content_container .content {
-  margin: 0 auto;
-  height: 500px;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: aliceblue;
+  grid-column: 6/span 4;
+  grid-row: 3/span 4;
+  padding: 30px;
+  color: white;
 }
-.page1 .content_container .empty_upContent {
-  height: 270px;
-  width: 1170px;
+.page1 .content_container .content .button_container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+.page1 .content_container .content .button_container button {
+  margin: 30px;
 }
 
 .page2 {
@@ -75,4 +74,4 @@ a {
   height: 300px;
 }
 
-/*# sourceMappingURL=style1.css.map */
+/*# sourceMappingURL=style.css.map */

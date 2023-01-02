@@ -1,3 +1,11 @@
+$page1-height: 900px;
+$page1-header-height: 105px;
+$page1-content-height: $page1-height - $page1-header-height;
+
+$addressing-color: #FF7F2B;
+$background-color: #D2D0C9;
+$text-color: #4A4947;
+
 *{
     box-sizing: border-box;
 }
@@ -21,17 +29,17 @@ a{
 }
 
 .page1{
-    height: 900px;
+    height: $page1-height;
 
 
-   
     background-image: url('./Img/p1background.png');
     
 
     .header_container{
-        height: 105px;
-        background-color: orange;
+        height: $page1-header-height;
 
+        background-color: orange;
+        
         display: flex;
         justify-content: space-around;
 
@@ -54,31 +62,31 @@ a{
     }
 
     .content_container{
-        height: 800px;
+        height: $page1-content-height;
+
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(10, minmax(auto, 80px));
+
         //background-color: aqua;
-        .empty_upContent{
-            height: 190px;
-            width: 1170px;
-
-            background-color: red;
-
-        }
+    
         .content{
-            margin: 0 auto;
+            grid-column: 6 / span 4;
+            grid-row: 3 / span 4;
 
-            height: 500px;
-            width:500px;
+            padding: 30px;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
+            color: white;
 
+            .button_container{
+                margin-top: 30px;
 
-            background-color: aliceblue;
-        }
-        .empty_upContent{
-            height: 270px;
-            width: 1170px;
+                display: flex;
+                justify-content: flex-start;
+                button{
+                    margin: 30px;
+                }
+            }
         }
 
     }
