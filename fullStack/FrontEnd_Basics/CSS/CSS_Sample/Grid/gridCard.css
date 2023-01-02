@@ -10,12 +10,13 @@ body{
     background-color: #303032;
 }
 
+/* partition main to facilitate its child elements layout */
 main{
     display: grid;  
     grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction*/
     grid-gap: 40px;
 
-    padding: 60px 0;
+    padding: 60px 0;        /*picture frame effect*/
 }
 
 

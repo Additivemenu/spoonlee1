@@ -1,0 +1,29 @@
+body,html{
+    padding: 0px;
+    margin: 0px;
+}
+
+#grid {
+    height: 500px;
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);      /*splice into 6 even columns*/
+    /* grid-template-rows: 100px; */
+}
+
+#item1 {
+    /* height: 100%;               TODO: why not inherit 100% height from its parent? -because you defined grid-template-rows */
+    background-color: lime;
+}
+  
+#item2 {
+    /* height: 100%; */
+    background-color: yellow;
+    grid-column: 2 / 4;             /*span from 2 till 4 (not include 4). so it actually spans across 2, 3*/
+}
+
+#item3 {
+    /* height: 100%; */
+    background-color: blue;
+    grid-column: span 2 / 7;        /*span 2 columns to column 7. It actually spans across 6, 7*/
+}

@@ -12,7 +12,7 @@ body{
 
 main{
     display: grid;  
-    grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction*/
+    grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction, minmax(min, max) defines a range: [min,max], check auto's meaning on MDN*/
     grid-gap: 40px;
     padding: 60px 0;
 }
@@ -22,7 +22,7 @@ main{
 
 .cards {
     
-    grid-column: 2 / span 12;
+    grid-column: 2 / span 12;               /*start from column2, span across 12 columns then end*
     display: grid;
     grid-template-columns: repeat(12, minmax(auto, 60px));      /*刚开始auto和60px之间忘了打逗号了*/  
     grid-gap:40px;

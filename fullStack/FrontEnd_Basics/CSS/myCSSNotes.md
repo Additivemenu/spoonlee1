@@ -65,7 +65,7 @@ Content
       - [2.3.5.4 self](#2354-self)
     - [2.3.6 :moon: order](#236-moon-order)
     - [2.3.7 Flexbox Practice](#237-flexbox-practice)
-  - [2.4 grid](#24-grid)
+  - [2.4 :moon: grid](#24-moon-grid)
     - [2.4.1 display: grid](#241-display-grid)
 - [4. 其他渲染属性](#4-其他渲染属性)
   - [4.1 :full\_moon: Text](#41-full_moon-text)
@@ -1074,7 +1074,7 @@ body,html{
 <img  src="./Src/flexFrog24.png" width=70%>
 
 
-## 2.4 grid
+## 2.4 :moon: grid
 
 :book: [w3school: grid](https://www.w3schools.com/css/css_grid.asp)
 
@@ -1084,20 +1084,29 @@ grid是另一种布局方式, 把container的区域划分为column by column (�
 
 ### 2.4.1 display: grid
 
-:gem: [grid cards](./CSS_Sample/Grid/gridCard.html)
+:gem: [grid cards (Ally wk2 tut)](./CSS_Sample/Grid/gridCard.html)
 
-以上面这个Demo为例子: 
+:gem: [grid demo to play with](./CSS_Sample/Grid/gridDemo.html)
+
+
+以上面这个Demo为例子, 涉及到两个要素及两个步骤:
++ container (grid container): 定义container的grid-template
++ container内的items (grid item): 基于grid-container的grid template, 定义其内部的grid item如何span
+  + 注意grid item必须是有实体的才能显示grid, 一个空内容的标签不显示
+
 
 ---
 step1:  
 container划分区域
 + `grid-template-columns`: 定义container要通过何种格式的columns划分成多少columns
+  + 注意columns的index starts from 1 
 + `grid-gap`: container的column之间的距离
 
 ```css
 main{
     display: grid;  
-    grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction*/
+    /*partitioned into 14 rows in total*/
+    grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;         /*fr for fraction. */
     grid-gap: 40px;
     padding: 60px 0;
 }
@@ -1106,27 +1115,37 @@ main{
 ---
 step2:  
 定义container内的items如何span
-+ `grid-column`:
-  +  定义grid items从第几个column开始, 直到哪个column结束
++ `grid-column`: 基于container的grid-template-columns, 定义grid items如何span
+  +  定义grid items的span范围
+      ```css
+      grid-column: 1 / 3;   /*grid item starts from column1 till column 3 (column1 to column2 actually). */
+
+      grid-column: 1 / span 2; /*grid items starts from 1 and span 2 columns (column 1 to column 2 actually).*/
+      ```  
+
+  :gem: [MDN: grid demo](./CSS_Sample/Grid/gridDemoMDN.html)
+  
+  + 注意grid-column的含义:
+  <img src="./Src/grid_template_MDNDemo.png" width=70%>
+  + 注意column index标在column的左边
+  <img src="./Src/grid_column_index.png" width=70%>
+
+
++ grid item也可以作为grid container继续往深处嵌套
   ```css
-  grid-column: 1 / 3;   /*grid item从column 1开始, 到column 3结束 */
-  ```  
-  +  定义grid items如何span, 基于container的columns
-+ container采用grid也可以嵌套
-```css
-.cards {
-  /* start on column 2, span 12 columns结束 */
-    grid-column: 2 / span 12;    
-    
-    display: grid;
-    grid-template-columns: repeat(12, minmax(auto, 60px));      /*定义cards这个container如何被它的columns分割*/  
-    grid-gap:40px;
-} 
-```
+  .cards {
+    /* start on column 2, span 12 columns结束 */
+      grid-column: 2 / span 12;    
+      
+      display: grid;
+      grid-template-columns: repeat(12, minmax(auto, 60px));      /*定义cards这个container如何被它的columns分割*/  
+      grid-gap:40px;
+  } 
+  ```
 
 ---
-step3(optional):  
-container的嵌套， 重复step2
+step3:  
+继续定义`.cards`这个grid container的grid items如何span
 ```css
 .card{
     /*每张card span 4 columns*/
