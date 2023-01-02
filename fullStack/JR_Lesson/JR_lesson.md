@@ -39,23 +39,21 @@ https://coderguan.com/
 ---
 
 progress tracking
-# WK1: 
+# WK1: HTML, CSS
 + 补充视频
 
-# WK2:
-+ 独立复现: grid
+# WK2: CSS, JS
++ Ally tut: 独立复现 grid card
 
-# WK3:
-+ Java1笔记: 
-  + interface --> comparator 
-  + lambda, Collection --> stream --> optional class
-  + I/O --> serializable
-+ P1
+# WK3: Git
 + git 理解merge vs. rebase, git stash
 + git 作业  -almost done
-+ Ally tut 独立复现
++ Ally tut: profile 独立复现
 
-# WK4
-+ Java 第二节课: JVM & mechanism
-+ Java 第一节课作业
-+ 跟Java进度: java8...
+# WK4 Java, Spring boot
++ Java 第二节课: JVM & mechanism最后的refactor
++ Java前两节课理论知识的吸收
++ Ally tut: progress bar独立复现
+  
+# Wk5: RESTful API
+

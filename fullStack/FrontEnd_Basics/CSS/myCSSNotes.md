@@ -28,8 +28,8 @@ Content
     - [1.2.1 基本层级选择器](#121-基本层级选择器)
     - [1.2.2 结构伪类选择器](#122-结构伪类选择器)
   - [1.4 属性选择器](#14-属性选择器)
-  - [1.5 :full\_moon: 伪类(pseudo class)](#15-full_moon-伪类pseudo-class)
-    - [1.5.1 元素的伪类](#151-元素的伪类)
+  - [1.5 :moon: 伪类(pseudo class)](#15-moon-伪类pseudo-class)
+  - [1.6 :moon: 伪元素 (Pseudo element)](#16-moon-伪元素-pseudo-element)
 - [2. CSS基本语法与特性](#2-css基本语法与特性)
   - [2.1 施加CSS的三种方式](#21-施加css的三种方式)
   - [2.2 :full\_moon: CSS三大特性](#22-full_moon-css三大特性)
@@ -237,27 +237,11 @@ a[href="https://example.org"]
 }
 ```
 
-## 1.5 :full_moon: 伪类(pseudo class)
+## 1.5 :moon: 伪类(pseudo class)
 
-[mozilla pseudo class](https://developer.mozilla.org/en-US/docs/Web/CSS/:active)
+:book: [MDN: Pseudo-class introduction](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
 
-[mozilla pseudo element](https://developer.mozilla.org/en-US/docs/Web/CSS/::after)
-
-注：一下的指令中包含”::”是CSS中为数不多的语句，一般都是”:”
-
-可使用 class::宏来渲染段落的某部分
-+ .pseudo::first-letter{}: 只对第一个字母生效
-+ .pseudo::first-line{}: 只对第一行生效
-+ .pseudo::selection{}:只对用鼠标选中部分生效
-
-除此外, 了解伪元素的概念:
-.pseudo::before{}：在元素前跟随，有大用可以做特效（以后会讲）
-.pseudo::after{}: 在元素后跟随
-
-
-### 1.5.1 元素的伪类
-
-以`<a>`为例: `<a>`的伪类代表`<a>`的某种状态, 可以理解为`<a>`的状态选择器(state selector)
+以`<a>`为例: `<a>`的Pseudo class代表`<a>`的某种状态, 可以理解为`<a>`的状态选择器(state selector)
 
 伪类名称|含义|实例
 -----|-----|-----
@@ -274,9 +258,19 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :gem: [`<input>` 的 foucs selector](./CSS_Sample/Selector/18-focusSelector.html)
 
-利用元素的伪类可以实现很多花哨的特效, further reading: 
-[mozilla Pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
 
+## 1.6 :moon: 伪元素 (Pseudo element)
+
+:book: [MDN: Pseudo element introduction](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
+
+将Pseudo element理解为某个element的附属元素, 僚机, 结合selector我们可以对这些Pseudo element做出单独的style的定义. 与element不存在父子关系, 只是附属元素用来做一些辅助的事情. e.g. add a logo at the left of a hyperlink
+
+常用的Pseudo element:
++ `::before`: creates a pseudo-element that is the first child of the selected element. 
++ `::after`: creates a pseudo-element that is the last child of the selected element
++ `::first-letter`
++ `::first-line`
++ `::selection`:  applies styles to the part of a document that has been highlighted by the user (such as clicking and dragging the mouse across text).
 
 
 # 2. CSS基本语法与特性
@@ -342,10 +336,10 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 [myHTMLNotes: #1. HTML basic tags](../HTML/myHTMLNotes.md)
 
-元素模式|元素排列|设置样式|默认宽度|包含
+元素模式|元素排列|设置样式|默认宽度|嵌套
 -----|-----|-----|-----|-----
-块级元素 block |  一行只能放1个block元素 | 可以设置宽高 | 容器的100%| 可以包含任何标签
-行内元素inline |  一行内可以放多个inline元素 | 不可以直接设置宽高(强行设置会被忽略掉) | 本身内容的宽度 | 容纳文本或其他行内元素
+块级元素 block |  一行只能放1个block元素 | 可以设置宽高 | **容器**的100%| 可以包含任何标签
+行内元素inline |  一行内可以放多个inline元素 | **不可以直接设置宽高(强行设置会被忽略掉)** | 本身内容的宽度 | 容纳文本或其他行内元素
 行内块元素inline-block |  一行内可以放多个inline-block元素 | 可以设置宽高 | 本身内容的宽度 | 
 
 + 元素的模式是可以相互转化的!

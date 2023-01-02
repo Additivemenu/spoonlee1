@@ -40,14 +40,17 @@ body{
 .progress-container::before{
     content: "";
     background-color: var(--line-border-empty);
-    width: 100%;                /*FIXME: relative to which property?*/
+    /*FIXME: relative to which property?*/
+    width: 100%;                
 
     position: absolute;
-    left:0;
+    left:0px;
     top: 50%;
 
     height: 4px;
-    transform: translateY(-50%);  /*FIXME: relative to which property?*/
+    /* FIXME: relative to which property? */
+    transform: translateY(-50%); 
+
 
     z-index: -1;
 }
@@ -73,13 +76,14 @@ body{
     background-color: #fff;
     color: #999;
 
+    /*make it a circle*/
     border-radius: 50%;
     width: 30px;
     height: 30px;
 
     border: 3px solid var(--line-border-empty);
 
-    /*text-align: center */
+    /*equivalent to text-align: center */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,6 +103,8 @@ body{
     border-radius: 6px;
     
     cursor: pointer;
+
+    /*picture frame effect*/
     padding: 8px 30px;
     margin: 5px;
     font-size: 14px;

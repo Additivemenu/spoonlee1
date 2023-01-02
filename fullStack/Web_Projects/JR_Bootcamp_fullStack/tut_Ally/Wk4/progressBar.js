@@ -36,13 +36,18 @@ function update(){
         
     })
 
-    if(currentActive == 1){
-        progress.style.width = "0%";
-    }else if(currentActive == 2){
-        progress.style.width = "33%";
-    }else if(currentActive == 3){
-        progress.style.width = "66%";
-    }else if(currentActive == 4){
-        progress.style.width = "100%";
-    }
+    // progress bar's growth
+    const actives = document.querySelectorAll(".active");
+    progress.style.width =
+      ((actives.length - 1) / (circles.length - 1)) * 100 + "%";
+
+    // disable button on BCs
+    if (currentActive === 1) {
+        prev.disabled = true;
+      } else if (currentActive === circles.length) {
+        next.disabled = true;
+      } else {
+        prev.disabled = false;
+        next.disabled = false;
+      }
 }

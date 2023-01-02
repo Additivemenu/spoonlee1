@@ -10,3 +10,6 @@
 + :book::star:[MDN](https://developer.mozilla.org/en-US/) 讲的比W3更细, 但仅有前端, 前端学这个入门就可以了
 + :book:[w3school](https://www.w3schools.com/html/default.asp) 什么都有
 + :book:[Free code camp](https://www.freecodecamp.org/)
+
+
+:gem: [50天50个前端小项目](https://github.com/didiaohu/50projects50days)

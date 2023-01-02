@@ -21,12 +21,10 @@ Demo: progress bar
 
 Dom [MDN: DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 
-w3
-
-window方法
-
 DOM的getElementbyID, byName, byClassName
 
-empty bar是怎么做出来的?
+empty bar是怎么做出来的? -- pseudo element
+
+progress-container: max-width:100%是干啥的?
 
 
