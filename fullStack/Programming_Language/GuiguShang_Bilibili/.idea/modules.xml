@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CommonClass/CommonClass.iml" filepath="$PROJECT_DIR$/CommonClass/CommonClass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EnumAndAnnotation/EnumAndAnnotation.iml" filepath="$PROJECT_DIR$/EnumAndAnnotation/EnumAndAnnotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Exception_Handling/Exception_Handling.iml" filepath="$PROJECT_DIR$/Exception_Handling/Exception_Handling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IO_Stream/IO_Stream.iml" filepath="$PROJECT_DIR$/IO_Stream/IO_Stream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java8_Features/Java8_Features.iml" filepath="$PROJECT_DIR$/Java8_Features/Java8_Features.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java_Log/Java_Log.iml" filepath="$PROJECT_DIR$/Java_Log/Java_Log.iml" />
+    </modules>
+  </component>
+</project>
