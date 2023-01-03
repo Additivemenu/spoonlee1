@@ -64,6 +64,15 @@ a {
   height: 900px;
   background-color: blue;
 }
+.page2 .leftContent_container {
+  background-color: #D2D0C9;
+}
+.page2 .openingHour {
+  background-color: #FF7F2B;
+}
+.page2 .rightImg_container {
+  background-color: #D2D0C9;
+}
 
 .page3 {
   height: 900px;
