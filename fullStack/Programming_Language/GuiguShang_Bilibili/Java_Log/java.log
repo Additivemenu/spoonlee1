@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-12-27T01:20:32.146403800Z</date>
+  <millis>1672104032146</millis>
+  <nanos>403800</nanos>
+  <sequence>0</sequence>
+  <logger>logger1</logger>
+  <level>SEVERE</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>severe</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.209102400Z</date>
+  <millis>1672104032209</millis>
+  <nanos>102400</nanos>
+  <sequence>1</sequence>
+  <logger>logger1</logger>
+  <level>WARNING</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>warning</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.210099500Z</date>
+  <millis>1672104032210</millis>
+  <nanos>99500</nanos>
+  <sequence>2</sequence>
+  <logger>logger1</logger>
+  <level>INFO</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>info</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.212099100Z</date>
+  <millis>1672104032212</millis>
+  <nanos>99100</nanos>
+  <sequence>3</sequence>
+  <logger>logger1</logger>
+  <level>CONFIG</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>config</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.213098800Z</date>
+  <millis>1672104032213</millis>
+  <nanos>98800</nanos>
+  <sequence>4</sequence>
+  <logger>logger1</logger>
+  <level>FINE</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>fine</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.214097600Z</date>
+  <millis>1672104032214</millis>
+  <nanos>97600</nanos>
+  <sequence>5</sequence>
+  <logger>logger1</logger>
+  <level>FINER</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>finer</message>
+</record>
+<record>
+  <date>2022-12-27T01:20:32.214097600Z</date>
+  <millis>1672104032214</millis>
+  <nanos>97600</nanos>
+  <sequence>6</sequence>
+  <logger>logger1</logger>
+  <level>FINEST</level>
+  <class>JUL.JULTest</class>
+  <method>testLogProperties</method>
+  <thread>1</thread>
+  <message>finest</message>
+</record>
+</log>
