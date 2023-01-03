@@ -30,22 +30,19 @@
 
 ## 2. 常见的Annotation示例
 第一类: 生成文档相关的Annotation
-+ @author 标明开发该类模块的作者 多个作者之间使用 分割
-+ @version 标明该类模块的版本
-+ @see 参考转向 也就是相关主题
-+ @since 从哪个版本开始增加的
-+ @param 对方法中某参数的说明 如果没有参数就不能写
-+ @return 对方法返回值的说明 如果方法的返回值类型是 void 就不能写
-+ @exception 对方法可能抛出的异常进行说明 如果方法没有用 throws显式抛出的异常就不能写
++ `@author` 标明开发该类模块的作者 多个作者之间使用 分割
++ `@version` 标明该类模块的版本
++ `@see` 参考转向 也就是相关主题
++ `@since` 从哪个版本开始增加的
++ `@param` 对方法中某参数的说明 如果没有参数就不能写
++ `@return` 对方法返回值的说明 如果方法的返回值类型是 void 就不能写
++ `@exception` 对方法可能抛出的异常进行说明 如果方法没有用 throws显式抛出的异常就不能写
 
 ---
-第二类: 在编译时进行格式 检查 (JDK 内置的三个基本注解)
-+ @Override: 限定重写父类方法 , 该注解只能 用于方法
-
-+ @Deprecated : 用于表示所修饰的元素 类 , 方法等 已过 时。通常是因为
-所修饰的结构危险或存在更好的选择
-
-+ @SuppressWarnings : 抑制编译器警告
+第二类: 在编译时进行格式 检查 (JDK 内置的三个基本Annotation)
++ `@Override`: 限定重写父类方法 , 该注解只能用于方法. 编译器可以检查修饰的方法是否真的被override了, good practice.
++ `@Deprecated`: 用于提示程序员它所修饰的元素, 类, 方法等已过时(但依然可以使用). 通常是因为所修饰的结构危险或存在更好的选择(比如新的JDK版本更新提供了更好的方法)
++ `@SuppressWarnings`: 抑制编译器警告
 
 ---
 第三类: 跟踪代码依赖性，实现替代配置文件功能
@@ -106,16 +103,28 @@ public void buyBook(String username, String isbn){
 }
 ```
 
-该看504了
+
 
 ## 3. 自定义Annotation
++ 定义新的 Annotation 类型使用 @interface 关键字
++ 自定义注解自动继承了 java lang annotation Annotation 接口
++ Annotation 的成员变量在 Annotation 定义中以无参数方法的形式来 声明. 其方法名和返回值定义了该成员的名字和 类型. 我们 称为配置参数. 类型只能是八种基本数据类型, String 类型, Class 类型, enum 类型, Annotation 类型, 以上所有类型的 数组
++ 如果Annotation有成员, 在使用注解时, 需要提供成员的值 (除非为成员提供了default值)
+
+---
++ 可以在定义 Annotation 的成员变量时为其指定初始值 指定成员变量的初始值可使用 default 关键字
++ 如果只有一个参数成员 建议使用 参数名为 value
++ 如果定义的注解含有配置参数 那么使用时必须指定参数值 除非它有默认
+值. 格式是参数名参数值, 如果只有一个参数成员, 且名称为 value
+可以省略 value=
++ 没有成员定义的Annotation称为标记, 包含成员变量的 Annotation 称为元数据 Annotation
 
 
-
+注意: 自定义注解必须配上注解的信息处理流程才有意义
 
 ## 4. JDK中的元注解
 
-
+506
 
 
 
