@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili" />
+        <option name="gradleJvm" value="jbr-17" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/CommonClass" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/EnumAndAnnotation" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/Exception_Handling" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/IO_Stream" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/Java8_Features" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/Java_Collection" />
+            <option value="$PROJECT_DIR$/fullStack/Programming_Language/GuiguShang_Bilibili/Java_Log" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

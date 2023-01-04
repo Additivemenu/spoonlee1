@@ -6,4 +6,5 @@ include 'Java_Log'
 include 'CommonClass'
 include 'Java8_Features'
 include 'EnumAndAnnotation'
+include 'Java_Collection'
 

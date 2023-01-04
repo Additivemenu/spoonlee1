@@ -123,7 +123,7 @@ IDEA的很多快捷键和Eclipse不同.
 
 常用kepmap
 + `ctrl`+`alt`+`t`:  surround with
-+ `alt`+`insert`: generate Constructor, getter, accessor
++ `alt`+`insert` / `cmd`+`N`: generate Constructor, getter, accessor
 
 more on pdf or google
 
@@ -146,5 +146,4 @@ more on pdf or google
 + 其他设置
   + javadoc
   + plugin 
-
 

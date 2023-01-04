@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!--1. variables-->
     <!--centralized-management property, later on we can directly change the value of a property
     format: ${name}
     -->
@@ -18,8 +19,8 @@
     <!--centralized property for log path-->
     <property name="log_dir" value="./logs"></property>
 
-    <!--appender-->
-    <!--console appender-->
+    <!--2. appender-->
+    <!--2.1 console appender-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!--control OutputStream instance: System.out(by default) -> System.err -->
         <target>System.err</target>
@@ -28,7 +29,8 @@
             <pattern>${pattern}</pattern>
         </encoder>
     </appender>
-    <!--file appender-->
+
+    <!--2.2 file appender-->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <!--file path-->
         <file>${log_dir}/testFile.log</file>
@@ -43,7 +45,7 @@
         </encoder>
     </appender>
 
-    <!--html format log output appender: for better readability-->
+    <!--2.3 html format log output appender: for better readability-->
     <appender name="HTML_FILE" class="ch.qos.logback.core.FileAppender">
         <file>${log_dir}/logback.html</file>
 
@@ -55,7 +57,7 @@
 
     </appender>
 
-    <!---->
+    <!--2.4 RollingFileAppender-->
     <appender name="ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--file path-->
         <file>${log_dir}/roll_logback.log</file>
@@ -87,15 +89,15 @@
 
     </appender>
 
-    <!--asynchronized log-->
+    <!--2.5 asynchronized log-->
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <!--point to a specific existing appender-->
         <appender-ref ref="ROLL_FILE"></appender-ref>
     </appender>
 
 
-    <!--logger instance: define which appenders should be added onto the logger-->
-    <!--root logger configuration-->
+    <!--3. logger instance: define which appenders should be added onto the logger-->
+    <!--3.1 root logger configuration-->
     <root level="ALL">
         <appender-ref ref="console"></appender-ref>
 <!--        <appender-ref ref="FILE"></appender-ref>>-->
@@ -104,12 +106,11 @@
         <appender-ref ref="ASYNC"></appender-ref>
     </root>
 
-    <!--customized logger instance
+    <!--3.2 customized logger instance
+    name: the package name that you want to apply this logger (root logger won't apply to that package)
     additivity = false: customized logger instance will not  inherit from its parent logger
     -->
     <logger name="LogbackTest" level="info" additivity="false">
         <appender-ref ref="console"></appender-ref>
     </logger>
-
-
 </configuration>
