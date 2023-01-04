@@ -164,7 +164,7 @@ allow us to reach down to branch of tag tree
 
 <img src="./Src/structural_pseudo_class_selector.png" width=80%>
 
-+ nth:child(int)
++ element:nth-child(n): **选中第n个element**(而不是element的第n个child)
   + 需要你首先限定是哪个group的元素 
   + 如果不限定, 那就选择所有组别的nth element
 

@@ -29,14 +29,15 @@ SCSS是一种改良版的CSS写法, 可以实现一些额外的具有类似progr
 
 # 0. 一些SCSS相关的terminal指令
 
+[how to install node.js and npm on Mac](https://treehouse.github.io/installation-guides/mac/node-mac.html
+)
+
+
+
+安装好node.js与npm之后, 安装sass
 ```bash
 npm install -g sass         // intall sass using npm
-
-npm -v                      // show npm version
-
-node -v                     // show node version
-
-sass
+sass      // 显示sass功能说明
 ```
 
 
@@ -50,7 +51,7 @@ sass SCSS/style.scss:CSS/style.css
 // 自动编译
 sass --watch SCSS/style.scss:CSS/style.css
 ```
-自动编译为毛不需要指定路径:angry:
+
 
 # 1. SCSS五大特性 
 
