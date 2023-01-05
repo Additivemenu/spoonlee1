@@ -31,18 +31,74 @@ import java.util.Date;
  *          |--- HashMap, LinkedHashMap, TreeMap, HashTable, Properties...
  * 3. Collection接口中的方法
  *  https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html
- *  向Collection接口的实现类的对象中添加数据obj时, 要求obj所在类要@override equals() ---> 这样contains()才能有效
+ *  向Collection接口的实现类的对象中添加数据obj时, 要求obj所在类要@override equals() ---> 这样contains(), remove()才能有效
  *
  * @author xueshuo
  * @create 2023-01-04 3:40 pm
  */
 public class CollectionTest {
+
+    /**
+     * 520
+     */
+    @Test
+    public void test5(){
+        
+    }
+
+    /**
+     * 519:
+     */
+    @Test
+    public void test4(){
+        //
+        Collection coll = new ArrayList();
+        coll.add(123);      // Integer
+        coll.add(456);
+        coll.add(new Person("Jerry", 23));
+        coll.add(new String("Tom"));
+        coll.add(false);   // Boolean
+
+        // retainAll(Collection coll1): 交集操作, 获取当前集合和coll1的交集, 并将结果返回给当前集合
+//        Collection coll1 = Arrays.asList(123,456,789);
+//        coll.retainAll(coll1);
+//        System.out.println(coll);
+
+        // equals(Object obj): 要想返回true, 当前集合和形参集合的元素都得相同(顺序, 值都得相同)
+        Collection coll2 = new ArrayList();
+        coll2.add(123);      // Integer
+        coll2.add(456);
+        coll2.add(new Person("Jerry", 23));
+        coll2.add(new String("Tom"));
+        coll2.add(false);   // Boolean
+
+        System.out.println(coll.equals(coll2));
+
+    }
+
     /**
      * 519: Collection interface的常用方法
      */
     @Test
     public void test3(){
-        
+        Collection coll = new ArrayList();
+        coll.add(123);      // Integer
+        coll.add(456);
+        coll.add(new Person("Jerry", 23));
+        coll.add(new String("Tom"));
+        coll.add(false);   // Boolean
+
+        // remove(Object obj): 从当前集合中删除obj元素. 同样需要调用equals()方法, 同样需要重写equals()
+        coll.remove(1234);
+        System.out.println(coll);
+
+        coll.remove(new Person("Jerry", 23));
+        System.out.println(coll);
+
+        // removeAll(COllection coll1): 从当前集合中移除coll1中所有元素 (差集操作)
+        Collection coll1 = Arrays.asList(123, 4567);
+        coll.removeAll(coll1);
+        System.out.println(coll);
     }
 
     /**

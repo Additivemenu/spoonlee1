@@ -1,6 +1,9 @@
 package com.example.weatherapp.controller;
 
 import com.example.weatherapp.entity.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,8 +17,14 @@ public class UserController {
         return new User(id, "user@test.com", "password");
     }
 
+    @GetMapping("/user")
+    public User getUserByParameter(@NotBlank @RequestParam String email){
+        return new User(111, email, "password");
+    }
+
     @PostMapping("/users")
-    public User createUser(@RequestBody User user){
+    @ResponseStatus(HttpStatus.CREATED)     // 指定http status为201
+    public User createUser(@Valid @RequestBody User user){
         return new User(user.getId()+100, user.getEmail(),user.getPassword() );
     }
 }

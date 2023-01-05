@@ -1,5 +1,6 @@
 package com.example.weatherapp.entity;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,6 +12,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class User {
     private int id;
+    @NotBlank
     private String email;
+    @NotBlank(message = "password cannot be blank")
     private String password;
 }

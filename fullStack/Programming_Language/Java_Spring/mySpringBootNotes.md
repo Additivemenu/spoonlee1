@@ -192,7 +192,7 @@ server:
 
 # 5. :full_moon: 代码目录结构 1h53min-2h15min
 
-SpringBoot的基础结构共分为3个目录:
+SpringBoot的基础结构共分为3个目录 (都在后端内):
 
 + src/main/java: 程序开发以及主程序entry
 + Src/main/resources: 配置文件
@@ -272,7 +272,7 @@ public class HelloWorldController {
 
 ## 6.3 复杂一点的
 
-### Get: return an object
+### Get: return an object by path variable
 
 在entity pacakge下新建User class:
 
@@ -308,9 +308,26 @@ public class UserController {
 
 
 
+### Get: return an object using parameter
+
+在UserController class下定义如下方法:
+
+```java
+@GetMapping("/user")
+    public User getUserByParameter(@RequestParam String email){
+        return new User(111, email, "password");
+    }
+```
+
+此时需要访问localhost:8080/user?email=myemail@gmail.com 
+
+ 注意url中的变量名需要和getUserByParameter()的argument中的变量名一致才能匹配上
+
+
+
 ### Post: return new object based on a given object 2h53min- 3h5min
 
-在UserController class中定义如下方法
+在UserController class中定义如下方法:
 
 ```java	
 @PostMapping("/users")
@@ -321,10 +338,212 @@ public User createUser(@RequestBody User user){
 
 然后运行application
 
+使用postman作为API测试工具, postman相当于模拟前端向我们的server发送http请求， 经过server中的application代码处理再返回给我们信息.
+
 在postman中新建collection > 新建request > POST, 
 
 + 访问localhost:8080/users
-+ body选择raw, JSON, 然后输入一个JSON格式的user object
-+ 再点击send, 可以发现下面的窗口generate了一个新的修改过(id + 100)的user object:
++ POST必须制定request body: body选择raw, JSON, 然后输入一个JSON格式的user object
++ 再点击send模拟前端发送给我们的server http request, 可以发现下面的窗口generate了一个新的修改过(id + 100)的user object:
 
 <img src="./Src_md/postman_postUser.png" alt="postman_postUser" style="zoom:33%;" />
+
+
+
+---
+
+以下来自spring boot lec2 
+
+# 7. Unit Test for Spring Boot 9min-
+
+这里相当于我们用test代码来做上面postman做的事情, 并且可以**自动化**检测test输出结果是否expected
+
+这里我们将测试section 6里用RESTful API写的代码
+
+## 7.1 test HelloWorldController: GET方法 9min-
+
+intellij可以允许我们方便地测试main下的class, 右键点击 HelloWorldController class name > show context action > create test, 即可在test下建立这个class的test class
+
+
+
+方法一: 用@SpringBooTest
+
+
+
+run test method, 注意不是run project!
+
+## 7.2 test UserController: POST方法 28min-
+
+方法二: 用@WebMvcTest + @Autowired MockMcv  (与方法一没有本质区别) 
+
+
+
+
+
+# 8. Controller层级错误处理 51min-
+
+
+
+遇到exception, 不能只log exception的第一个参数, 要把step tree log下来.
+
+
+
+## 8.1 检查Controller的输入是否合法 51min-
+
+### POST
+
+在UserController class中: 
+
+```java
+@PostMapping("/users")
+@ResponseStatus(HttpStatus.CREATED)     // 指定http status为201
+public User createUser(@Valid @RequestBody User user){
+  return new User(user.getId()+100, user.getEmail(),user.getPassword() );
+}
+```
+
+
+
+
+
+检查用户输入是否合法, 需要两步:
+
++ 在方法的argument中写@valid, 开启检查
+
++ 设定class的instance variable的合法取值. e.g. @NotBlank
+
+User class:
+
+```java
+@Data
+@AllArgsConstructor
+public class User {
+    private int id;
+    @NotBlank
+    private String email;
+    @NotBlank
+    private String password;
+}
+```
+
+
+
+
+
+之后运行application, 在postman中输入如下, 可见@valid起效果了, 检查出了 password should @NotBlank
+
+<img src="./Src_md/valid.png" alt="valid" style="zoom: 25%;" />
+
+
+
+### GET
+
+方法argument中加上@NotBlank , 表示输入参数email不能为空, 否则引发exception
+
+```java
+ @GetMapping("/user")
+    public User getUserByParameter(@NotBlank @RequestParam String email){
+        return new User(111, email, "password");
+    }
+```
+
+
+
+
+
+
+
+## 8.2. Controller层级错误处理 1h04min-
+
+在8.1的基础上, 我们添加一个exception handler来捕捉可能出现的exception (e.g. 8.1 中POST 的request body的email, password is blank; GET的parameter is blank)
+
+在controller路径下新建 ControllerExceptionHandler class:
+
+```java
+@Slf4j
+@RestControllerAdvice
+public class ControllerExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse RhandleException(Exception exception){
+        log.error(exception.getMessage(), exception);
+
+        return new ErrorResponse(500, exception.getMessage(), exception.getMessage());
+    }
+
+}
+```
+
+在controller路径下新建 ErrorResponse class:
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ErrorResponse {
+    private int code;
+    private String message;
+    private String details;
+}
+```
+
+---
+
+### GET
+
+之后运行application, 在postman中GET访问:
+
+```bash
+localhost:8080/user?name=a@test.com
+```
+
+这是由于UserController中的getUserByParameter()引发的, 因为我们在8.1中定义了getUserByParameter(@NotBlank), 这里url中变量名没有匹配上, email为blank,   会出现如下错误提示:
+
+```bash
+{
+    "code": 500,
+    "message": "Required request parameter 'email' for method parameter type String is not present",
+    "details": "Required request parameter 'email' for method parameter type String is not present"
+}
+```
+
+
+
+### POST
+
+在postman中, POST访问请求:
+
+```bash
+localhost:8080/users
+```
+
+并在body内输入:
+
+```bash
+{
+    "id": 123,
+    "email": "user@test.com"
+
+}
+```
+
+因为没有password的取值, 而8.1中我们又给User class加上了constraint: @NotBlank password, 因而上面的输入也会引发exception, postman中会出现如下提示 (同时在terminal中也可看到关于exception的log打印):
+
+```bash
+{
+    "code": 500,
+    "message": "Validation failed for argument [0] in public com.example.weatherapp.entity.User com.example.weatherapp.controller.UserController.createUser(com.example.weatherapp.entity.User): [Field error in object 'user' on field 'password': rejected value [null]; codes [NotBlank.user.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [user.password,password]; arguments []; default message [password]]; default message [must not be blank]] ",
+    "details": "Validation failed for argument [0] in public com.example.weatherapp.entity.User com.example.weatherapp.controller.UserController.createUser(com.example.weatherapp.entity.User): [Field error in object 'user' on field 'password': rejected value [null]; codes [NotBlank.user.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [user.password,password]; arguments []; default message [password]]; default message [must not be blank]] "
+}
+```
+
+
+
+handling exception 1h26min-
+
+接着这里看！
+
+
+
+
+
