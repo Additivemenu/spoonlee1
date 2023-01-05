@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    private int code;
+    private int code;           // 取值http status的取值
     private String message;
-    private String details;
+    //private String details;
 }

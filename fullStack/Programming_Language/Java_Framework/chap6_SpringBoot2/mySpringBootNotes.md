@@ -272,7 +272,7 @@ public class HelloWorldController {
 
 ## 6.3 复杂一点的
 
-### Get: return an object by path variable
+### Get: return an object by path variable @PathVariable
 
 在entity pacakge下新建User class:
 
@@ -308,7 +308,7 @@ public class UserController {
 
 
 
-### Get: return an object using parameter
+### Get: return an object by request parameter @RequestParam
 
 在UserController class下定义如下方法:
 
@@ -325,7 +325,7 @@ public class UserController {
 
 
 
-### Post: return new object based on a given object 2h53min- 3h5min
+### Post: return new object by request body (a given object) @RequestBody 2h53min- 3h5min
 
 在UserController class中定义如下方法:
 
@@ -388,9 +388,9 @@ run test method, 注意不是run project!
 
 
 
-## 8.1 检查Controller的输入是否合法 51min-
+## 8.1 检查Controller的输入是否合法 51min-1h04min
 
-### POST
+### POST by RequestBody
 
 在UserController class中: 
 
@@ -401,8 +401,6 @@ public User createUser(@Valid @RequestBody User user){
   return new User(user.getId()+100, user.getEmail(),user.getPassword() );
 }
 ```
-
-
 
 
 
@@ -436,7 +434,7 @@ public class User {
 
 
 
-### GET
+### GET by RequestParam
 
 方法argument中加上@NotBlank , 表示输入参数email不能为空, 否则引发exception
 
@@ -463,33 +461,37 @@ public class User {
 @Slf4j
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+  	/**
+     * 用来处理general exception
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse RhandleException(Exception exception){
         log.error(exception.getMessage(), exception);
 
-        return new ErrorResponse(500, exception.getMessage(), exception.getMessage());
+        return new ErrorResponse(500, exception.getMessage());
     }
 
 }
 ```
 
-在controller路径下新建 ErrorResponse class:
+在controller路径下新建 ErrorResponse class, 用来产生ControllerExceptionHandler的方法的返回对象:
 
 ```java
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    private int code;
+    private int code;					// Http status code
     private String message;
-    private String details;
 }
 ```
 
 ---
 
-### GET
+### e.g.1 捕捉getUserByParameter（）可能异常
 
 之后运行application, 在postman中GET访问:
 
@@ -502,14 +504,11 @@ localhost:8080/user?name=a@test.com
 ```bash
 {
     "code": 500,
-    "message": "Required request parameter 'email' for method parameter type String is not present",
-    "details": "Required request parameter 'email' for method parameter type String is not present"
+    "message": "Required request parameter 'email' for method parameter type String is not present"
 }
 ```
 
-
-
-### POST
+### e.g.2 捕捉createUser()可能异常
 
 在postman中, POST访问请求:
 
@@ -539,11 +538,143 @@ localhost:8080/users
 
 
 
+---
+
 handling exception 1h26min-
 
-接着这里看！
+@NotBlank还可以附带warning message, 在User class中:
+
+```java
+@Data
+@AllArgsConstructor
+public class User {
+    private int id;
+    @NotBlank(message = "email cannot be blank")
+    private String email;
+    @NotBlank(message = "password cannot be blank")
+    private String password;
+}
+```
 
 
 
+在ControllerExceptionHandler class中再定义如下方法:
+
+```java
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)			//400
+    public ErrorResponse handleBadRequest(MethodArgumentNotValidException exception) {
+        //log.error(exception.getMessage(), exception);
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                exception.getFieldErrors().stream()
+                                 					.map(e -> e.getDefaultMessage())
+                                 					.collect(Collectors.joining(";")));
+    }
+```
+
+对应处理UserController中的 createUser()方法可能的异常：
+
+```java
+@PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)     // 指定http status为201
+    public User createUser(@Valid @RequestBody User user){
+        return new User(user.getId()+100, user.getEmail(),user.getPassword() );
+    }
+```
 
 
+
+运行application, 之后在postman中跑POST request, body输入, 还是让passoword为空: 
+
+```bash
+{
+    "id": 123
+}
+```
+
+
+
+结果postman返回如下ErrorResposne对象:
+
+```bash
+{
+    "code": 400,
+    "message": "email cannot be blank;password cannot be blank"
+}
+```
+
++ 可见code: 400, 说明这个ErrorResponse对象确实是被handleBadRequest()方法返回的, 
++ 同时我们也看到ErrorResponse对象的"message"中有: "email cannot be blank;password cannot be blank"
+
+
+
+###  e.g.3 捕捉getUserByParameter(), createUser()可能异常 1h40min-1h54min
+
+
+
+在ControllerExceptionHandler class中再定义如下方法:
+
+```java
+		/**
+     * 用来处理MissingRequestValueException, HttpMessageNotReadableException
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler({MissingRequestValueException.class, HttpMessageNotReadableException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)			// 400
+    public ErrorResponse handleBadRequestInput(Exception exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+```
+
+---
+
+getUserByParameter():
+
+之后run application, 在postman的GET中访问 localhost:8080/user?name=a@test.com
+
+postman返回如下ErrorResponse:
+
+```bash
+{
+    "code": 400,
+    "message": "Required request parameter 'email' for method parameter type String is not present"
+}
+```
+
++ 其中code为400, 说明这个ErrorResponse对象确实是我们刚定义的handleBadRequestInput()返回的
++ message的内容对应MissingRequestValueException
+
+---
+
+createUser()可能异常:
+
+在postman的POST中访问localhost:8080/users, 并在body中输入, JSON格式故意不对少个逗号:
+
+```bash
+{
+    "id": 123,
+    "email": "test@test.com"
+    "password":"password"
+}
+```
+
+postman返回如下ErrorResponse对象:
+
+```bash
+{
+    "code": 400,
+    "message": "JSON parse error: Unexpected character ('\"' (code 34)): was expecting comma to separate Object entries"
+}
+```
+
++ 同样, code =400, 说明这个ErrorResponse对象确实是我们刚定义的handleBadRequestInput()返回的
++ message的内容对应HttpMessageNotReadableException
+
+
+
+1h54min-1h59min 休息
+
+
+
+# 9. RestController and more about bean 2h-

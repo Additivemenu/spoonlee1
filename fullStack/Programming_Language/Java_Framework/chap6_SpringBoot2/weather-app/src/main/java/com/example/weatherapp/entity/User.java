@@ -12,7 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class User {
     private int id;
-    @NotBlank
+    @NotBlank(message = "email cannot be blank")
     private String email;
     @NotBlank(message = "password cannot be blank")
     private String password;
