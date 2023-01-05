@@ -2,10 +2,7 @@ package CollectionInterface;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  * 1. 集合框架概述
@@ -43,7 +40,41 @@ public class CollectionTest {
      */
     @Test
     public void test5(){
-        
+        Collection coll = new ArrayList();
+        coll.add(123);      // Integer
+        coll.add(456);
+        coll.add(new Person("Jerry", 23));
+        coll.add(new String("Tom"));
+        coll.add(false);   // Boolean
+
+        // hashCode(): 返回当前对象的hash值
+        System.out.println(coll.hashCode());
+
+        //集合 ---> 数组: toArray()
+        System.out.println("******************");
+        Object[] arr = coll.toArray();
+        for(int i=0; i<arr.length; i++){
+            System.out.println(arr[i]);
+        }
+
+        // 拓展: Array --> Collection (即list): 调用Arrays class的static method asList()
+        System.out.println("******************");
+        List<String> list = Arrays.asList(new String[]{"AA", "BB", "CC"});
+        System.out.println(list);
+
+        //  注意 Arrays.asList() 内array元素的类型得是wrapper class
+        System.out.println("******************");
+        List ints = Arrays.asList(new int[]{123, 456});     // int[] 整体看作一个元素
+        System.out.println(ints.size());          // 1
+
+        List integers = Arrays.asList(new Integer[]{123, 456});  // 用wrapper class才能成
+        System.out.println(integers.size());           // 2
+        System.out.println(integers);                  // [123, 456]
+
+        List ints2 = Arrays.asList(123,456);
+        System.out.println(ints2);                      // [123, 456]
+
+        // iterator(): 返回Iterator接口的实例, 用于遍历集合元素, 放在IteratorTest.java中
     }
 
     /**

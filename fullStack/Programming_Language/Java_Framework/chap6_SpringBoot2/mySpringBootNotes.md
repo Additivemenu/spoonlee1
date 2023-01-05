@@ -1,4 +1,8 @@
+:book: [baeldung: SpringBoot自学](https://www.baeldung.com/spring-boot)
 
+:book: [javapoint: SpringBoot自学](https://www.javatpoint.com/spring-vs-spring-boot-vs-spring-mvc)
+
+---
 
 JR wk4 lec2 Springboot, 配Intellij project: weather-app 
 
