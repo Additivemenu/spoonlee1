@@ -2,9 +2,44 @@
 
 :book: [javapoint: SpringBoot自学](https://www.javatpoint.com/spring-vs-spring-boot-vs-spring-mvc)
 
+JR wk4 lec2 Springboot, 配Intellij project: weather-app 
+
 ---
 
-JR wk4 lec2 Springboot, 配Intellij project: weather-app 
+Content:
+- [1. Spring intro: 0min-15min](#1-spring-intro-0min-15min)
+  - [Spring Framework:](#spring-framework)
+  - [Spring Boot:](#spring-boot)
+- [2. 第一个Spring Boot project 15min-1h35min](#2-第一个spring-boot-project-15min-1h35min)
+- [3. build tool: gradle](#3-build-tool-gradle)
+  - [3.1 gradle command 44min-1h14min](#31-gradle-command-44min-1h14min)
+  - [3.2 为什么需要构建工具(build tool)? 1h14min-1h19min](#32-为什么需要构建工具build-tool-1h14min-1h19min)
+- [4. Annotation, AutoConfiguration 1h19min-1h53min](#4-annotation-autoconfiguration-1h19min-1h53min)
+  - [4.1 A little bit deeper: Annotation](#41-a-little-bit-deeper-annotation)
+  - [4.2 A little bit deeper: AutoConfiguration:](#42-a-little-bit-deeper-autoconfiguration)
+- [5. :full\_moon: 代码目录结构 1h53min-2h15min](#5-full_moon-代码目录结构-1h53min-2h15min)
+- [6. :full\_moon:RESTful API 2h20min-](#6-full_moonrestful-api-2h20min-)
+  - [6.1 Get: hello world controller](#61-get-hello-world-controller)
+  - [6.2 Get: 输入参数](#62-get-输入参数)
+  - [6.3 复杂一点的](#63-复杂一点的)
+    - [e.g.1 GET reqeust: return an object by path variable @PathVariable](#eg1-get-reqeust-return-an-object-by-path-variable-pathvariable)
+    - [e.g.2 GET request: return an object by request parameter @RequestParam](#eg2-get-request-return-an-object-by-request-parameter-requestparam)
+    - [e.g.3 POST request: return new object by request body (a given object) @RequestBody 2h53min- 3h5min](#eg3-post-request-return-new-object-by-request-body-a-given-object-requestbody-2h53min--3h5min)
+- [7. Unit Test for Spring Boot 9min-](#7-unit-test-for-spring-boot-9min-)
+  - [7.1 test HelloWorldController: GET方法 9min-](#71-test-helloworldcontroller-get方法-9min-)
+  - [7.2 test UserController: POST方法 28min-](#72-test-usercontroller-post方法-28min-)
+- [8. :moon: Controller层级错误处理 51min-](#8-moon-controller层级错误处理-51min-)
+  - [8.1 参数校验 51min-1h04min](#81-参数校验-51min-1h04min)
+    - [POST by RequestBody](#post-by-requestbody)
+    - [GET by RequestParam](#get-by-requestparam)
+  - [8.2. Controller层级错误处理 1h04min-](#82-controller层级错误处理-1h04min-)
+    - [e.g.1 捕捉getUserByParameter（）可能异常](#eg1-捕捉getuserbyparameter可能异常)
+    - [e.g.2 捕捉createUser()可能异常](#eg2-捕捉createuser可能异常)
+    - [e.g.3 捕捉getUserByParameter(), createUser()可能异常 1h40min-1h54min](#eg3-捕捉getuserbyparameter-createuser可能异常-1h40min-1h54min)
+- [9. @RestController and more about Bean 2h-2h12min](#9-restcontroller-and-more-about-bean-2h-2h12min)
+- [10. 参数校验 2h12min-2h20min](#10-参数校验-2h12min-2h20min)
+- [11. 自定义Filter 2h20min-2h28min](#11-自定义filter-2h20min-2h28min)
+- [12. 向内存加载properties 2h28min-2h59min](#12-向内存加载properties-2h28min-2h59min)
 
 
 
@@ -209,10 +244,10 @@ SpringBoot的基础结构共分为3个目录 (都在后端内):
 
 Src/main/java/com.company.project 下的代码结构目录:
 
-+ **web/controller**: 负责页面访问控制, 如接受http请求, 对接前端
++ **web/controller**: 负责页面访问控制, 如接受http请求, *对接前端*
 + **service**: 业务逻辑代码 
   + service之间可以相互调用, 而不是直接把数据送到别的service对应的repository, 这样做不同的service的边界可以划的更加清晰, 方便重用降低耦合
-+ **repository**: 数据库访问代码, 对接数据库
++ **repository**: 数据库访问代码, *对接数据库或其他第三方库*
 + **dto**: data transform object, 负责数据转化, 一般作用于controller layer或者service layer
 + **domain/model/entity**: 负责定义业务中涉及的entity (尤其是数据库mapping过来的), 比如user, customer
 + **Util/common:** 负责放置公共类, 如全局的配置文件, 工具类等.
@@ -232,9 +267,9 @@ Src/main/java/com.company.project 下的代码结构目录:
 
 歇息
 
-# 6. :moon:RESTful API 2h20min-
+# 6. :full_moon:RESTful API 2h20min-
 
-## 6.1 Get: hello world controller
+## 6.1 @RequestMapping: hello world controller
 
 在controller package下新建HelloWorldController class
 
@@ -254,7 +289,7 @@ public class HelloWorldController {
 
 
 
-## 6.2 Get: 输入参数
+## 6.2 @RequestMapping: by parameter
 
 
 
@@ -276,7 +311,7 @@ public class HelloWorldController {
 
 ## 6.3 复杂一点的
 
-### Get: return an object by path variable @PathVariable
+### e.g.1 @GetMapping: return an object by path variable @PathVariable
 
 在entity pacakge下新建User class:
 
@@ -312,7 +347,7 @@ public class UserController {
 
 
 
-### Get: return an object by request parameter @RequestParam
+### e.g.2 @GetMapping: return an object by request parameter @RequestParam
 
 在UserController class下定义如下方法:
 
@@ -329,7 +364,7 @@ public class UserController {
 
 
 
-### Post: return new object by request body (a given object) @RequestBody 2h53min- 3h5min
+### e.g.3 @PostMapping: return new object by request body (a given object) @RequestBody 2h53min- 3h5min
 
 在UserController class中定义如下方法:
 
@@ -384,7 +419,7 @@ run test method, 注意不是run project!
 
 
 
-# 8. Controller层级错误处理 51min-
+# 8. :moon: Controller层级错误处理 51min-
 
 
 
@@ -392,7 +427,9 @@ run test method, 注意不是run project!
 
 
 
-## 8.1 检查Controller的输入是否合法 51min-1h04min
+## 8.1 参数校验 51min-1h04min
+
+检查Controller的输入是否合法
 
 ### POST by RequestBody
 
@@ -471,8 +508,8 @@ public class ControllerExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse RhandleException(Exception exception){
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)		// 500
+    public ErrorResponse handleException(Exception exception){
         log.error(exception.getMessage(), exception);
 
         return new ErrorResponse(500, exception.getMessage());
@@ -495,7 +532,7 @@ public class ErrorResponse {
 
 ---
 
-### e.g.1 捕捉getUserByParameter（）可能异常
+### e.g.1 捕捉getUserByParameter()可能异常
 
 之后运行application, 在postman中GET访问:
 
@@ -526,7 +563,6 @@ localhost:8080/users
 {
     "id": 123,
     "email": "user@test.com"
-
 }
 ```
 
@@ -544,7 +580,7 @@ localhost:8080/users
 
 ---
 
-handling exception 1h26min-
+handling `MethodArgumentNotValidException` 1h26min-
 
 @NotBlank还可以附带warning message, 在User class中:
 
@@ -559,8 +595,6 @@ public class User {
     private String password;
 }
 ```
-
-
 
 在ControllerExceptionHandler class中再定义如下方法:
 
@@ -586,8 +620,6 @@ public class User {
     }
 ```
 
-
-
 运行application, 之后在postman中跑POST request, body输入, 还是让passoword为空: 
 
 ```bash
@@ -595,8 +627,6 @@ public class User {
     "id": 123
 }
 ```
-
-
 
 结果postman返回如下ErrorResposne对象:
 
@@ -607,7 +637,7 @@ public class User {
 }
 ```
 
-+ 可见code: 400, 说明这个ErrorResponse对象确实是被handleBadRequest()方法返回的, 
++ 可见code: 400 而不是500, 说明这个ErrorResponse对象确实是被handleBadRequest()方法返回的,  而不是被处理general exception的handleException()返回
 + 同时我们也看到ErrorResponse对象的"message"中有: "email cannot be blank;password cannot be blank"
 
 
@@ -616,7 +646,7 @@ public class User {
 
 
 
-在ControllerExceptionHandler class中再定义如下方法:
+在ControllerExceptionHandler class中再定义如下方法， 这样处理的异常会更加特定:
 
 ```java
 		/**
@@ -633,7 +663,7 @@ public class User {
 
 ---
 
-getUserByParameter():
+getUserByParameter()的可能异常-`MissingRequestValueException`:
 
 之后run application, 在postman的GET中访问 localhost:8080/user?name=a@test.com
 
@@ -651,9 +681,9 @@ postman返回如下ErrorResponse:
 
 ---
 
-createUser()可能异常:
+createUser()可能异常-`HttpMessageNotReadableException`:
 
-在postman的POST中访问localhost:8080/users, 并在body中输入, JSON格式故意不对少个逗号:
+在postman的POST中访问localhost:8080/users, 并在body中输入如下:
 
 ```bash
 {
@@ -663,7 +693,7 @@ createUser()可能异常:
 }
 ```
 
-postman返回如下ErrorResponse对象:
+由于JSON格式故意不对少个逗号, postman返回如下ErrorResponse对象:
 
 ```bash
 {
@@ -681,4 +711,156 @@ postman返回如下ErrorResponse对象:
 
 
 
-# 9. RestController and more about bean 2h-
+# 9. @RestController and more about Bean 2h-2h12min
+
+Spring会自己instantiate class, 
+
+Beans are the objects of classes that are managed by Spring. Traditionally, objects used to create their dependencies, but Spring manages all the dependencies of an object and instantiates the object after injecting the required dependencies.
+
++ `@Component`: most common way to define beans. 
++ `@RestController`: controller to provide the rest api. 
++ `@Service`: write business logic. 
++ `@Repository`: for accessing database or other 3rd party dependency. 
++ `@Bean`: need to create object instance by yourself. 
+
+前四个Annotation表示SpringBoot会自动实例化class if the class is used
+
+`@Bean`, 就表示SpringBoot不会自动实例化了, 需要自己手动实例化
+
+
+
+
+
+# 10. 参数校验 2h12min-2h20min
+
+[8.1 参数校验](#81-参数校验-51min-1h04min)的继续
+
+参数校验在日常开发中非常常见, 最基本的校验有判断属性是否为空, 长度是否符合要求...在传统的开发模式中需要写一堆的if else来处理这些逻辑, 很繁琐效率也低. 使用@Valid + BindingResult就可以优雅地解决这些问题.
+
+在User class中定义额外的field:
+
+```java
+    @Max(value = 200, message = "age cannot be bigger than 200")
+    @Min(value = 0, message = "age canno be smaller than 0")
+    @NonNull
+    private Integer age;            // by default: null
+```
+
+之后运行application, 在postman的POST request中的body输入如下:
+
+```bash
+{
+    "id": 123,
+    "email": "test@test.com",
+    "password":"password"
+}
+```
+
+返回的ErrorResponse对象:
+
+```bash
+{
+    "code": 400,
+    "message": "JSON parse error: Cannot construct instance of `com.example.weatherapp.entity.User`, problem: age is marked non-null but is null"
+}
+```
+
+> P3的要求: Controller层的所有API必须参与参数校验, 字段长度相关建议与数据库保持一致
+
+# 11. 自定义Filter 2h20min-2h28min
+
+FIlter作用在controller之前, 用来筛选数据, 符合要求的才会被forward给controller. 通常Filters用于记录请求日志, 排除有XSS威胁的字符, 执行权限验证等等. Spring Boot自动添加了OrderedCharacterEncodingFilter, HiddenHttpMethodFilter, 并且可以自定义Filter.
+
+自定义Filter的两个步骤:
+
++ 实现Filter接口, 实现Filter方法, 添加@Configuration注解.
++ 将自定义Filter加入过滤链
+
+
+
+:question: PPT中代码留作作业自己跑
+
+
+
+# 12. 向内存加载properties 2h28min-2h59min
+
+即将配置文件里的指定信息转化为类和对象.
+
+首先在application.yaml file中定义:
+
+```yaml
+com:
+  fiona:
+    demo:
+      className: JavaSpringBoot
+      description: description
+```
+
+这和在application.properties中定义如下是一样的
+
+```properties
+com.fiona.demo.className=JavaSpringBoot
+com.fiona.demo.description=description
+```
+
+接下来在service package下新建DemoProperties class, 作为将配置文件的内容加载到程序的载体:
+
+```java
+@Component
+@ConfigurationProperties(prefix = "com.fiona.demo")
+@Data
+public class DemoProperties {
+    private String className;
+    private String description;
+}
+```
+
+新建针对DemoProperties class的test:
+
+```java
+@SpringBootTest
+class DemoPropertiesTest {
+    @Resource
+    private DemoProperties demoProperties;          // 用到时自动被实例化
+  
+    @Test
+    void getClassName() {
+        assertEquals("JavaSpringBoot", demoProperties.getClassName());
+    }
+
+    @Test
+    void getDescription() {
+        assertEquals("description", demoProperties.getDescription());
+    }
+}
+```
+
+运行test, all tests passed
+
+---
+
+除了上面的使用`@ConfigurationProperties(prefix = "com.fiona.demo")`来修饰DemoProperties class, 将配置文件信息转化为class的方法2( 了解即可):
+
+```java
+@Component
+@Data
+public class DemoProperties {
+    @Value("${com.fiona.demo.className}")
+    private String className;
+
+    @Value("${com.fiona.demo.description}")
+    private String description;
+}
+```
+
+运行test, all tests passed
+
+---
+
+环境变量也可以覆盖properties (了解即可) 2h50min-2h58min
+
+e.g.
+
+com.fiona.demo.className 对应的环境变量为: COM_FIONA_DEMO_CLASSNAME (全大写, 中间的.用_替代)
+
+环境变量可以在Intellij右上角的edit configuration按钮添加

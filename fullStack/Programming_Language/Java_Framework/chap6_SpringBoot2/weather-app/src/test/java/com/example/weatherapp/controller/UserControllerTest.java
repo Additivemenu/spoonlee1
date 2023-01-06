@@ -32,7 +32,7 @@ class UserControllerTest {
 
     @Test
     void createUser() throws Exception {
-        User testUser = new User(123, "test@test.com", "password");
+        User testUser = new User(123, "test@test.com", "password", 30);
         ObjectMapper objectMapper = new ObjectMapper();
         System.out.println(objectMapper.writeValueAsString(testUser));  // {"id":123,"email":"test@test.com","password":"password"}
 

@@ -47,13 +47,38 @@ progress tracking
 
 # WK3: Git
 + git 理解merge vs. rebase, git stash
+
 + git 作业  -almost done
-+ Ally tut: profile 独立复现
+
+  
+
+Ally tut
+
++ profile 独立复现
 
 # WK4 Java, Spring boot
-+ Java 第二节课: JVM & mechanism最后的refactor
+Java 第二节课:
+
++ JVM & mechanism最后的refactor
+
 + Java前两节课理论知识的吸收
-+ Ally tut: progress bar独立复现
-  
+
+Ally tut
+
++ progress bar独立复现
+
 # Wk5: RESTful API
+
+Lec13: SpringBoot intro, RESTful API
+
++ 自定义filter
++ 梳理知识
+
+Lec14: RESTfulAPI, SQL
+
+Steven Tut
+
+
+
+
 

@@ -1,2 +1,7 @@
 server:
   port: 8080
+com:
+  fiona:
+    demo:
+      className: JavaSpringBoot
+      description: description

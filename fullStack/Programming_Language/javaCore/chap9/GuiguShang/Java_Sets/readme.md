@@ -46,10 +46,6 @@ Java集合可以分为Collection和Map两种体系:
 
 # 2. Collection Interface
 
-
-
-
-
 ## 2.1 Iterator Interface
 
 
@@ -60,13 +56,61 @@ Java集合可以分为Collection和Map两种体系:
 
 ## 2.2 Collection: List
 
+注意向Collection接口的实现类的对象中添加数据obj时, **要求obj所在类要@override equals()** ---> 这样contains(), remove()等方法才能有效, 因为它们底层调用了equals()
+
+CRUD
+
+### 增
+
++ `add(Object e)`: add e into coll
++ `addAll(Collection coll1)`: all all elements in coll1 into coll
 
 
 
+### 查
+
++ `contains(Object obj)`: 判断当前集合是否包含obj. 需要调用equals()方法, 需要重写equals()
++ `constainsAll(Collection coll1)`: 判断coll1中的所有元素是否都存在于当前集合中.
 
 
 
+### 删
 
++ `remove(Object obj)`: 从当前集合中删除obj元素.  同样需要调用equals()方法, 同样需要重写equals()
++ `removeAll(COllection coll1)`: 从当前集合中移除coll1中所有元素 (差集操作)
+
++ `retainAll(Collection coll1)`: 交集操作, 获取当前集合和coll1的交集, 并将结果返回给当前集合.
+
++ `equals(Object obj)`: 要想返回true, 当前集合和形参集合的元素都得相同(顺序, 值都得相同)
+
+
+
+### 其他基本操作
+
++ `size()`
++ `clear()`
++ `isEmpty`
+
++ `hashCode()`: 返回当前对象的hash值
+
+
+
+### 集合与数组相互转化
+
++ `toArray()`: 集合 ---> 数组
+
+  + 拓展: Array --> Collection (即list): 调用Arrays class的static method asList()
+
+    + 注意 Arrays.asList(arr) 内array元素的类型得是wrapper class, 如果是基本数据类型则如下
+
+      + ```java
+        List ints = Arrays.asList(new int[]{123, 456});     // int[] 整体看作一个元素
+        System.out.println(ints.size());          // 1
+        ```
+
+      
+
+    
 
 ## 2.3 Collection: Set
 

@@ -1,3 +1,7 @@
+:pencil: [尚硅谷chap16 Java8新特性: lamda & functional interface](./GuiguShang/GuiguShang.md)
+
+---
+
 - [1.Interfaces (接口)](#1interfaces-接口)
   - [1.1 :moon: interface的性质](#11-moon-interface的性质)
   - [1.2 :full\_moon:Implementing an interface](#12-full_moonimplementing-an-interface)

@@ -1,4 +1,10 @@
+尚硅谷Java8讲解:
+:computer: [Bilibili尚硅谷: Java8 Stream API & Optional class](https://www.bilibili.com/video/BV1Kb411W75N?p=677&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+---
+
 Content
+
 - [1. Stream API](#1-stream-api)
   - [Stream API Introduction](#stream-api-introduction)
   - [Step1: Stream 的创建](#step1-stream-的创建)
@@ -17,13 +23,6 @@ Content
   - [创建Optional instance:](#创建optional-instance)
   - [判断Optional容器中是否包含对象](#判断optional容器中是否包含对象)
   - [获取Optional容器的对象](#获取optional容器的对象)
-
-
-
----
-
-尚硅谷Java8讲解:
-:computer: [Bilibili尚硅谷: Java8 Stream API](https://www.bilibili.com/video/BV1Kb411W75N?p=677&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 ---
 
@@ -49,6 +48,7 @@ Stream<Integer>
 ```
 
 **集合讲的是数据, 而Stream讲的是计算, 这体现在:**
+
 - Stream自己不会存储元素
 - Stream不会改变源对象. 相反, 它们只会返回一个持有结果的新Stream
 - Stream操作是延迟执行(惰性的)的, 这意味着它们会等到需要结果的时候才执行.
@@ -71,7 +71,7 @@ Stream的操作3个步骤:
 ### 无限流
 
 ## Step2: Stream API 中间操作
-多个中间操作可以连起来形成一个**流水线**, 除非流水线上触发终止操作, 否则中间操作不会执行任何的处理!而在终止操作时一次性全部处理, 这被称为"惰性操作"
+多个中间操作可以连起来形成一个**流水线**, 除非流水线上触发终止操作, 否则中间操作不会执行任何的处理! 而在终止操作时一次性全部处理, 这被称为"惰性操作"
 
 ### filter
 <img src="../Src_md/filter_and_slice.png" width=70%>

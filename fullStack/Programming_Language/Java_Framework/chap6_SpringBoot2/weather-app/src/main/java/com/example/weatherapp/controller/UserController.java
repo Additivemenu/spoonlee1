@@ -19,7 +19,7 @@ public class UserController {
      */
     @GetMapping("/user/{id}")           // extension of RequestMapping using request method: Get
     public User getUser(@PathVariable int id){      // @PathVariable 声明id是一个Path variable, 从url中找到它作为函数的输入
-        return new User(id, "user@test.com", "password");
+        return new User(id, "user@test.com", "password", -1);
     }
 
     /**
@@ -29,7 +29,7 @@ public class UserController {
      */
     @GetMapping("/user")
     public User getUserByParameter(@NotBlank @RequestParam String email){
-        return new User(111, email, "password");
+        return new User(111, email, "password", 23);
     }
 
     /**
@@ -40,6 +40,6 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)     // 指定http status为201
     public User createUser(@Valid @RequestBody User user){
-        return new User(user.getId()+100, user.getEmail(),user.getPassword() );
+        return new User(user.getId()+100, user.getEmail(), user.getPassword() , user.getAge());
     }
 }
