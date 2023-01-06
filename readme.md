@@ -16,3 +16,11 @@ new on Mac
 ---
 + 设置intellij
 + 下载node.js, sass
+
+换电脑记得
+
+`git config --global user.name "<Your-Full-Name>"`
+
+`git config --global user.email "<your-email-address>"`
+
+这样提交的commit记录才会被github显示

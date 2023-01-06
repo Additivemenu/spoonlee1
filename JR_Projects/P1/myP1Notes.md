@@ -12,7 +12,9 @@ https://fontawesome.com/icons/twitter?s=&f=brands
 + 所有page的左右页边距
 + page1 背景自动切换 https://www.youtube.com/watch?v=IwEqvjsDVU0
 + 在li前面加上icon
++ p2的滑动动画
 + p3的滑动卡片效果
++ 添加字体, 颜色...
 
 
 ---
