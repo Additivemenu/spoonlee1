@@ -1,7 +1,9 @@
 + [fullStack](./fullStack/myFullStack.md)
-
 + [计算机基础核心](./CSCore/myCSCore.md)
 
+projects:
++ [JR projects](./JR_Projects/JR_projects.md)
++ [web projects](./Web_Projects/myWebProjects.md)
 
 ---
 new on Mac
