@@ -15,8 +15,8 @@ package java8.StreamAPI;
  *      一旦执行终止操作, 就执行中间操作链表, 并产生结果. 之后, Stream不会再被使用.
  */
 
-import java8.Employee;
-import java8.EmployeeData;
+import java8.lambda.Employee;
+import java8.lambda.EmployeeData;
 import org.junit.Test;
 
 import java.util.Arrays;

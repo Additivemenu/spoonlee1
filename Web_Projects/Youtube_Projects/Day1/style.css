@@ -1,0 +1,79 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+}
+.Section_top{
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    position: relative;
+
+    background-image: url(Src/image.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    text-align: center;
+    justify-content: center;
+
+    /* animation-name | animation-duration (one-cycle) | animation-iteration-count | animation-timing-function */
+    animation: change 20s infinite ease-in-out;
+}
+.content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+
+}
+.content h1{
+    color: #fff;
+    font-size: 60px;
+    letter-spacing: 15px;
+}
+.content h1 span{
+    color: #111;
+}
+.content a{
+    background: #85c1ee;
+    padding: 10px 24px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.content a:hover{
+    background: #034e88;
+    color: #fff;
+}
+@keyframes change{
+    /*百分数表示在一个cycle中的change ratio的值*/
+    0%
+    {
+        background-image: url(Src/img1.jpg);
+    }
+    20%
+    {
+        background-image: url(Src/img2.jpg);
+    }
+    40%
+    {
+        background-image: url(Src/image.jpg);
+    }
+    60%
+    {
+        background-image: url(Src/img4.jpg);
+    }
+    80%
+    {
+        background-image: url(Src/img5.jpg);
+    }
+    100%
+    {
+        background-image: url(Src/img1.jpg);
+    }
+}

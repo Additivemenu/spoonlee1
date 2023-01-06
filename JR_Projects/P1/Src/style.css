@@ -1,0 +1,226 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
+  height: 100vh;
+}
+
+section {
+  padding: 30px 60px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.page1 {
+  height: 900px;
+  background-image: url("./Img/p1background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: change 10s infinite ease-in-out;
+}
+@keyframes change {
+  0% {
+    background-image: url(./Img/p1background2.JPG);
+  }
+  33% {
+    background-image: url(./Img/p1background3.JPG);
+  }
+  66% {
+    background-image: url(./Img/p1background.png);
+  }
+  100% {
+    background-image: url(./Img/p1background2.JPG);
+  }
+}
+.page1 .header_container {
+  height: 105px;
+  display: flex;
+  justify-content: space-around;
+}
+.page1 .header_container .logo_container img {
+  height: 100%;
+}
+.page1 .header_container .nav_container {
+  text-decoration: none;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page1 .header_container .nav_container ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style-type: none;
+}
+.page1 .header_container .nav_container ul li {
+  margin: 10px;
+}
+.page1 .header_container .nav_container ul li a {
+  color: whitesmoke;
+}
+.page1 .content_container {
+  height: 795px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, minmax(auto, 80px));
+}
+.page1 .content_container .content {
+  grid-column: 6/span 4;
+  grid-row: 3/span 4;
+  padding: 30px;
+  color: whitesmoke;
+}
+.page1 .content_container .content .button_container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+.page1 .content_container .content .button_container button {
+  color: white;
+  border: 0;
+  padding: 15px;
+}
+.page1 .content_container .content .button_container button:nth-child(1) {
+  background-color: #FF7F2B;
+}
+.page1 .content_container .content .button_container button:nth-child(2) {
+  margin-left: 30px;
+  background-color: #D2D0C9;
+}
+.page1 .content_container .content .button_container button:hover {
+  cursor: pointer;
+}
+
+.page2 {
+  height: 700px;
+  background-color: blue;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.page2 .leftContent {
+  background-color: #D2D0C9;
+  width: 450px;
+}
+.page2 .leftContent .wrapper {
+  width: 100%;
+  padding: 100px 15px 100px;
+}
+.page2 .leftContent .wrapper button {
+  padding: 10px;
+  border: 0;
+}
+.page2 .leftContent .wrapper button:hover {
+  cursor: pointer;
+}
+.page2 .openingHour {
+  background-color: #FF7F2B;
+  width: 450px;
+}
+.page2 .openingHour .wrapper {
+  width: 100%;
+  padding: 100px 15px 100px;
+  color: whitesmoke;
+}
+.page2 .openingHour .wrapper ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.page2 .openingHour .wrapper ul span {
+  color: black;
+}
+.page2 .rightImg {
+  background-color: skyblue;
+  width: 450px;
+}
+.page2 .rightImg .wrapper {
+  width: 100%;
+  padding: 100px 15px 100px;
+}
+.page2 .rightImg .wrapper img {
+  width: 100%;
+}
+
+.page3 {
+  height: 900px;
+  background-color: greenyellow;
+}
+
+.footer {
+  height: 300px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.footer .shopInfo {
+  background-color: aqua;
+  width: 450px;
+}
+.footer .shopInfo .wrapper {
+  width: 100%;
+  padding: 50px 15px 100px;
+}
+.footer .shopInfo .wrapper .logo_container img {
+  width: 75px;
+}
+.footer .explore {
+  background-color: greenyellow;
+  width: 450px;
+}
+.footer .explore .wrapper {
+  width: 100%;
+  padding: 50px 15px 100px;
+}
+.footer .explore .wrapper h1.explore_title {
+  margin-top: 0;
+}
+.footer .explore .wrapper .exploreList ul {
+  list-style: none;
+}
+.footer .explore .wrapper .exploreList ul li::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background-color: aqua;
+  position: absolute;
+  left: -25px;
+  bottom: 28px;
+}
+.footer .contactUs {
+  background-color: aqua;
+  width: 450px;
+}
+.footer .contactUs .wrapper {
+  width: 100%;
+  padding: 50px 15px 100px;
+}
+.footer .contactUs .wrapper h1.contactUs_title {
+  margin-top: 0;
+}
+.footer .contactUs .wrapper .contactList ul {
+  list-style: none;
+  padding-left: 0;
+}
+.footer .contactUs .wrapper .contactList ul li {
+  margin: 10px 0;
+}
+.footer .contactUs .wrapper .contactList ul li::before {
+  content: "";
+  width: 20px;
+  background: url("./Img/map.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; /*make it in the center*/
+  cursor: pointer;
+  filter: invert(1); /*invert the color of menu icon*/
+}
+
+/*# sourceMappingURL=style.css.map */

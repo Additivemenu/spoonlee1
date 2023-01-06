@@ -1,0 +1,239 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --background-color: rgb(149, 69, 69);
+  --font-color: white;
+  --overlay-color: #03a9f4;
+
+  --menu-width: 300px;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box; /*dimension defined include border, padding, content*/
+  margin: 0;
+  padding: 0;
+  font-family: "poppins", sans-serif;
+} /*global settings, normaly we do this*/
+
+.showcase {
+  position: absolute;
+  right: 0;
+  width: 100%;
+
+  min-height: 100vh;
+  padding: 100px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--background-color);
+  color: var(--font-color);
+  z-index: 2;
+  transition: 0.5s;
+}
+
+.showcase header {
+  /*whiteSpace means all header under showcase*/
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  padding: 40px 100px; /*first-top,bottom, seclnd*/
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  text-transform: uppercase; /*captalize*/
+  transition: 0.5s;
+  z-index: 99;
+}
+
+.showcase.active {
+  /*watch: no space; it means that only when showcase & active 
+    show up in the same time in the class name, then employ below settings; we will use js to control how to add 
+    active in html tag class name to activate below settings*/
+  right: var(--menu-width); /**showcase至上一级position为absolute右边框的距离*/
+  width: calc(100% - var(--menu-width)); /**即新的showcase的宽度*/
+}
+
+.toggle {
+  position: relative;
+
+  width: 60px;
+  height: 60px;
+
+  background: url("image/menu.svg");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center; /*make it in the center*/
+  cursor: pointer;
+  filter: invert(1); /*invert the color of menu icon*/
+}
+
+/*当两个class 一起写(中间没有空格时),  如.showcase.active， 
+表示showcase 和 active是并列关系, 此时并列属性比任意一个拆开的属性的优先级都高.
+ 我们经常利用并列属性和JS, 通过触发事件来修改某个网页模块的样式*/
+.toggle.active {
+  /*when click menu, toggole to another state*/
+  background-image: url("./image/close.svg");
+}
+
+.showcase video {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: var(--overlay-color);
+  mix-blend-mode: overlay;
+}
+
+/*---------------------text-----------------------*/
+.text {
+  position: relative;
+  z-index: 3;
+}
+
+.text h1 {
+  font-size: 5rem; /*1rem = root em 16px*/
+  font-weight: 800;
+  line-height: 1em;
+  text-transform: uppercase;
+}
+
+.text h2 {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1em;
+  text-transform: uppercase;
+}
+
+.text p {
+  margin: 20px 0;
+  max-width: 700px;
+
+  font-size: 1.1rem;
+}
+
+.text a {
+  padding: 10px 30px;
+  margin-top: 20px;
+
+  display: inline-block;
+
+  font-size: 1rem;
+  background-color: var(--font-color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  color: var(--background-color);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.text a:hover {
+  padding: 20px 60px;
+
+  letter-spacing: 6px;
+  font-size: 2rem;
+}
+
+/*--------------social---------------*/
+.social {
+  position: absolute;
+  bottom: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 3;
+  cursor: pointer;
+}
+
+.social li {
+  list-style: none;
+}
+
+.social li a {
+  margin-right: 20px;
+
+  display: inline-block;
+
+  filter: invert(1);
+  transition: 0.5s;
+}
+
+.social li a:hover {
+  transform: translateY(-10px);
+  /* transition: 0.5s; */
+}
+
+/*------------------menu-------------------*/
+.menu {
+  z-index: 1; /*z-index: 1; make sure header can cover menu*/
+  position: absolute; /*isolate .menu from the file flow, we can place menu wherever we want*/
+  top: 0; /*回溯html上一层定位，直到那一层position:absolute,选取该层作为参考系, position默认为static*/
+  right: 0; /*回溯html上一层定位, 直到...*/
+
+  width: var(--menu-width);
+  height: 100%; /*回溯html上一层定位, 直到...*/
+
+  /**make menu list in the middle, but you need to define width & height first*/
+  display: flex; /*effective for elements under .menu */
+  justify-content: center;
+  align-items: center;
+}
+
+.menu ul {
+  position: relative;
+
+  list-style: none; /*cancel the bullet points*/
+}
+
+.menu ul li a {
+  text-decoration: none; /*hide the underlines*/
+  font-size: 24px;
+  color: var(--overlay-color); /*font color*/
+}
+
+/*=======================================================*/
+@media (max-width: 798px) {
+  /*if max-width falls below 798px, employ below settings*/
+  .showcase,
+  .showcase header {
+    padding: 40px;
+  }
+
+  .text h1 {
+    font-size: 3rem;
+  }
+
+  .text h2 {
+    font-size: 2rem;
+  }
+}

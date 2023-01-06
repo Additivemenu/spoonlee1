@@ -36,7 +36,7 @@ Content
     - [2.1 层叠性](#21-层叠性)
     - [2.2 继承性](#22-继承性)
     - [2.3 优先级(权重)](#23-优先级权重)
-  - [2.3 :full\_moon: 元素模式的转化](#23-full_moon-元素模式的转化)
+  - [2.3 :full\_moon: :full\_moon: 元素模式的转化](#23-full_moon-full_moon-元素模式的转化)
   - [2.4 Emmet语法](#24-emmet语法)
 - [3. :moon: Block element](#3-moon-block-element)
   - [2.0 box model (盒模型)](#20-box-model-盒模型)
@@ -74,6 +74,7 @@ Content
       - [4.1.2.1 长度属性](#4121-长度属性)
       - [4.1.2.2 颜色属性](#4122-颜色属性)
   - [4.2 :full\_moon: Background](#42-full_moon-background)
+  - [4.3 animation](#43-animation)
 - [5. CSS动态效果](#5-css动态效果)
   - [5.1 media query - responsive web page](#51-media-query---responsive-web-page)
 
@@ -332,7 +333,8 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
 
-## 2.3 :full_moon: 元素模式的转化
+## 2.3 :full_moon: :full_moon: 元素模式的转化
+:book: [w3: element-level](https://www.w3schools.com/html/html_blocks.asp)
 
 [myHTMLNotes: #1. HTML basic tags](../HTML/myHTMLNotes.md)
 
@@ -1263,6 +1265,16 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 :gem::star: [Background semi-transparent while text remain solid](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
 
 :question: 最后这个练习里, .hero::before{}和.hero的层级关系是什么?
+
+## 4.3 animation
+
+:book: [MDN: animation](https://developer.mozilla.org/en-US/docs/Web/CSS/animation)
+
++ animation-name: 给animation起名字: change, slide or bounce.... 本身不具备含义, 需要和@keyframes一起用
++ animation-timing-function: 定义animation在一个cycle内change ratio随时间的变化速率
++ animation-duration: 一个cycle的时间
++ animation-iteration-count: animation要持续多少个cycle, 与animation-duration连用
+
 
 
 # 5. CSS动态效果

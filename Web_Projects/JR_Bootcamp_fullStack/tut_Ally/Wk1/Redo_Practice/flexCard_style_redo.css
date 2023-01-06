@@ -1,0 +1,107 @@
+body,html{
+    margin:0;
+    padding:0;
+}
+
+h1{
+    text-align: center;
+}
+
+.container{
+    /* width: 100vw;
+    height:100vh; */
+
+    /*让wrapper居中*/
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper{
+    /* width: 100%;
+    height: 100%; */
+
+    /*让cards flex布局*/
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;            /*让cards可以流动*/
+}
+
+.wrapper .card{
+    width: 240px;
+    height: 300px;
+    padding: 30px;
+    margin: 20px;                /*watch this!*/
+
+    border-radius: 3px;
+}
+
+.card:nth-child(1){
+    background-color: lightskyblue;
+}
+.card:nth-child(2){
+    background-color: blue;
+}
+.card:nth-child(3){
+    background-color: lightskyblue;
+}
+.card:nth-child(4){
+    background-color: purple;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card .imageContainer{
+    width: 240px;
+    height: 160px;
+}
+
+.card .imageContainer img{
+    width: 100%;
+    height: 100%;
+}
+
+.card .imageTitle{
+    width: 240px;
+    height: 38.4px;
+    margin-top: 16px;
+    margin-bottom: 20px;
+
+    color: white;
+
+    text-align: center;
+}
+
+
+.card .imageButtonContainer{
+    width: 240px;
+    height: 19.2px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.card .imageButtonContainer .text{
+    line-height: 19.2px;
+    
+    color: white;
+}
+
+.card .imageButtonContainer button{
+    padding: 5px 20px;
+
+    border-radius: 20px;
+    border: none;
+
+    background-color: grey;
+    color: white;
+
+    cursor: pointer;
+    /*button里的内容上下左右居中*/
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

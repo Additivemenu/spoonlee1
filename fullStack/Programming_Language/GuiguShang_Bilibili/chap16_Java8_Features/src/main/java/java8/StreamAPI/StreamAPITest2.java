@@ -1,8 +1,8 @@
 package java8.StreamAPI;
 
 
-import java8.Employee;
-import java8.EmployeeData;
+import java8.lambda.Employee;
+import java8.lambda.EmployeeData;
 import org.junit.Test;
 
 import java.util.Arrays;

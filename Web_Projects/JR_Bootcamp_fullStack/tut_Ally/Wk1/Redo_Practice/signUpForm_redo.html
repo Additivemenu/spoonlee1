@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./signUpForm_style_redo.css">
+</head>
+<body>
+    <form action="" method="get" >
+        <h1>Sign Up</h1>
+
+        <fieldset class="basicInfo">
+            <legend>Your basic info</legend>
+
+            <label for="First Name">First Name</label>
+            <br/>
+            <input  type="text" id="First Name" class="textInput">
+            <br/>
+
+            <label for="Last Name">Last Name</label>
+            <br/>
+            <input type="text" id="Last Name" class="textInput">
+            <br/>
+
+            <label for="Email">Email</label>
+            <br/>
+            <input type="text" id="Email" class="textInput">
+            <br/>
+
+            <label for="Username">Username</label>
+            <br/>
+            <input type="text" id="Username" class="textInput">
+            <br/>
+
+            <label for="Password">Password</label>
+            <br/>
+            <input type="password" id="Password" class="textInput">
+            <br/>
+        </fieldset>
+        <br/>
+
+        <fieldset class="otherDetails">
+            <legend>Other details</legend>
+
+            <label for="Birth Date">Birth Date:</label>
+            <input type="date" id="Birth Date" class="textInput">
+
+            <label for="">Gender:</label>
+            <br/>
+            <input type="radio" id="Male" name="gender" value="Male">
+            <label for="Male">Male</label>
+            <br/>
+            <input type="radio" id="Female" name="gender" value="Female">
+            <label for="Female">Female</label>
+            <br/>
+            <input type="radio" id="Other" name="gender" value="Other">
+            <label for="Other">Other</label>
+        </fieldset>
+        <br/>
+
+        <fieldset class="country">
+            <legend>Country</legend>
+
+            <select name="countrySelection" id="" >
+                <option value="China">China</option>
+                <option value="US">US</option>
+                <option value="UK">UK</option>
+                <option value="AU">AU</option>
+            </select>
+        </fieldset>
+        <br/>
+
+        <fieldset class="submit">
+            <input type="checkbox">
+            <label for="">I'm accepting Terms and Conditions</label>
+            <br/>
+            <button>Sign Up</button>
+        </fieldset>
+        <br/>
+
+    </form>
+</body>
+</html>
