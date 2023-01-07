@@ -1,6 +1,8 @@
 package java8.StreamAPI;
 
 /**
+ * 测试 Stream的创建
+ * -----
  * 1. Stream关注的是对数据集合的运算, 与CPU打交道
  *      集合关注的是数据的存储, 和内存打交道
  * 2. - Stream自己不会存储元素

@@ -33,7 +33,7 @@ public class OptionalTest {
         System.out.println(optionalGirl);
     }
 
-    // 不用Optional Class的写法---------------------------------------------
+    // test3: 最naive的写法---------------------------------------------
     public String getGirlName(Boy boy){
         return boy.getGirl().getName();     // NullPointer is possible
     }
@@ -45,7 +45,7 @@ public class OptionalTest {
         System.out.println(girlName);   // throw NullPointerException
     }
 
-    // 优化上面的写法------------------------------------------------------
+    // test4: 优化上面的写法------------------------------------------------------
     public String getGirlName1(Boy boy){
         if(boy != null) {
             Girl girl = boy.getGirl();
@@ -63,11 +63,11 @@ public class OptionalTest {
         System.out.println(girlName);
     }
 
-    // 使用Optional来优化----------------------------------------------------
+    // test5: 使用Optional来优化----------------------------------------------------
     public String getGirlName2(Boy boy){
         Optional<Boy> boyOptional = Optional.ofNullable(boy);
 
-        // `T orElse(T other)`: 如果Optional容器内非空则将其返回, 若是空的则返回指定的other对象
+        // `T orElse(T other)`: 如果Optional容器内非空则将其返回, 若是空的则返回()里指定的other对象
         Boy boy1 = boyOptional.orElse(new Boy(new Girl("Triss")));     // boy1一定非空, 但boy1中的girl不一定非空
 
         Girl girl = boy1.getGirl();

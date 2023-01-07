@@ -391,6 +391,7 @@ byte stream:
 + `BufferedOutputStream`
   + `write(btye[] buffer, 0, len])` 
   
+
 char stream:
 + `BufferedReader`
   + `read(char[] cbuf)`
@@ -665,7 +666,7 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
   + 同时当前class内部涉及的class也必须implement Serializable interface
 + Externalizable
 
-# 5.4.2 SerialVersionUID
+### 5.4.2 SerialVersionUID
 
 凡是实现Serializable interface的class都有一个表示序列化版本(SerialVersion)标识符的static variable:
 + `private static final long serialVersionUID`
