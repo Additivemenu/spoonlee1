@@ -125,7 +125,19 @@ public class Example{
 }
 ```
 
-<img src="../../../Src_md/String_question_demonstration.png" width=1000%>
+<img src="./Src_md/String_question_demonstration.png" width=1000%>
+
+上面这个图中打叉号那部分的说明是不对的, 不是因为Java的String immutable才使得change stack中的str转而指向字符串常量池中的"test ok", **String immutable指的是堆空间中String对象的value属性的值不可以改**, 因为value是final修饰的
+```java
+private final byte[] value;
+```
+**String immutable可不是指那些指向堆空间中的String对象的变量的值不能改(String变量名只是个指针而已, 随意改它指向谁很正常)**, change stack中的str变量在change()传入参数时是指向堆空间中的String intance的 (上图画错了, 画的是函数按地址传递, :star: javaCore1 4.5: java函数总是值传递, 方法得到的是参数值的一个副本), 但change()的执行代码中
+```java
+str = "test ok"
+```
+使得change stack中的str变量指向了内存常量池中的"test ok"对象.
+
+---
 
 JVM涉及字符串的数据结构
 

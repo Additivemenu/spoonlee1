@@ -48,9 +48,27 @@ Java集合可以分为Collection和Map两种体系:
 
 ## 2.1 Iterator Interface
 
+:book: [JDK17 doc: Iterator](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html) JDK1.8之后新添加了几个方法, 这里没有体现
+
++ Iterator对象称为迭代器(23种设计模式之一), 主要用于遍历**Collection集合(不包括Map集合)**中的元素.
++ GOF给迭代器的定义为: **提供一种方法访问一个容器(container)对象中各个元素, 而又不需要暴露该容器对象的内部细节**. 迭代器模式, 就是为容器而生. 类似于"公交车上的售票员"
++ Collection接口继承了java.lang.Iterable接口, Iterable接口有一个iterator()方法, 那么所有实现了Collection接口的集合类都有一个iterator()方法, 用以返回一个实现了Iterator接口的对象
++ **Iterator仅仅用于遍历集合, Iterator本身并不提供承装对象的能力.** 如果需要创建Iterator对象, 则必须有一个被迭代的集合, 也就是说, Iterator对象是依附于被迭代的集合而存在的.
++ **集合对象每次调用iterator()方法都得到一个全新的Iterator对象**, 默认游标都在集合的第一个元素之前. 所以注意不要对一个集合反复地使用iterator()方法，容易死循环
 
 
 
+### 2.1.1 迭代器的执行原理
+
+next(), hasNext()搭配使用
+
+其实原理就像单链表遍历一样
+
+注意next()实际包含两部操作: 1) 指针下移; 2) 返回指针下移后指向的元素
+
+<img src="./Src_md/Iterator_principle.PNG" widht=50%>
+
+remove()
 
 
 
@@ -67,7 +85,7 @@ CRUD
 
 
 
-### 查
+### ''查''
 
 + `contains(Object obj)`: 判断当前集合是否包含obj. 需要调用equals()方法, 需要重写equals()
 + `constainsAll(Collection coll1)`: 判断coll1中的所有元素是否都存在于当前集合中.
@@ -99,18 +117,18 @@ CRUD
 
 + `toArray()`: 集合 ---> 数组
 
-  + 拓展: Array --> Collection (即list): 调用Arrays class的static method asList()
++ 拓展: Array --> Collection (即list): 调用Arrays class的static method asList()
 
-    + 注意 Arrays.asList(arr) 内array元素的类型得是wrapper class, 如果是基本数据类型则如下
+  + 注意 Arrays.asList(arr) 内array元素的类型得是wrapper class, 如果是基本数据类型则如下
 
-      + ```java
-        List ints = Arrays.asList(new int[]{123, 456});     // int[] 整体看作一个元素
-        System.out.println(ints.size());          // 1
-        ```
-
-      
-
+    + ```java
+      List ints = Arrays.asList(new int[]{123, 456});     // int[] 整体看作一个元素
+      System.out.println(ints.size());          // 1
+      ```
+  
     
+
+  
 
 ## 2.3 Collection: Set
 
