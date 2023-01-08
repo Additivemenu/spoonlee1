@@ -58,7 +58,7 @@ const contents = document.querySelectorAll(".content"); // get all nodes satisfy
 console.log(contents);
 
 contents.forEach((node, index) => {     // edit nodes
-node.innerHTML = `content ${index}`;
+	node.innerHTML = `content ${index}`;
 })
 ```
 通过document.querySelectorAll(), 我们edit了HTML文档中所有".content"标签:

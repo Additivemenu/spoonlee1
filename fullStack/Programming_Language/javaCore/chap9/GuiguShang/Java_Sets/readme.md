@@ -72,6 +72,12 @@ remove()
 
 
 
+增强for loop
+
+
+
+
+
 ## 2.2 Collection: List
 
 注意向Collection接口的实现类的对象中添加数据obj时, **要求obj所在类要@override equals()** ---> 这样contains(), remove()等方法才能有效, 因为它们底层调用了equals()

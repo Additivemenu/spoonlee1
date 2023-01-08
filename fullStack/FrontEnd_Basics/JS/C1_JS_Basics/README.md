@@ -26,10 +26,10 @@ Content
     - [5.2.1 为Array加入object元素](#521-为array加入object元素)
   - [5.3 :moon: Array Decomposition](#53-moon-array-decomposition)
   - [5.4 :full\_moon: JS array API](#54-full_moon-js-array-api)
-    - [5.4.1 map()](#541-map)
-    - [5.4.2 filter()](#542-filter)
+    - [map()](#map)
+    - [filter()](#filter)
     - [5.4.3 reduce()](#543-reduce)
-    - [5.4.4 forEach()](#544-foreach)
+    - [forEach()](#foreach)
 - [5.5 shadowCopy \& deepCopy](#55-shadowcopy--deepcopy)
 
 ---
@@ -123,7 +123,7 @@ Object||
   if(a){
       ...
   }
-
+  
   ```
 + object type
   ```js
@@ -132,24 +132,24 @@ Object||
       if(array !== undefined && array !== null){
           return array.length;
       }
-
+  
       return undefined;
   }
-
+  
   // 简洁写法, 由于JS的数值和boolean转化关系
   function getArrayLength(arr){
       if(arr){
           return arr.length;
       }
-
+  
       return undefined;
   }
-
+  
   // 更简洁写法, 也很常用, 利用 &&的工作原理
   function getArrayLength(arr){
       return arr && arr.length;   // && 只有左边为true的情况下, 才会跑右边的东西; 否则只跑左边的东西
   }
-
+  
   // 更更简洁写法, 用optional chaining
   function getArrayLength(arr){
       return arr?.length;         // ? 用来检测arr是否为true, 是的话才看后面 (optional chaining)
@@ -416,13 +416,13 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
 
 
     console.log(false || true); // true
-
+    
     if ((dayTime > 18 && dayTime < 24) || (dayTime > 0 && dayTime < 6)) {
       console.log("night");  // go through this branch
     } else {
       console.log("day");
     }
-
+    
     ```
 
 + ||: true & false
@@ -450,10 +450,14 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
   ```
 
 ## 3.5 :moon: Spread Operator
-JS的特色: 用来代表一个array片段
 
+JS特色的`...`
+
+场景1: 用来展开一个array (shallowCopy to 1 layer)
 :gem: [Demo: Spread Operator](./10-spread_operator.html)
 
+
+场景2: 用在函数的argument里
 :gem: [函数的剩余参数](./12-%E5%89%A9%E4%BD%99%E5%8F%82%E6%95%B0.html)
 
 
@@ -463,9 +467,8 @@ JS的特色: 用来代表一个array片段
 "use strict"  //开启严格模式会开启诸多语法的严格限制
 ```
 
-
-
 ==
+
 # 4. Control flow
 ## 4.1 switch case
 和java一样
@@ -504,7 +507,7 @@ while, for loop语法和Java基本一致
     newArrayNumber[i] = i + 5;
   }
   console.log(newArrayNumber);
-
+  
   ```
 + forEach
   forEach: 专门用来处理数组的, 必须先指定是对那个数组进行forEach
@@ -518,12 +521,12 @@ while, for loop语法和Java基本一致
   // index starts from 0
   console.log("1:", num, index);
   });
-
+  
   // identical to the above
   for (let i = 0; i < newArrayNumber.length; i++) {
   console.log("2:", newArrayNumber[i]);
   }
-
+  
   ```
 
   <img src="../Src/JS_forEach.png" width = 80%>
@@ -607,7 +610,9 @@ console.log(array[101]);    // now array[101].name displayed
 
 以下API中用到的function()一般为了简洁采用箭头函数
 
-### 5.4.1 map()
+很想Java 8 的stream API的用法
+
+###  map()
 manipulate over every elements and in the array, return a new array holding the results
 
 :book: [w3schools: map()](https://www.w3schools.com/jsref/jsref_map.asp)
@@ -627,7 +632,7 @@ function(currentValue, index, arr){
 
 :gem: [Demo: map()](./17-map.html)
 
-### 5.4.2 filter()
+### filter()
 
 从一个array中筛选符合条件的元素
 
@@ -672,7 +677,19 @@ function(total, currentValue, currentIndex, arr){
 
 :gem::gem: [Practice: reduce()](./20-map_filter_reduce.html)
 
-### 5.4.4 forEach()
+### forEach()
+
+```js
+const array1 = ['a', 'b', 'c'];
+
+array1.forEach((element, i) => console.log(element, i));
+
+// expected output: "a" 0
+// expected output: "b" 1
+// expected output: "c" 2
+```
+
+
 
 # 5.5 shadowCopy & deepCopy
 
