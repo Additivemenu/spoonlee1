@@ -6,12 +6,17 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author xueshuo
  * @create 2023-01-05 11:10 am
  */
 @RestController
 public class UserController {
+    private List<User> users = new ArrayList<>();
+
     /**
      * GET by Path Variable
      * @param id

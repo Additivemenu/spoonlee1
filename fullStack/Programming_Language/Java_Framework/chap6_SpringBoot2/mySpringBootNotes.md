@@ -784,7 +784,7 @@ FIlter作用在controller之前, 用来筛选数据, 符合要求的才会被for
 
 # 12. 向内存加载properties 2h28min-2h59min
 
-即将配置文件里的指定信息转化为类和对象.
+即将配置文件里的指定信息转化为内存中的类和对象.
 
 首先在application.yaml file中定义:
 
@@ -864,3 +864,8 @@ e.g.
 com.fiona.demo.className 对应的环境变量为: COM_FIONA_DEMO_CLASSNAME (全大写, 中间的.用_替代)
 
 环境变量可以在Intellij右上角的edit configuration按钮添加
+
+
+
+
+
