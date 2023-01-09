@@ -46,39 +46,7 @@ Java集合可以分为Collection和Map两种体系:
 
 # 2. Collection Interface
 
-## 2.1 Iterator Interface
-
-:book: [JDK17 doc: Iterator](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html) JDK1.8之后新添加了几个方法, 这里没有体现
-
-+ Iterator对象称为迭代器(23种设计模式之一), 主要用于遍历**Collection集合(不包括Map集合)**中的元素.
-+ GOF给迭代器的定义为: **提供一种方法访问一个容器(container)对象中各个元素, 而又不需要暴露该容器对象的内部细节**. 迭代器模式, 就是为容器而生. 类似于"公交车上的售票员"
-+ Collection接口继承了java.lang.Iterable接口, Iterable接口有一个iterator()方法, 那么所有实现了Collection接口的集合类都有一个iterator()方法, 用以返回一个实现了Iterator接口的对象
-+ **Iterator仅仅用于遍历集合, Iterator本身并不提供承装对象的能力.** 如果需要创建Iterator对象, 则必须有一个被迭代的集合, 也就是说, Iterator对象是依附于被迭代的集合而存在的.
-+ **集合对象每次调用iterator()方法都得到一个全新的Iterator对象**, 默认游标都在集合的第一个元素之前. 所以注意不要对一个集合反复地使用iterator()方法，容易死循环
-
-
-
-### 2.1.1 迭代器的执行原理
-
-next(), hasNext()搭配使用
-
-其实原理就像单链表遍历一样
-
-注意next()实际包含两部操作: 1) 指针下移; 2) 返回指针下移后指向的元素
-
-<img src="./Src_md/Iterator_principle.PNG" widht=50%>
-
-remove()
-
-
-
-增强for loop
-
-
-
-
-
-## 2.2 Collection: List
+## 2.1 Collection的常用方法
 
 注意向Collection接口的实现类的对象中添加数据obj时, **要求obj所在类要@override equals()** ---> 这样contains(), remove()等方法才能有效, 因为它们底层调用了equals()
 
@@ -131,18 +99,124 @@ CRUD
       List ints = Arrays.asList(new int[]{123, 456});     // int[] 整体看作一个元素
       System.out.println(ints.size());          // 1
       ```
-  
+
     
 
-  
 
-## 2.3 Collection: Set
+
+## 2.2 Iterator Interface
+
+:book: [JDK17 doc: Iterator](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html) JDK1.8之后新添加了几个方法, 这里没有体现
+
++ Iterator对象称为迭代器(23种设计模式之一), 主要用于遍历**Collection集合(不包括Map集合)**中的元素.
++ GOF给迭代器的定义为: **提供一种方法访问一个容器(container)对象中各个元素, 而又不需要暴露该容器对象的内部细节**. 迭代器模式, 就是为容器而生. 类似于"公交车上的售票员"
++ Collection接口继承了java.lang.Iterable接口, Iterable接口有一个iterator()方法, 那么所有实现了Collection接口的集合类都有一个iterator()方法, 用以返回一个实现了Iterator接口的对象
++ **Iterator仅仅用于遍历集合, Iterator本身并不提供承装对象的能力.** 如果需要创建Iterator对象, 则必须有一个被迭代的集合, 也就是说, Iterator对象是依附于被迭代的集合而存在的.
++ **集合对象每次调用iterator()方法都得到一个全新的Iterator对象**, 默认游标都在集合的第一个元素之前. 所以注意不要对一个集合反复地使用iterator()方法，容易死循环
+
+
+
+### 2.1.1 迭代器的执行原理
+
+next(), hasNext()搭配使用
+
+其实原理就像单链表遍历一样
+
+注意next()实际包含两部操作: 1) 指针下移; 2) 返回指针下移后指向的元素
+
+<img src="./Src_md/Iterator_principle.PNG" widht=50%>
+
+`remove()`
+
+
+
+增强for loop, 注意是shallowCopy集合元素来操作
+
+
+
+
+
+## 2.3 :full_moon: Collection: List
+
++ 鉴于Java中数组用来存储数据的局限性，我们通常使用List替代数组. List相当于动态数组.
+
++ List集合类中**元素有序, 可重复**, 集合中的每个元素都有其对应的顺序索引.
+
++ List容器中的元素都对应一个整数型的序号记载其在容器中的位置，可以根据 序号存取容器中的元素.
+
++ JDK API中List接口的实现类常用的有:ArrayList、LinkedList和Vector
+
+
+
+List接口: 存储有序的(元素在集合中的前后顺序是有意义), 可重复的数据.  又名 --> 动态数组; List接口Java1.2出现
+*              ArrayList: 作为List interface的主要实现类, 线程不安全的因而效率高; 
+               *              底层使用**Object[]** elementData存储
+*              LinkedList: 对于频繁的插入, 删除操作, 使用此类效率比ArrayList高 ; 
+               *              底层使用**双向链表**存储; Java1.2才出现
+*              Vector 作为List接口的古老实现类 Java1.0 就有了, 线程安全因而效率低;  
+               *              底层使用**Object[]** elementData存储
+
+### ArrayList
+
+源码分析 527
+
+该看这个了!
+
+
+
+### LinkedList
+
+源码分析 528
+
+
+
+
+
+
+
+### Vector
+
+源码分析 529
+
+
+
+
+
+## 2.4 :full_moon: Collection: Set
+
+
+
+### HashSet
+
+
+
+### LinkedHashSet
+
+
+
+### TreeSet
 
 
 
 
 
 # 3. Map Interface
+
+
+
+## HashMap
+
+
+
+### LinkedHashMap
+
+
+
+## SortedMap
+
+
+
+### TreeMap
 
 
 

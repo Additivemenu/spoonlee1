@@ -158,6 +158,7 @@ a {
   text-align: center;
 }
 .page3 .product_menu {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 50px 80px 0;
@@ -172,21 +173,45 @@ a {
 .page3 .product_menu .categoryList_container .categoryItem {
   margin: 20px;
 }
+.page3 .product_menu .pre-btn, .page3 .product_menu .nxt-btn {
+  border: none;
+  width: 5vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+.page3 .product_menu .pre-btn img, .page3 .product_menu .nxt-btn img {
+  opacity: 0.2;
+}
+.page3 .product_menu .pre-btn img:hover, .page3 .product_menu .nxt-btn img:hover {
+  opacity: 1;
+}
+.page3 .product_menu .pre-btn {
+  left: 0;
+  transform: rotate(180deg);
+}
+.page3 .product_menu .nxt-btn {
+  right: 0;
+}
 .page3 .product_menu .productCardList_container {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
 }
 .page3 .product_menu .productCardList_container .productItemCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 300px;
   height: 450px;
   padding: 25px;
   background-color: whitesmoke;
-  margin: 0 20px;
-  display: flex;
-  flex-direction: column;
+  margin-right: 10px;
+}
+.page3 .product_menu .productCardList_container .productItemCard:last-child {
+  margin-right: 0;
 }
 .page3 .product_menu .productCardList_container .productItemCard .productItemImg_container {
   width: 250px;
@@ -203,7 +228,6 @@ a {
 .page3 .product_menu .productCardList_container .productItemCard button {
   border: 0;
   padding: 10px 20px;
-  margin: 10 auto;
   background-color: #D2D0C9;
   color: whitesmoke;
 }
