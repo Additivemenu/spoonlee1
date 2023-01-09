@@ -13,10 +13,6 @@ new on Mac
 + IDEA project也可以上传github, 下载下来也依然保留project structure
 + VsCode extension: material icon
   
----
-+ 设置intellij
-+ 下载node.js, sass
-
 换电脑记得
 
 `git config --global user.name "<Your-Full-Name>"`
