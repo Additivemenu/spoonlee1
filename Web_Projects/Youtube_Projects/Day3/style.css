@@ -184,6 +184,7 @@ button:hover {
   text-transform: capitalize;
 }
 
+/* add-to-wishlist effect*/
 .card-btn {
   position: absolute;
   bottom: 10px;
@@ -203,10 +204,12 @@ button:hover {
 
   transition: 0.5s;
   cursor: pointer;
-  opacity: 0;
+  /* comepletly transparent */
+  opacity: 0;       
 }
 
 .product-card:hover .card-btn {
+  /* become totally opaque */
   opacity: 1;
 }
 

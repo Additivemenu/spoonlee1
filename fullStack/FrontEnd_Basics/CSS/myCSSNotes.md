@@ -74,6 +74,7 @@ Content
       - [4.1.2.1 长度属性](#4121-长度属性)
       - [4.1.2.2 颜色属性](#4122-颜色属性)
   - [4.2 :full\_moon: Background](#42-full_moon-background)
+    - [4.2.1 object-fit](#421-object-fit)
   - [4.3 animation](#43-animation)
 - [5. CSS动态效果](#5-css动态效果)
   - [5.1 media query - responsive web page](#51-media-query---responsive-web-page)
@@ -1208,7 +1209,7 @@ step3:
 + 用rgb()函数方式表示颜色值
   + 每个参数大小0~255 
 + 用rgba()函数方式表示颜色值
-  + 比rgb()多了个透明度选项(0~1)
+  + 比rgb()多了个透明度选项(0~1), 0 完全透明, 1 完全不透明
 
 颜色渐变:
 + 线性渐变
@@ -1218,7 +1219,9 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 ```
 + 径向渐变
 圆形或椭圆形渐变，颜色不再沿着一条直线变化，而是从一个起点朝所有方向混合
-
+```css
+radical-gradient(...)
+```
 
 ## 4.2 :full_moon: Background
 这里的background指往block element(块级元素, 并不仅是`<div>`)中加入background
@@ -1265,6 +1268,12 @@ linear-gradient ( position,  color1,  color2,…)  /*position: 颜色渐变方�
 :gem::star: [Background semi-transparent while text remain solid](./CSS_Sample/Background/25-backgroundSemiTransparent.html)
 
 :question: 最后这个练习里, .hero::before{}和.hero的层级关系是什么?
+
+### 4.2.1 object-fit
+:book: [MDN: object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
+
+The object-fit CSS property sets how the content of a replaced element, such as an `<img>` or `<video>`, should be resized to fit its container.
+
 
 ## 4.3 animation
 

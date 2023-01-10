@@ -24,13 +24,11 @@ html, body{
     height: 100vh;
 }
 
-
 // 'page margin' for each section
 section{
     padding: 30px 60px;
     
 }
-
 
 
 a{
@@ -222,7 +220,6 @@ a{
     background-color: greenyellow;
 
 
-
     .product_title{
         // display: flex;
         // justify-content: center;
@@ -257,29 +254,36 @@ a{
         .pre-btn, .nxt-btn{
             border:none;
 
-            width: 5vw;
-            height: 100%;
+            width: 3vw;
+            height: 10%;
 
             position: absolute;
-            top:0;
+            top:45%;
+
+            // 0deg = to top, increasing degree means rotate clockwise from it
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+
+            z-index: 10;
+            // when hover on button, modify img
+            &:hover img{
+                opacity: 1;
+            }
 
             img{
+                cursor: pointer;
                 opacity: 0.2;
-                &:hover{
-                    opacity: 1;
-                }
+
+                transition: 1s;
             }
-            
         }
 
         .pre-btn{
-            left: 0;
+            left: 2vw;
             transform: rotate(180deg);
         }
 
         .nxt-btn{
-            right:0;
-
+            right:2vw;
         }
 
         .productCardList_container{
@@ -288,7 +292,7 @@ a{
             align-items: center;
 
             overflow: hidden;
-
+            scroll-behavior: smooth;  //TODO: how to make sliding ease-in-out?
 
             .productItemCard{
                 position: relative;
@@ -297,7 +301,6 @@ a{
                 flex-direction: column;
                 
                 align-items: center;
-
 
                 width: 300px;
                 height: 450px;
@@ -419,20 +422,26 @@ a{
                 list-style: none;
                 padding-left: 0;
 
+                // how to fit in icon image??
                 li{
                     margin: 10px 0;
-
+                    // li 前的icon
                     &::before{
-                        content: '';
-                        width: 20px;
+                        content: url("./Img/map.png");
                         
-                        
-                        background: url("./Img/map.png");
-                        background-repeat: no-repeat;
-                        background-size: cover;
-                        background-position: center; /*make it in the center*/
-                        cursor: pointer;
+                        left: 5px;
+
+                        width: 5px;
+                        height: 5px;
+
+                        object-fit: fill;
                         filter: invert(1); /*invert the color of menu icon*/
+                        // background: url("./Img/map.png");
+                        // background-repeat: no-repeat;
+                        // background-size: cover;
+                        // background-position: center; /*make it in the center*/
+                        // cursor: pointer;
+
                     }
                 }
             }

@@ -75,9 +75,24 @@ Lec13: SpringBoot intro, RESTful API
 + 梳理知识
 
 Lec14: RESTfulAPI, SQL
++ 主要偏理论, 讲REST 架构每个component的作用
 
 Steven Tut
 
+
+# Wk6: advanced JS
+
+Ally tut:
++ git practice
++ progress bar讲完
+
+L10 advanced JS 1
+
+
+steve tut:
+
+
+L11 advanced JS 2
 
 
 

@@ -175,29 +175,34 @@ a {
 }
 .page3 .product_menu .pre-btn, .page3 .product_menu .nxt-btn {
   border: none;
-  width: 5vw;
-  height: 100%;
+  width: 3vw;
+  height: 10%;
   position: absolute;
-  top: 0;
+  top: 45%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+  z-index: 10;
 }
-.page3 .product_menu .pre-btn img, .page3 .product_menu .nxt-btn img {
-  opacity: 0.2;
-}
-.page3 .product_menu .pre-btn img:hover, .page3 .product_menu .nxt-btn img:hover {
+.page3 .product_menu .pre-btn:hover img, .page3 .product_menu .nxt-btn:hover img {
   opacity: 1;
 }
+.page3 .product_menu .pre-btn img, .page3 .product_menu .nxt-btn img {
+  cursor: pointer;
+  opacity: 0.2;
+  transition: 1s;
+}
 .page3 .product_menu .pre-btn {
-  left: 0;
+  left: 2vw;
   transform: rotate(180deg);
 }
 .page3 .product_menu .nxt-btn {
-  right: 0;
+  right: 2vw;
 }
 .page3 .product_menu .productCardList_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 .page3 .product_menu .productCardList_container .productItemCard {
   position: relative;
@@ -295,13 +300,11 @@ a {
   margin: 10px 0;
 }
 .footer .contactUs .wrapper .contactList ul li::before {
-  content: "";
-  width: 20px;
-  background: url("./Img/map.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center; /*make it in the center*/
-  cursor: pointer;
+  content: url("./Img/map.png");
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  object-fit: fill;
   filter: invert(1); /*invert the color of menu icon*/
 }
 

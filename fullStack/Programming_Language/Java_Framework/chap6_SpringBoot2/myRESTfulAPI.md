@@ -216,8 +216,149 @@ Stateless Pros vs. Cons
 
 1h44min-1h57min 歇息
 
+
+
 ## 2.6 Caching 1h57min-
 
+Caching refers to **storing the server response in the client itself**, so that a client need not make a server request for the same resource again and again, especially for some large sized multi-media files e.g. icons, imgs... Cache本质是空间换时间的思想, 我们需要Cache是因为通常I/O 操作 (e.g. HTTP request, HTTP response) 经常成为performance的bottle neck (e.g. establish connection很耗费时间), 应当尽量减少I/O操作的次数
+
+
+
+A *server response* should have information about how caching is to be done, so that a client caches the response for a time period or never caches the server response
+
+| Header        | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| Date          | Date and Time of the resource when it was created            |
+| Last Modified | Date and Time of the resource when it was last modified      |
+| Cache-Control | Primary header to control caching                            |
+| Expires       | Expiration date and time of caching                          |
+| Age           | Duration in seconds from when resource was fetched from the server |
+
+同样在Dev tool > Network 可以查看被服务器发送过来的文件, 有的是被cached的, 在这些文件对应的response header可以查看这些Caching的属性
+
+在Dev tool > Application, 可以查看Storage的信息 (including Local storage, session storage, Cookies...). 以如下网站为例:
+
+https://partner.booking.com/en-us/help/reservations/manage/all-you-need-know-about-double-bookings
+
+
+
+Caching-control header:
+
+```bash	
+cache-control: max-age=2628000, public
+```
+
+| Header              | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| Public              | Indicates that resource is cacheable by any component.       |
+| Private             | Indicates that resource is cacheable only by the client and the server, no intermediary can cache the resource. |
+| No-cache / no-store | Indicates that a resource is not cacheable                   |
+| max-age             | Indicates the caching is valid up to max-age in seconds. After this, client has to make another request |
+| Must-revalidate     | Indication to server to revalidate resource if max-age has passed. |
+
+
+
+注意图中Cache的位置: 
+
++ Client cache
+
++ CDN cache 
+
++ Server cache
+
+<img src="./Src_md/RESTful_API1.PNG" width=70%>
+
+
+
+```java
+@GetMapping("/user")
+public User getUserByParameter(@NotBlank @RequestParam String email, final HttpServletResponse response){
+
+  String value = CacheControl.maxAge(10, TimeUnit.SECONDS).getHeaderValue();
+  response.addHeader(HttpHeaders.CACHE_CONTROL, value);
+
+  return new User(111, email, "password", 23);
+}
+```
+
+
+
+
+
+## 2.7 REST Principle: Client/Server Separation 2h28min-
+
+
+
+如何设计一个好的REST API? 有哪些principle?
+
+https://microsoft.github.io/code-with-engineering-playbook/design/design-patterns/rest-api-design-guidance/
+
+https://rapidapi.com/learn/rest/rest-apis-for-experts/principles-of-rest-api
+
+
+
+### 构建RESTful API doc工具:
+
+关于OpenAPI
+
+The OpenAPI Specification (OAS) defines a standard, programming language-agnostic interface description for HTTP APIs, which allows both humans and computers to discover and understand the capabilities of a service without requiring access to source code, additional documentation, or inspection of network traffic. When properly defined via OpenAPI, a consumer can understand and interact with the remote service with a minimal amount of implementation logic. Similar to what interface descriptions have done for lowerlevel programming, the OpenAPI Specification removes the guesswork in calling a service.
+
+
+
+OpenAPI [springdoc-openapi v2.0.2](https://springdoc.org/v2/#getting-started)
+
+在gradle中加入如下dependency
+
+```bash
+// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+```
+
+运行application, 之后:
+
+Visit: http://localhost:8080/v3/api-docs; 返回JSON格式的openAPI
+
+OR
+
+visit: http://localhost:8080/swagger-ui/index.html 显示swaggerUI (更好看), 提供直观且美观的API doc; 可以try-out, 就像用postman一样.
+
+
+
+
+
+# 3. 拓展内容
+
+以下作为拓展知识, 详见PPT
+
+## GraphQL 2h53min-
+
+与RESTful API 平行的另一种API架构, 使用 BFF (backend for frontend)
+
+
+
+GraphQL tool - Hasura
+
+
+
+## 其他接口通信方式3h-
+
+除了使用HTTP protocol,  还可以使用RPC (Remote Procedure Call)来进行接口通信
+
++ Protocol: TCP, HTTP 
+
++ Format: xml, JSON, protocol buffer
+
++ Tools: Thrift, gPRC
+
+
+
+
+
+
+
+
+
+## 
 
 
 
@@ -228,4 +369,10 @@ Stateless Pros vs. Cons
 
 
 
-## 2.7 Security
+
+
+
+
+
+
+

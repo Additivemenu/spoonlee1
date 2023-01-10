@@ -35,6 +35,8 @@ roadmap
 
 :computer:[尚硅谷Java web](https://www.bilibili.com/video/BV1Y7411K7zz/?vd_source=c6866d088ad067762877e4b6b23ab9df) 讲前端的一些内容, 和JR的课程有重叠
 
+:computer: [尚硅谷: SSM框架 2022 (MyBatis + Spirng + SpringMVC)](https://www.bilibili.com/video/BV1Ya411S7aT/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
 :computer: [尚硅谷Spring boot2](https://www.bilibili.com/video/BV19K4y1L7MT/?vd_source=c6866d088ad067762877e4b6b23ab9df) 框架
 
 :computer: [尚硅谷 JVM](https://www.bilibili.com/video/BV1PJ411n7xZ/?vd_source=c6866d088ad067762877e4b6b23ab9df) 高级篇章, 工作后可以深入了解
