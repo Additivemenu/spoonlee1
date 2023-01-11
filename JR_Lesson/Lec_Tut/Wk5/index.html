@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <p>
+        <button id="Decrease">Decrease</button>
+        
+        <bold id="count">count</bold>
+
+        <button id="Increase">Increase</button>
+    </p>
+
+    <script>
+        var count = 0;
+
+        function updateCount(){
+            document.querySelector("#count").innerHTML = count.toString();
+        }
+
+        function increase(){
+            count += 1
+
+        }
+
+        function decrease(){
+            count -= 1
+        }
+
+        updateCount()
+        
+        document.querySelector('#decrease').onclick = function(){
+            decrease()
+            updateCount()
+        }
+        document.querySelector('#increase').onclick = function(){
+            increase()
+            updateCount()
+
+            //break point
+            //debugger;
+        }
+
+    
+    </script>
+
+    <script src="./script.js"></script>
+</body>
+</html>

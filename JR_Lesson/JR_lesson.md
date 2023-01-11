@@ -76,8 +76,12 @@ Lec13: SpringBoot intro, RESTful API
 
 Lec14: RESTfulAPI, SQL
 + 主要偏理论, 讲REST 架构每个component的作用
++ 作业: HTTP POST, GET区别
 
 Steven Tut
+
+Kitman Tut:
++ Chrome DevTool use
 
 
 # Wk6: advanced JS

@@ -7,18 +7,18 @@ import java.net.UnknownHostException;
  *  --- communication protocols: TCP/IP model
  *
  * 2. IP & port
- *   1. IP: 唯一标识Internet上的计算机
- *   2. 在Java中使用InetAddress class代表IP
- *   3. IP分类: IPv4 vs. Ipv6; 万维网 vs. 局域网
- *   4. domain name: www.google.com
- *   5. 本地回路地址: 127.0.0.1 对应localhost
- *
- *  实例化InetAddress: getByName(String host), getLocalHost()
+ * --IP: 唯一标识Internet上的计算机
+ *   -- 在Java中使用InetAddress class代表IP
+ *   -- IP分类: IPv4 vs. Ipv6; 万维网 vs. 局域网
+ *   -- domain name: www.google.com
+ *   -- 本地回路地址: 127.0.0.1 对应localhost
+ *   -- 实例化InetAddress: getByName(String host), getLocalHost()
  *         InetAddress对象的两个常用方法: getHostName() / getHostAddress()
  *
+ * --port number:
+ *   要求不同的进程应该有不同的port number, 范围: 0~65536 (2^16)
  *
- *
- *
+ * 
  *
  * @author xueshuo
  * @create 2023-01-10 6:29 pm

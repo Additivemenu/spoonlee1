@@ -26,7 +26,17 @@ Java提供的网络类库，可以实现无痛的网络连接，联网的底层 
 
 # 2. 网络通信要素概述
 
+
+
+
+
+
+## 3. 通信要素1: IP, port
+### 3.1 IP
+619
+
 IP address: `InetAddress`
+
 + uniquely identify a host on the internet
 + 本地回环地址(hostAddress): 127.0.0.1  主机名(hostName): localHost
 + IP地址分类方式1: **IPV4**, **IPV6**
@@ -38,25 +48,68 @@ IP address: `InetAddress`
 
 
 
+### 3.2 port
+620
 
-# 3. 通信要素1: IP, port
-IP:
+端口号标识正在计算机上运行的进程(程序), 
+
++ 不同的进程有不同的端口号 (同一host上两个进程用一个port number会造成port conflict), 被规定为一个 16 位的整数 0~65535。
+
+端口分类:
++ **公认端口**: 0~1023。被预先定义的服务通信占用(如:HTTP占用端口 80，FTP占用端口21，Telnet占用端口23)
++ **注册端口**: 1024~49151。分配给用户进程或应用程序。(如:Tomcat占 用端口8080，MySQL占用端口3306，Oracle占用端口1521等)。
++ **动态/私有端口:** 49152~65535。
 
 
 
-port: 620
+端口号与IP地址的组合得出一个网络套接字: **Socket**
 
 
 
-# 4. 通信要素2: protocol
+## 4. 通信要素2: protocol
 
+621
+
+TCP/IP 协议簇: 实用角度, physical layer  -->  data link layer --> Network Layer --> transport layer --> application layer
+
+
+
+Transport layer 的两种重要protocol:
+
++ TCP: 可靠
+  + 使用TCP协议前, 必须先建立TCP connect, 形成数据传输通道
+  + TCP connect的建立: **3-way handshake**, reliable for point-to-point communication
+  + TCP协议进行通信的两个应用进程: 客户端(client side), 服务端(server side)
+  + 在连接中可进行大数据量的传输
+  + 传输完毕, 需要release connect, 效率低 
+    + Release connection: **四次挥手**
+      + 一般由客户端发起四次挥手的第一次挥手
++ UDP: 快
+  + 将数据, source, destnation封装成数据包, no need for connection
+  + 每个数据包的大小限制在64k内
+  + 发送不管对方是否准备好, 接收方收到也不会确认, not reliable
+  + 可以broadcasting
+  + 发送数据结束时无需释放资源, cheap & fast
 
 
 
 # 5. TCP网络编程
 
+622-624
+
+
+
+
 
 # 6. UDP网络编程
+
+
+
+
+
+
+
+
 
 
 # 7. URL编程
