@@ -28,4 +28,5 @@
 [day4: to-do-lists](./Day4/index.html)
 + pseudo element做依附于html元素的pseudo element: ✅
   + 注意✅是怎么做出来的, 只定义box的两个border-width, 然后rotate
+  + 注意pseudo element是占据其父及元素的content还是从box开始占据
 + JS toggle className
