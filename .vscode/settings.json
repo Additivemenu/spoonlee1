@@ -3,5 +3,8 @@
     "fullStack/JR_Lesson",
     "fullStack/Programming_Language"
   ],
-  "cSpell.words": ["Bufferednput"]
+  "cSpell.words": [
+    "Bufferednput"
+  ],
+  "liveServer.settings.port": 5501
 }

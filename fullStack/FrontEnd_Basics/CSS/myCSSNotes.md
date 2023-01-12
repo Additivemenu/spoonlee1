@@ -265,11 +265,11 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :book: [MDN: Pseudo element introduction](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
 
-将Pseudo element理解为某个element的附属元素, 僚机, 结合selector我们可以对这些Pseudo element做出单独的style的定义. 与element不存在父子关系, 只是附属元素用来做一些辅助的事情. e.g. add a logo at the left of a hyperlink
+将Pseudo element理解为某个element的附属元素, 僚机, 结合selector我们可以对这些Pseudo element做出单独的style的定义. e.g. add a logo at the left of a hyperlink
 
 常用的Pseudo element:
-+ `::before`: creates a pseudo-element that is the first child of the selected element. 
-+ `::after`: creates a pseudo-element that is the last child of the selected element
++ `::before`: creates a pseudo-element that is **the first child** of the selected element. 
++ `::after`: creates a pseudo-element that is **the last child** of the selected element
 + `::first-letter`
 + `::first-line`
 + `::selection`:  applies styles to the part of a document that has been highlighted by the user (such as clicking and dragging the mouse across text).

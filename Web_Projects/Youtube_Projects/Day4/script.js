@@ -1,4 +1,5 @@
 const list = document.querySelector("ul");
+
 list.addEventListener(
   "click",
   (ev) => {
