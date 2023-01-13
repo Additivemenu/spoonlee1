@@ -411,6 +411,7 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
     Margin: 0 auto;   /*上下外边距为0, 左右外边距auto*/
     ``` 
     :gem: [用margin实现box水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
+    除此之外, 当定义`height`, `line-height`的数值一样时, 也可实现在垂直方向山居中
   + [mozilla: margin collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) :question: 没太懂
     :gem: [margin合并塌陷](./CSS_Sample/Block_Dimension/34-margin合并塌陷.html) 
 + border
@@ -1224,7 +1225,9 @@ radical-gradient(...)
 ```
 
 ## 4.2 :full_moon: Background
-这里的background指往block element(块级元素, 并不仅是`<div>`)中加入background
+这里的background指往block element(块级元素, 并不仅是`<div>`)中加入background. 
+
+**注意background将和div里的content平行使用div的空间, background的position并不会影响到div里content的布局或位置**
 
 常用的background属性
 + `background-color`

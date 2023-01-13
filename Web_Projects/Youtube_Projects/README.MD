@@ -30,3 +30,10 @@
   + 注意✅是怎么做出来的, 只定义box的两个border-width, 然后rotate
   + 注意pseudo element是占据其父及元素的content还是从box开始占据
 + JS toggle className
+
+[day5: 用伪元素创建图标, 且能控制图标大小](./Day5/index.html)
+
+[day6: 选择google fonts并应用](./Day6/index.html)
++ 在google fonts网站选择需要的字体样式的适应大小
++ 注意font-family属性写在*{}里面
+
