@@ -132,7 +132,11 @@ if(x = 2){      // 在js中不报错,  console.log("1")会被执行. 因为2是t
 }
 ```
 
+
+:star:
+
 ```js
+// 以下只是简写, 并不是检测数值或者类型
 if(xxx){
 
 }
@@ -148,3 +152,82 @@ if(duckTest(xxx, true)){
 ---
 
 switch      22:08 - 
+
+```js
+function isApple(fruit){
+    case "banana":
+        // ...
+        return false;
+    case "apple":
+        // ...
+        return false; 
+    default: 
+        // ...
+
+}
+```
+
+现在还用switch多吗?把每个case都换成object的一个property是不是更好理解
+
+字典数据
+
+```js
+const dictionary = {
+    a:{},
+    b:{},
+    c:{}
+}
+```
+
+
+三元表达式:
+
+你懂的
+
+短路计算:
+
+``` js
+// 本质
+truthy && something = something
+
+falsy && ... = falsy
+
+truthy || ... = truthy
+
+falsy || something = something
+```
+
+
+
+```js
+const welcomeMessage = isVIP && 'welcome VIP!'   // if left is false, just return fasle. if left is true, then we look at right 
+const loginMessage = welcomeMessage || "login success!" // if left is true, return the left. if left is fasle, then we look at the right
+
+// isVIP false, loginMessage = "login success!"
+// isVIP true, loginMessage = "welcome VIP!"
+
+```
+
+应用: 少写几行代码
+
+```js
+document.querySelector('#dropdown-container').innerHTML = showDropdown && renderDropdown();
+
+
+
+// 等效
+if(showDropdown){
+    document.querySelector('#dropdown-container').innerHTML = renderDropdown();
+}else{
+    document.querySelector('#dropdown-container').innerHTML = false;
+}
+```
+
+
+loop
+
+
+function
+
+
+下节课接着讲匿名函数
