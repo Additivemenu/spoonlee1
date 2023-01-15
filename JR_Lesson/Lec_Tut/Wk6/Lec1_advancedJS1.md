@@ -19,8 +19,8 @@ html: hypertext markup language, up代表可以向上扩展, 一个html tag可�
 # JS基础知识复习  20:30
 
 
-## 1. debugger  
-
+## :star: 1. debugger  
+结合一个demo
 
 
 ## 2. statement 20:49-
@@ -212,7 +212,6 @@ const loginMessage = welcomeMessage || "login success!" // if left is true, retu
 
 ```js
 document.querySelector('#dropdown-container').innerHTML = showDropdown && renderDropdown();
-
 
 
 // 等效

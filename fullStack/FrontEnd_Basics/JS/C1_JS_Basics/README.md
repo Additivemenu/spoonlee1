@@ -1,3 +1,5 @@
+
+
 Content
 
 - [1. 变量与打印](#1-变量与打印)
@@ -35,6 +37,15 @@ Content
 ---
 
 # 1. 变量与打印
+
+变量的命名规则:
+
++ 第一个字符，可以是任意 Unicode 字母(包括英文字母和其他语言的字母)，以及美元符号($)和下划线(_)。 
+
++ 第二个字符及后面的字符，除了 Unicode 字母、美元符号和下划线，还可以用数字0-9。
+
+
+
 [variable.js](./variable.js)
 
 ## 1.0 Var
@@ -81,37 +92,89 @@ password = 'aasaaa';         // 会报错
 + const 限定一个primitive type的data后，无法更改，如果更改，就会报错。但是let就没有如此的限制。
 + const 限定一个object type variable, 只是表示这个variable的object type固定无法改, 但object内部的field依然可以改动. 本质上const只是限定变量需要的内存大小.
 
-# 2. :moon: 变量的数据类型
-变量的数据类型在JS中是implicit的, 不需要explicitly声明
 
-JS primitive data type
+
+
+
+# 2. 变量的数据类型
+## 2.0 :moon: JS 数据类型概述
+
+变量的数据类型在JS中是implicit的, 不需要明确声明. 只分为两类: primitive type, object type
+
+
+
+**JS primitive data type**
+
+常用的5种
+
 data type | description | default value
 -----|------|-----
 Number|包含int 和 float类型   | 0
 Boolean| 你懂的   | false
 String| 你懂的  | ""
-Undefined| 声明了变量但没给值, int a, a=undefined  | undefined
+Undefined| 声明了变量但没给值. e.g. `int a`, then `a=undefined` | undefined
 Null|声明变量为空, int a=null     | null
-Symbol|| 
-Bigint|| 
+Symbol||
+Bigint||
 
-JS object date type
+
+
+**JS object date type**
+
 data type | description | default value
 -----|------|-----
 Object|| 
 
----
+**即非primitive type的变量的类型都是Object类型**. e.g.: function, array都是是object type
 
-:star: 数值与boolean
+```js
+function myFav(name){		// myFav is object type
+    console.log(name);
+}
+
+const arr = [1,2,3,4]; // arr is object type
+
+class Bank{
+}
+const nab = new Bank() // nab的类型: Object
+```
+
+
+
+
+
+## 2.1 :full_moon:truthy & falsy
+
+只要不是false的, 就是true: 
+
++ trusy: String(exclude ''),  number (exclude 0),  object 
+
++ falsy: null,  undefined,  0,  ''
+
 | 数值类型 | Boolean |
 | ---- | ---- |
 | undefined | false |
 | null | false |
-| 数字 | 0， NaN (Not a Number) 都是false， 其他是true |
-| 字符串 | 空字符串是false， 否则为true |
+| Number | 0， NaN (Not a Number) 都是false， 其他是true |
+| String | 空字符串''是false， 其余为true |
 | 对象 | true |
 
+
+
+正因为JS的truthy, falsy机制,  JS语法与Java稍有不同:
+
+```js
+var x = 2
+
+if(x = 2){      // 在js中不报错,  console.log("1")会被执行. 因为2是trucy
+    console.log("1")
+}
+```
+
+
+
 基于JS中数值与boolean的转化关系, 我们可以写出更加简洁的代码:
+
 + primitive type 
   ```js
   const a =1;
@@ -122,6 +185,11 @@ Object||
   // 简洁写法
   if(a){
       ...
+  }
+      
+  // 上面实际上是:
+  if(duckTest(a, true)){
+  
   }
   
   ```
@@ -158,9 +226,13 @@ Object||
 
 ---
 
-## 2.1 Number
 
-## 2.2 Boolean & if statement
+
+## 2.2 primitive type
+
+### 2.1 Number
+
+### 2.2 Boolean & if statement
 + True: 字符串(包括字符串0)都是true
 + False: 数字0, null, undefined都是false
 ```js
@@ -192,7 +264,7 @@ If(statement){
 
 ```
 
-## 2.3 String
+### 2.3 String
 
 + `""` & `''`: 用于纯string
 + ``: 适用性更广, 可以引用变量
@@ -227,7 +299,7 @@ console.log(b5);
 ![](Src/JS_variable1.png)
 
 
-### 2.3.1 :star:String拼接
+#### 2.3.1 String拼接
 + 当一个str和一个num相加时，结果的数据类型和被加数一致(和java的print一致)
   + 特别地，+”1”代表将str类型的1转化为num类型. 但是其中的双引号内必须只有数字。
 + JS的`console.log()`支持多个argument(用`,`分隔), 打印结果顺序连接; 而Java中`print()`中只支持1个String, 需要用`+`连接
@@ -259,7 +331,7 @@ console.log(b11, typeof b11);   // 1 'number'
 ```
 
 
-## 2.4 Data type conversion
+## 2.3 :moon: Data type conversion
 numToString
 + `.toString()`
 + `String()`
@@ -356,6 +428,8 @@ xx ?? 5; // what is it?
 
 :book: [MDN: === & ==](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)
 
+
+
 + =, ==, ===(strict equality)
   + 一般我们无脑用===, 很少用== 
 + !=, !==
@@ -384,6 +458,20 @@ console.log(0 === false); // false
 console.log(0 !== false); // true, !== is opposite to ===
 ```
 
+注意:
+
++ JS中, 任何两个独立的object都不相等.
+
+  + 当比较primitive type的变量时, 比较值
+
+  + 当比较object type的变量时, 比较内存地址
+
+```js
+{} == {}; // false 
+{} === {}; // false
+```
+
+
 
 ## 3.3 三联运算符
 
@@ -401,31 +489,8 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
 
 
 ## 3.4 Logical Operator
-+ True: 字符串(包括字符串0)都是true
-+ False: 数字0, null, undefined都是false
-
-  + &&, ||
-    ```js
-    console.log(true && true);
-    let dayTime = 3;
-    if (dayTime > 18 && daytime < 24) {
-      console.log("night");
-    } else {
-      console.log("day");  // go through this branch
-    }
-
-
-    console.log(false || true); // true
-    
-    if ((dayTime > 18 && dayTime < 24) || (dayTime > 0 && dayTime < 6)) {
-      console.log("night");  // go through this branch
-    } else {
-      console.log("day");
-    }
-    
-    ```
-
-+ ||: true & false
++ ||
+  
   ```js
   console.log(0 || false);          // false, as num 0 is identical to false
   console.log(null || false);       // false
@@ -436,7 +501,7 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
   console.log(false||10);   // return 10
   console.log(4||10);       // return 4
   ```
-
+  
   优先return左边的真
   + 如果||左边为真，则return左边的值， 
   + 如果左边为假,右边为真，则return右边的，
@@ -444,10 +509,51 @@ console.log(pointers > 100 ? "gold" : "silver"); // identical to if else
   Application: 可以用于选择：默认端口||备用端口
 
 + 取反
-  ```js
-  console.log(true==2)   // return false
-  console.log(!2)  //return false
-  ```
+
+```js
+console.log(true==2)   // return false
+console.log(!2)  //return false
+```
+
+
+
+### 短路计算
+
+```js
+// 本质
+truthy && something = something
+falsy && anything = falsy
+
+truthy || anything = truthy
+falsy || something = something
+```
+
+
+
+应用: 简化代码
+
+```js
+document.querySelector('#dropdown-container').innerHTML = showDropdown && renderDropdown();
+
+
+// 等效
+if(showDropdown){
+    document.querySelector('#dropdown-container').innerHTML = renderDropdown();
+}else{
+    document.querySelector('#dropdown-container').innerHTML = false;
+}
+```
+
+```js
+const welcomeMessage = isVIP && 'welcome VIP!'   // if left is false, just return fasle. if left is true, then we look at right 
+const loginMessage = welcomeMessage || "login success!" // if left is true, return the left. if left is fasle, then we look at the right
+
+// isVIP false, loginMessage = "login success!"
+// isVIP true, loginMessage = "welcome VIP!"
+
+```
+
+
 
 ## 3.5 :moon: Spread Operator
 

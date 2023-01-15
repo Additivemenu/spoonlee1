@@ -6,9 +6,10 @@
 Chapter | 
 ------ | 
 [C1: JS Basics](./C1_JS_Basics/README.md)   |   
-[C2: JS Object-Oriented](./C2_Object/JS_object.md) |
+[C2: JS OOP](./C2_Object/JS_object.md) |
 [C3: JS Function](./C3_Function/README.md) |
 [C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md) |
+[C5: JS Debug & Exception](./C5_Debug/README.md) |
 
 ---
 学习资源

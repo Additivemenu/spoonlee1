@@ -124,6 +124,8 @@ IDEA的很多快捷键和Eclipse不同.
 常用kepmap
 + `ctrl`+`alt`+`t`:  surround with
 + `alt`+`insert` / `cmd`+`N`: generate Constructor, getter, accessor
++ `command` + `O`: search for the class and check the source code
++ `command` + `fn` + `F12`: display all methods in current class
 
 more on pdf or google
 
