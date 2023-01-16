@@ -32,7 +32,7 @@ Array在存储数据方面的弊端:
 Java集合可以分为Collection和Map两种体系:
 
 + `Collection` interface: **单列数据**, 定义了存取一组对象的方法的集合
-  + `List`: 元素有序, 可重复的集合
+  + `List`: 元素有序 (index有意义), 可重复的集合
   + `Set`: 元素无序, 不可重复的集合
 + `Map` (映射) interface: **双列数据**, 保存具有映射关系的"key-value pair"的集合
 
@@ -170,8 +170,6 @@ List接口: 存储有序的(元素在集合中的前后顺序是有意义), 可�
 
 源码分析 527
 
-
-
 + **jdk7的情况下**
 
 ```java
@@ -248,22 +246,50 @@ private static class Node<E> {
 
 除了2.1中Collection的常用方法, List接口中额外还有一些和索引有关的方法 (因为List存储的是有序的数据).   而Set中则不会有如下这些方法:
 
-530接着看
-
 * void add(int index, Object ele):在index位置插入ele元素
+
 * boolean addAll(int index, Collection eles):从index位置开始将eles中的所有元素添加进来
+
 * Object get(int index):获取指定index位置的元素
+
 * int indexOf(Object obj):返回obj在集合中首次出现的位置
+
 * int lastIndexOf(Object obj):返回obj在当前集合中末次出现的位置 
+
 * Object remove(int index):移除指定index位置的元素，并返回此元素 
+
+  * 注意与Collection.remove(Object obj)区分
+
+    ```java
+    list.remove(2);  // 默认指的是remove element with index = 2
+    
+    list.remove(new Integer(2)); // remove element '2'
+    ```
+
 * Object set(int index, Object ele):设置指定index位置的元素为ele 
+
 * List subList(int fromIndex, int toIndex):返回从fromIndex到toIndex位置的子集合
 
 
 
+---
+
+ArrayList常用方法总结:
+* 增: add(Object obj), 指的是在末尾增加元素
+* 删: remove(int index) / remove(Object obj)
+* 改: set(int index, Object obj)
+* 查: get(int index)
+* 插: add(int index, Object obj), 指的是在中间插入元素
+* 长度: size()
+* 遍历: Iterator / enhanced for loop  / normal loop
+
 
 
 ## 2.4 :full_moon: Collection: Set
+
+
+
+接下来看Set
 
 
 
