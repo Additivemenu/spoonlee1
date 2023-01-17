@@ -85,6 +85,7 @@ git vs. github
 + `git init`
   + 将当前文件夹作为git的一个repo, 成功后该文件夹将显示为branch: `git:(master)`
     + 这样会创建`.git文件夹`, 注意千万别碰这个文件夹否则它坏了基本修不好
+    + 注意只在独立的文件夹下运行`git init`, 如果当前文件夹属于某个git repo的子文件夹, 不要跑`git init`
 
 :question: 如何在本地电脑找到ubantu中的文件?
 
@@ -148,9 +149,17 @@ stage是在本地还是在云端? --本地啊
 + `git reset commit_id`
   从log中删除指定commit及之后的所有commit,  因而非常危险!
   + soft reset: put commit into stage, 还没丢失
-  + hard reset: 直接删除
+  + hard reset: 直接删除, 非常危险!
   <img src="./Src_md/git_reset.png" width=70%>
 
+  <img src="./Src_md/git_reset_soft.png" width=70%>
+
+  + `git reset HEAD^`和`git reset --soft HEAD~1`: 都是返回到输入`git commit -m"commit2"`之前的时刻, commit1 - now这段时间内做的修改都得以保留
+  + 区别是, `git reset HEAD^`是把commit1-commit2这段时间做的修改返回到工作区; 而`git reset --soft HEAD~1`是将commit1-commit2这段时间做的修改返回到暂存区; commit2-now这段时间内的修改本来就在工作区
+    
+  <img src="./Src_md/git_reset_hard.png" width=70%>
+
+  + `git reset --hard HEAD~1`: commit1 - now 之间所有做过的修改丢失
 
 ## step 2: 两条线的历史 branch & merge  1h38min-
 一般每个人是在自己的branch上工作, 工作完成后大家的branch会汇总到main-branch上.
@@ -247,14 +256,44 @@ local 与 remote repo的branch name的匹配
 
 ---
 ### :full_moon: merge vs. rebase 3h-3h06min
-+ `git merge`: commit之间是多线结构
+rebase, merge不要混用: 如果一个project刚开始就用rebase, 之后一直用rebase; 一个project一开始用merge, 之后一直用merge
+
++ `git merge`: commit之间是多线结构, 特点是保留所有的分支结构以及commit的时间顺序
+
   + 一旦branch多了, 很难梳理commit之间的关系 
   + merge是合并两个分支最新的状态生成一个新的commit
-+ `git rebase`: 另一种merge的方法, commit之间是单线结构, 
+  ```bash
+  // merge的操作：
+  git checkout master
+  git pull                // make sure local master is up to date
+  git merge feature1
+  // ... then do tests on local master
+  ```
+  <img src="./Src/../Src_md/git_merge.png" width=70%>
+
+---
+
++ `git rebase`: 另一种merge的方法, commit之间是单线结构, 特点是分支结构会被破坏且commit的时间顺序也会被打乱
   + 追溯历史更加直观, 工作中用的更多
   + rebase是把所有的commit在另一个分支上replay一遍，会丢失历史状态
   + 千万别在公共分支上rebase
   + `git rebase <branch_name>`: 将commit chain rebase on specified branch上 
+  ```bash
+  // 不要在公共分支上执行rebase操作.
+  // e.g. feature --> master的6步操作
+  git checkout master
+  git pull					// make sure local master up to date
+  git checkout feature1
+  git rebase master		//	在feature branch上rebase mater
+  git checkout master		// git merge feature1
+  git merge feature1
+  //... then do tests on local master
+  ```
+  <img src="./Src/../Src_md/git_rebase.png" width=70%>
+  
+  **过程是把当前branch的后于公共祖先的commit(的copy, 因为其实commit id不一样, 图中用5', 7'表示)嫁接到rebase branch的commit的后面**
+  + 注意上面的图例中是在main branch上git rebase develop, 这是不安全的, 永远不要在main branch上rebase! 在main branch上只做merge操作
+
 
 
 :tv: [ali could blibili: git merge vs. git rebase](https://www.bilibili.com/video/BV1Xb4y1773F/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
