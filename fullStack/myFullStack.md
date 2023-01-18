@@ -7,7 +7,8 @@
 + [Web Projects](./Web_Projects/README.MD)
 + [Programming Language](./Programming_Language/myPrograLang.md)
 + [Git](./Git/readme.md)
-
++ [Software Design](./Software_Design/mySoftwareDesign.md)
++ [MySQL](./mySQL/GuiguShang/mySQL.md)
 
 projects练习:
 

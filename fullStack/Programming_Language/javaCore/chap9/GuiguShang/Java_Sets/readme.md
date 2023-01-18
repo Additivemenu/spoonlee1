@@ -287,23 +287,92 @@ ArrayList常用方法总结:
 
 ## 2.4 :full_moon: Collection: Set
 
+Collection接口: 单列集合, 用来存储一个个的对象(int, boolean等基础类型不行)
+
++ Set接口: 存储无序的(元素在集合中的前后顺序没有意义), 不可重复的数据. 又名 --> 集合(高中意义的)
+  + HashSet
+    + LinkedHashSet
+  + TreeSet
 
 
-接下来看Set
+
+**Set 中没有定义额外的方法, 只能用Collection的方法**
 
 
 
 ### HashSet
 
+一: Set接口: 存储无序的(元素在集合中的前后顺序没有意义), 不可重复的数据. 以HashSet为例:
+
+* **无序性**: 不等于随机性. 存储的数据在底层的数组中的位置并未按照添加时的数组索引顺序决定, 而是由数据的hashCode来决定
+
+* **不可重复性**: 保证添加的元素按照equals()方法判断时, 不能返回true, 即相同的元素只能添加一个
+
+  
+
+二: 添加元素的过程 (HashSet底层为HashMap), 以HashSet为例:
+
+```bash
+我们向HashSet中添加元素a, 首先调用a所在类的hashCode()方法计算a的hashValue, 接着该hashValue被转化为a应该在HashSet底层数组的存放位置, 之后判断该存放位置是否已经有元素:
+		如果没有其他元素, 则a就放在这个位置上, a添加成功;        ---> 添加成功情况1
+		如果此位置上已经有其他元素b (或以linked lis的形式存在多个元素了), 则首先比较a与b的hashValue:
+					如果hashValue不相同, 则a添加成功;        ---> 添加成功情况下2
+					如果hashValue相同, 继续调用a所在类的equals()方法:
+								若equals()返回true, a添加失败;
+								若equals()返回false, a添加成功.        ---> 添加成功情况3
+```
+
+对于添加成功情况2,3: 元素a与已经存在在索引位置上的元素用linked list的形式连接存储.
+
+jdk7:  元素a放到数组中, 指向原来的元素
+
+jdk8:  元素a挂在原来的元素下面
+
+
+HashSet的底层: 数组 + 链表, 装入HashSet的元素需要同时重写equals()与hashCode()方法
+
+
+
+**要求: 向HashSet中添加的数据, 其所在类一定要重写: 1) hashCode()  2) equals()**
+
+*     要求: 重写的hashCode()与equals()要尽可能保持一致性: 即想等的对象必须具有相等的hashCode (不同的对象很小概率也有相同的hashCode)
+*     技巧: 对象中用作equals()比较的fields, 都应该参与到hashCode的计算; 直接用Intellij的command + N 生成即可
+
 
 
 ### LinkedHashSet
+
+LinkedHashSet作为HashSet的子类, 在添加数据的同时, 还维护了两个引用, 记录此数据的前一个数据和后一个数据,  使得我们遍历其内部数据时, 可以按照添加的顺序去遍历; 
+
+优点: 对于频繁的遍历操作, LinkedHashSet的查找效率要比HashSet高
 
 
 
 ### TreeSet
 
+底层用红黑树实现, 可以按照添加的元素的指定属性来排序
 
+要求: 向TreeSet中添加的数据, 要求是相同类
+
+两种排序方式: 
+
++ 自然排序(实现**Comparable接口**): 当构造器参数为空, 默认采用自然排序
+  + 自然排序中 判断TreeSet的成员相同, 不是调用equals(), 而是调用compareTo()返回0
+
++ 定制排序(**Comparator接口**): 当构造器参数为Comparator instance时采用定制排序
+  + 定制排序中, 判断成员相等,  不再是equals(), 而是compare()返回0
+
+
+
+544 TreeSet课后练习
+
+接下来看这个
+
+
+
+
+
+545 Set两道面试题
 
 
 

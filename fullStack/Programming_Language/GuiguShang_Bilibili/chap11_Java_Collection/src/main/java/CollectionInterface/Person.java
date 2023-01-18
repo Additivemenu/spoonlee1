@@ -6,7 +6,7 @@ import java.util.Objects;
  * @author xueshuo
  * @create 2023-01-04 4:43 pm
  */
-public class Person {
+public class Person implements Comparable{
     private String name;
     private int age;
 
@@ -40,6 +40,23 @@ public class Person {
                 "name='" + name + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    // 按照姓名从小到大排序, 年龄从小到大排序
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Person){
+            Person person = (Person) o;
+            int compare =  this.name.compareTo(person.getName());
+            if(compare != 0) {
+                return compare;
+            }else{
+                return Integer.compare(this.age, person.age);
+            }
+
+        }else{
+            throw new RuntimeException("input type not matched");
+        }
     }
 
     @Override
