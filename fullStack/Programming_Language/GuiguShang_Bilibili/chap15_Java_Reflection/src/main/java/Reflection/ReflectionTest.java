@@ -47,8 +47,10 @@ public class ReflectionTest {
         // 3. 通过反射, 调用对象指定的方法
         Method show = personClass.getDeclaredMethod("show");// 调用空参show()
         show.invoke(p);
-
-
     }
+
+
+    // 该看637了
+
 
 }
