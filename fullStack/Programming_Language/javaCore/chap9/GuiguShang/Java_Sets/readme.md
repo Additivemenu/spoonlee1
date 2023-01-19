@@ -1,14 +1,9 @@
 :computer:[Bilibili 尚硅谷: 集合 511-562 (514-517,  560-562 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=513&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 ---
-- [1. Java 集合框架概述](#1-java-集合框架概述)
-- [2. Collection Interface](#2-collection-interface)
-  - [2.1 Iterator Interface](#21-iterator-interface)
-  - [2.2 Collection: List](#22-collection-list)
-  - [2.3 Collection: Set](#23-collection-set)
-- [3. Map Interface](#3-map-interface)
-- [4. `Collections` 容器工具类](#4-collections-容器工具类)
-- [5. 数据结构简述](#5-数据结构简述)
+[TOC]
+
+
 
 ---
 
@@ -48,25 +43,29 @@ Java集合可以分为Collection和Map两种体系:
 
 ## 2.1 Collection的常用方法
 
-注意向Collection接口的实现类的对象中添加数据obj时, **要求obj所在类要@override equals()** ---> 这样contains(), remove()等方法才能有效, 因为它们底层调用了equals()
+由于继承, Collection的常用方法也可被List和Set使用
 
-CRUD
 
-### 增
+
+:bangbang: 注意向Collection接口的实现类的对象中添加数据obj时, **要求obj所在类要@override equals()** ---> 这样contains(), remove()等方法才能有效, 因为它们底层调用了equals()
+
+### CRUD
+
+增
 
 + `add(Object e)`: add e into coll
 + `addAll(Collection coll1)`: all all elements in coll1 into coll
 
+---
 
-
-### ''查''
+"查"
 
 + `contains(Object obj)`: 判断当前集合是否包含obj. 需要调用equals()方法, 需要重写equals()
 + `constainsAll(Collection coll1)`: 判断coll1中的所有元素是否都存在于当前集合中.
 
+---
 
-
-### 删
+删
 
 + `remove(Object obj)`: 从当前集合中删除obj元素.  同样需要调用equals()方法, 同样需要重写equals()
 + `removeAll(COllection coll1)`: 从当前集合中移除coll1中所有元素 (差集操作)
@@ -296,7 +295,7 @@ Collection接口: 单列集合, 用来存储一个个的对象(int, boolean等�
 
 
 
-**Set 中没有定义额外的方法, 只能用Collection的方法**
+:bangbang: **Set 中没有定义额外的方法, 只能用Collection的方法**
 
 
 
@@ -310,7 +309,12 @@ Collection接口: 单列集合, 用来存储一个个的对象(int, boolean等�
 
   
 
-二: 添加元素的过程 (HashSet底层为HashMap), 以HashSet为例:
+:full_moon: 二: 添加元素的过程 (HashSet底层为HashMap), 以HashSet为例:
+
+核心思想是想通过hashCode来减少判断成本： 
+
++ 如果两个成员的hashCode一样, 则它们不一定想等, 还需用equals()来double check是否真的想等; 
++ 如果两个成员的hashCode不想等, 则它们一定不相等, 这样就大大减少使用equals()的次数
 
 ```bash
 我们向HashSet中添加元素a, 首先调用a所在类的hashCode()方法计算a的hashValue, 接着该hashValue被转化为a应该在HashSet底层数组的存放位置, 之后判断该存放位置是否已经有元素:
@@ -352,7 +356,7 @@ LinkedHashSet作为HashSet的子类, 在添加数据的同时, 还维护了两�
 
 底层用红黑树实现, 可以按照添加的元素的指定属性来排序
 
-要求: 向TreeSet中添加的数据, 要求是相同类, 且实现了Comparable接口, 不然add时就会报错
+:bangbang: 要求: 向TreeSet中添加的数据, 要求是相同类, 且实现了Comparable接口, 不然add时就会报错
 
 两种排序方式: 
 
@@ -362,27 +366,57 @@ LinkedHashSet作为HashSet的子类, 在添加数据的同时, 还维护了两�
 + 定制排序(**Comparator接口**): 当构造器参数为Comparator的instance时采用定制排序
   + 定制排序中, 判断成员相等,  不再是equals(), 而是调用Comparator接口中compare()返回
   
-    
+
+
 
 **因而小心! 如果两个成员本身是不相等的, 只是他们中某个成员变量想等, 而你恰恰仅使用那个成员变量作为compare()或者compareTo()的判断依据, 此时这两个成员也会被认为是相等的**, 而想等的成员不会被重复加入Set中!
 
 
 
-544 TreeSet课后练习
+P544 TreeSet课后练习
 
-见intellij
-
-
-
-545 Set两道面试题
-
-该看这个了
+见intellij practice
 
 
+
+P545 Set两道面试题
+
+:gem: Practice: 去除一个List中的重复数据, 要求尽量简单
+
+
+
+:gem::gem: 面试题: 
+
+当中途改变set中某个成员的属性时, 该成员的hashCode若被计算就会和原来不同, 但该成员依旧呆在底层数组原来的位置上
+
+```java
+@Test
+public void test2(){
+    HashSet set = new HashSet();
+    Person p1 = new Person(1001,"AA");      // Person 已重写hashCode(), equals()
+    Person p2 = new Person(1002,"BB");
+
+    set.add(p1);
+    set.add(p2);
+    System.out.println(set);        // [Person{name='BB', age=1002}, Person{name='AA', age=1001}]
+
+    p1.name = "CC";     // 再次计算p1的hashCode就变了, 但p1放置在底层数组中的位置保持不变(这不就带来很多bug了吗?)
+    set.remove(p1);     // remove时先判断有没有, 有了再删除: 先判断hashCode, 此时计算出来的hashCode和p1被加入时不同， 因而被判断为p1不存在, 删除无效
+    System.out.println(set);        // [Person{name='BB', age=1002}, Person{name='CC', age=1001}]
+
+    set.add(new Person(1001,"CC")); //同理, Person(1001, "CC）的hashCode对应在底层数组上位置没被占领, 被加入成功
+    System.out.println(set);
+
+    set.add(new Person(1001,"AA"));// 虽然hashCode计算的位置上被p1占了, 但二者并不equals, 所以加入成功
+    System.out.println(set);
+}
+```
 
 
 
 # 3. Map Interface
+
+546
 
 
 

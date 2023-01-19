@@ -138,7 +138,7 @@ public class SetTest {
     }
 
 
-    // 定制排序
+    // 定制排序, 学完泛型之后会再做这个练习, 使之更严密
     @Test
     public void test4(){
         Comparator com = new Comparator() {
