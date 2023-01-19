@@ -352,27 +352,33 @@ LinkedHashSet作为HashSet的子类, 在添加数据的同时, 还维护了两�
 
 底层用红黑树实现, 可以按照添加的元素的指定属性来排序
 
-要求: 向TreeSet中添加的数据, 要求是相同类
+要求: 向TreeSet中添加的数据, 要求是相同类, 且实现了Comparable接口, 不然add时就会报错
 
 两种排序方式: 
 
 + 自然排序(实现**Comparable接口**): 当构造器参数为空, 默认采用自然排序
-  + 自然排序中 判断TreeSet的成员相同, 不是调用equals(), 而是调用compareTo()返回0
+  + 自然排序中 判断TreeSet的成员相同, 不是调用equals(), 而是调用Comparable接口中的compareTo()返回0
 
-+ 定制排序(**Comparator接口**): 当构造器参数为Comparator instance时采用定制排序
-  + 定制排序中, 判断成员相等,  不再是equals(), 而是compare()返回0
++ 定制排序(**Comparator接口**): 当构造器参数为Comparator的instance时采用定制排序
+  + 定制排序中, 判断成员相等,  不再是equals(), 而是调用Comparator接口中compare()返回
+  
+    
+
+**因而小心! 如果两个成员本身是不相等的, 只是他们中某个成员变量想等, 而你恰恰仅使用那个成员变量作为compare()或者compareTo()的判断依据, 此时这两个成员也会被认为是相等的**, 而想等的成员不会被重复加入Set中!
 
 
 
 544 TreeSet课后练习
 
-接下来看这个
-
-
+见intellij
 
 
 
 545 Set两道面试题
+
+该看这个了
+
+
 
 
 

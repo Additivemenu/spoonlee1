@@ -2,44 +2,21 @@
 
 :computer: [尚硅谷: I/O stream part1 583-608 (604-608 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
-:computer: [尚硅谷： I/O stream part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df) 讲对象流, 随机存取...
+:computer: [尚硅谷:  I/O stream part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df) 讲对象流, 随机存取...
 
-网络编程见 [chap4: 网络编程](../chap4/readme.md)
+I/O流与网络编程紧密相关, 网络编程见 [chap4: 网络编程](../chap4/readme.md)
 
 ---
-- [1. File class](#1-file-class)
-  - [1.1 File class constructor](#11-file-class-constructor)
-  - [1.2 File class的常用方法](#12-file-class的常用方法)
-    - [:moon: File class的获取功能](#moon-file-class的获取功能)
-    - [File class的重命名](#file-class的重命名)
-    - [File class的判断功能](#file-class的判断功能)
-    - [:full\_moon: File class的创建文件\&文件夹](#full_moon-file-class的创建文件文件夹)
-- [2. IO stream体系结构](#2-io-stream体系结构)
-  - [stream的分类](#stream的分类)
-  - [IO stream体系结构](#io-stream体系结构)
-- [3. 节点流(文件流)](#3-节点流文件流)
-  - [3.1 Char stream](#31-char-stream)
-  - [3.2 Byte stream](#32-byte-stream)
-- [4. 常用处理流](#4-常用处理流)
-  - [4.1 缓冲流(buffered stream)](#41-缓冲流buffered-stream)
-    - [4.1.1 缓冲流 vs. 节点流](#411-缓冲流-vs-节点流)
-    - [4.1.2 Practice](#412-practice)
-  - [4.2 转换流](#42-转换流)
-    - [4.2.1 补充: charSet(字符集)](#421-补充-charset字符集)
-- [5. 其他处理流](#5-其他处理流)
-  - [5.1 标准输入, 输出流](#51-标准输入-输出流)
-  - [5.2 打印流](#52-打印流)
-  - [5.3 数据流](#53-数据流)
-  - [5.4 :full\_moon: 对象流 与 序列化机制](#54-full_moon-对象流-与-序列化机制)
-    - [5.4.1 序列化机制](#541-序列化机制)
-- [5.4.2 SerialVersionUID](#542-serialversionuid)
-- [6. 随机存取文件](#6-随机存取文件)
-- [7. NIO.2中Path, Paths, Files class的使用](#7-nio2中path-paths-files-class的使用)
-- [8. 使用第三方jar包实现数据读写](#8-使用第三方jar包实现数据读写)
+[TOC]
 
 ---
 
-# 1. File class
+# 1. :moon: File class
+
+**<u>作为I/O stream的基础前置, File class允许我们创建File的实例, 不仅可以对应硬盘中真实存在的文件, 还可以代表路径</u>**
+
+
+
 :cry: UniMelb Java final project就栽在这个上面了
 
 
@@ -48,6 +25,8 @@ File object不仅可以代表文件, 还可以代表文件夹(即允许File obje
 注意路径分隔符在不同的OS中不同
 + Windows: '\\\\'
 + MAC: '/'
+
+
 
 ## 1.1 File class constructor
 
@@ -83,7 +62,7 @@ file1.renameTo(file2)
 ```
 
 ---
-### File class的判断功能
+### :full_moon: File class的判断功能
 + `public boolean isDirectory()`: 判断是否是文件目录 (File instance 可以是文件, 也可是文件目录)
 + `public boolean isFile()`: 判断是否是文件
 + `public boolean exists()`: 判断是否存在
@@ -99,19 +78,21 @@ file1.renameTo(file2)
 + `public boolean mkdir()`: 创建文件目录(文件夹). 如果此文件目录存在, 就不创建了. 如果此文件目录的上层目录不存在, 也不创建.
 + `public boolean mkdirs()`: 创建文件目录(文件夹). 如果上层文件目录不存在, 一并创建.
 
-**注意: 如果创建的文件或者文件目录没有写盘符路径, 那么默认创建在项目路径下**
+:bangbang:**注意: 如果创建的文件或者文件目录没有写盘符路径, 那么默认创建在项目路径下**
 
 ---
-File class的删除功能
+
+### File class的删除功能
+
 + `public boolean delete()`: 删除文件或文件夹
 
-**注意: Java中的删除不走回收站. 要删除一个文件目录, 该文件目录内不能包含文件或文件目录**
+:bangbang:**注意: Java中的删除不走回收站. 要删除一个文件目录, 该文件目录内不能包含文件或文件目录**
 
 ---
 
 <img src="../../Src_md/FileClass_schematics.png" width=80%>
 
-+ 如果File class的instance只是内存层面的(硬盘中不存在对应地文件或文件夹, 该File instance的name, path, length等属性都是默认值
+:bangbang:注意: 如果File class的instance只是内存层面的(硬盘中不存在对应地文件或文件夹, 该File instance的name, path, length等属性都是默认值
 
 
 
@@ -127,13 +108,15 @@ I/O用于处理设备之间的数据传输, 如read/write, 网络通讯等. Java
 
 ## stream的分类
 + 按操作数据单位分: 
-  + 字节流(byte stream, 基本单位 8 bit) 适合处理binary file, 比如图片视频
+  + 字节流(byte stream, 基本单位 8 bit) 适合处理binary file, 比如图片视频 (word文件就属于binary file)
+    + 此类stream的类名结尾为 Reader / Writer
   + 字符流(char stream, 基本单位 16 bit) 适合处理txt file
+    + 此类stream的类名结尾为 InputStream / OutputStream
 + 按数据流的流向分: 
   + 输入流
   + 输出流
 + 按流的角色分: 
-  + 节点流: 直接连接文件和内存的stream
+  + 节点流: **直接**连接文件和内存的stream
   + 处理流: 在已有的stream的基础上, 外面包的那层stream
 
 <img src="../../Src_md/IOStream_classification.png" width=70%>
@@ -149,40 +132,59 @@ output stream |  `OutputStream`  | `Writer`
 
 由这4个class派生的子类名称都是以其父类名作为子类名后缀:
 
-<img src="../../Src_md/IOStream_system.png" width=80%>
+<img src="./Src_md/IOStream_system.png" width=80%>
 
-+ 访问文件的四个流: 节点流
-+ 之后的流: 都是处理流
-+ 做到看到一个stream class的名字, 就知道是input/output stream, byte/char stream
++ **直接**连接文件的四个流 (上面第三排的): 节点流
+
++ 第三排之后的流: 都是处理流
+
+  
+
+# 3. :full_moon:节点流(文件流)
+**节点流直接与file相连, 完成与file之间的数据交换, 此类stream的类名以File开头.** 之后可以套接处理流, 完成更加特定的输入输出任务.
 
 
+I/O stream的使用一般都分成3步:
 
-# 3. 节点流(文件流)
-**节点流直接与file相连, 完成与file之间的数据交换.** 之后可以套接处理流, 完成更加特定的输入输出任务.
+```java
+// step 1. instantiate FileReader stream (inlcuding instantiate File class )
+// step 2. read
+// step 3. close stream 为了能够保证顺利关闭资源, 需要使用try-catch-finally
 
+try{
+  	// step1
+    // step2
+}catch(IOException e) {
+  	e.print()
+}finally{
+  	// step3
+}
+```
 
-I/O stream的使用一般都分成4步:
-
-+ step 1. instantiate File class 
-+ step 2. instantiate FileReader stream
-+ step 3. read
-+ step 4. close stream
-
-注意:
+:bangbang: 注意:
 + main function中相对路径是针对当前project而言
 + unit test中的相对路径是针对当前module而言
 
-## 3.1 Char stream
+
+
+## 3.1 Char stream (字符流)
 
 :star: 注意处理I/O stream中的可能会被throw Exception:
-  + Exception from step2: instantiate I/O stream `fr = new FileReader(file);`
-  + Exception from step3: loading `fr.read();`
-如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里, 保证stream一定会被关掉.
+  + Exception from step1: instantiate I/O stream `fr = new FileReader(file);`
+
+  + Exception from step2: loading `fr.read();`
+
+  如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里, 保证stream一定会被关掉.
 
 :gem: e.g. 一个标准的FileReader的使用模板, 写的时候先不写try-catch-finally, 最后再加上, 也分两步: 1) step1,2,3放进try-catch-finally 中的try block; 2) step4 放入finally block
-> `ctrl`+`alt`+`t`: surround with key map
+> `command+`alt`+`t`: surround with 
 
-`read()`: 一次只读取一个char
+---
+
+#### `read()` 读取一个char
+
+一次只读取一个char
+
 ```java
 /**
      * load hello.txt into main memory and display the content
@@ -225,8 +227,12 @@ I/O stream的使用一般都分成4步:
 
 ---
 
-`read(char[])`: 一次读取一个char[]; 需要用到辅助变量char[]作为buffer
-+ 注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在. **一般遵循一个原则: 读了几个char就操作几个char** 
+#### `read(char[])` 批量读取char数据
+
+一次读取一个char[]; 需要用到辅助变量char[]作为buffer
+
++ **一般遵循一个原则: 读了几个char就操作几个char** 
+  + :bangbang:注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在.
 ```java
 /**
   * 对read()操作升级: 使用read重载方法
@@ -240,10 +246,10 @@ public void testFileReader1()  {
         // 1. instantiate File class
         File file = new File("hello.txt");
 
-        // 2. instantiate FileReader stream
+        // step1 instantiate FileReader stream
         fr = new FileReader(file);
 
-        // 3. read(char[]) 批量读取
+        // step2 read(char[]) 批量读取
         // read(char[] cbuf): return the number of char read into cbuf; return -1 if reaching end of the file
 
         char[] cbuf = new char[5];      // char[] buffer
@@ -271,7 +277,7 @@ public void testFileReader1()  {
     } finally {
         if(fr != null){
             try {
-                // 4. close stream
+                // step3 close stream
                 fr.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -371,13 +377,19 @@ public void testFileReaderFileWriter() {
 }
 ```
 
-Char stream(字符流) is not suitable to deal with picture, because picture (e.g. .jpg) is binary file. Sometimes using char stream to deal with binary file will lead to error!
+:bangbang: 注意: Char stream(字符流) is not suitable to deal with picture, because pictures (e.g. .jpg) are binary files. Sometimes using char stream to deal with binary file will lead to error!
 
-## 3.2 Byte stream 
+
+
+## 3.2 Byte stream (字节流)
 形式和char stream一致, 还是分4步.
 
+可以单独处理一个Byte, 也可批量处理一个Byte[]
 
-# 4. 常用处理流
+
+
+
+# 4. :moon: 常用处理流
 
 ## 4.1 缓冲流(buffered stream)
 为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant DEFAULT_BUFFER_SIZE (see source code)决定
@@ -619,18 +631,21 @@ UTF-8编码原理:
 [solution](./Practice/MyInput.java)
 
 
+
+
 ## 5.2 打印流
 
-实现将基本数据类型的数据格式转化为String输出
+将基本数据类型的数据格式转化为String输出
 
 + `PrintStream`: byte stream
 + `PrintWrier`: char stream
 
+:gem: 一个应用: `System.setOut(PrintStream out)`: 将System.out从terminal输出改为对应的打印流输出到指定file. 因为System.out本身是byte stream, 所以argument为属于byte stream的`PrintStream`
 
-`System.setOut(PrintStream out)`: 将System.out从terminal输出改为对应的打印流输出到指定file. 因为System.out本身是byte stream, 所以argument为属于byte stream的`PrintStream`
+
 
 ## 5.3 数据流
-为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据. 
+为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据.  与对象流向对应.
 e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到程序中.
 
 + `DataInputStream`
@@ -638,10 +653,12 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 + `DataOutputStream`
   + 套接在`OutputStream`上 
 
-<img src="../Src_md/IOStream_datastream.png" width=70%>
+<img src="./Src_md/IOStream_datastream.png" width=70%>
 
 
-## 5.4 :full_moon: 对象流 与 序列化机制
+
+
+## 5.4 :full_moon: 对象流: 序列化机制
 
 :computer: [尚硅谷： IO流 part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
@@ -658,7 +675,7 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 
 序列化的好处在于可将任何实现了Serializable interface的object转化为byte stream data, 使其在保存和传输时可被复原. 序列化是RMI(Remote Method Invoke - 远程方法调用)过程的参数和返回值都必须先实现的机制, 而RMI又是JavaEE的基础. 因此序列化机制是JavaEE平台的基础.
 
-自定义类可序列化(serializable)要求:
+:bangbang: 自定义类可序列化(serializable)要求:
 
 如果需要让某个对象支持序列化机制, 则必须让对象所属的类及其属性是Serializable的, 即对象所属的类必须实现如下2个interface之一(否则会抛出NotSerializableException):
 + Serializable

@@ -12,12 +12,12 @@ import java.net.UnknownHostException;
  *   -- IP分类: IPv4 vs. Ipv6; 万维网 vs. 局域网
  *   -- domain name: www.google.com
  *   -- 本地回路地址: 127.0.0.1 对应localhost
- *   -- 实例化InetAddress: getByName(String host), getLocalHost()
+ *   -- 实例化InetAddress (注意这里不是用new): getByName(String host), getLocalHost()
  *         InetAddress对象的两个常用方法: getHostName() / getHostAddress()
  *
  * --port number:
  *   要求不同的进程应该有不同的port number, 范围: 0~65536 (2^16)
- *
+ * -- 端口号与IP地址的组合得出一个网络套接字L Socket
  * 
  *
  * @author xueshuo
