@@ -2,7 +2,7 @@
 
 ---
 
-Java Web基础
+更多网络编程细节在Java Web基础
 
 # 1. 网络编程概述
 Java是 Internet 上的语言，它从语言级上提供了对网络应用程
@@ -42,6 +42,17 @@ IP address: `InetAddress`
   + IPV6: 16 bytes, 写成8个无符号整数, 每个整数用4个hexdeciaml number表示. 整数之间用':'分隔 
     + e.g. 3ffe:3201:1401:1280:c8ff:fe4d:db39:1984
 + IP地址分类方式2: **公网地址(万维网使用)**, **私有地址(局域网使用)**
+
+
+
+---
+
+Java中的`InetAddress` class:
+
+```java
+实例化InetAddress (注意这里不是用new): getByName(String host), getLocalHost()
+			InetAddress对象的两个常用方法: getHostName() / getHostAddress()
+```
 
 
 
@@ -128,13 +139,64 @@ Client > -------socket------- < Server
 
 
 
+### TomCat
+
+625
+
+客户端 --- 服务端
+
++ 客户端:
+
+  + 自定义客户端(e.g. 微信, QQ)
+
+  + 浏览器
+
++ 服务端:
+
+  + 自定义服务端
+
+  + 现成的TomCat服务器
+
+:gem: Demo: 康师傅展示通过浏览器(客户端)来访问TomCat(服务端)的资源; 更多细节见Java Web
+
++ 通过terminal启动TomCat
++ 通过URL: localhost:8080/examples/hello.txt 来访问TomCat资源 
+
 
 
 ## 6. UDP网络编程
 
 626
 
-该看这个了
++ UDP数据报通过数据报套接字 `DatagramSocket` 发送和接收，系统不保证 UDP数据报一定能够安全送到目的地，也不能确定什么时候可以抵达
++ `DatagramPacket` 对象封装了UDP数据报，在datagram packet中包含了发送端的IP 地址和端口号以及接收端的IP地址和端口号
+  + UDP协议中每个数据报都给出了完整的地址信息，因此无须建立发送方和 接收方的连接.如同发快递包裹一样. 比TCP的接收过程要简单许多
+
+
+
+sender --- receiver
+
+```java
+sender{
+  // step1: instantiate DatagramSocket
+  
+  // step2: 封装数据包(encoding): readable ---> btye[]
+  
+  // step3: send
+  
+  // // close resource
+}
+
+receiver{
+  // step1: instantiate DatagramSocket
+  
+  // step2: receive
+  
+  // step3: 解封数据包(decoding):  byte[] ---> Readable
+  
+  // step4: close resource
+}
+```
 
 
 
@@ -144,6 +206,28 @@ Client > -------socket------- < Server
 ## 7. URL编程
 
 627-628
+
+**URL(Uniform Resource Locator)**:统一资源定位符，它表示 Internet 上某一 资源的地址
+
++ 它是一种具体的URI，即URL可以用来标识一个资源，而且还指明了如何locate 这个资源
++ 通过 URL 我们可以访问 Internet 上的各种网络资源，比如最常见的 www，ftp 站点。浏览器通过解析给定的 URL 可以在网络上查找相应的文件或其他资源。
+
+
+
+URL的基本结构由5部分组成:
+
+```bash
+<传输协议>://<主机名>:<端口号>/<文件名>#片段名?参数列表
+e.g.
+http://192.168.1.100:8080/helloworld/index.jsp#a?username=shkstart&password=123
+
+#片段名:即锚点，例如看小说，直接定位到章节
+?参数列表格式:参数名=参数值&参数名=参数值....
+```
+
+
+
+:gem: Demo: 康师傅演示如何通过URL对象来下载其对应的网络上的资源
 
 
 
