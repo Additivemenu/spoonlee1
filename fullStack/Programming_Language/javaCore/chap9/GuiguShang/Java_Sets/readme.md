@@ -1,6 +1,9 @@
 :computer:[Bilibili 尚硅谷: 集合 511-562 (514-517,  560-562 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=513&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
----
+
+
+# 0. Content
+
 [TOC]
 
 
@@ -33,15 +36,15 @@ Java集合可以分为Collection和Map两种体系:
 
 
 
-<img src="../../../Src_md/java_collection.png" width=80%>
+<img src="./Src_md/java_collection.png" width=80%>
 
 
 
-<img src="../../../Src_md/java_map.png" width=80%>
+<img src="./Src_md/java_map.png" width=80%>
 
 # 2. Collection Interface
 
-## 2.1 Collection的常用方法
+## 2.1 :moon: Collection的常用方法
 
 由于继承, Collection的常用方法也可被List和Set使用
 
@@ -414,13 +417,35 @@ public void test2(){
 
 
 
-# 3. Map Interface
+# 3. :full_moon: Map Interface
 
 546
+
+SortedMap是接口, 其他5个子类是实现类
+
+<img src="./Src_md/java_map.png" width=80%>
+
+
+
+Map中存储的key-value的特点 547
+
+(key, value) 等效于 (x, f(x))
+
++ value是可重复的
+
++ key是无序的, 不可重复的, 一个key只能对应一个value ---> entry也一定是无序的, 不可重复的
+
+实际上放入Map中的数据是一个个的entry, 一个entry有两个属性: key, value
+
+
 
 
 
 ## HashMap
+
+548-552 源码
+
+
 
 
 
@@ -428,7 +453,17 @@ public void test2(){
 
 
 
+
+
+
+
+
+
 ## SortedMap
+
+
+
+
 
 
 
@@ -438,7 +473,25 @@ public void test2(){
 
 
 
+## Hashtable
+
+
+
+### Properties
+
+
+
+
+
 # 4. `Collections` 容器工具类
+
+557
+
+
+
+
+
+
 
 
 

@@ -3,21 +3,22 @@
 ---
 
 跳转:
-+ [FrontEnd](./FrontEnd_Basics/myFrontEndBasics.md)
-+ [Web Projects](./Web_Projects/README.MD)
-+ [Programming Language](./Programming_Language/myPrograLang.md)
+
+Version control:
 + [Git](./Git/readme.md)
+
+Front End:
++ [FrontEnd](./FrontEnd_Basics/myFrontEndBasics.md)
+
+
+Back End:
++ [Programming Language](./Programming_Language/myPrograLang.md)
++ [Database](./Database/myDatabase.md)
+
+Good practice:
 + [Software Design](./Software_Design/mySoftwareDesign.md)
-+ [MySQL](./mySQL/GuiguShang/mySQL.md)
 
-projects练习:
-
-+ [Web projects practice](./Web_Projects/myWebProjects.md)
-
-JR lesson:
-+ [JR lesson](./JR_Lesson/JR_lesson.md)
-
-职业发展
+Career
 + [IT career](./myITCareer.md)
 
 ---
