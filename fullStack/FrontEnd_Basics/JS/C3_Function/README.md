@@ -20,6 +20,7 @@ Contents:
 > + 匿名函数: 函数的调用必须在函数定义之后
 
 
+:bangbang: 和Java很大的不同是, JS中函数可以作为变量被到处传递, 函数变量本质上也是object, 而Java中没有函数变量这种说法, Java只是通过functional interface来完成类似的功能 
 
 # 1. 定义与使用function
 

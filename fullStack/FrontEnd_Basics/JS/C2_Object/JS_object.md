@@ -1,10 +1,10 @@
-- [对象的调用](#对象的调用)
-	- [对象属性的调用](#对象属性的调用)
-	- [对象方法的调用](#对象方法的调用)
-- [Object Destructuring](#object-destructuring)
-	- [Destructuring a null object](#destructuring-a-null-object)
-	- [Nested object destructuring](#nested-object-destructuring)
-	- [Destructuring function arguments](#destructuring-function-arguments)
+- [1. 对象的调用](#1-对象的调用)
+  - [1.1 对象属性的调用](#11-对象属性的调用)
+  - [1.2 对象方法的调用](#12-对象方法的调用)
+- [2. Object Destructuring](#2-object-destructuring)
+  - [2.1 Destructuring a null object](#21-destructuring-a-null-object)
+  - [2.2 Nested object destructuring](#22-nested-object-destructuring)
+  - [2.3 Destructuring function arguments](#23-destructuring-function-arguments)
 
 
 
@@ -21,24 +21,25 @@ let star = {
 }
 ```
 
-# 对象的调用
-## 对象属性的调用 
+# 1. 对象的调用
+## 1.1 对象属性的调用 
 ```js
 console.log(star.name);
 
 console.log(star['name']);
 ```
 
-## 对象方法的调用
+## 1.2 对象方法的调用
 
 ```js
 console.log(star.sayHi());
 ```
 
 
-#  Object Destructuring
+# 2. Object Destructuring
 task: 即从object中提取信息, 并赋值给另外的变量
 
+普通写法:
 ```js
 const person = {
     firstName: 'john',
@@ -48,21 +49,24 @@ const person = {
 // when we want to extract property from an object
 const fName = person.firstName;
 const lName = person.lastName;
+```
 
+ES6新特性:
+```js
 // in ES6, more clean way to extract info (equivalent to the 2 lines above)
 const {firstName: fName, lastName: lName} = person;
 // 如果变量名和property name一样的话
 const {firstName, lastName} = person;
 ```
 
-## Destructuring a null object
+## 2.1 Destructuring a null object
 ```js
 function getPerson(){ return null;}
 const{firstName, lastName} = getPerson() || {};     // if left of `||` is true, just pick the left; if left of `||` is false (null & undefined are false), pick the right
 console.log(firstName)  // undefined, 空object的属性为undefined
 ```
 
-## Nested object destructuring
+## 2.2 Nested object destructuring
 ```js
 const employee = { 
 	id: 1001, 
@@ -80,7 +84,7 @@ console.log(name)           // return an object
 ```
 
 
-## Destructuring function arguments
+## 2.3 Destructuring function arguments
 e.g.1 task: print attributes of an object
 ```js
 // 普通写法
