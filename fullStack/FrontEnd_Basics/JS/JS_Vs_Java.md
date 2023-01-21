@@ -22,6 +22,7 @@ const officerIds = officers.map((officer)=>{
 
 # object & class
 + JS的object可以由字面量直接赋值产生
++ JS的object(including array and function)不需要任何额外方法, 可以直接被打印
 
 
 ## Array

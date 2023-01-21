@@ -37,7 +37,12 @@ console.log(star.sayHi());
 
 
 # 2. Object Destructuring
-task: 即从object中提取信息, 并赋值给另外的变量
+
+:book: [MDN: Destructing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+The destructuring assignment syntax is a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
+
+就相当于Java中的getter, 在JS中的写法
 
 普通写法:
 ```js
@@ -52,6 +57,12 @@ const lName = person.lastName;
 ```
 
 ES6新特性:
+
+```js
+// 利用json格式的key-newKey pair来批量提取一个object的属性的值
+{key1: newKey1, key2: newKey2} = object
+```
+
 ```js
 // in ES6, more clean way to extract info (equivalent to the 2 lines above)
 const {firstName: fName, lastName: lName} = person;
@@ -85,6 +96,9 @@ console.log(name)           // return an object
 
 
 ## 2.3 Destructuring function arguments
+
+允许我们当object作为函数输入参数时, 在传入参数期间就把它destruct, 只是一种简化写法的语法 (和用getter没本质区别)
+
 e.g.1 task: print attributes of an object
 ```js
 // 普通写法

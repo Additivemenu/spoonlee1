@@ -98,26 +98,145 @@ const s = `My name is ${name}, I am ${age} years old`   // 丝滑
 
 
 ---
-1h04min-
+1h04min-1h23min 解构赋值 Destructing
 
-解构赋值 Destructing
-
-就是getter的简洁写法
+就只是Java里getter在JS里的简洁写法, react里经常用
 
 之前讲过
 
 
 ```js
+// { }里填JSON格式的, 一般用来表示object
+// [ ] 里填数组格式的, 一般用来表示array
+
 const arr = ['A', 'B', 'C'];
-// 和上面等效的
-const arr = {0: 'A', 1: 'B', 2:'C'}
+// 和上面等效的, 因为数组也是obeject
+const arr1 = {0: 'A', 1: 'B', 2:'C'}
 
-
+// 解构数组
+const {0: aa, 1: bb, 2: cc} = arr   // aa = 'A', bb = 'B', cc = 'C' 
+// 和上面等效
+const [a, b, c] = arr   // a = 'A', b = 'B', c = 'C'
 
 ```
 
-从1h18min- 接着看
+
+
+
+1h23min-1h34min 歇息
+
+1h34min-
+不用看都是废话
+
+
+1h46min- 
+rest
 
 ---
+
+ES6知识点总结 1h50min-
+
++ Arrow function
++ let/const
++ template str
++ destruct
++ 函数的默认参数
+
+
+---
+1h51min-2h22min 函数参数的默认值
+
+ES6之前不能直接为函数的参数指定默认值, 只能采用变通的方式对每一个参数指定默认值:
+```js
+const hello = (name) =>{
+    if(! name){
+        name = "World!";
+    }
+
+    console.log(`Hello ${name}`);
+}
+
+hello();        // Hello World
+hello("Alice"); // Hello Alice
+
+```
+
+```js
+// ES6允许直接在argument里指定默认值
+const hello = (name = "world", address="Melbourne") => {
+    console.log(name + address)
+}
+```
+
+
+```js
+{
+    console.log("default parameter");
+    const marks = {
+        math: 100,
+        java: 99
+    };
+
+    const getTotalScore = (results) => {
+        const {
+            math: mathScore,
+            java: javaScore
+
+        }  = results
+
+        console.log('math: ' + mathScore)
+        console.log('Java: ' + javaScore)
+        console.log("total marks is: "+ (mathScore+javaScore) )
+
+    }
+    getTotalScore(marks);
+
+    // 利用destruct functional argument来设定函数的默认参数
+    console.log('-------利用destruct functional argument来设定函数的默认参数-------');
+    const getTotalScore1 = (
+        {math = 0, 
+        java = 0}) => {
+
+        console.log('math: '+ math)
+        console.log('Java: '+ java)
+        console.log("total marks is: "+ (math+java) )
+    }
+
+    marks1 = {
+        math: 95
+    }
+    getTotalScore1(marks1);
+
+
+    // e.g 在argument中使用'=', 设置两层的参数默认值
+    console.log('--------在argument中使用=, 设置两层的参数默认值----------');
+    const getTotalScore2 = ({
+            math = 0, 
+            java = 0
+        } = {
+            math: 0,
+            java: 0
+        }) => {
+
+        console.log('math: '+ math)
+        console.log('Java: '+ java)
+        console.log("total marks is: "+ (math+java) )
+    }
+
+    getTotalScore2();    // 空参, 则传入函数的object为{math:0, java:0}
+    getTotalScore2({math: 90});   
+
+}
+```
+
+下节课讲react
+
+下节课前写完p1
+
+
+
+
+
+
 
 
