@@ -441,16 +441,173 @@ Map中存储的key-value的特点 547
 
 
 
-## HashMap
+## 3.1 HashMap
 
-548-552 源码
+原理描述 548-549
+
+**HashMap底层实现原理, 以jdk7为例 (P548,549)**
+
+```java
+HashMap map = new HashMap();
+```
+
+底层在实例化后, 创建了一个长度为16的数组Entry[] table
+
+```java
+// ...可能已执行多次put
+map.put(key1, value1):
+```
+
+put()的底层过程:
+
+首先, 调用key1所在类的hashCode()方法计算key1的hashCode, 再通过算法把这个hashCode转化为Entry在数组中的位置
+
++ 如果此位置上数据为空, 此时entry添加成功         ---> 添加成功情况1
+
++ 如果此位置上数据不为空 (此位置上存在一个或多个数据(链表形式)), 比较key1和当前位置上数据的hashCode
+
+  + 如果key1的hashCode与已经存在的数据都不同, 此时entry添加成功         ---> 添加成功情况2
+
+  + 如果key1的hashCode与某个已经存在的数据(key2-value2)的相同, 调用key1所在类的equals()
+
+    + 如果equals()返回true, **<u>则使用value1替换key2的value2值</u>**. 这点和HashSet不同
+
+    + 如果equals()返回false, entry添加成功                  ---> 添加成功情况3
 
 
+
+resize的过程:
+
+补充: 关于情况2和3: 此时key1-value1和已经存在的数据使用链表形式存储
+
+在不断的添加过程中, 会涉及到扩容问题： 当当前Map中已有entry个数超过threshold(且此次put进来的entry要放置的位置非空)时扩容.
+
+默认扩容方式: 扩容为原来容量的2倍, 并将原有的数据复制过来, 重新计算每个数据应该放在新数组的哪个位置(rehashing)
+
+
+
+在JDK8中, 相较于JDK7的不同:
+
++ JDK8底层的数组是: Node[], 而非Entry[]  改了名字而已本质一样
++ new HashMap(): 底层还没有创建一个长度为16的数组; 首次调用put()时, 底层才会创建长度为16的Node[]
+
++ 底层结构的不同:
+
+  + JDK7底层结构只有: 数组 + 连标,
+
+  *      JDK8中底层结构: 数组 + 链表 + 红黑树
+         *      当数组某个索引位置上的元素以链表形式存在的数据个数 > 8, 且当前数组长度 > 64, 此索引位置上的所有数据改为用红黑树存储(O(n) --> O(logn))
+
+
+
+JDK7, 8 HashMap源码分析 550-551 
+
+(尚硅谷的学习资料里有更为详细的pdf讲解(包括HashMap的其他性质), 课堂上只是讲上面put()过程对应的代码)
+
++ 源码中用到位运算来提高效率
+  + 位运算表示%: num & (16-1)  <==> num % 16
+
++ if( con1 && con2) 与if (con1 || con2)
+
+  ```java
+  // 不能拆分, con1 作为先判断的condition, 如果con1==false, con2就不看了
+  if(con1 && con2){
+    ...
+  }
+  
+  // con1 作为先判断的条件, 如果con1 == true, con2就不看了
+  if(con1 || con2){  
+    ...
+  }
+  
+  // if(con1 || con2)可以拆分为如下两个if, 但还不是完全等效
+  if(con1)
+  {...}
+  if (con2)
+  {...}
+  ```
+
+  
+
+:bangbang: JDK8 HashMap重要常量与成员变量
+
+```java
+DEFAULT_INITIAL_CAPACITY : HashMap的默认容量，16
+MAXIMUM_CAPACITY : HashMap的最大支持容量，2^30 
+DEFAULT_LOAD_FACTOR: HashMap的默认加载因子: 0.75, 通过统计学选的(兼顾底层数组利用率, 又兼顾链表不能太长)
+TREEIFY_THRESHOLD:Bucket中链表长度大于该默认值，转化为红黑树 
+UNTREEIFY_THRESHOLD:Bucket中红黑树存储的Node小于该默认值，转化为链表: 8 
+MIN_TREEIFY_CAPACITY:桶中的Node被树化时最小的hash表容量: 64。(当桶中Node的 数量大到需要变红黑树时，若hash表容量小于MIN_TREEIFY_CAPACITY时，此时应执行 resize()扩容操作, 这个MIN_TREEIFY_CAPACITY的值至少是TREEIFY_THRESHOLD的4 倍。)
+  
+table:存储元素的数组，总是2的n次幂 
+entrySet:存储具体元素的集 
+size:HashMap中存储的键值对的数量 
+modCount:HashMap扩容和结构改变的次数。 
+threshold:扩容的临界值，= 容量*填充因子 0.75*16 = 12
+loadFactor:填充因子
+```
+
+为什么要'提前扩容'？ (即why load factor要选0.75 而不是1或者0.3?)
+
++ 如果load factor太低, 底层数组还没多少实际内容就扩容, 底层数组利用率很低, 浪费了很多内存
+
++ 如果load factor太高, 底层数组已经有很多数据了(而这些数据往往不会平均分配在每一个索引位置, 通常会导致某几条链表过长), 影响查找性能
 
 
 
 ### LinkedHashMap
 
+LinkedHashMap中重写了putVal()中的newNode()
+
+```java
+// 源码中:
+static class Entry<K,V> extends HashMap.Node<K,V> {
+    Entry<K,V> before, after;           // 能够记录添加数据的顺序
+    Entry(int hash, K key, V value, Node<K,V> next) {
+      super(hash, key, value, next);
+    }
+}
+```
+
+
+
+## Map中的常用方法
+
+**增删改:**
+
+put()既可以增也可改
+
++ Object put(Object key,Object value):将指定key-value添加到(或修改)当前map对象中
++ void putAll(Map m):将m中的所有key-value对存放到当前map中
++ Object remove(Object key):移除指定key的key-value对，并返回value
++ void clear():清空当前map中的所有数据
+
+
+
+
+
+---
+
+**元素查询:**
+
++ Object get(Object key):获取指定key对应的value
++ boolean containsKey(Object key):是否包含指定的key
++ boolean containsValue(Object value):是否包含指定的value
++ int size():返回map中key-value对的个数
++ boolean isEmpty():判断当前map是否为空
++ boolean equals(Object obj):判断当前map和参数对象obj是否相等
+
+
+
+
+
+---
+
+**元视图操作的方法:**
+
++ Set keySet():返回所有key构成的Set集合
++ Collection values():返回所有value构成的Collection集合 
++ Set entrySet():返回所有key-value对构成的Set集合
 
 
 
@@ -458,8 +615,7 @@ Map中存储的key-value的特点 547
 
 
 
-
-## SortedMap
+## 3.2 SortedMap
 
 
 
@@ -473,7 +629,7 @@ Map中存储的key-value的特点 547
 
 
 
-## Hashtable
+## 3.3 Hashtable
 
 
 
