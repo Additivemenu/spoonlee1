@@ -2,9 +2,7 @@ package MapInterface;
 
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * P546:
@@ -71,7 +69,13 @@ import java.util.Map;
  *      }
  *
  *  五: Map中的常用方法
- *      增删改查, 元视图操作
+ *      增: put(Object key, Object value)
+ *      删: remove(Object key)
+ *      改: put(Object key, Object value)
+ *      查: get(Object key)
+ *      插?: map内数据无序, 没有插入这个概念
+ *      长度: size()
+ *      遍历: keySet() / values() / entrySet() / loop over key + get(key)
  *
  *
  *
@@ -83,6 +87,7 @@ public class MapTest {
     /**
      * P554
      * **元视图操作的方法:**
+     * 遍历map中的数据, 以依次提取其中的数据
      *
      * + Set keySet():返回所有key构成的Set集合
      * + Collection values():返回所有value构成的Collection集合
@@ -90,7 +95,44 @@ public class MapTest {
      */
     @Test
     public void test5(){
-        // Iterator只能用于Collection
+        // Iterator只能用于Collection, 不能用于map, 但map的key, value, entry可以放进Collection, 之后用CollectioN的遍历方法就行
+        Map map = new HashMap();
+        map.put("AA", 111);
+        map.put(45, 222);
+        map.put("BB", 333);
+
+        // loop over key: keySet()
+        Set set = map.keySet();
+        Iterator iterator = set.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+
+        // loop over value: values()
+        Collection values = map.values();
+        for(Object obj:values){
+            System.out.println(obj);
+        }
+
+        // loop over entry (key-value pair)
+        // 方式1: entrySet()
+        Set entrySet = map.entrySet();
+        Iterator iterator1 = entrySet.iterator();
+        while(iterator1.hasNext()){
+            Object obj = iterator1.next();
+            // entrySet集合中的元素都是entry
+            Map.Entry entry = (Map.Entry) obj;
+            System.out.println(entry.getKey() + "--->"+ entry.getValue());
+        }
+
+        // 方式2: 利用key 查找对应 value
+        Set keySet = map.keySet();
+        Iterator iterator2 = keySet.iterator();
+        while(iterator2.hasNext()){
+            Object key =iterator2.next();
+            Object value = map.get(key);
+            System.out.println(key + "===>" + value);
+        }
 
 
 

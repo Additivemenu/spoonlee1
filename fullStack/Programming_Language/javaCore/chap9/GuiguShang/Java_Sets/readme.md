@@ -44,7 +44,7 @@ Java集合可以分为Collection和Map两种体系:
 
 # 2. Collection Interface
 
-## 2.1 :moon: Collection的常用方法
+## 2.1 :full_moon: Collection的常用方法
 
 由于继承, Collection的常用方法也可被List和Set使用
 
@@ -287,7 +287,7 @@ ArrayList常用方法总结:
 
 
 
-## 2.4 :full_moon: Collection: Set
+## 2.4 :moon: Collection: Set
 
 Collection接口: 单列集合, 用来存储一个个的对象(int, boolean等基础类型不行)
 
@@ -584,8 +584,6 @@ put()既可以增也可改
 
 
 
-
-
 ---
 
 **元素查询:**
@@ -599,8 +597,6 @@ put()既可以增也可改
 
 
 
-
-
 ---
 
 **元视图操作的方法:**
@@ -611,29 +607,74 @@ put()既可以增也可改
 
 
 
+---
 
+**总结**
+
+```
+增: put(Object key, Object value)
+*      删: remove(Object key)
+*      改: put(Object key, Object value)
+*      查: get(Object key)
+*      插?: map内数据无序, 没有插入这个概念
+*      长度: size()
+*      遍历: keySet() / values() / entrySet() / loop over key + get(key)
+```
 
 
 
 ## 3.2 SortedMap
 
-
-
-
-
-
-
 ### TreeMap
 
+:bangbang: 向TreeMap中添加key-value, 要求key必须是由同一个类创建的对象 (Map自己没这个要求), 因为要按照key进行排序: 自然排序， 定制排序
 
+
+
+我们同样可以自然排序(Comparable interface), 或者定制排序(Comparator interface)
 
 
 
 ## 3.3 Hashtable
 
-
-
 ### Properties
+
+```java
+// Properties: 结合IO流来处理配置文件. key和value都是String类型
+public static void main(String[] args) {
+  FileInputStream fis = null;
+  try {
+    // IO stream step1: file class
+    Properties pros = new Properties();
+    // 然后手动在project下创建jdbc.properties 文件, 写入
+    //name=Tom
+    //password=abc123
+    //注意=两边别写空格
+
+    // IO stream step2: generate stream given file
+    fis = new FileInputStream("jdbc.properties");
+
+    // IO stream step3: load stream and perform read | write operation
+    pros.load(fis); // 加载对应流的文件, 注意文件的编码应该和IDEA的编码匹配(尤其是文件中存在中文时)
+    String name = pros.getProperty("name");
+    String password = pros.getProperty("password");
+
+    System.out.println("name = " + name + ", password = " + password );
+  } catch (IOException e) {
+    e.printStackTrace();
+  } finally {
+    // IO stream step4: close resource
+    if (fis != null) {
+      try {
+        fis.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+}
+```
 
 
 
@@ -643,11 +684,64 @@ put()既可以增也可改
 
 557
 
++ Collections是一个操作Set, List和Map的工具类 (操作数组的工具类是Arrays)
+
++ Collections中提供了一系列static method来对集合元素进行排序, 查询和修改等操作, 还提供了对集合对象设置不可变, 对集合对象实现同步控制等方法
 
 
 
+## Collections的常用方法
+
+**排序操作:(均为static方法)**
+
++ :star: **reverse(List):**反转 List 中元素的顺序
+
+* :star: **shuffle(List)**:对 List 集合元素进行随机排序
+* sort(List):根据元素的自然顺序对指定 List 集合元素按升序排序
+* sort(List，Comparator):根据指定的 Comparator 产生的顺序对 List 集合元素进行排序
+* :star: **swap(List，int， int):**将指定 list 集合中的 i 处元素和 j 处元素进行交换
 
 
+
+**查找、替换**
+
++ Object max(Collection):根据元素的自然顺序，返回给定集合中的最大元素
+
+* Object max(Collection，Comparator):根据 Comparator 指定的顺序，返回给定集合中的最大元素
+* Object min(Collection)
+* Object min(Collection，Comparator)
+* :star: **int frequency(Collection，Object):**返回指定集合中指定元素的出现次数 
+* :star: **void copy(List dest,List src):**将src中的内容复制到dest中
+* :star: **boolean replaceAll(List list，Object oldVal，Object newVal)**:使用新值替换 List 对象的所有旧值
+
+:bangbang: 其中copy()的使用注意:
+
+```java
+// 报异常写法
+//        List destList = new ArrayList(list.size());
+//        System.out.println(destList.size());        // 0, 因为ArrayList的底层数组长度虽然为list.size(), 但是它的size属性依然为0, size的含义是ArrayList中有值的元素的个数
+//        Collections.copy(destList,list);
+//        System.out.println(destList);
+
+// 正确写法:array --> list
+List destList = Arrays.asList(new Object[list.size()]);
+System.out.println(destList.size());        // 5
+Collections.copy(destList, list);
+System.out.println(destList);               // [123, 43, 765, -97, 0]
+```
+
+
+
+**同步控制(多线程相关)**
+
+Collections 类中提供了多个 `synchronizedXxx() `方法，该方法可使将指定集 合包装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全 问题
+
+```java
+// 返回的list1即为线程安全的
+List list1 = Collections.synchronizedList(list);
+```
+
+<img src="./Src_md/Collections_sync.png" width=70%>
 
 
 
@@ -655,3 +749,12 @@ put()既可以增也可改
 
 
 # 5. 数据结构简述
+
+转左程云算法课
+
+
+
+
+
+
+

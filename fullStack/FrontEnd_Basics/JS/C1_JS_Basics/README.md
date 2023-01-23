@@ -61,7 +61,10 @@ Content
 :gem: [var-let-const区别](./01-let_const_var.html)
 
 ## 1.1 Let
+let & const 都属于ES6新特性
+
 定义变量时无需声明类型, 直接用let, 相当于声明变量开辟内存, 之后再次用到变量时不用再let了.
+
 ```js
 let my_name = "shawn";
 console.log(my_name);
@@ -267,7 +270,7 @@ If(statement){
 ### 2.3 String
 
 + `""` & `''`: 用于纯string
-+ ``: 适用性更广, 可以引用变量
++ ``: 适用性更广, 可以引用变量 ES6新特性
 
 ```js
 //data type

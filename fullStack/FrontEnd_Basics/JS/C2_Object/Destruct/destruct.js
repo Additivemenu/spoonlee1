@@ -1,25 +1,3 @@
-const fns = [];
-
-// giao, 把函数变量放入一个数组...
-for (let i = 0; i < 10; i ++) {
-    fns[i] = function(){
-        console.log(i);
-    }
-}
-
-console.log(fns[3] )     // 函数变量
-/**
- * ƒ (){
-        console.log(i);
-    }
- */
-
-fns[4]()    // 调用函数变量对应的函数体
-/**
- * 4
- */
-
-
 // 解构
 {   
     console.log("-----------destructing-------------");
@@ -79,7 +57,10 @@ fns[4]()    // 调用函数变量对应的函数体
             cc2
         ]
     }= student;
-    console.log(cc1 + " / "+ cc2)       // 无法destruct出超过一层的object: [object Object] / [object Object]
+    console.log(cc1 + " / "+ cc2)       // 无法destruct出超过一层的object: [object Object] / [object Object] 错啦! 这是因为混用了'\'
+    console.log('cc1')
+    console.log(cc1)
+    console.log(cc2)
 
     const{
         courses: myCourses
@@ -96,18 +77,45 @@ fns[4]()    // 调用函数变量对应的函数体
         subject1,
         subject2
     ] = myCourses
-    console.log(subject1)
-    console.log(subject2)
+    console.log("subject1: "+ subject1)
+    console.log("subject2: "+ subject2)
 
 
     student.courses[0] = {name: 'wow'}
-    console.log(student.courses)
-    console.log(myCourses)
-    console.log(subject1)
+    console.log("student.courses: "+ student.courses)
+    console.log('myCOurses: ' + myCourses)
+    console.log("subject1: " + subject1)
 
     // 有点离谱, 为什么subject1不是myCourese[0]的shallowCopy?
     myCourses[0] = {name: "mycourses0"};    
     console.log(subject1)           //  'javaspring'
+
+    // 
+    console.log("-----------检查解构object成员变量是否是shallowCopy-----------")
+    const personArr=[
+        {name: "Tom", age: 12, courses:[{name: 'math', mark:90}, {name: 'physics', mark:89}] },
+        {name: "Jerry", age: 16, courses:[{name: 'math', mark:100}, {name: 'physics', mark:95}]}
+    ]
+    const [
+        tom,                // tom is a shallowCopy of personArr[0]
+        jerry
+    ]= personArr
+    console.log(tom)         // 注意打印只写tom, 别写别的字符串拼接, 不然显示[object Object]
+    console.log(jerry)
+
+    tom.age = 14
+    console.log(tom)            // 14
+    console.log(personArr)      // 14
+
+    // 想get第三层的object 变量也是可以的, 但是明显写起来会绕了很多
+    const [
+        {courses: tomCourses},
+        {courses: jerryCourses}
+    ] = personArr;
+
+    console.log('tom, jerry courses:')
+    console.log(tomCourses)
+    console.log(jerryCourses)
 
 
     // ...rest
@@ -118,67 +126,6 @@ fns[4]()    // 调用函数变量对应的函数体
     } = student;
     console.log(studentWithoutName);      // 除去name属性的object打印出来  (嵌套了再多层的object也可以)
 
-
-
-}
-
-
-// ⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️JS函数的默认参数⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️
-{
-    console.log("default parameter");
-    const marks = {
-        math: 100,
-        java: 99
-    };
-
-    const getTotalScore = (results) => {
-        const {
-            math: mathScore,
-            java: javaScore
-
-        }  = results
-
-        console.log('math: ' + mathScore)
-        console.log('Java: ' + javaScore)
-        console.log("total marks is: "+ (mathScore+javaScore) )
-
-    }
-    getTotalScore(marks);
-
-    // 利用destruct functional argument来设定函数的默认参数
-    console.log('-------利用destruct functional argument来设定函数的默认参数-------');
-    const getTotalScore1 = (
-        {math = 0, 
-        java = 0}) => {
-
-        console.log('math: '+ math)
-        console.log('Java: '+ java)
-        console.log("total marks is: "+ (math+java) )
-    }
-
-    marks1 = {
-        math: 95
-    }
-    getTotalScore1(marks1);
-
-
-    // e.g 在argument中使用'=', 设置两层的参数默认值
-    console.log('--------在argument中使用=, 设置两层的参数默认值----------');
-    const getTotalScore2 = ({
-            math = 0, 
-            java = 0
-        } = {
-            math: 0,
-            java: 0
-        }) => {
-
-        console.log('math: '+ math)
-        console.log('Java: '+ java)
-        console.log("total marks is: "+ (math+java) )
-    }
-
-    getTotalScore2();    // 空参, 则传入函数的object为{math:0, java:0}
-    getTotalScore2({math: 90});   
 
 
 }

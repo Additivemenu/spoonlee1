@@ -20,7 +20,7 @@ Contents:
 > + 匿名函数: 函数的调用必须在函数定义之后
 
 
-:bangbang: 和Java很大的不同是, JS中函数可以作为变量被到处传递, 函数变量本质上也是object, 而Java中没有函数变量这种说法, Java只是通过functional interface来完成类似的功能 
+:bangbang: 和Java很大的不同是, JS中函数可以作为变量被到处传递(甚至可以被放入数组), 函数变量本质上也是object, 但Java中没有函数变量这种说法, Java只是通过functional interface来完成类似的功能 
 
 # 1. 定义与使用function
 
@@ -45,11 +45,11 @@ let fn = function(){    // 将匿名函数赋值给一个名为fn的变量
   function toCelsius(fahrenheit) {    //华氏度to摄氏度
     return (5/9) * (fahrenheit-32);
   }
-
+  
   document.getElementById("demo").innerHTML = toCelsius(77);    // return results
-
+  
   document.getElementById("demo").innerHTML = toCelsius;  // return function object
-
+  
   ```
 + Local variable also holds for JS: variable defined within a function can only be used in that function
 + a function without `return` statement will return `undefined` 
@@ -73,15 +73,15 @@ func2("apple");
   ```js
   function func4(array) {
       let cum = 0;
-
+  
       array.forEach((num) => {
         cum += num;
       });
       console.log(cum);
     }
-
+  
     func4([1, 2, 3, 4, 5, 6]); // input has to be an array
-
+  
   ```
 
 + 柔性数组
@@ -93,7 +93,7 @@ func2("apple");
     });
     console.log(cum);
   }
-
+  
   func4_1(1, 2, 3, 4, 5, 6); // input is not an array, lawful
   func4_1(...[1, 2, 3, 4, 5, 6]); // expand the array, result in the same as above, lawful
   ```
@@ -103,11 +103,11 @@ func2("apple");
   // return
   let cum = func5(1, 2);
   console.log(cum);
-
+  
   function func5(a, b) {
     return a + b; // skip over the code left behind the return
   }
-
+  
   ```
 
 
@@ -123,16 +123,16 @@ func2("apple");
     name: "Shawn",
     age: 18,
   };
-
+  
   function func6(obj) {
     console.log("name:", obj.name);
     console.log("age:", obj.age);
     console.log(obj);
-
+  
     obj.name = "xueshuo"    // alter obj status
     obj.age = 30;           // alter obj status
   }
-
+  
   func6(obj);
   console.log(obj);
   //---------------------------------
@@ -141,7 +141,7 @@ func2("apple");
   // return: 出口之一，特点是产生新内容,同时不更改原始数据
   // 复杂结构的传参: 出口之一, 特点是可以获得内容修改, 缺点是更改了原始的数据。
   //---------------------------------
-
+  
   ```
   注意打印object和打印object的属性的不同之处
   <img src="../Src/JS_objectAsFunctionInput.png" width = 80%>
@@ -152,18 +152,18 @@ func2("apple");
     + 但这种方式函数只能通过return来向外界传递信息, 相当于对输入对象的deepCopy进行操作, 然后return这个deepCopy.
     ```js
     function func7({ name, age }) {
-
+    
       name = "shawn";
       age = "20";
       return { name, age };
     }
-
+    
     const people = {
       // const only confines type of obj, cannot confine its content
       name: "Shawn",
       age: 18,
     };
-
+    
     const newPeople = func7(people);
     console.log(newPeople); 
     console.log(people); 
@@ -174,7 +174,7 @@ func2("apple");
 
 
 # 2. :moon: 箭头函数
-JS的特色
+ES6新特性
 
 + 对于标准的function定义方式, function的使用可以在其定义之前, 也可以在定义之后, 因为定义的函数会被存在一个表里,与主函数代码平行来被调用
 
@@ -190,8 +190,10 @@ JS的特色
 
 ## 2.1 箭头函数的定义
 
-> 箭头函数是匿名函数的一种, 不绑定arguments
-> 匿名函数和普通的函数也存在区别
+箭头函数是匿名函数的一种, 不绑定argument
+
+匿名函数和普通的函数也存在区别
+
 ```js
   const getArrMax = function(arr){      // 把匿名函数赋给变量getARRMax
     ...
@@ -210,6 +212,10 @@ const arrow_func1 = () => {
 
 e.g. 一个箭头函数的例子: 先定义后使用
 ```js
+// JS中, 函数是普通老百姓, 没有特权, 函数和变量没有任何区别
+// 函数也可以作为变量的值储存，也可以作为参数传递，也可以作为返回值返回
+// 区分 fn = function(){...} 函数变量赋值 与 fn() 函数调用
+
 const array = [11,12,13,14,15]
 const array_func4 = (num) =>{
   console.log(num)
