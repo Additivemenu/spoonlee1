@@ -2,7 +2,14 @@
 
 ---
 
+[TOC]
+
+
+
+---
+
 # 1. Exception概述与体系结构
+
 系统运行的过程中会遇到代码之外的因素带来的一些问题, 如: 客户输入数据的格式, 读取文件是否存在, 网络是否始终通畅... 此时应该给客户以提醒来提升用户体验.
 
 Exception: Java中, 将程序执行中发生的不正常情况成为Exception (代码语法错误, 逻辑错误不是Exception)
@@ -24,8 +31,8 @@ Java程序在执行中所发生的Exception event(广义的异常)可以分为�
 + **编译时异常**: 下图红色
 + **运行时异常**: 下图中`Exception`下的蓝色
 
-<img src="../Src_md/Exception_structure.png">
-  
+<img src="./Src_md/Exception_structure.png">
+
 :book: [Java17 doc: Exception](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html): 还有很多编译时异常
 
 # 2. 常见Exception
@@ -135,18 +142,32 @@ Java Exception handling: 抛抓模型
 2. 抓: 可以理解为异常的处理方式:
    + try-catch-finally
    + throws
+   
+   
 
 ## 3.1 `try-catch-finally`
 375- 有空再复习
 
 在本代码块handle Exception
 
+
+
+
+
 ## 3.2 `throws`
 
 在上级代码块handle Exception, 至多在main()处handle Exception
+
+
+
+
+
+
 
 ## 3.3 手动抛出Exception: `throw`
 
 
 
 # 4. 用户自定义Exception class
+
+380-383

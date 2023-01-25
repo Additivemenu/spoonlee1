@@ -1,8 +1,8 @@
 
-+ [7.1~7.3 Exception](./Exception.md)
-+ [7.4 Assertion (断言)](./Assertion.md)
-+ [7.5 Log (日志)](./Log.md)
-+ 7.6 Debug techniques
++ :pencil: [7.1~7.3 Exception](./Part1_Exception/Exception.md)
++ :pencil: [7.4 Assertion (断言)](./Part2_Assertion/Assertion.md)
++ :pencil: [7.5 Log (日志)](./Part3_Log/Log.md)
++ :pencil: 7.6 Debug techniques
 
 
 

@@ -7,9 +7,9 @@ Basics
 + [chap3 Java basics](./chap3/README.md) 
 
 OOP 与 模块化
-+ [chap4 Object & Class](./chap4/README.md)
-+ [chap5 Inheritance & Polymorph & Reflection](./chap5/readme.md) 
-+ [chap6 Interface, lambda & inner class ](./chap6/readme.md)
++ :full_moon: [chap4 Object & Class & Encapsulation](./chap4/README.md)
++ :full_moon: [chap5 Inheritance, Polymorph & Reflection](./chap5/readme.md) 
++ :full_moon: [chap6 Interface, lambda & inner class ](./chap6/readme.md)
 
 API学习
 + [chap7 Exception, assertion, log](./chap7/readme.md) 
