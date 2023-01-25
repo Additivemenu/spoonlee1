@@ -1,13 +1,102 @@
 1.13 tut
 
-演示CRUD后端基本流程
+# 内容总结
+
+演示CRUD后端基本流程, 内容:
+
++ 如何用docker搭建PostgreSQL数据库
++ 如何连接PostgreSQL数据库和pgadmin(PostgreSQL tool)
++ 如何在intellij里写SQL
++ 演示了CRUD中的C --- 把URL的body作为RequestBody传入controller, 然后再将其化为entity存入数据库
++ lombok提供很多的自动生成代码的annotation
+  + `@Getter`
+  + `@Setter`
+  + `@ToString`
+  + `@RequiredArgsConstructor` [lombok constructor annotation](https://projectlombok.org/features/constructor)
+    + 在intellij的左侧底部： structure可以查看当前类的所有方法
+
+
+
+## springboot后端代码
+
+### controller
+
++ controller和service传递信息, controller class内有一个service object
++ controller调用service object的方法
+  + 注意service obejct的方法的argument得是dto
++ controller实际上作为与外间数据交换的portal, 注意controller里的方法的argument需要annotation, 才能有效读取URL的输入信息
+
+
+```java
+@RestController
+@RequestMapping("users")    // URL中跟着/api/v1的成分
+@RequiredArgsConstructor    // for UserService
+public class UserController {
+    private final UserService userService;  // controller要调用service, 以传递数据 不要在controller调用repository
+
+    // 接收URL作为输入， 然后进行一系列操作
+    @PostMapping
+    public void createUser(@RequestBody UserPostDto userPostDto){
+ 				// 传入userPostDto
+        userService.createUser(userPostDto);
+    }
+}
+```
+
+### service
+
++ service和repository传递信息, service class内有一个repository object
++ service调用repositoy的方法
+  + 注意repository的方法的argument必须是entity, 而不是dto
+
+```java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public void createUser(UserPostDto userPostDto){
+        System.out.println(userPostDto);
+
+        User user = new User();
+        user.setEmail(userPostDto.getEmail());
+        user.setName(userPostDto.getName());
+        user.setPassword(userPostDto.getPassword());
+
+        // 将user存进table
+        userRepository.save(user);      // argument必须是entity, not dto
+    }
+
+}
+```
+
+### repository
+
++ 我们的repository interface直接继承JpaRepository定义好的CRUD方法
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+
+}
+```
+
+
+
+结合锤姐上课的SpringBoot2架构图理解
+
+![Catalog_structure](./Src_md/Catalog_structure.png)
+
+
+
+
 
 ---
-# Step1 前期准备 0min-
+# 1. 前期准备 0min-
 
 ## 安装:
 
-+ docker: 用来创建数据库
++ docker: 通过docker-compose.yml配置文件, 用来创建数据库
 + postman: 模拟HTTP request, 做测试
 + Pgadmin: 数据库可视化工具?
 
@@ -128,9 +217,9 @@ send后, 返回
 
 
 ---
-# Step2 搭建与连接数据库 28min-
+# 2. :full_moon: 搭建与连接数据库 28min-
 
-## 搭建数据库 28min-
+## 2.1 Docker: 搭建数据库 28min-
 
 在intellij的project路径下, 创建docker-compose.yml文件
 
@@ -207,7 +296,9 @@ environment:
 
 
 
-## 尝试连接刚才搭建的数据库 40min-
+## 2.2 Pgadmin: 可视化刚才搭建的数据库 40min-
+
+即连接pgadmin和刚才用docker搭建的数据库
 
 打开pgadmin, 右键点击server > register server >在General随便起个名字, 在Connection中 输入和刚才docker-composer.yml相匹配的参数(DB, user, password), 之后save, 此时可以看到左侧栏中出现了一个大象头图标, 表示连接成功
 
@@ -217,13 +308,11 @@ pgadmin是作为一个数据库可视化工具吗?
 
 
 
-## 创建一个数据库里的table 45min-
+## 2.3 创建一个数据库里的table 45min-
 
 :bangbang: 严禁在pgadmin里写data definition language, 因为这样做没有table的创建记录, 容易造成团队里的信息差
 
-我们统一在在intellij里用sql创建table: src>main>resource>db.migration>new file: V1__create_user_table.sql (注意这个命名法. 以Version number开头, 跟双下划线)
-
-在这个文件里面写:
+我们统一在在intellij里用sql创建table: src>main>resource>db.migration>new file: V1__create_user_table.sql (注意这个命名法. 以Version number开头, 跟双下划线) (如果是intellj终极版, 可以创建flyway文件), 在这个文件里面写:
 
 :bangbang: 一定注意sql的类型要和springboot写的@entity修饰的entity的类型匹配！
 
@@ -289,13 +378,13 @@ spring:
 
 
 
-# Step3 开始写后端代码 1h13min-
+# 3. 开始写后端代码 1h13min-
 
 完成controller  -->  service ---> repository --> database的一个简单流程
 
 
 
-## Controller: 接收前台的数据 1h13min-
+## 3.1 Controller: 接收前台的数据 1h13min-
 
 在application所在的路径下新建package: controller,
 
@@ -391,11 +480,13 @@ UserPostDto(name=user, email=user@gmail.com, password=password888)
 
 ---
 
-## 把前台接收到的数据放到数据库 1h27min-
+## 3.2 实现createUser() 1h27min-
+
+实现把前台接收到的request body转化为entity, 然后将其放到数据库
 
 同时在project路径下, 新建package: repository, entity, service
 
-### entity 1h27min-
+### 3.2.1 entity 1h27min-
 
 在entity包下新建: User.java
 
@@ -426,7 +517,7 @@ public class User {
 
 
 
-### repository 1h43min-
+### 3.2.2 repository 1h43min-
 
 在repository包下新建interface: UserRepository
 
@@ -451,7 +542,7 @@ JpaRepository里已经定义了CRUD的方法
 
 
 
-### service 1h47min-
+### 3.2.3 service 1h47min- 2h02min
 
 在Service包下新建UserService class
 
@@ -524,68 +615,3 @@ body中输入：
 
 改变email (因为Unique) 再send, 会发现pgadmin中数据库也更新了
 
-
-
-# 总结 2h02min-
-
-## controller
-
-+ controller和service传递信息, controller class内有一个service object
-+ controller调用service object的方法
-
-```java
-@RestController
-@RequestMapping("users")    // URL中跟着/api/v1的成分
-@RequiredArgsConstructor    // for UserService
-public class UserController {
-    private final UserService userService;  // controller要调用service, 以传递数据 不要在controller调用repository
-
-    // 接收URL作为输入， 然后进行一系列操作
-    @PostMapping
-    public void createUser(@RequestBody UserPostDto userPostDto){
- 				// 传入userPostDto
-        userService.createUser(userPostDto);
-    }
-}
-```
-
-## service
-
-+ service和repository传递信息, service class内有一个repository object
-+ service调用repositoy的方法
-
-```java
-@Service
-@RequiredArgsConstructor
-public class UserService {
-
-    private final UserRepository userRepository;
-
-    public void createUser(UserPostDto userPostDto){
-        System.out.println(userPostDto);
-
-        User user = new User();
-        user.setEmail(userPostDto.getEmail());
-        user.setName(userPostDto.getName());
-        user.setPassword(userPostDto.getPassword());
-
-        // 将user存进table
-        userRepository.save(user);      // argument必须是entity, not dto
-    }
-
-}
-```
-
-## repository
-
-+ 我们的repository interface直接继承JpaRepository定义好的CRUD方法
-
-```java
-public interface UserRepository extends JpaRepository<User, Long> {
-
-}
-```
-
-
-
-结合锤姐上课的SpringBoot2架构图理解

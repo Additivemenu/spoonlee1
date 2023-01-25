@@ -2,6 +2,7 @@ package com.example.cruddemorecode.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -20,6 +21,7 @@ import java.time.OffsetDateTime;
 @Entity   // 证明这是个Entity, 是要与数据库作用的
 @Getter
 @Setter
+@ToString
 public class User {
     @Id     // 指定修饰的属性为primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 指定主键自动生成模式： 自增长
