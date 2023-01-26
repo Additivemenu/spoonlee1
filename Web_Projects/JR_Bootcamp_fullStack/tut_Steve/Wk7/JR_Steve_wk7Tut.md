@@ -26,6 +26,8 @@ get
 
 
 
+
+
 ## 将get的结果打印在terminal
 
 接上节课, 在UserController里写入:

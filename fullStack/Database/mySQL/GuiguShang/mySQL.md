@@ -4,7 +4,7 @@
 
 针对MySQL 8.0.26
 
-一共18章
+一共18章, 采用MySQL8.0, 不是PostgresSQL
 
 + Part1 1-95: MySQL初级
 + Part2 96-199: MySQL高级特性
