@@ -60,11 +60,16 @@ abstract class Person extends Creature{
 }
 
 
-abstract class Student extends Person {
+class Student extends Person {
 
     @Override
     public void breath() {
         System.out.println("student breath");
+    }
+
+    @Override
+    public void talk(){
+
     }
 
 }

@@ -17,4 +17,7 @@ package Abstract;
  * @create 2023-01-24 11:17 am
  */
 public class AbstractTest1 {
+
+
+
 }
