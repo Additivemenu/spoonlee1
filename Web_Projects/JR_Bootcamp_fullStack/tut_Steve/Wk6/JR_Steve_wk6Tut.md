@@ -256,9 +256,13 @@ crud-demo-recode-database-1  | 2023-01-24 23:21:04.604 UTC [1] LOG:  database sy
 
 同时在docker你也能看到对应的数据库建立记录
 
+当database跑起来后, 你也可以在docker看到记录. 
+
+:bangbang: 当你关闭了database后, 你需要在docker重新启动database再去跑application, 这样application才能访问database, 同样也需要先在docker启动database, 才能在pgadmin可视化database
 
 
 
+---
 
 38min-
 docker-compose.yml 配置文件的讲解
@@ -300,7 +304,9 @@ environment:
 
 即连接pgadmin和刚才用docker搭建的数据库
 
-打开pgadmin, 右键点击server > register server >在General随便起个名字, 在Connection中 输入和刚才docker-composer.yml相匹配的参数(DB, user, password), 之后save, 此时可以看到左侧栏中出现了一个大象头图标, 表示连接成功
+打开pgadmin, 右键点击server > register server >在General随便起个名字, 在Connection中 输入和刚才docker-compose.yml相匹配的参数(DB, user, password), 之后save, 此时可以看到左侧栏中出现了一个大象头图标, 表示连接成功
+
+:bangbang: 注意如果关闭pgadmin, 之后还会需要docker-compose.yml中的用户名和密码来access server
 
 
 
@@ -327,7 +333,7 @@ CREATE TABLE "user" (
 );
 ```
 
-application.properties --> application.yml, 然后复制粘贴如下配置信息 1h-, 用类配置springboot建立的后端服务器
+application.properties --> application.yml, 然后复制粘贴如下配置信息 1h-, 用来配置springboot建立的后端服务器
 
 ```yml
 server:
@@ -349,7 +355,9 @@ spring:
           time_zone: UTC
 ```
 
-+ server及其下属的配置用来确定URL
+其中:
+
++ server及其下属的配置用来确定URL (我们目前的输入都是通过URL来实现的)
   + `Context-path: /api/v1` 是指定我们的URL, 之后在postman里测试的URL, 都是接着`/api/v1`
 + Spring
   + 注意上面的datasource > username, password应该和搭建数据库时的配置一样

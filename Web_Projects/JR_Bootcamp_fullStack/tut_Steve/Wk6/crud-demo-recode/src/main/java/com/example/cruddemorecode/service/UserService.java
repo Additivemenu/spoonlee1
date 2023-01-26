@@ -3,6 +3,7 @@ package com.example.cruddemorecode.service;
 import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPostDto;
 import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.exception.ResourceNotFoundException;
 import com.example.cruddemorecode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,11 @@ public class UserService {
 
         Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
 
-        User user = optionalUser.get();
+        // User user = optionalUser.get();      // 不够健壮, 如果指定id的user在数据库中不存在呢?
+
+        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
+        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+
         System.out.println(user);
 
         UserGetDto userGetDto = new UserGetDto();
