@@ -1,8 +1,11 @@
 package com.example.cruddemorecode.controller;
 
 import com.example.cruddemorecode.dto.UserGetDto;
+import com.example.cruddemorecode.dto.UserPatchDto;
 import com.example.cruddemorecode.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.example.cruddemorecode.dto.UserPostDto;
 
@@ -18,6 +21,7 @@ public class UserController {
 
     // 接收URL作为输入， 然后进行一系列操作
     @PostMapping        // 接URL中/api/v1/users
+    @ResponseStatus(HttpStatus.CREATED) // 创建成功的话, HttpStatus = 201
     public String createUser(@RequestBody UserPostDto userPostDto){
         System.out.println(userPostDto);
         userService.createUser(userPostDto);
@@ -28,6 +32,24 @@ public class UserController {
     public UserGetDto getUser(@PathVariable Long userId){
         UserGetDto userGetDto = userService.getUser(userId);
         return userGetDto;
+    }
+
+    @GetMapping
+    public UserGetDto getUserByEmail(@Param(value = "email") String email){
+        System.out.println(email);
+        return userService.getUserByEmail(email);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable Long userId){
+        userService.deleteUser(userId);
+    }
+
+    // @PutMapping 改动User全部属性
+    // @PatchMapping 改动User部分属性
+    @PatchMapping("/{userId}")
+    public UserGetDto updateUser(@RequestBody UserPatchDto userPatchDto, @PathVariable Long userId){
+        return userService.updateUser(userPatchDto, userId);
     }
 
 }

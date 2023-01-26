@@ -15,7 +15,10 @@
   + `@RequiredArgsConstructor` [lombok constructor annotation](https://projectlombok.org/features/constructor)
     + 在intellij的左侧底部： structure可以查看当前类的所有方法
 
-
++ 几个重要的文件
+  + application.yml: springboot application (后端服务器) 的配置文件, 配置URL, database的来源
+  + Docker-compose.yml: 配置文件用来利用docker建立数据库
+  + V1__create_user_table.sql: 包含DDL来创建DB table
 
 ## springboot后端代码
 

@@ -6,7 +6,19 @@
 
 
 
-# 查找 0min-
+# 0. 总结
+
++ 利用SpringBoot来连接数据库做CRUD
++ 在Controller里写的方法应遵循RESTful API的规范: 改返回什么HttpStatus, 是否有body, 成功时是否返回Body
++ SpringBoot exception handling的写法
+  + 错误信息应由足够独特的Exception携带
+  + 将错误信息返回给前端, 而不仅仅是在后端显示
+
+
+
+
+
+# 1. 查找: getUserById 0min-
 
 get
 
@@ -207,7 +219,7 @@ User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException());
 @RestControllerAdvice   // 监视Controller, 如果controller里的方法报了异常的化, 做如下处理
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(value = {ResourceNotFoundException.class})        // 如果controller里报了ResourceNotFoundException
+    @ExceptionHandler(value = {ResourceNotFoundException.class})        // 如果controller里报了ResourceNotFoundException, handle it (back-end terminal will not show Exception message)
     @ResponseStatus(HttpStatus.NOT_FOUND)           // 让前台返回信息中HttpStatus为404
     public String handleResourceNotFoundException(){
         return "Resource not found";            // 返回该值直接到前台
@@ -218,7 +230,7 @@ public class ControllerExceptionHandler {
 
 
 
-这样再跑application, 在postman中如果输入URL指定id的user不存在于数据库的话, 前台也会收到信息: Resource not found, 且http status为404
+这样再跑application, 在postman中如果输入URL指定id的user不存在于数据库的话, 前台也会收到信息: Resource not found, 且http status为404 (如果) 如果不指明HttpStatus的话, 默认返回200
 
 
 
@@ -282,8 +294,196 @@ public class ControllerExceptionHandler {
 
 
 
-在可能出错的地方throw exception (这个exception应该足够独特, 最好自己自定义一个Exception class, 并添加有参构造器方便指明具体的错误信息对象), 并编写一个ExceptionHanler class在其中处理该独特的exception并将错误信息返回给前台
+总结: 在可能出错的地方throw exception (这个exception应该足够独特, 最好自己自定义一个Exception class, 并添加有参构造器方便指明具体的错误信息对象), 并编写一个ExceptionHanler class在其中处理该独特的exception并将错误信息返回给前台
 
 
 
-看至1h14min
+
+
+# 2. HttpStatus 相关 1h16min- 
+
+HttpStatus很讲究, 不能乱写
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET 遵循这个标准, 具体一个RESTful API是否该有body, status应该返回几
+
+Created-201
+
+Deleted-204
+
+
+
+
+
+# 3. 删除1h18min-
+
+UserController
+
+```java
+@DeleteMapping("/{userId}")
+public void deleteUser(@PathVariable Long userId){
+  	userService.deleteUser(userId);
+}
+```
+
+
+
+UserService
+
+```java
+public void deleteUser(Long userId) {
+  	userRepository.deleteById(userId);
+}
+```
+
+
+
+
+
+# 4. 改 1h23min-
+
+UserController
+
+```java
+// @PutMapping 改动User全部属性
+// @PatchMapping 改动User部分属性
+@PatchMapping("/{userId}")
+public UserGetDto updateUser(@RequestBody UserPatchDto userPatchDto, @PathVariable Long userId){
+  return userService.updateUser(userPatchDto, userId);
+}
+```
+
+
+
+新建一个UserPatchDto class
+
+```java
+// Dto for patch
+@Setter
+@Getter
+public class UserPatchDto {
+    private String name;
+
+}
+```
+
+
+
+UserService:
+
+改: 分为4步
+
++ 从数据库中查到指定id的user entity, 返回
++ 改动这个entity的某个属性
++ 再将这个entity存回数据库
++ 最后返回一个状态更新后的UserGetDto给前台 (RESTful api的标准规定这么做的)
+
+```java
+// 改
+public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
+    // step1
+    Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
+
+    User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
+    // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+
+    // step2
+    user.setName(userPatchDto.getName());
+
+    // step3
+    userRepository.save(user);
+
+    // step4: 将update过后的user entity转化为UserGetDto返回给前台
+    UserGetDto userGetDto = new UserGetDto();
+    userGetDto.setId(userId);
+    userGetDto.setName(user.getName());
+    userGetDto.setEmail(user.getEmail());
+    userGetDto.setCreatedTime(user.getCreatedTime());
+    userGetDto.setUpdatedTime(user.getUpdatedTime());
+
+    return userGetDto;
+  }
+```
+
+
+
+测试效果如下:
+
+<img src="./Src_md/updateUser.png">
+
+
+
+
+
+# 5. 查找: getUserByEmail 1h49min- 2h05min
+
+用户希望通过email来定位自己在数据库中的id
+
+
+
+UserController
+
+```java
+@GetMapping
+public UserGetDto getUserByEmail(@Param(value = "email") String email){
+    System.out.println(email);
+    return userService.getUserByEmail(email);
+}
+
+```
+
+
+
+UserRepository
+
+UserRepository继承自JpaRepository, 自身并没有findByEmail方法
+
++ 但我们只需写上`Optional<User> findByEmail(String email);`就可以了, 太神奇了
+
+```java
+// <User, Long>:
+//      |--- User对应User entity, 而User entity对应User table, 表示我们是要对User table进行增删改查的
+//      |--- Long是User的pk类型
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+}
+```
+
+
+
+UserService
+
++ 此时我们便可以调用userRepository.findEmail()了
+
+```java
+public UserGetDto getUserByEmail(String email) {
+    // step1
+    Optional<User> optionalUser = userRepository.findByEmail(email);      // repository的方法, 和数据库交互
+
+    User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
+    // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+
+    // step2: entity --> dto
+    UserGetDto userGetDto = new UserGetDto();
+    userGetDto.setId(user.getId());
+    userGetDto.setName(user.getName());
+    userGetDto.setEmail(user.getEmail());
+    userGetDto.setCreatedTime(user.getCreatedTime());
+    userGetDto.setUpdatedTime(user.getUpdatedTime());
+
+    return userGetDto;
+}
+```
+
+
+
+测试效果如下:
+
+<img src = "./Src_md/getUserByEmail.png">
+
+
+
+至此, springboot相关的内容就结束了
+
+后续我们学习联表查询
