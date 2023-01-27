@@ -112,6 +112,12 @@ public static void method1(Person p){
 
 346
 
+该看这个了
+
+
+
+
+
 抽象类课后练习
 
 

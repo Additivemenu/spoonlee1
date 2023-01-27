@@ -14,6 +14,30 @@ JavaSE ---> DB (MySQL ---> <u>JDBC</u> ) ---> JavaWeb ---> SSM(Spring + SpringMV
 
 
 
+# Intro 
+
+## Why DBMS
+
+Control of data redundancy
+
+data sharing
+
+Enforcement of integrity constraints
+
+restriction of unauthorized access
+
+Backup and recovery facilities
+
+
+
+## Relational Data models
+
+Unimelb前3周讲的
+
+
+
+
+
 # Part1 搭建PostgresSQL DB
 
 
@@ -107,8 +131,85 @@ docer-compose up -d
 
 
 
+如果手动在pgadmin中创建database的话, 邮件点击database > create new database, 之后右键新建的database > query tool, 在query editor里面输入DDL:
+
+```sql
+CREATE TABLE directors(
+	director_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30) NOT NULL
+	data_of_birth DATE,
+	nationality VARCHAR(20)
+)
+```
+
+跑一下
 
 
+
+接着创建表
+
+```sql
+CREATE TBLE movies(
+	movie_id SERIAL PRIMARY KEY,
+	movie_name VARCHAR(50) NOT NULL,
+	movie_length INT,
+	movie_lang VARCHAR(20),
+	release_date date, 
+	age_certificate VARCHAR(5),
+	director_id INT REFERENCES directors (director_id)
+);
+```
+
+
+
+```sql
+CREATE TABLE actors(
+	actor_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30),
+	gender char(1),
+	date_of_birth DATE
+);
+```
+
+
+
+ALTER TABLE
+
+```sql
+-- ALTER table
+CREATE TABLE examples(
+	example_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30)
+);
+
+SELECT * FROM examples;
+
+-- 
+ALTER TABLE examples
+ADD COLUMN email VARCHAR(50) UNIQUE;
+
+ALTER TABLE examples
+ADD COLUMN nationality VARCHAR(30),
+ADD COLUMN age INT NOT NULL;
+
+-- modify a columns date type
+ALTER TABLE examples
+ALTER COLUMN nationality TYPE CHAR(3);
+
+
+-- drop a column from a table
+ALTER TABLE examples
+DROP COLUMN nationality;
+```
+
+
+
+接着我们insert  一些data: insert.sql
+
+JR17-Java-sql代码见 [DDL: create table](./JR17_ava_SQL/DDL.sql), 不过还是UniMelb的SQL练习更全面
 
 
 ---
@@ -133,9 +234,9 @@ SQL provides the following capabilities:
     + `START TRANSACTION`
     + `BEGIN`, `END`
 
-# 1. DDL
+## 1. DDL
 
-## CREATE DATABASE
+### CREATE DATABASE
 
 ```sql
 CREATE DATABASE database_name
@@ -145,7 +246,7 @@ CREATE DATABASE database_name
 
 
 
-## CREATE TABLE
+### CREATE TABLE
 
 ```sql
 CREATE TABLE Account(
@@ -164,7 +265,7 @@ CREATE TABLE Account(
 
 
 
-## ALTERT TABLE
+### ALTERT TABLE
 
 
 
@@ -172,7 +273,7 @@ CREATE TABLE Account(
 
 
 
-## DROP TABLE
+### DROP TABLE
 
 
 
@@ -180,7 +281,7 @@ CREATE TABLE Account(
 
 
 
-## CREATE INDEX
+### CREATE INDEX
 
 
 
@@ -188,7 +289,7 @@ CREATE TABLE Account(
 
 
 
-## DROP INDEX
+### DROP INDEX
 
 
 
@@ -196,13 +297,13 @@ CREATE TABLE Account(
 
 
 
-# 2. DML
+## 2. DML
 
 CRUD
 
 
 
-## 2.1 INSERT 
+### 2.1 INSERT 
 
 ```sql
 INSERT INTO BankHQ VALUES
@@ -215,7 +316,7 @@ INSERT INTO BankHQ (`HQAddress`, `OtherHQDetails`) VALUES
 
 
 
-## 2.2 :full_moon: SELECT
+### 2.2 :full_moon: SELECT
 
 ```sql
 -- 一般顺序
@@ -228,7 +329,11 @@ ORDER BY ...
 LIMIT ...
 ```
 
-### LIKE
+
+
+#### WHERE 子句
+
+`LIKE`
 
 String filter
 + `%` represents zero, one, or multiple characters
@@ -249,7 +354,11 @@ WHERE CustLastName LIKE 'a_%_%'     -- find any values that starts with 'a' and 
 WHERE CustLastName LIKE 'a%o'       -- find any values that starts with 'a' and end with 'o'
 ```
 
-### AS 
+
+
+---
+
+`AS`
 
 alias, 用于修改query结果的column name的修改
 ```sql
@@ -264,7 +373,37 @@ beautify query results
 + `LIMIT N`: limits the output size
 + `OFFSET N`:  skips the first N records
 
-### GROUP BY & HAVING
+
+
+---
+
+引号的使用
+
+SQL使用但引号包裹文本
+
+如果是数值则不需要引号
+
+
+
+---
+
+AND & OR operator
+
+
+
+
+
+---
+
+BETWEEN ... AND
+
+作用和   x1<= x<=x2 一样
+
+
+
+
+
+#### GROUP BY & HAVING
 
 usually used with aggregate function
 
@@ -284,7 +423,7 @@ GROUP BY Name -- aggregate function会认为 record with the same name为一组 
 
 
 the only way to put a filter on GROUP BY is to use HAVING
-+ note where cannot be used with aggregate function
++ :bangbang: note `WHERE` cannot be used with aggregation function
 
 ```sql
 SELECT AVG(OutstandingBalance)
@@ -293,7 +432,7 @@ GROUP BY CustomerID
 HAVING AVG(OutstandingBalance) < 10000
 ```
 
-### Aggregation function
+#### Aggregation function
 
 + AVG()
 + MIN()
@@ -305,7 +444,7 @@ HAVING AVG(OutstandingBalance) < 10000
 COUNT(DISTINCT(department.departmentid))  -- 将table中departmentid重复的多行只计为1行
 ```
 
-### SELECT 常用的辅助函数
+#### SELECT 常用的辅助函数
 
 CONCAT() 字符串连接
 
@@ -340,7 +479,7 @@ DAYDIFF(date1, date2)	date1 in the future
 
 
 
-### VIEW 
+#### VIEW 
 
 相当于把SELECT的结果给存起来
 
@@ -353,9 +492,9 @@ SELECT ...
 
 
 
-## 2.3 :full_moon: Join table
+### 2.3 :full_moon: Join table
 
-### INNER JOIN
+#### INNER JOIN
 
 ```sql
 A INNER JOIN B on A.key = B.key
@@ -363,16 +502,17 @@ A INNER JOIN B on A.key = B.key
 
 本质是A表不变, 将B表中match criteria的row重新排序, 然后加到A表右侧
 
-
-
 <img src="/Users/lixueshuo/spoonlee/GitHub_Repo/spoonlee1/fullStack/Database/Src_md/InnerJoin.jpg" style="zoom:50%;" />
 
 
 
-### OUTER JOIN 
+#### OUTER JOIN 
 
 + can be left or right
 + 相当于INNER JOIN + left or right table中not match 的tuple
+  + right join 就返回right table中unmatched rows, 此时它们对应在left table中为null (见下图)
+  + left jon同理
+
 
 
 
@@ -380,7 +520,7 @@ A INNER JOIN B on A.key = B.key
 
 
 
-### UNION & INTERSECT
+#### UNION & INTERSECT
 
 UNION & INTERSECT 结果中元素不会重复, 操作集合之间的并, 交
 
@@ -413,7 +553,7 @@ Union is faster than Join,
 
 
 
-## 2.4 :moon: Query nesting
+### 2.4 :moon: Query nesting
 
 墨大没讲明白, 看康师傅吧
 
@@ -429,7 +569,7 @@ ALL
 
 
 
-## 2.5 UPDATE
+### 2.5 UPDATE
 
 Change existing data in tables
 
@@ -471,9 +611,7 @@ UPDATE Salaried
 
 
 
-
-
-## 2.6 DELETE
+### 2.6 DELETE
 
 ```sql
 DELETE FROM Employee;   -- delete all records in Employee, but table still exists
@@ -491,12 +629,73 @@ note to be aware of the foreign key constraints
 
 
 
-
-
-# 3. DCL 
-
+## 3. DCL 
 
 
 
 
-# 其他
+
+
+
+
+
+# Part3 Database Basics
+
+
+
+## Transaction (事务) 2h32min- 2h57min
+
+一组SQL命令ACID
+
++ 要么全都执行, 要么全都不执行(Actomicity/原子性)
++ 在分布式语境下, 在transaction开始和完成时, 数据都必须保持一致状态 (Consistency/一致性)
++ 事务在不受外部并发操作影响的"独立"环境执行 (Isolation/隔离性)
++ 事务完成后, 它对于数据的修改是永久的(Durable/持久性)
+
+NoSQL DB大部分不支持Transaction
+
+
+
+RDBMS:
+
+Database Normalization
+
+大表拆成小表, 降低冗余消除依赖 (NoSQL不存在这个问题)
+
++ 1NF
++ 2NF
++ 3NF
++ Boyce-Codd normal form (BCNF)
+
+Database denormalization
+
+小表合成大表
+
+
+
+作为developer, 工作中真的需要掌握SQL吗?
+
++ 需要! 设计DB schema, primary key, foreign key, index, transaction必知必会
++ ORM的性能好不好, 做report时需要sql
++ Data migration
++ Trouble shooting
++ 性能调优
+
+
+
+---
+
+除此以外, 关于数据库系统, 还有
+
++ Relational database design (ER modelling, physical modelling...)
++ Normalization
+
++ transaction and concurrecy control
++ dataware housing
++ Dimensional modelling
++ Database security
++ distributed database
++ NoSQL
++ Database architecture
+
+等topic, 见 <u>Database System Concepts 7th Edith</u> 以及UniMelb课件. 详细理论性质的东西不在md里记录了
