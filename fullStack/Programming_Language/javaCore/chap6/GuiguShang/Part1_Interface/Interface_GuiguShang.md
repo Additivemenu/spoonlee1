@@ -11,7 +11,7 @@ Interface
 
 ---
 
-# Abstract class
+# Part1 Abstract class
 
 用abstract关键字来修饰一个类，这个类叫做抽象类。
 + 用abstract来修饰一个方法，该方法叫做抽象方法。 
@@ -20,7 +20,7 @@ Interface
 + 含有抽象方法的类必须被声明为抽象类。
 
 :bangbang: 注意:
-+ **抽象类不能被实例化, 抽象类是用来被<u>继承</u>的**
++ **抽象类不能被实例化, 抽象类是用来被<u>继承</u>的**. abstract 与 inheritance, polymorph有着天然的关联性
   + 抽象类的子类必须重 写父类的抽象方法，并提供方法体。若没有重写全部的抽象方法，仍为抽象类。
 + 不能用abstract修饰变量、代码块、构造器
 + 不能用abstract修饰私有方法、静态方法、final的方法、final的类。 原因如下:
@@ -30,8 +30,12 @@ Interface
 + 抽象类也可以定义构造器, 尽管它自己不能实例化, 但是它的子类可以用super()来调用它的构造器
 + 抽象类中可以没有抽象方法(比如UniMelb Java final project里我们的BaseProgram, 我们只是不想实例化BaseProgram但想让它的子类Program继承它内部的读文件的实现方法), 但抽象方法一定包含在抽象类里
 
----
-抽象的应用场景
+
+
+
+
+## 抽象类的应用场景
+
 Rogue游戏中: 
 
 ```java
@@ -71,7 +75,7 @@ class warrior extends Player{
 
 
 
-创建抽象类的匿名子类对象
+## 创建抽象类的匿名子类对象
 
 345
 
@@ -108,17 +112,82 @@ public static void method1(Person p){
 
 
 
-模版方法的设计模式及应用场景
+## 模版方法的设计模式及应用场景
 
 346
 
-该看这个了
+多态的应用:模板方法设计模式(TemplateMethod)
+
++ 当功能内部一部分实现是确定的，一部分实现是不确定的。这时可以 把不确定的部分暴露出去，让子类去实现。
+
++ 换句话说，在软件开发中实现一个算法时，整体步骤很**<u>*固定、通用*</u>**， 这些步骤已经在父类中写好了。但是某些部分***<u>易变</u>***，**易变部分可以抽象出来**，供不同子类实现.  这就是一种模板模式。
+
+:gem: demo:
+
+```java
+abstract class Template{
+
+    // 计算某段代码执行所需要花费的时间
+    // 利用到模版方法的设计模式
+    public void  spendTime(){
+        long start = System.currentTimeMillis();
+
+        code();     // ********不确定的, 易变的部分, 钩子方法, 哪个子类调用, 就使用哪个子类重写的方法*********
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("time spent is "+ (end - start));
+    }
+  
+    public abstract void code();
+}
+
+class SubTemplate extends Template{
+    @Override
+    public void code(){
+        // 求1000 以内所有的质数
+        for(int i = 2; i <= 1000; i++){
+            boolean isFlag = true;
+            for(int j = 2; j <= Math.sqrt(i); j++){
+                if(i % j == 0){
+                    isFlag = false;
+                    break;
+                }
+            }
+
+            if(isFlag){
+                System.out.println(i);
+            }
+        }
+    }
+}
+```
+
+
+
+模板方法设计模式是编程中经常用得到的模式。各个框架、类库中都有他的 影子，比如常见的有:
+
++ 数据库访问的封装
++ Junit单元测试 
+
++ JavaWeb的Servlet中关于doGet/doPost方法调用  Hibernate中模板程序
++ Spring中JDBCTemlate、HibernateTemplate等
+
+
+
+:gem: 抽象类课后练习
+
+见 Intellij package: practice2
 
 
 
 
 
-抽象类课后练习
+
+
+# Part2 Interface
+
+348 
 
 
 
@@ -132,25 +201,7 @@ public static void method1(Person p){
 
 
 
+# Part3 Inner class
+359
 
-
-# Interface
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Inner class
-开发中用的相对较少
+开发中用的相对较少, 了解即可
