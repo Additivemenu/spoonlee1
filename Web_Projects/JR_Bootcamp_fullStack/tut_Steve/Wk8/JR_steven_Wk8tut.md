@@ -6,9 +6,18 @@
 
 重构已经写好的代码, 之后写深一层的CRUD比如连表操作
 
+# 总结
+
++ 进一步理解 Dto
++ 在service里mapper的使用来模块化Dto <---> entity
 
 
-# Refactor
+
+
+
+
+
+# Refactor: mapper
 
 User ---> UserGetDto function
 
@@ -216,9 +225,9 @@ body:
 
 ## getProperty() 1h04min-
 
-Param ---> controller ---> service ----> repo ---> database
+front end ---Param ---> controller ---> service ----> repo ---> database
 
-Controller  <--GetDto--- Service  <--entity- database
+front end  <---  Controller  <--GetDto--- Service  <--entity- database
 
 在entity部分, Property的FK指向User, 所以Property entity 有 User entity作为成员变量 而不是像SQL table单纯地只存储User的id
 
@@ -237,8 +246,6 @@ PropertyService
 
 
 PropertyContoller
-
-
 
 
 
@@ -287,4 +294,87 @@ getPropertyByUserId()写一下
 
 Q & A 1h23min-
 
-接着看这个
+为什么需要mapper
+
+
+
+# mapstruct 1h29min-
+
+其实有能快速写mapper的工具: mapstruct (不过只是作为更方便的辅助工具, 你也完全可以自己写mapper)
+
+在build.gradle下加入如下dependency:
+
+```gradle
+implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+
+annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+```
+
+
+
+ 1h35min-
+
+
+
+UseInfoMapper interface under mapper package新建: 
+
+```java
+@Mapper(componentModel = "spring")  // 自动去匹配输入和返回的对象的相同名称的field, 方法名不重要
+public interface UserInfoMapper {
+    UserGetDto mapUserToUserGetDto(User user);
+
+    User mapUserPostDtoToUser(UserPostDto userPostDto);
+
+}
+```
+
+
+
+mapstruct原理 1h42min-1h55min
+
++ source和target同名字段
++ source和target同类型但不同名字段
++ source和target不同类型的字段 e.g. Property entity{ User }  ----> PropertyGetDto{ UserGetDto }
+
+UseInfoMapper interface under mapper package新建: 
+
+```java
+@Mapper(componentModel = "spring", uses = {UserInfoMapper.class})       // 指明利用UserInfoMapper中的 User <--> UserGetDto方法
+public interface PropertyMapper {
+
+  // Property entity{ User }  ----> PropertyGetDto{ UserGetDto }
+  @Mapping(source = "user", target="userGetDto")
+  PropertyGetDto mapPropertyToPropertyGetDto(Property property);
+
+}
+```
+
+
+
+这样在PropertyService里就可以只写1行代码了
+
+```java
+public PropertyGetDto getProperty(Long propertyId){
+
+        // step1:  look up database to find property entity given propertyId
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new ResourceNotFoundException("Property " + propertyId));
+
+//        // step2: property entity ----> propertyGetDto for safety
+//        PropertyGetDto propertyGetDto = new PropertyGetDto();
+//        propertyGetDto.setId(property.getId());
+//        propertyGetDto.setType(property.getType());
+//        propertyGetDto.setLandSize(property.getLandSize());
+//        propertyGetDto.setCreateTime(property.getCreatedTime());
+//        propertyGetDto.setUpdateTime(property.getUpdatedTime());
+//        // ! 注意我们如何处理和FK相关的成员变量 !
+//        propertyGetDto.setUserGetDto(userMapper.mapUserToUserGetDto(property.getUser()));
+//
+//        // step3: return propertyGetDto
+//        return propertyGetDto;
+
+
+        // 一行顶上面step2 & step3
+        return propertyMapper.mapPropertyToPropertyGetDto(property);
+    }
+```
+

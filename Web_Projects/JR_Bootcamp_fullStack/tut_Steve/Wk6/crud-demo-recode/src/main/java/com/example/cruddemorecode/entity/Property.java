@@ -9,6 +9,9 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 /**
+ * Property entity 作为 service 和 database之间的信息媒介,
+ * 在这里定义好entity class (Java的内容) 和 database tuple (database的内容)的映射关系
+ *
  * @author xueshuo
  * @create 2023-01-28 10:39 am
  */
@@ -25,9 +28,10 @@ public class Property {
 
     private Integer landSize;
 
-    // FK: property : user --> many to one
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    // for OOP: a User object should be a member variable in Property entity class
+    // 这里就体现了entity和database tuple之间的mapping
+    @ManyToOne // FK: property : user --> many to one
+    @JoinColumn(name = "owner_id")  // define how to reference user based on database column "owner_id"
     private User user;
 
     @CreationTimestamp      // 指定自动管理

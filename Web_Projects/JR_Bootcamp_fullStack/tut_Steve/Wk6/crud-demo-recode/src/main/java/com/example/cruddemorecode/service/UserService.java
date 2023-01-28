@@ -5,6 +5,7 @@ import com.example.cruddemorecode.dto.UserPatchDto;
 import com.example.cruddemorecode.dto.UserPostDto;
 import com.example.cruddemorecode.entity.User;
 import com.example.cruddemorecode.exception.ResourceNotFoundException;
+import com.example.cruddemorecode.mapper.UserInfoMapper;
 import com.example.cruddemorecode.mapper.UserMapper;
 import com.example.cruddemorecode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
-
+    // private final UserMapper userMapper;         // 自己写的UserMapper
+    private final UserInfoMapper userMapper;        // 通过@Mapper自动创建的
 
     // 增
     public void createUser(UserPostDto userPostDto){
