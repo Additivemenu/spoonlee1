@@ -189,7 +189,246 @@ class SubTemplate extends Template{
 
 348 
 
+why Interface?
 
++ 一方面，有时必须从几个类中派生出一个子类，继承它们所有的属性和方法。但是，Java不支持多重继承(C++支持) 有了接口，就可以得到多重继承的效果。
++ 另一方面，有时必须从几个类中抽取出一些*共同的行为特征*，而它们之间又没有is-a (继承性的关系)的关系，仅仅是具有相同的行为特征而已。例如:鼠标、键盘、打 印机、扫描仪、摄像头、充电器、MP3机、手机、数码相机、移动硬盘等都 ***支持USB连接***。
+  + 接口就是规范，定义的是一组规则，体现了现实世界中“如果你是/要...则 必须能...”的思想。***继承是一个"是不是"的关系，而接口实现则是 "能不能" 的关系。***接口的本质是契约，标准，规范，就像我们的法律一样。制定好后大家都 要遵守。
+
+e.g.1 大学生和跨栏运动员都实现了学习的技能接口
+
+<img src="./Src_md/Interface_eg1.png" style="zoom: 33%;" />
+
+e.g.2 子弹实现了两个接口: 可以飞, 攻击性
+
+<img src="./Src_md/Interface_eg2.png" style="zoom:33%;" />
+
+
+
+## 接口的定义与使用
+
+349
+
+如何定义接口: 定义接口中的成员
+
++ JDK7及以前
+
+  * 接口中只能定义 全局常量 和 抽象方法
+
+    + 全局常量: public static final的, 但在interface里书写可以省略 (默认自动给你加上了)
+
+    + 抽象方法: public abstract的, 但在interface里书写可以省略
+
++ JDK8: 除了定义 全局常量 和 抽象方法外, 接口中还可定义静态方法, 默认方法
+
+
+
+:bangbang: 接口中是不能定义构造器的!!! 意味着接口不可以被实例化。 Java开发中, 接口通过让类去实现(implements)的方式来使用
+
++ 如果实现接口的类重写(override)了接口中的所有抽象方法, 则该实现类就可以实例化
+
++ 如果实现类没有实现接口中的所有抽象方法, 则此实现类仍然为抽象类, 不能够实例化
+
+
+
+
+
+## 接口的多实现与接口的继承性
+
+350
+
+Java class可以实现多个接口 ---> 弥补了Java class的单继承性的局限性
+
++ 格式: class AA extends BB implements CC, DD, EE{}
+
+
+
+接口与接口之间可以继承, **且可以*多继承***
+
+```java
+interface AA {
+    void method1();
+}
+
+interface BB{
+    void method2();
+}
+
+interface CC extends AA, BB{
+
+}
+```
+
+
+
+## 接口的具体使用
+
+351
+
++ 接口的具体使用, 体现多态性
+
++ 接口实际上可以被看作一种协议, 规范, 它的主要用途就是被实现类实现 (面向接口编程)
+  + 项目的具体需求是多变的, 我们必须以不变应万变才能从容开发, 此处"不变的"就是"规范". 因此我们开发项目往往都是面向接口编程!
+
+
+
+:gem: USBTest.java: Computer use Flash/Printer implements USB to transfer data
+
+```java
+
+// 主函数---------------------------------------------------------------
+public class USBTest {
+    public static void main(String[] args) {
+        Computer com = new Computer();
+        Flash flash = new Flash();
+        com.transferData(flash);        // 我们不能实例化接口, 但可以实例化实现了接口内所有抽象方法的类
+    }
+
+}
+
+// 接口的使用 ---------------------------------------------------------------
+class Computer{
+    /**
+     *
+     * @param usb USB usb = new Flash(), 把USB接口作为函数的argument是为了说明, Computer的这个方法需要实现了USB接口的类作为参数输入
+     */
+    public void transferData(USB usb){
+        usb.start();
+
+        System.out.println("transfer details: ************");
+
+        usb.stop();
+    }
+}
+
+// USB interface与其实现类 ----------------------------------------------------
+interface USB{
+    // 常量: 定义了长, 宽, 最大最小的传输速度
+    void start();
+    void stop();
+
+}
+
+class Flash implements USB{
+
+    @Override
+    public void start() {
+        System.out.println("Flash start to work");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Flash drive end work");
+    }
+}
+
+class Printer implements USB{
+
+    @Override
+    public void start() {
+        System.out.println("Printer starts to work");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Printer ends work");
+    }
+}
+```
+
+
+
+
+
+:gem: JDBC体现多态性
+
+JDBC封装了了大量如何操纵数据库的interface
+
++ MySQL Driver (MySQL驱动) 是一组实现了JDBC内的接口的实现类的集合
+
+<img src="./Src_md/JDBC_eg.png" style="zoom:50%;" />
+
+
+
+### :moon: 创建接口匿名实现类的对象
+
+352
+
+:bangbang: **接口不可以实例化, 但可以实例化实现了接口内所有抽象方法的实现类**
+
++ 接口的匿名实现类
++ 接口的非匿名实现类
+
+:gem: USBTest.java
+
+```java
+public class USBTest {
+    public static void main(String[] args) {
+        Computer com = new Computer();
+        // 1. 创建接口非匿名实现类的非匿名对象
+        Flash flash = new Flash();
+        com.transferData(flash);        // 我们不能实例化接口, 但可以实例化实现了接口内所有抽象方法的类
+
+        // 2. 创建接口非匿名实现类的匿名对象
+        com.transferData(new Printer());
+
+        // 3. 创建接口的匿名实现类的非匿名对象 (看似在实例化接口, 实则是在实例化接口的匿名实现类) **************
+        USB phone = new USB(){
+
+            @Override
+            public void start() {
+                System.out.println("Phone starts to work");
+            }
+
+            @Override
+            public void stop() {
+                System.out.println("phone ends work");
+            }
+        };
+        com.transferData(phone);
+
+        // 4. 创建接口的匿名实现类的匿名对象 (看似在实例化接口, 实则是在实例化接口的匿名实现类) **************
+        com.transferData(new USB(){
+
+            @Override
+            public void start() {
+                System.out.println("mp3 starts to work");
+            }
+
+            @Override
+            public void stop() {
+                System.out.println("mp3 ends work");
+            }
+        });
+
+    }
+
+}
+```
+
+
+
+
+
+## :moon: 接口的应用:
+
+### 代理模式
+
+353
+
+该看这个了
+
+
+
+
+
+
+
+
+
+### 工厂模式
+
+354
 
 
 

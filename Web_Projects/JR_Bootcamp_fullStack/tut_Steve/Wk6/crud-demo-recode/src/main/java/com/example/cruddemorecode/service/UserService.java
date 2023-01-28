@@ -5,6 +5,7 @@ import com.example.cruddemorecode.dto.UserPatchDto;
 import com.example.cruddemorecode.dto.UserPostDto;
 import com.example.cruddemorecode.entity.User;
 import com.example.cruddemorecode.exception.ResourceNotFoundException;
+import com.example.cruddemorecode.mapper.UserMapper;
 import com.example.cruddemorecode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,14 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
 
     // 增
     public void createUser(UserPostDto userPostDto){
         System.out.println(userPostDto);
 
-        User user = new User();
-        user.setEmail(userPostDto.getEmail());
-        user.setName(userPostDto.getName());
-        user.setPassword(userPostDto.getPassword());
+        User user = userMapper.mapUserPostDtoToUser(userPostDto);
 
         // 将user存进table
         userRepository.save(user);      // argument必须是entity, not dto
@@ -39,23 +38,11 @@ public class UserService {
     // 查
     public UserGetDto getUser(Long userId) {
 
-        Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
-
-        // User user = optionalUser.get();      // 不够健壮, 如果指定id的user在数据库中不存在呢?
-
-        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
-        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+        User user = findUser(userId);
 
         System.out.println(user);
 
-        UserGetDto userGetDto = new UserGetDto();
-        userGetDto.setId(userId);
-        userGetDto.setName(user.getName());
-        userGetDto.setEmail(user.getEmail());
-        userGetDto.setCreatedTime(user.getCreatedTime());
-        userGetDto.setUpdatedTime(user.getUpdatedTime());
-
-        return userGetDto;
+        return userMapper.mapUserToUserGetDto(user);
     }
 
 
@@ -68,10 +55,7 @@ public class UserService {
     // 改
     public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
         // step1
-        Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
-
-        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
-        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+        User user = findUser(userId);
 
         // step2
         user.setName(userPatchDto.getName());
@@ -80,31 +64,29 @@ public class UserService {
         userRepository.save(user);
 
         // step4: 将update过后的user entity转化为UserGetDto返回给前台
-        UserGetDto userGetDto = new UserGetDto();
-        userGetDto.setId(userId);
-        userGetDto.setName(user.getName());
-        userGetDto.setEmail(user.getEmail());
-        userGetDto.setCreatedTime(user.getCreatedTime());
-        userGetDto.setUpdatedTime(user.getUpdatedTime());
-
-        return userGetDto;
+        return userMapper.mapUserToUserGetDto(user);
     }
 
     public UserGetDto getUserByEmail(String email) {
         // step1
-        Optional<User> optionalUser = userRepository.findByEmail(email);      // repository的方法, 和数据库交互
-
-        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
         // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
 
-        // step2: entity --> dto
-        UserGetDto userGetDto = new UserGetDto();
-        userGetDto.setId(user.getId());
-        userGetDto.setName(user.getName());
-        userGetDto.setEmail(user.getEmail());
-        userGetDto.setCreatedTime(user.getCreatedTime());
-        userGetDto.setUpdatedTime(user.getUpdatedTime());
+        // step2: entity --> dto, then return to front end
+        return userMapper.mapUserToUserGetDto(user);
+    }
 
-        return userGetDto;
+
+
+    // helper function: try to find user in database
+    // not private because other table might also want to find user when joining tables
+    public User findUser(Long userId){
+//        Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
+//        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
+//        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+//        return user;
+
+        // 三行写作一行
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User " + userId));
     }
 }
