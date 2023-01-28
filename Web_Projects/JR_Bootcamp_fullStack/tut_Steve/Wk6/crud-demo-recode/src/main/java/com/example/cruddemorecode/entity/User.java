@@ -1,16 +1,13 @@
 package com.example.cruddemorecode.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * @author xueshuo
@@ -22,6 +19,9 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id     // 指定修饰的属性为primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 指定主键自动生成模式： 自增长
@@ -36,4 +36,6 @@ public class User {
     @UpdateTimestamp        // 指定自动管理
     private OffsetDateTime updatedTime;
 
+    @OneToMany(mappedBy = "user")       // 对应Property里User的成员变量名
+    private List<Property> propertyList;
 }

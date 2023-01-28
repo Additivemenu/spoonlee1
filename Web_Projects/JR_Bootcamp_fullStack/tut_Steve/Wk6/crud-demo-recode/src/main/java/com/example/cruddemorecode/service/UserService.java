@@ -1,16 +1,20 @@
 package com.example.cruddemorecode.service;
 
+import com.example.cruddemorecode.dto.PropertyGetDto;
 import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPatchDto;
 import com.example.cruddemorecode.dto.UserPostDto;
+import com.example.cruddemorecode.entity.Property;
 import com.example.cruddemorecode.entity.User;
 import com.example.cruddemorecode.exception.ResourceNotFoundException;
+import com.example.cruddemorecode.mapper.PropertyMapper;
 import com.example.cruddemorecode.mapper.UserInfoMapper;
 import com.example.cruddemorecode.mapper.UserMapper;
 import com.example.cruddemorecode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,6 +28,8 @@ public class UserService {
     private final UserRepository userRepository;
     // private final UserMapper userMapper;         // 自己写的UserMapper
     private final UserInfoMapper userMapper;        // 通过@Mapper自动创建的
+
+    private final PropertyMapper propertyMapper;
 
     // 增
     public void createUser(UserPostDto userPostDto){
@@ -89,5 +95,14 @@ public class UserService {
 
         // 三行写作一行
         return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User " + userId));
+    }
+
+    public List<PropertyGetDto> getPropertiesByUserId(Long userId) {
+        User user = findUser(userId);
+        List<Property> propertyList = user.getPropertyList();
+
+        return propertyList.stream()
+                .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
+                .toList();
     }
 }

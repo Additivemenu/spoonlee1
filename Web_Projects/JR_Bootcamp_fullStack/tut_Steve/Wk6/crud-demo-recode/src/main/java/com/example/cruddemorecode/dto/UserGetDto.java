@@ -1,5 +1,6 @@
 package com.example.cruddemorecode.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
+@Builder
 public class UserGetDto {
     private Long id;
     private String name;

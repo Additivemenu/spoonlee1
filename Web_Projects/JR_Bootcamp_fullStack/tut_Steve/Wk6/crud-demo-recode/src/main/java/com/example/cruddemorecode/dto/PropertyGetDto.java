@@ -22,7 +22,7 @@ public class PropertyGetDto {
     // don't get User, not safe! (User has password)
     private UserGetDto userGetDto;
     @CreationTimestamp
-    private OffsetDateTime createTime;
+    private OffsetDateTime createdTime;
     @UpdateTimestamp
-    private OffsetDateTime updateTime;
+    private OffsetDateTime updatedTime;
 }

@@ -11,6 +11,8 @@ import com.example.cruddemorecode.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * service这块是业务逻辑最多的地方
  *
@@ -71,5 +73,16 @@ public class PropertyService {
         // 一行顶上面step2 & step3
         return propertyMapper.mapPropertyToPropertyGetDto(property);
     }
+
+    public List<PropertyGetDto> getPropertyByUserId(Long userId) {
+        List<Property> propertyList = propertyRepository.findByUser_Id(userId);
+
+        // property ---> propertyGetDto
+        return propertyList.stream()
+                .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
+                .toList();
+    }
+
+
 
 }

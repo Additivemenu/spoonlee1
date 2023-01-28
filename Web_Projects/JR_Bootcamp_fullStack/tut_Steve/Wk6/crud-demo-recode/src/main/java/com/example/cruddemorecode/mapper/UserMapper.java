@@ -13,25 +13,43 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
     public UserGetDto mapUserToUserGetDto(User user){
+        // 方式1
+//        UserGetDto userGetDto = new UserGetDto();
+//
+//        userGetDto.setId(user.getId());
+//        userGetDto.setName(user.getName());
+//        userGetDto.setEmail(user.getEmail());
+//        userGetDto.setCreatedTime(user.getCreatedTime());
+//        userGetDto.setUpdatedTime(user.getUpdatedTime());
 
-        UserGetDto userGetDto = new UserGetDto();
-
-        userGetDto.setId(user.getId());
-        userGetDto.setName(user.getName());
-        userGetDto.setEmail(user.getEmail());
-        userGetDto.setCreatedTime(user.getCreatedTime());
-        userGetDto.setUpdatedTime(user.getUpdatedTime());
+        // 方式2: 通过builder来写
+        UserGetDto userGetDto = UserGetDto.builder()
+                .createdTime(user.getCreatedTime())
+                .id(user.getId())
+                .email(user.getEmail())
+                .updatedTime(user.getUpdatedTime())
+                .name(user.getName())
+                .build();
 
         return userGetDto;
     }
 
     public User mapUserPostDtoToUser(UserPostDto userPostDto){
 
-        User user = new User();
+//        // 方式1
+//        User user = new User();
+//
+//        user.setEmail(userPostDto.getEmail());
+//        user.setName(userPostDto.getName());
+//        user.setPassword(userPostDto.getPassword());
 
-        user.setEmail(userPostDto.getEmail());
-        user.setName(userPostDto.getName());
-        user.setPassword(userPostDto.getPassword());
+        // 方式2
+        User user = User.builder()
+                .email(userPostDto.getEmail())
+                .name(userPostDto.getName())
+                .password(userPostDto.getPassword())
+                .build();
+
 
         return user;
     }

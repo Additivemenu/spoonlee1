@@ -1,13 +1,18 @@
 package com.example.cruddemorecode.controller;
 
+import com.example.cruddemorecode.dto.PropertyGetDto;
 import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPatchDto;
+import com.example.cruddemorecode.entity.Property;
+import com.example.cruddemorecode.service.PropertyService;
 import com.example.cruddemorecode.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.example.cruddemorecode.dto.UserPostDto;
+
+import java.util.List;
 
 /**
  * @author xueshuo
@@ -18,6 +23,8 @@ import com.example.cruddemorecode.dto.UserPostDto;
 @RequiredArgsConstructor    // for UserService
 public class UserController {
     private final UserService userService;  // controller要调用service, 以传递数据 不要在controller调用repository
+
+    private final PropertyService propertyService;
 
     // 接收URL作为输入， 然后进行一系列操作
     @PostMapping        // 接URL中/api/v1/users
@@ -38,6 +45,17 @@ public class UserController {
     public UserGetDto getUserByEmail(@RequestParam String email){
         System.out.println(email);
         return userService.getUserByEmail(email);
+    }
+
+    // http://localhost:8080/api/v1/users/{userId}/properties
+    @GetMapping("/{userId}/properties")
+    public List<PropertyGetDto> getPropertiesByUserId(@PathVariable Long userId){
+
+//        // 方法一
+//       return  propertyService.getPropertyByUserId(userId);
+
+        // 方法二: 利用 User {List<Property>}
+       return userService.getPropertiesByUserId(userId);
     }
 
     @DeleteMapping("/{userId}")

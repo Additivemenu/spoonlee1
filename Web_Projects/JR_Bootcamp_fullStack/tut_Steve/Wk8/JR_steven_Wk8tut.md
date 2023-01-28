@@ -4,14 +4,16 @@
 
 接上节课, 还是crud-demo-recode project
 
-重构已经写好的代码, 之后写深一层的CRUD比如连表操作
+重构已经写好的代码, 之后写深一层的CRUD比如联表操作
 
 # 总结
 
-+ 进一步理解 Dto
++ 在db.migration中添加新表如何操作
++ 后端service如何联表查询
++ 进一步理解联表中Dto, entity和DB的tuple之间的关系
 + 在service里mapper的使用来模块化Dto <---> entity
 
-
++ mapstruct工具对于快速产生mapper方法的使用
 
 
 
