@@ -218,15 +218,15 @@ e.g.2 子弹实现了两个接口: 可以飞, 攻击性
 
   * 接口中只能定义 全局常量 和 抽象方法
 
-    + 全局常量: public static final的, 但在interface里书写可以省略 (默认自动给你加上了)
+    + 全局常量: ***public static final***的, 但在interface里书写可以省略 (默认自动给你加上了)
 
-    + 抽象方法: public abstract的, 但在interface里书写可以省略
+    + 抽象方法: ***public abstract***的, 但在interface里书写可以省略
 
 + JDK8: 除了定义 全局常量 和 抽象方法外, 接口中还可定义静态方法, 默认方法
 
 
 
-:bangbang: 接口中是不能定义构造器的!!! 意味着接口不可以被实例化。 Java开发中, 接口通过让类去实现(implements)的方式来使用
+:bangbang: 接口中是不能定义构造器的!!! (但抽象类中可以哦) 意味着接口不可以被实例化。 Java开发中, 接口通过让类去实现(implements)的方式来使用
 
 + 如果实现接口的类重写(override)了接口中的所有抽象方法, 则该实现类就可以实例化
 
@@ -415,7 +415,9 @@ public class USBTest {
 
 
 
-## 2.4 :moon: 接口的应用:
+## 2.4  接口的应用:
+
+这里只做了解即可
 
 ### 2.4.1 代理模式 (Proxy)
 
@@ -429,7 +431,9 @@ public class USBTest {
 
 
 
-:gem: 见NetWorkTest.java, StaticProxyTest.java
+:gem: NetWorkTest.java: Proxy server 代理 real server 连接网络
+
+:gem: StaticProxyTest.java: 经纪人代理明星进行明星的各项活动
 
 
 
@@ -453,11 +457,110 @@ public class USBTest {
 
 ### 2.4.2 工厂模式
 
-354
+354 
+
+了解即可
+
+
+
+工厂模式: 实现了 ***创建者*** 和 ***调用者*** 的分离, 即: 将创建对象的具体过程屏蔽隔离起来, 达到提高灵活性的目的
+
+其实设计模式和面向对象设计原则都是为了使得开发项目更加容易扩展和维护, 解决方式就是一个“分工”. 社会的发展也是这样, 分工越来越细. 现在的人不用像原始人那样, 自己种田自己打猎, 只需要至少会1样能吃饭的技能就行了(比如会Java :smile:).
+
+
+
+尚硅谷的资料里有pdf讲解工厂模式, 并对以下几种模式做了对比:
+
++ 无工厂模式
+
++ 简单工厂模式
+
++ 工厂方法模式 (接口的应用)
+
++ 抽象工厂模式 (接口的应用)
+
+
+
+
+
+<img src="./Src_md/AbstractVsInterface.png" style="zoom:50%;" />
+
+
+
+## 2.5 接口两道笔试题 与练习
+
+355
+
+:gem: 排错1
+
+```java
+// 重名属性
+
+interface A { 
+  int x = 0;
+}
+class B {
+    int x = 1;
+}
+
+class C extends B implements A {
+    public void pX() {
+				// System.out.println(x); 	// 错误点: ambiguous x
+      	System.out.println(super.x);	// 父类里的x: 1
+      	System.out.println(A.x);			// 接口A中的全局变量
+      
+    }
+    public static void main(String[] args) {
+        new C().pX();
+} }
+```
+
+:gem: 排错2
+
+```java
+
+interface Playable {
+    void play();
+}
+interface Bounceable {
+    void play();
+}
+
+interface Rollable extends Playable,Bounceable {
+		Ball ball = new Ball("PingPang");
+}
+
+class Ball implements Rollable {
+    private String name;
+    public String getName() {
+        return name;
+		}
+    public Ball(String name) {
+        this.name = name;
+		}
+  
+  	public void play() {
+    	ball = new Ball("Football"); 	// 错误点: Interface中的成员变量是final的
+    	System.out.println(ball.getName());
+  	} 
+}
+```
+
+
+
+356
+
+定义一个ComparableObject interface来比较自定义class Circle的对象的大小
+
+注意里面关于写比较的两种方式: 1)比较的类的属性类型用primitive type; 2) 比较的类的属性类型用wrapper class, 可以直接用封装好的compareTo()方法
+
+
+
+## 2.6 Java8 接口新特性
+
+357
 
 该看这个了
-
-
 
 
 
@@ -471,3 +574,10 @@ public class USBTest {
 359
 
 开发中用的相对较少, 了解即可
+
+
+
+
+
+
+

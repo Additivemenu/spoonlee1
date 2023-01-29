@@ -146,42 +146,282 @@ VR: React VR (VR)
 TV: React TV (TV) React IOT (IOT)
 
 
-# 4. React hands-on  21:10-
+
+# 4. :moon: React hands-on  1h26min-
+
+真正开始react
+
+## 4.1 快速搭建react环境: create-react-app 1h26min-
 
 - Webpack / bundle
 - Babel / compile
 
-- JavaScript无法在非浏览器环境跑, JS不是系统层面的语言, 没有办法操作文件
-  - npm: node package manager, 用来管理nodejs相关的依赖
-  - nodejs: 是js系统层面的执行逻辑， 使得我们可以在系统层面写JS, 在系统层面操作文件
+
+
+JS vs. nodejs
+
+JavaScript无法在*非浏览器环境*跑, JS不是系统层面的语言, 没有办法操作文件
+- **nodejs**: 是js在系统层面的执行逻辑， 使得我们可以在系统层面(比如terminal里)写JS, 在系统层面操作文件
+- **npm**: node package manager, 用来管理nodejs相关的依赖
+
+
+
+用nvm装node
+
 
 
 几个terminal命令:
-- `node`: terminal输入node, 进入nodejs的编写环境 (.exit推出)
-- `npm`: 
-- `npx`: 
-  - `npx create-react-app project-one-react`在当前路径下快速创建react project
+
+- `node`: terminal输入node, terminal将进入nodejs的编写环境 (terminal输入.exit推出) (:cry:谁会这么用...)
+
+  - ```bash
+    fs.readdirSync('.')	// 读取当前路径下文件
+    ```
+
+- `npm`: 下载好node自带,  用来安装和卸载dependency
+
+- `npx`:  npm的script执行器
+
+  - `npx create-react-app project-one-react`在当前路径下快速create react app
   - `npx create-react-app -h`: helping menu
 
-https://www.freecodecamp.org/news/npm-vs-npx-whats-the-difference/
+reading: [npm vs. npx](https://www.freecodecamp.org/news/npm-vs-npx-whats-the-difference/)
 
-## 讲解package.json的每一项含义 21:35-
+
+
+
+
+## 4.2 package.json配置文件 1h45min-
+
+创建好react app后, 我们来看里面的配置文件
 
 node_modules文件夹下是各种dependency, 相当于IDEA的external library
 
-script
+
+
+注意react里安装dependency
+
++ 方式1: `npm instal <package-you-want>` terminal里打, 之后可以直接运行,  但该依赖不会在package.json显示
++ 方式2: 在package.json里直接写dependency没有用, 写了之后还是得在命令行里打`npm instal <package-you-want>`; 这样最好, 因为你需要记录下需要哪些依赖
+
+```json
+{
+  "name": "project-one-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",									// react 基本语法
+    "react-dom": "^18.2.0",							// 允许react语法跑在browser上的包
+    "react-scripts": "5.0.1",						// 允许我们start app
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {													// "描述项目需要的命令行命令": "同时触发要跑的依赖包名" 
+    "start": "react-scripts start",			// e.g. `npm run start`
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"			// 
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {										// project compatability declaration
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+```
 
 
 
-## 跑react 
+先配置文件里的讲browserlist
 
-browserlist
+js泡在浏览器里, js的方法需要浏览器支持才行(e.g. forEach()) 不同的浏览器可能不支持同一个js方法
 
 
-jsx 10:16-
-在js里写html的代码, 实现组件化
 
-一个return html片段的function (function的名字首字母必须大写)---> Component
 
-Component可以在其他的html片段中通过tag方式调用
+
+## 4.3 跑react 2h15min-
+
+在刚刚用`npx create-react-app project-one-react`创建的react project路径下, 跑`npm run start`运行你的第一个react程序
+
+
+
+react启动原理
+
++ entry program: public > index.html
+
++ js entry program: src > index.js: 里面捕捉index.html的dom对象, 然后通过render()方法来渲染一段html代码; 实现组件化
+
+```js
+import App from './App';               // !! 指向同路径下的App.js !! 实现模块化
+
+const root = ReactDOM.createRoot(document.getElementById('root'));    // 之后react写成的网页元素都会塞到这个html元素里
+
+// what we are going to render
+root.render(
+  <React.StrictMode>
+    <App />     
+  </React.StrictMode>
+);  // !! <App /> return a piece of html code!!
+```
+
+
+
+
+
+## 4.4 jsx 2h29min-
+
+React允许我们在js里写html Like的代码, 实现组件化
+
++ 一个js function return一段html代码, 作为一个component
++ component可以在其他html片段中通过tag的方式调用
+
+:gem: index.js里:
+
+:bangbang: 注意下面用来产生component代码的函数名必须首字母大写, 这是为了和普通js函数做区分
+
+```react
+// 函数名首字母大写
+const App = () =>{
+  return(
+  	<div>
+    	<Header></Header>
+      <Body></Body>    
+      <Footer></Footer>
+    </div>
+  )
+}
+
+// 函数名首字母大写
+const Header = () => {
+  return(
+  	<div>
+    		<div>Logo</logo>
+      	<div>Nav</div>
+    </div>
+  )
+}
+
+// 函数名首字母大写
+const Body = () => {
+  return(
+  	<div>Hello world</div>
+  )
+}
+
+// 函数名首字母大写
+const Footer = () => {
+  return(
+  	<div>Made with love by xueshuo</div>
+  )
+}
+
+// 先声明再调用
+const root = ReactDOM.createRoot(document.getElementById('root'));    // 之后react写成的网页元素都会塞到这个html元素里
+root.render(<App></App>)
+```
+
+
+
+---
+
+进一步地, 下面的component函数其实可以放到别的js文件里实现组件化
+
+index.js
+
+```react
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';               // !! 指向同路径下的App.js !!
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));    // 之后react写成的网页元素都会塞到这个html元素里
+root.render(<App></App>)
+```
+
+
+
+App.js
+
+```react
+import Header from './Header'
+import Body from './Body'
+import Footer from './Footer'
+
+// 函数名首字母大写
+const App = () =>{
+  return(
+  	<div>
+    	<Header></Header>
+      <Body></Body>    
+      <Footer></Footer>
+    </div>
+  )
+}
+
+export default App
+```
+
+
+
+Header.js
+
+```react
+// 函数名首字母大写
+const Header = () => {
+  return(
+  	<div>
+    		<div>Logo</logo>
+      	<div>Nav</div>
+    </div>
+  )
+}
+
+export default Header
+```
+
+
+
+Body.js
+
+```react
+// 函数名首字母大写
+const Body = () => {
+  return(
+  	<div>Hello world</div>
+  )
+}
+
+export default Body
+```
+
+
+
+Footer.js
+
+```react
+// 函数名首字母大写
+const Footer = () => {
+  return(
+  	<div>Made with love by xueshuo</div>
+  )
+}
+
+export default Footer
+```
 
