@@ -75,9 +75,10 @@ public class PropertyService {
     }
 
     public List<PropertyGetDto> getPropertyByUserId(Long userId) {
+        // get property list from database given userId
         List<Property> propertyList = propertyRepository.findByUser_Id(userId);
 
-        // property ---> propertyGetDto
+        // property list ---> propertyGetDto list
         return propertyList.stream()
                 .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
                 .toList();

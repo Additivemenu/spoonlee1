@@ -30,8 +30,4 @@ public class PropertyController {
         return propertyService.getProperty(propertyId);
     }
 
-
-
-
-
 }

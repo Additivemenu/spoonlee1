@@ -2,17 +2,33 @@
 
 
 
-19:36-
+# 要点
 
-# Query: given user id, return all property he owns
++ 继续体会设计并实现一个RESTful API的流程: 先写controller, 再写service同时补充需要的dto, mapper, repository
++ UserController里调用PropertyService
++ 对于数组使用stream API来操作
+
+
+
+
+
+# 实现新的RESTful API需求
+
+接上节课, 实现 query: given user id, return all property he owns
 
 
 
 RESTful api 设计：
 
-http://localhost:8080/api/v1/users/{userId}/properties
+`http://localhost:8080/api/v1/users/{userId}/properties`  表明这是个关于UserController的RESTful api
 
 
+
+## 实现方法一
+
+方式一: given userId, 从数据库中查找并返回property list, 再将其转化为propertyGetDto list返回
+
+UserController
 
 controller里每个方法对应一个RESTful api
 
@@ -27,19 +43,33 @@ public List<PropertyGetDto> getPropertiesByUserId(@PathVariable Long userId){
 
 
 
-还是在PropertyRepositoy里直接写
-
-
+PropertyService
 
 ```java
-public interface PropertyRepository extends JpaRepository<Property, Long> {
+public List<PropertyGetDto> getPropertyByUserId(Long userId) {
+  	// get property list from database given userId 
+    List<Property> propertyList = propertyRepository.findByUser_Id(userId);		// TODO:  
 
-    List<Property> findByUser_Id(Long userId);
-
+    // property list---> propertyGetDto list
+    return propertyList.stream()
+      .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
+      .toList();
 }
 ```
 
 
+
+在PropertyRepositoy里直接写
+
+这个接口直接封装好了数据库查询过程(封装了JDBC?), 只需写个声明式的函数名即可
+
+```java
+public interface PropertyRepository extends JpaRepository<Property, Long> {
+
+    List<Property> findByUser_Id(Long userId); // 注意方法名一定是 findByUser_Id(), findBy之后的部分要和数据库里的tuple的column name一致
+
+}
+```
 
 
 
@@ -49,7 +79,11 @@ run application, Postman > get: http://localhost:8080/api/v1/users/1/properties
 
 
 
-另一种实现方式20:17-
+## 实现方法二 20:17-
+
+接着这个看
+
+
 
 User里定义
 
@@ -78,7 +112,7 @@ Spring security 加密user的password
 
 
 
-20:43 - 继续优化代码
+## 20:43 - 继续优化代码
 
 用@Builder
 

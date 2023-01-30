@@ -428,7 +428,7 @@ UserController
 
 ```java
 @GetMapping
-public UserGetDto getUserByEmail(@Param(value = "email") String email){
+public UserGetDto getUserByEmail(@RequestParam String email){
     System.out.println(email);
     return userService.getUserByEmail(email);
 }
