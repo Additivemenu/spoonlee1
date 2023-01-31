@@ -560,11 +560,67 @@ class Ball implements Rollable {
 
 357
 
-该看这个了
+Java 8中，你可以为接口添加静态方法和默认方法。从技术角度来说，这是完全合法的，只是它看起来违反了接口作为一个抽象定义的理念。 Java8这些特性也使得Interface越来越像class了
+
++ **静态方法**: 使用 `static `关键字修饰。可以通过接口直接调用静态方法，并执行 其方法体。我们经常在相互一起使用的类中使用静态方法。你可以在标准库中 找到像 *<u>Collection(接口)/Collections(工具类)</u>* 或者 *<u>Path(接口)/Paths(工具类 )</u>* 这样成对的接口和工具类。
+  + **允许在接口中定义static method就允许接口去充当工具类的角色, 以后可能工具类和接口会融合起来**
++ **默认方法**: 默认方法使用 default 关键字修饰。可以通过实现类对象来调用。 我们在已有的接口中提供新方法的同时，还保持了与旧版本代码的兼容性。 比如:java 8 API中对Collection、List、Comparator等接口提供了丰富的默认 方法。
+
+一般情况下, 对于已经提供了默认方法的接口, 我们不会去重写它, 不然我接口里直接放个abstract method等你实现好了, 我自己提供一个实现干什么
+
+
+
+总结:
+
+1. 接口中定义的static method, 只能通过接口来调用
+
+2. 通过接口实现类的对象, 可以调用接口中的默认方法, 如果实现类重写了接口中的默认方法, 调用时仍然调用的是重写以后的方法
+
+3. 如果子类(或实现类)继承的父类和实现的接口中声明了同名同参数的方法, 那么子类在没有重写此方法的情况下, 默认调用父类中同命同参数的方法  ---> **类优先原则**
+
+4. 如果实现类实现了多个接口, 而这多个接口中定义了同名同参数的默认方法, 那么在实现类没有重写此方法的情况下, 报错 ----> **接口冲突,** 此时我们在实现类中必须重写该同命同参数方法以指明到底用哪个方法
+
+5. 如何在子类(实现类)的方法中调用父类, 接口中的默认方法
 
 
 
 
+
+Java8 接口新特性应用
+
+358
+
+```java
+interface Filial {// 孝顺的
+    default void help() {
+        System.out.println("老妈，我来了");
+    }
+}
+
+interface Spoony {// 痴情的 
+    default void help() {
+        System.out.println("媳妇，别怕，我来了"); 
+    }
+}
+
+class Father{
+    public void help(){
+        System.out.println("儿子, 救我媳妇!");
+    }
+}
+
+class Man extends Father implements Filial, Spoony{
+    // 如果不重写 help(), 以父类中的方法为准 ---> 父类优先
+  
+//    @Override
+//    public void help() {
+//        System.out.println("我该救谁呢?");   // 自己重写
+//        Filial.super.help();        // 救妈
+//        Spoony.super.help();        // 救媳妇
+//            
+//    }
+}
+```
 
 
 

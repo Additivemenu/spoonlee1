@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/postgres?currentSchema=weather
+    username: postgres
+    password: admin
+  flyway:
+    enabled: true
+    schemas: weather
+  jpa:
+    properties:
+      hibernate:
+        default_schema: weather
+        jdbc:
+          time_zone: UTC
+    show-sql: true

@@ -284,7 +284,7 @@ root.render(
 
 
 
-## 4.4 jsx 2h29min-
+## 4.4 jsx操作 2h29min-
 
 React允许我们在js里写html Like的代码, 实现组件化
 

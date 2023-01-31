@@ -1,26 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  // return html code
-  return (      
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+// html Component
+import Header from './Header'
+import Body from './Body'
+import Footer from './Footer'
+
+
+// 函数名首字母大写
+const App = () =>{
+  return(
+  	<div>
+    	<Header></Header>
+      <Body></Body>    
+      <Footer></Footer>
     </div>
-  );
+  )
 }
 
 export default App;

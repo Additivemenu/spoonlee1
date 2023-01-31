@@ -36,6 +36,6 @@ public class User {
     @UpdateTimestamp        // 指定自动管理
     private OffsetDateTime updatedTime;
 
-    @OneToMany(mappedBy = "user")       // 对应Property里User的成员变量名
+    @OneToMany(mappedBy = "user")       // 对应Property里User的成员变量名, JDBC封装?
     private List<Property> propertyList;
 }

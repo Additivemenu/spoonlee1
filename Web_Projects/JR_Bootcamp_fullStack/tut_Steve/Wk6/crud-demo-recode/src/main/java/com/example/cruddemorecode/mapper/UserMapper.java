@@ -36,14 +36,14 @@ public class UserMapper {
 
     public User mapUserPostDtoToUser(UserPostDto userPostDto){
 
-//        // 方式1
+//        // 方式1: Getter Setter
 //        User user = new User();
 //
 //        user.setEmail(userPostDto.getEmail());
 //        user.setName(userPostDto.getName());
 //        user.setPassword(userPostDto.getPassword());
 
-        // 方式2
+        // 方式2: @builder
         User user = User.builder()
                 .email(userPostDto.getEmail())
                 .name(userPostDto.getName())
