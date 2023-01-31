@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/chap14_NetWork_Programming" />
             <option value="$PROJECT_DIR$/chap15_Java_Reflection" />
             <option value="$PROJECT_DIR$/chap6_OOP3" />
+            <option value="$PROJECT_DIR$/chap8_Concurrecy" />
           </set>
         </option>
       </GradleProjectSettings>

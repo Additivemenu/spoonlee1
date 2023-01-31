@@ -2,7 +2,7 @@
     display: flex;
 }
 
-.nav__item{
+/* .nav__item{
     text-decoration: none;
     padding: 16px;
     color: #49515d;
@@ -11,7 +11,6 @@
 
 }
 
-/* active effect for nav item */
 .nav__item--active{
     opacity: 1;
 }
@@ -23,4 +22,4 @@
     background-color: #377e9a;
     margin-top: 4px;
 
-}
+} */

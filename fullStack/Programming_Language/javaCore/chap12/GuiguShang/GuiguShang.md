@@ -47,7 +47,7 @@ JVM 内存结构:
 ## 单核CPU和多核CPU的理解
 
 - 单核CPU，也可"同时(看似同时)"运行多个线程, 但其实是一种假的多线程，因为<u>在一个时间单元内</u>，单核CPU也只能执行一个线程的任务
-  - E.g. 虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费 才能通过，那么CPU就好比收费人员。如果多车道中有任何一个车道有某个人不想交钱，那么收费人员就把他“挂起”(晾着他，等他想通了，准备好了钱，再去收费)。但是因为CPU时 间单元特别短，因此感觉不出来。
+  - E.g. 虽然有多车道，但是收费站只有一个工作人员在收费，只有收了费才能通过，那么CPU就好比收费人员。如果多车道中有任何一个车道有某个人不想交钱，那么收费人员就把他“挂起”(晾着他，等他想通了，准备好了钱，再去收费)。但是因为CPU时 间单元特别短，因此感觉不出来。
 
 - 如果是多核的话，才能更好的发挥多线程的效率。(现在的服务器都是多核的)
   - E.g. 一个Java应用程序java.exe，其实至少有三个线程:main()主线程，gc()  垃圾回收线程，异常处理线程。当然如果发生异常，会影响主线程。
@@ -84,11 +84,119 @@ JVM 内存结构:
 
 # 2. :full_moon: 线程的创建和使用
 
-418
+416
 
-该看这个了
+Java语言的JVM允许程序运行多个线程，它通过java.lang.Thread 类来体现
+
+Thread类的特性
+
++ 每个线程都是通过某个特定Thread对象的run()方法来完成操作的，经常把run()方法的主体称为线程体 
++ 通过该Thread对象的start()方法来启动这个线程，而非直接调用run()
 
 
+
+```java
+public class ThreadTest {
+
+    public static void main(String[] args) {
+        // 3. create instance of MyThread in main() thread
+        MyThread t1 =  new MyThread();
+        t1.start(); // 使得另一个t1线程开始执行, 同时调用t1的run()
+        
+        // 到这里, 此时有两个线程同时执行 (不考虑垃圾回收和异常)
+        // 以下操作仍然在main thread中进行
+        for(int i = 0; i < 100; i++){
+            if(i % 2 != 0) {
+                System.out.println(Thread.currentThread().getName() + " (main): "+ i);
+            }
+        }
+    }
+
+}
+
+// 1. create a subclass of Thread
+class MyThread extends Thread{
+    // 2. Override run()
+    @Override
+    public void run(){
+        for(int i = 0; i < 100; i++){
+            if(i % 2 == 0) {
+                System.out.println(Thread.currentThread().getName() + ": "+ i);
+            }
+        }
+    }
+
+}
+```
+
+
+
+可以看打main thread和t1 thread的操作同时进行了, 他们的打印结果交替出现
+
+```bash
+main (main): 1
+main (main): 3
+Thread-0: 0
+Thread-0: 2
+Thread-0: 4
+Thread-0: 6
+Thread-0: 8
+Thread-0: 10
+Thread-0: 12
+main (main): 5
+...
+```
+
+
+
+:bangbang: note 417: 
+
++ 如果要启动一个线程, 不要直接run(), 只能调用线程对象的start(). 不然run()还是在主线程中执行失去多线程的意义了
+
++ 如果一个线程对象已经调用了start(), 就不能第二次调用start()了. 此时如果想开新的线程, 只能再去另外new thread instance, 调用它的start()
+
+
+
+
+
+练习418
+
+:gem: 练习: 创建两个分线程, 其中一个线程遍历100以内的偶数, 另一个遍历100以内的奇数
+
++ 方式1: 老老实实创建俩Thread class分别重写它们的run()
+
++ 方式2: 创建Thread的匿名子类, 调用start() 
+
+```java
+public static void main(String[] args) {
+  
+    // 方式2: 创建thread的匿名子类, 然后调用start()
+    new Thread(){
+      @Override
+      public void run(){
+        // // 遍历打印100以内的偶数
+        for(int i=0; i < 100; i++){
+          if (i % 2 == 0) {
+            System.out.println(Thread.currentThread().getName() + ": " + i);
+          }
+        }
+      }
+    }.start();
+
+    new Thread(){
+      @Override
+      public void run(){
+        // // 遍历打印100以内的偶数
+        for(int i=0; i < 100; i++){
+          if (i % 2 != 0) {
+            System.out.println(Thread.currentThread().getName() + ": " + i);
+          }
+        }
+      }
+    }.start();
+
+}
+```
 
 
 

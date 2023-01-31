@@ -1,7 +1,7 @@
 // 函数名首字母大写
 const Footer = () => {
     return(
-        <div>Made with love by xueshuo</div>
+        <div>Footer: Made with love by xueshuo</div>
     )
   }
   

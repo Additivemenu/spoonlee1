@@ -1,7 +1,7 @@
 // 函数名首字母大写
 const Body = () => {
     return(
-        <div>Hello world</div>
+        <div>Body: Hello world</div>
     )
 }
   
