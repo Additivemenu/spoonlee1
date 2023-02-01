@@ -26,7 +26,7 @@ Java用户界面
 
 Stream, I/O stream API见JavaCore2
 
----
+
 
 
 
@@ -68,7 +68,7 @@ Stream, I/O stream API见JavaCore2
     + [start with gradle](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#add_code)
     + [intall intellij idea on ubuntu](https://linuxhint.com/install-intellij-idea-on-ubuntu-20-04/)
 
---- 
+---
 # configure class path in VSCode:
 左下java projects --> 点击... --> configure class path
 
@@ -106,5 +106,4 @@ By default, all programs run with assertion checks turned off. That is why you m
 ```shell
 $ java -enableassertions assertTesting
 ```
-
 

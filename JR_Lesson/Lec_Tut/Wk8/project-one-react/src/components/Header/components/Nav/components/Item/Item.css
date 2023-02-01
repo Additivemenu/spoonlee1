@@ -1,16 +1,15 @@
-.nav{
-    display: flex;
-}
-
-/* .nav__item{
+.nav__item{
     text-decoration: none;
     padding: 16px;
     color: #49515d;
     font-size: 15px;
     opacity: 0.6;
 
+
+
 }
 
+/* active effect for nav item */
 .nav__item--active{
     opacity: 1;
 }
@@ -18,8 +17,8 @@
 .nav__item--active::after{
     content: "";
     display: block;
+
     height: 3px;
     background-color: #377e9a;
     margin-top: 4px;
-
-} */
+}

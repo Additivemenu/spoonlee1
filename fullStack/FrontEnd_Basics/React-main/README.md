@@ -1,11 +1,14 @@
----
-title: react
-date: 2021-01-20 11:13:20
+> :computer: [尚硅谷React](https://www.bilibili.com/video/BV1wy4y1D7JT?p=43&t=5)
+>
+> 尚硅谷react教学下b友分享的笔记
+
+
+
 ---
 
-> 以下是观看尚硅谷React课程所做的笔记。
->
-> [尚硅谷React](https://www.bilibili.com/video/BV1wy4y1D7JT?p=43&t=5)
+
+
+
 
 # React简介
 
@@ -25,7 +28,7 @@ React用于构建用户界面的JS库。是一个将数据渲染为HTML视图的
 >
 > [npm](https://blog.csdn.net/qq_25502269/article/details/79346545)
 
-# React入门
+# 1. React入门
 
 ## React 基础案例
 
@@ -157,7 +160,7 @@ const VDOM = React.createElement('h1',{id:"title"},"nihao")
 
 使用JS和JSX都可以创建虚拟DOM，但是可以看出JS创建虚拟DOM比较繁琐，尤其是标签如果很多的情况下，所以还是比较推荐使用JSX来创建。
 
-# 组件
+# 2. 面向组件编程
 
 当应用是以多组件的方式实现，这个应用就是一个组件化的应用
 
@@ -1102,7 +1105,7 @@ Diff算法其实就是react生成的新虚拟DOM和以前的旧虚拟DOM的比�
 - 如果旧的虚拟DOM中没有找到了与新虚拟DOM相同的key:
   - 根据数据创建新的真实的DOM,随后渲染到页面上
 
-# React脚手架
+# 3. React应用: 基于React脚手架
 
 react提供了一个用于创建react项目的脚手架库：create-react-app
 
@@ -1449,7 +1452,7 @@ await右边是一个表达式，如果该表达式返回的是一个Promise对�
 
 [fetch](http://www.ruanyifeng.com/blog/2020/12/fetch-tutorial.html)
 
-# React路由
+# 5. React router
 
 ## SPA
 
@@ -1741,4 +1744,6 @@ Home.jsx:
 2.在去Home组件里面去匹配相应的路由，从而找到了/home/news进行匹配，因此找到了News组件。
 
 但是如果开启精确匹配，就会在第一步的时候卡住，这个时候就走不下去了。**因此不要轻易的使用精确匹配**
+
+
 

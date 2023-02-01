@@ -1,8 +1,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';               // !! 指向同路径下的App.js !!
+import './index.css';                             // global style
+import App from './components/App';               // !! 指向同路径下的App.js !!
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));    // 之后react写成的网页元素都会塞到这个html元素里
