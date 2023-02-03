@@ -280,7 +280,7 @@ export default Item
 
 
 
-继续优化52min-
+## 继续优化52min-
 
 [react: curely bracket vs. quotes](https://sawyerh.medium.com/how-react-props-relate-to-html-attributes-and-js-functions-6785a89a299#:~:text=In%20React%2C%20%E2%80%9Cprops%E2%80%9D%20is,element%20that%20accepts%20custom%20attributes.)
 
@@ -344,7 +344,7 @@ const Item = ({href, children, active, setActive}) =>{
         // SPA, 我们不需要页面跳转
         event.preventDefault();
         setActive(!active);
-        console.log('HERE');
+        // console.log('HERE');
     }
 
     return (
@@ -362,10 +362,291 @@ const Item = ({href, children, active, setActive}) =>{
 
 
 
-此时就实现需求了
+此时就实现让一个NavItem呈现点击特效了
 
 
 
-继续55min-
+## 继续优化代码写法55min-
+
+上面Nav.js中我们仍有许多重复的代码, 我们采用Array来批量输入HTML tag的props参数 (JS技巧)
+
+```react
+import styles from './Nav.module.css'
+import Item from './components/Item'
+import { useState } from 'react';
+
+
+const ITEMS = [
+    {href: '/home', value: 'HOME'},
+    {href: '/resume', value: 'Resume'},
+    {href: 'service', value: 'Services'},
+    {href: '/blog', value: 'Blog'},
+    {href: 'contact', value: 'Contact'}
+]
+
+const Nav = () => {
+
+    // flag is a String, setFlag(String)
+    const [flag, setFlag] = useState('HOME')     // active is a variable, setActive is a function
+
+    return (
+        <nav className={styles.container}>
+
+            {/* 减少copy, passte, 和下面的代码等效, 写法比较高级 map(), destruct, HTML标签的props传递综合在一起 */}
+            {ITEMS.map(({href, value}) => (
+                <Item 
+                    href={href} 
+                    active={flag=== href} 
+                    setActive={() => setFlag(href)}
+                >
+                    {value}
+                </Item>
+            ))}
+
+        </nav>
+    )
+}
+
+export default Nav;
+```
+
+
+
+
+
+
+
+## 难点来了! 我们继续优化代码的readability 1h04min-
+
+Nav.js
+
+提升我们代码的可读性, 将Item函数(React eanabled jsx操作)的输入参数(props的一个成员)从之前的
+
+```react
+setActive={() => setFlag(href)
+```
+
+改为
+
+```react
+onClick={() => setFlag(href)
+```
+
+
+
+这样一来, 看到Item函数里有一个叫onClick的函数变量 (它的名字叫成其他的也没关系, :question: 等等onClick不是保留字段吗??)就知道它应该是定义了Item函数如何处理onClick事件 (\<a\>一个property) 的  (---个人觉得应该不是保留字, 因为即使在\<a\>中我们把onClick写成onCliiik也没有出现错误提示) 可读性大大提高了, 别人看到Item那段声明式的代码就知道Item的行为是怎样的
+
+```react
+const Nav = () => {
+
+    // flag is a String, setFlag(String)
+    const [flag, setFlag] = useState('/home')     // active is a variable, setActive is a function
+
+    return (
+        <nav className={styles.container}>
+
+            {/* 减少copy, passte, 和下面的代码等效, 写法比较高级 map(), destruct, HTML标签的props传递综合在一起 */}
+            {ITEMS.map(({href, value}) => (
+                <Item 
+                    href={href} 
+                    active={flag=== href} 
+                    onClick={() => setFlag(href)}			// !!! *****改动在这里, 代表一个函数变量, 将会把一段代码（操作）传入到Item函数里****** !!!
+                >
+                    {value}
+                </Item>
+            ))}
+
+        </nav>
+    )
+}
+
+
+```
+
+
+
+Item.js
+
+对应的, 在handleClick函数中, 将原来的
+
+```react
+setActive(!active);
+```
+
+改为
+
+```react
+onClick();
+```
+
+
+
+```react
+const Item = ({href, children, active, onClick}) =>{
+
+    //const [active, setActive] = useState(false);
+
+    const handleClick = (event) => {
+        // SPA, 我们不需要页面跳转
+        event.preventDefault();
+        onClick();              // !!! ******改动在这里!! 执行onClick()里的代码****** !!!
+        // console.log('HERE');
+    }
+
+    return (
+        <a 
+        href = {href} 
+        onClick = {handleClick}             // declarative: do something when this tag is onClick
+        className={classNames('nav__item', {
+            'nav__item--active': active})}> 
+            {children}
+        </a>
+    )
+
+}
+
+export default Item
+```
+
+
+
+这样一来, 代码的可读性大大提高了
+
+还是挺神奇的, 传入Item函数的一个代码块, 在执行时居然对引用Item函数的函数(Item的`父级`函数)内的其他变量进行了修改
+
+
+
+1h14min-1h24min 休息
+
+
+
+
+
+# 1h24min- 继续
+
+
+
+## Angular.js的诟病
+
+
+
+Index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myact</title>
+</head>
+<body>
+    <div id="root"></div>
+
+</body>
+<script src="./index.js"></script>
+</html>
+```
+
+
+
+index.js
+
+```js
+let num = 0
+
+const Count = () =>{
+    const container = document.createElement('div')
+
+    // text
+    const text = document.createTextNode(num)       // create text node here once per render
+
+    const handleClick = () => {
+        num++;
+    }
+    
+    // button
+    const button = document.createElement('button')
+    button.innerHTML = 'Plus'
+    button.type = 'button'
+    button.addEventListener('click', handleClick);
+
+    // add up
+    container.appendChild(text)
+    container.appendChild(button)
+
+    // div
+    //      text
+    //      button
+    return container
+
+}
+
+
+document.querySelector('#root').appendChild(Count())
+```
+
+
+
+发现想实现的功能并未实现, 因为TextNode只在被render的时候创建了1次, 但当click on button, num更新了而页面并没有被再次渲染, 
+
+想要实现我们的功能就得让页面re-render on update of num
+
+
+
+index.js
+
+```js
+let num = 0
+
+const Count = () =>{
+
+    const container = document.createElement('div')
+
+    // text
+    const text = document.createTextNode(num)       // create text node here once per render
+
+    // button
+    const handleClick = () => {
+        num++;
+
+        // !!! re-render !!!
+        document.querySelector('#root').innerHTML = ''
+        document.querySelector('#root').appendChild(Count())
+    }
+    
+    const button = document.createElement('button')
+    button.innerHTML = 'Plus'
+    button.type = 'button'
+    button.addEventListener('click', handleClick);
+
+    // add up
+    container.appendChild(text)
+    container.appendChild(button)
+
+    // div
+    //      text
+    //      button
+    return container
+
+}
+
+
+document.querySelector('#root').appendChild(Count())
+```
+
+
+
+但面临巨大的性能问题, 因为我们每次修改都需要重新渲染整个页面
+
+这就是Angular.js的最初逻辑: 总得重复渲染
+
+
+
+## React 提出了virtual DOM的概念 1h39min-
+
+DOM 是tree view (树状结构)
 
 看到这里
+
