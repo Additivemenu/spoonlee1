@@ -2,7 +2,7 @@ JR17-22-9-25 lec
 
 
 
-接上节Database SQL的课
+接上节Database SQL的课, 配weatherapp-2
 
 
 
@@ -56,7 +56,7 @@ spring:
         default_schema: weather
         jdbc:
           time_zone: UTC
-    show-sql: true
+    show-sql: true			# 这样执行的时候能够看到由Spirng JPA到底生成并运行了哪些SQL语句
 ```
 
 
@@ -115,7 +115,7 @@ public class Weather {
 }
 ```
 
-其中用的多的Spring-data-jpa enabled annotation:
+其中用的多的Spring-data-jpa enabled annotation (主要是能够和数据库交互, 封装了JDBC?):
 
 @Entity
 
@@ -129,7 +129,7 @@ public class Weather {
 
 
 
-一些注意事项 https://www.jpa-buddy.com/blog/lombok-and-jpa-what-may-go-wrong/， lombok和Spring-data-jpa一起用有的地方会冲突
+:bangbang:一些注意事项 https://www.jpa-buddy.com/blog/lombok-and-jpa-what-may-go-wrong/， lombok和Spring-data-jpa一起用有的地方会冲突
 
 - Avoid using `@EqualsAndHashCode` and `@Data` with JPA entities;
 - Always exclude lazy attributes when using `@ToString`;
@@ -139,9 +139,189 @@ public class Weather {
 
 
 
-一个错误示例 33min-
+:gem: 示例 33min-
+
+注意这里的配置在实际开发中其实是应该避免使用的
+
+
+
+如果启用如下的application.yml的配置
+
+```yml
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/postgres?currentSchema=weather
+    username: postgres
+    password: admin
+  flyway:
+    enabled: false				# don't do this in real production 
+    schemas: weather
+  jpa:
+    properties:
+      hibernate:
+        default_schema: weather
+        jdbc:
+          time_zone: UTC
+    show-sql: true
+    hibernate:
+      ddl-auto: update		# don't do this in real production
+```
+
+
+
+run application, 能看到下面的log
+
+
+
+Log:
+
+```bash
+2023-02-03 10:13:58.694  INFO 2782 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-02-03 10:13:58.800  INFO 2782 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+```
+
+性能瓶颈主要是I/O操作, 也就是数据库访问时用TCP, 最花时间的是建立连接的操作, 而数据库连接池(database connection pool)就是为了缓解这个问题提升性能, 起到类似缓存的作用, 把connection缓存到一个pool中
+
+
+
+
+
+以及能看到pgadmin > postgres database 中一个Weather (基于我们刚刚定义的Weather entity)的table被创立了, 但里面没有tuple
+
+
+
+## repository 48min-
+
+WeatherRepository:
+
+```java
+import com.fiona.weatherapp.entity.Weather;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@Repository                                           // <entity, pk data type>
+public interface WeatherRepository extends JpaRepository<Weather, Long> {
+    Optional<Weather> findByCityAndCountry(String city, String country); // Optional class避免nullPointer
+    Page<Weather> findByCountry(String country, Pageable pageable);
+    List<Weather> findAllByCountry(String country, Pageable pageable);
+}
+```
+
+
+
+repository test的tricky point:
+
++ 要造数据来mock数据库的行为
++ 数据库其实作为第三方依赖, 这里其实就不是unit test而是某种层面的integration test
+
+
+
+
+
+### test repository 55min-
+
+ 
+
+先在Test下新建一个directory: resources, 然后在里面新建一个application-test.yml的文件, 先不往里放东西
+
+
+
+WeahterRepository对应的test class
+
+```java
+import com.fiona.weatherapp.entity.Weather;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.OffsetDateTime;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * @author xueshuo
+ * @create 2023-02-03 10:47 am
+ */
+@SpringBootTest
+public class WeatherRepositoryTest {
+
+    @Autowired
+    private WeatherRepository repository;
+
+    @BeforeEach
+    public void setUp() {
+        repository.deleteAll();
+    }
+
+    @Test
+    public void testRepositoryFunctions() {
+        OffsetDateTime now = OffsetDateTime.now();
+        Weather mel = Weather.builder().city("Melbourne").country("AU").description("Windy").updatedTime(now).build();
+        Weather syd = Weather.builder().city("Sydney").country("AU").description("Cloudy").updatedTime(now).build();
+        repository.save(mel);
+        repository.save(syd);
+
+        // 比对
+        assertEquals(2, repository.findAll().size());
+        assertThat(repository.findByCityAndCountry("Melbourne", "AU").get())
+                .usingRecursiveComparison().ignoringAllOverriddenEquals().isEqualTo(mel);   // 用assertThat()就不用重写equals()了
+        repository.deleteAll();
+
+        assertEquals(0, repository.findAll().size());
+    }
+}
+```
+
+尽量不用@SpringBootTest 在P3, 但test repository却要用, 为什么呢?  锤姐讲了
+
+
+
+
+
+run test class, 可以在log里看到当运行 `testRepositoryFunctions()` 到底执行了哪些sql语句 (由我们在application.yml里的show-sql: true)
+
+```bash
+Hibernate: select weather0_.id as id1_0_, weather0_.city as city2_0_, weather0_.country as country3_0_, weather0_.description as descript4_0_, weather0_.updated_time as updated_5_0_ from weather.weather weather0_
+Hibernate: insert into weather.weather (city, country, description, updated_time) values (?, ?, ?, ?)
+Hibernate: insert into weather.weather (city, country, description, updated_time) values (?, ?, ?, ?)
+Hibernate: select weather0_.id as id1_0_, weather0_.city as city2_0_, weather0_.country as country3_0_, weather0_.description as descript4_0_, weather0_.updated_time as updated_5_0_ from weather.weather weather0_
+Hibernate: select weather0_.id as id1_0_, weather0_.city as city2_0_, weather0_.country as country3_0_, weather0_.description as descript4_0_, weather0_.updated_time as updated_5_0_ from weather.weather weather0_ where weather0_.city=? and weather0_.country=?
+Hibernate: select weather0_.id as id1_0_, weather0_.city as city2_0_, weather0_.country as country3_0_, weather0_.description as descript4_0_, weather0_.updated_time as updated_5_0_ from weather.weather weather0_
+Hibernate: delete from weather.weather where id=?
+Hibernate: delete from weather.weather where id=?
+Hibernate: select weather0_.id as id1_0_, weather0_.city as city2_0_, weather0_.country as country3_0_, weather0_.description as descript4_0_, weather0_.updated_time as updated_5_0_ from weather.weather weather0_
+```
+
+
+
+Q & A  1h10min - 1h15min
+
+锤姐: 不要在repository里滥用SQL
+
+
+
+
+
+
+
+# 基本查询 1h15min-
+
+
 
 看到这里
+
+
+
+
 
 
 

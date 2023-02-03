@@ -5,7 +5,7 @@ spring:
     username: postgres
     password: admin
   flyway:
-    enabled: true
+    enabled: false
     schemas: weather
   jpa:
     properties:
@@ -14,3 +14,5 @@ spring:
         jdbc:
           time_zone: UTC
     show-sql: true
+    hibernate:
+      ddl-auto: update
