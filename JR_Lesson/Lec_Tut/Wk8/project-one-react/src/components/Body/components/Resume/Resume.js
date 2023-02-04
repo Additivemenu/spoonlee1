@@ -1,9 +1,9 @@
 import Page from "../../../Page"
 
-const Resume = ({active}) => {
+const Resume = () => {
 
     return (
-        <Page active={active}>
+        <Page >
             Resume Page
         </Page>
 

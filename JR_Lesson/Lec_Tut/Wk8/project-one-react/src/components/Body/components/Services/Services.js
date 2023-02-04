@@ -1,8 +1,8 @@
 import Page from "../../../Page"
 
-const Services = ({active}) => {
+const Services = () => {
     return (
-        <Page active={active}>
+        <Page >
             Services Page
         </Page>
 

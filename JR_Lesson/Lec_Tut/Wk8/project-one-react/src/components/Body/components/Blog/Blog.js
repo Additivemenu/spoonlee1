@@ -1,9 +1,9 @@
 import Page from "../../../Page"
 
-const Blog = ({active}) => {
-    
+const Blog = () => {
+
     return (
-        <Page active={active}>
+        <Page >
             Blog Page
         </Page>
     )

@@ -800,7 +800,7 @@ export default Body
 
 
 
-## 难点: 兄弟相传2h13min- 
+## :full_moon: 兄弟相传2h13min- 
 
 现在来实现需求: 点击NavItem, 切换Body中该显示的page
 
@@ -992,7 +992,7 @@ export default Body
 
 以Home.js为例
 
-+ 传入的active变成了boolean类型
++ 传入的active变成了boolean类型, 这也算是在最底层了吧, Home调用Page组件不能算又是nested一层
 
 ```react
 import Page from "../../../Page"
@@ -1045,11 +1045,174 @@ export default Page
 
 
 
-2h22min-
+### 完成状态提升后 2h22min-
 
 状态提升完成后, 要再次回看, 提升代码可读性
 
-看到这里!
+如果传入某个Component只是setActive, 别人很难读懂到底啥意思, 所以需要改个名字提升可读性
+
+而且前面我们提到active的含义随着从App到Item是有变化的, 那么我们干脆直接把active改名字就得了
+
+
+
+App.js
+
++ 把表示string的active 改名为currentPage, 对应setActive改名为setCurrentPage, 往下传递
+
+```react
+import styles from './App.module.css';
+
+// html Component
+import Header from '../Header'
+import Body from '../Body'
+import Footer from '../Footer'
+import { useState } from 'react';
+
+
+// 函数名首字母大写
+const App = () =>{
+
+  // active: String 可取的值有['/home', '/cotact', '/services', '/blog', '/resume']
+  // ! 我感觉js是按引用传递的, 全局只有actvie, setActvie一个内存地址
+  const [currentPage, setCurrentPage] = useState('/home') // 兄弟相传, 状态提升到二者的最近公共祖先
+
+  return(
+  	<div className={styles.container}>
+    	<Header currentPage = {currentPage} onNavItemClick={setCurrentPage}></Header>
+      <Body currentPage={currentPage}></Body>    
+      <Footer></Footer>
+    </div>
+  )
+}
+
+export default App;
+```
+
+
+
+到tree底部的node时, 表示boolean的active就不用改名了,因为它的含义很明确了别人看了就知道
+
+
+
+## :full_moon: 选择性渲染: 简洁与高效 2h30min-2h34min
+
+上面我们只是把className中没有active的body的子元素display:none, 但他们还依然存在还参与渲染, 
+
+<img src="./Src_md/all_render.png" style="zoom:33%;" />
+
+
+
+这次我们希望可以有选择性的渲染, 也就是`currentPage === {href}`时再渲染, 否则不渲染, 大大提升了性能
+
+<img src="./Src_md/selective_render.png" style="zoom:33%;" />
+
+
+
+
+
+Body.js
+
++ 采用短路计算来实现selective render, 都不用将currentPage转化为Item的active属性来实现conditional className从而用css来控制stlye了, 简洁又高效
+
+```react
+import Home from "./components/Home"
+import Resume from "./components/Resume"
+import Services from "./components/Services"
+import Blog from "./components/Blog"
+import Contact from "./components/Contact/Contact"
+import styles from './Body.module.css'
+
+// 函数名首字母大写
+const Body = ({
+    currentPage
+}) => {
+    return(
+        <div className={styles.container}>
+            {currentPage === '/home' && <Home></Home>}
+            {currentPage === '/resume' && <Resume></Resume>}
+            {currentPage === '/services' && <Services></Services>}
+            {currentPage === '/blog' && <Blog></Blog>}
+            {currentPage === '/contact' && <Contact></Contact>}
+        </div>
+
+    )
+}
+  
+export default Body
+```
+
+
+
+以Home.js为例子
+
+```react
+import Page from "../../../Page"
+
+
+const Home = () =>{
+    return(
+        <Page >
+            Home Page
+        </Page>
+    )
+}
+
+
+export default Home
+```
+
+
+
+Page.js
+
+```react
+import "./Page.css"      // ! 只用classNames(), 不用css module的写法 !
+import classNames from 'classnames'     // for conditional class name
+
+// Page is like a mold, it is used to instantiate a page instance: home, service, contact....
+// ! 注意这里的props.active的值是boolean
+const Page = (
+    {children}
+) => {
+
+    return (
+        <div 
+            className={classNames("container")} // ! 只用classNames(), 不用css module的写法 !
+        >
+            {children}
+        </div>
+     
+    )
+}
+
+export default Page
+```
+
+
+
+Page.css
+
+```react
+.container{
+    padding: 32px 65px;
+    background: white;
+}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

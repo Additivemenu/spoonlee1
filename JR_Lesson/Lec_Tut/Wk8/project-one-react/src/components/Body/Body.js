@@ -7,7 +7,6 @@ import styles from './Body.module.css'
 
 
 // 参数传递问题
-
 // - APP
 //   - Header
 //        - Logo
@@ -18,19 +17,23 @@ import styles from './Body.module.css'
 //   - Footer
 
 
-
-
 // 函数名首字母大写
 const Body = ({
-    active
+    currentPage
 }) => {
     return(
         <div className={styles.container}>
-            <Home active= {active === '/home'}></Home>
-            <Resume active= {active === '/resume'}></Resume>
-            <Services active= {active === '/services'}></Services>
-            <Blog active= {active === '/blog'}></Blog>
-            <Contact active= {active === '/contact'}></Contact>
+            {currentPage === '/home' && <Home></Home>}
+            {currentPage === '/resume' && <Resume></Resume>}
+            {currentPage === '/services' && <Services></Services>}
+            {currentPage === '/blog' && <Blog></Blog>}
+            {currentPage === '/contact' && <Contact></Contact>}
+
+            {/* <Home active= {currentPage === '/home'}></Home>
+            <Resume active= {currentPage === '/resume'}></Resume>
+            <Services active= {currentPage === '/services'}></Services>
+            <Blog active= {currentPage === '/blog'}></Blog>
+            <Contact active= {currentPage === '/contact'}></Contact> */}
         </div>
 
     )

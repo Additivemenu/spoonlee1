@@ -12,8 +12,8 @@ const ITEMS = [
 ]
 
 const Nav = ({
-    active,
-    setActive
+    currentPage,
+    onNavItemClick
 }) => {
 
     // active状态提升前的代码
@@ -28,8 +28,8 @@ const Nav = ({
                 <Item 
                     key={href} 
                     href={href} 
-                    active={active=== href} 
-                    onClick={() => setActive(href)} // !!! *****改动在这里, 代表一个函数变量, 将会把一段代码（操作）传入到Item函数里****** !!!
+                    active={currentPage === href} 
+                    onClick={() => onNavItemClick(href)} // !!! *****改动在这里, 代表一个函数变量, 将会把一段代码（操作）传入到Item函数里****** !!!
                 >
                     {value}
                 </Item>
