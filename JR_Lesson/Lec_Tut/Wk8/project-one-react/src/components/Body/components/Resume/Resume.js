@@ -1,13 +1,13 @@
 import Page from "../../../Page"
 
+const Resume = ({active}) => {
 
-const Home = ({active}) =>{
-    return(
+    return (
         <Page active={active}>
-            Home Page
+            Resume Page
         </Page>
+
     )
 }
 
-
-export default Home
+export default Resume

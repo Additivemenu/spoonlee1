@@ -1,13 +1,12 @@
 import Page from "../../../Page"
 
-
-const Home = ({active}) =>{
-    return(
+const Blog = ({active}) => {
+    
+    return (
         <Page active={active}>
-            Home Page
+            Blog Page
         </Page>
     )
 }
 
-
-export default Home
+export default Blog

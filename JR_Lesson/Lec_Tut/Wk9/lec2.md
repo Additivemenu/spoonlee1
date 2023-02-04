@@ -495,6 +495,7 @@ const Item = ({href, children, active, onClick}) =>{
 
     return (
         <a 
+        key = {href}
         href = {href} 
         onClick = {handleClick}             // declarative: do something when this tag is onClick
         className={classNames('nav__item', {
@@ -524,11 +525,17 @@ export default Item
 
 # 1h24min- 继续
 
+上面的代码中在ITEMS.map()中动态生成HTML元素时如果没写`key = {href}`, 有可能报错:
+
+`Each child in a list should have a unique "key" prop`
+
+针对这个error我们来讨论react 引入的 Virtual DOM
+
 
 
 ## Angular.js的诟病
 
-
+wk9 lec2_demo
 
 Index.html
 
@@ -648,5 +655,401 @@ document.querySelector('#root').appendChild(Count())
 
 DOM 是tree view (树状结构)
 
-看到这里
+```react
+HTML 
+	- BOdy
+  	- text 	{className}
+		- button {onClick ...}
+```
+
+JS 的运行效率远大于 Browser的DOM的渲染效率
+
++ Angular.js: render -> DOM -> browser -> update -> DOM -> browser
+
++ React: render -> VDOM -> compare (其实是reconcilation, 要比compare复杂) with DOM  -> know which element neeed update -> only update element that needs to be updated
+  + React需要给用jsx生成的标签打上标记(key), 来uniquely identify HTML中的每个元素, 这样才能比对知道到底是哪个元素改变了
+  + React规定: 如果HTML标签是动态生成(e.g. 比如上面我们通过array, map()来动态生成html标签元素, 动态指的是声明式的标签生成函数中有变量作为props)的, 必须手动为它们定义key属性; 如果是静态的HTML标签, react自己会打key
+
+Further reading reconcilation原理:  https://reactjs.org/docs/reconciliation.html
+
+
+
+
+
+# 继续2h-
+
+实现点击NavItem, 能够跳转到不同的页面
+
+
+
+## Page组件实现复用
+
+page component作为复用
+
+
+
+在src > component路径下新建Page folder, 往里面定义Page.js, Page.css, index,js
+
+这里我们只使用了classnames来生成conditional className, 因为不知道为啥如果我同时使用classnames和css module, Page.module.css文件不起作用
+
+一般我们同时用classnames和css module
+
+
+
+Page.js
+
+```react
+import "./Page.css"      // ! 只用classNames(), 不用css module的写法 !
+
+import classNames from 'classnames'     // for conditional class name
+
+// Page is like a mold, it is used to instantiate a page instance: home, service, contact....
+const Page = (
+    {children,
+    active}
+) => {
+
+    return (
+        <div 
+            className={classNames("container", {"active": active})} // ! 只用classNames(), 不用css module的写法 !
+        >
+            {children}
+        </div>
+     
+    )
+}
+
+export default Page
+```
+
+
+
+Page.css
+
+```css
+.container{
+    padding: 32px 65px;
+    background: white;
+    
+
+    display: none;
+}
+
+
+.active{
+    display: block;
+
+}
+```
+
+
+
+这样, 我们可以将Page.js作为一个模具, 可以复用来生成Body下的home, contact, blog...
+
+e.g. home.js, 在这里我们要向Page组件传递参数: active, children
+
+```react
+import Page from "../../../Page"
+
+
+const Home = ({active}) =>{
+    return(
+        <Page active={active}>
+            Home Page
+        </Page>
+    )
+}
+
+
+export default Home
+```
+
+
+
+同时我们在Body.js中再使用Home, Contact, Blog组件, 这里相当于我们生成Home, Resume...的入口, 我们需要在这里传递参数: active
+
+```react
+import Home from "./components/Home"
+import Resume from "./components/Resume"
+import Services from "./components/Services"
+import Blog from "./components/Blog"
+import Contact from "./components/Contact/Contact"
+import styles from './Body.module.css'
+
+
+// 函数名首字母大写
+const Body = () => {
+    return(
+        <div className={styles.container}>
+            <Home active></Home>
+            <Resume></Resume>
+            <Services></Services>
+            <Blog active></Blog>
+            <Contact active></Contact>
+        </div>
+
+    )
+}
+  
+export default Body
+```
+
+
+
+
+
+
+
+## 难点: 兄弟相传2h13min- 
+
+现在来实现需求: 点击NavItem, 切换Body中该显示的page
+
+即我们需要把NavItem的onClick和Body中Page的actvie属性关联起来
+
+本质上是一个参数传递的问题
+
+
+
+兄弟相传: 状态提升到最近公共祖先
+
+```js
+- App
+  - Header
+       - Logo
+       - Nav {active}
+  - Body  {active} 
+       - Blog
+       - Contact
+  - Footer
+```
+
+**所以我们应该把active这个state提升到到App中**
+
+:question: js中按引用传递的吗？不然参数传递到子代那里怎么会反向传播影响到父代里的参数? active是全局唯一的吗? 
+
+这俩feature让js很tricky
+
++ 按引用传递
++ 可以传递代码
+
+
+
+App.js
+
++ 改变active状态的操作在由点击NavItem触发, 所以Header同时往下传递active, setActive
++ 而Body中只是作为actvie的状态响应, 所以只传递active
+
+```react
+// 函数名首字母大写
+const App = () =>{
+
+  // active: String 可取的值有['/home', '/cotact', '/services', '/blog', '/resume']
+  // ! 我感觉js是按引用传递的, 全局只有actvie, setActvie一个内存地址
+  const [active, setActive] = useState('/home') // 兄弟相传, 状态提升到二者的最近公共祖先
+
+  return(
+  	<div className={styles.container}>
+    	<Header active = {active} setActive={setActive}></Header>		
+      <Body active={active}></Body>    
+      <Footer></Footer>
+    </div>
+  )
+}
+
+export default App;
+```
+
+
+
+Header.js
+
+```react
+const Header = ({
+    active,
+    setActive
+}) => {
+    return(
+        //!!注意这里我们是直接用styles object的container属性来为className赋值 !!
+        <div className={styles.container}>
+                <Logo></Logo>
+                <Nav active={active} setActive={setActive}></Nav>
+         </div>
+    )
+}
+  
+export default Header
+```
+
+Nav.js
+
++ 从这里开始往下, active的意义就变了
+  + Nav传入的active还是String, 取值是['/home', '/cotact', '/services', '/blog', '/resume']
+  + 但从Nav传入Item的active就变成了boolean类型, 用来在Item中控制conditional classname的生成
+    + 我们可以考虑在最后一层改变active的意义
+
+```react
+const ITEMS = [
+    {href: '/home', value: 'HOME'},
+    {href: '/resume', value: 'Resume'},
+    {href: '/services', value: 'Services'},
+    {href: '/blog', value: 'Blog'},
+    {href: '/contact', value: 'Contact'}
+]
+
+const Nav = ({
+    active,
+    setActive
+}) => {
+
+    // active状态提升前的代码
+    // // active is a String, setActive(String), !!用来代表点击NavItem的状态信息!!
+    // const [active, setActive] = useState('/home')     // active is a variable, setActive is a function
+
+    return (
+        <nav className={styles.container}>
+
+            {/* 减少copy, passte, 和下面的代码等效, 写法比较高级 map(), destruct, HTML标签的props传递综合在一起 */}
+            {ITEMS.map(({href, value}) => (
+                <Item 
+                    key={href} 
+                    href={href} 
+                    active={active=== href} 
+                    onClick={() => setActive(href)} 
+                >
+                    {value}
+                </Item>
+            ))}
+        </nav>
+    )
+}
+
+export default Nav;
+```
+
+Item.js
+
++ 传入的active其实是boolean类型的
++ 传入的onClick其实是我们在Nav.js中定义的`() => setActive(href)`这段代码, 其中setActive(href)方法指的就是我们最开始在App.js中由useState()得到的和active绑定的, 用来改变active状态的方法
+
+```react
+const Item = ({href, children, active, onClick}) =>{
+
+    //const [active, setActive] = useState(false);
+
+    const handleClick = (event) => {
+        // SPA, 我们不需要页面跳转
+        event.preventDefault();
+        onClick();              // !!! ******改动在这里!! 执行onClick()里的代码****** !!!
+        // console.log('HERE');
+    }
+
+    return (
+        <a 
+        href = {href} 
+        onClick = {handleClick}             // declarative: do something when this tag is onClick
+        className={classNames('nav__item', {    // conditional className
+            'nav__item--active': active})}>     
+            {children}
+        </a>
+    )
+
+}
+
+export default Item
+```
+
+
+
+---
+
+
+
+Body.js
+
++ 传入的active依然是String
+
+```react
+// 函数名首字母大写
+const Body = ({
+    active
+}) => {
+    return(
+        <div className={styles.container}>
+            <Home active= {active === '/home'}></Home>
+            <Resume active= {active === '/resume'}></Resume>
+            <Services active= {active === '/services'}></Services>
+            <Blog active= {active === '/blog'}></Blog>
+            <Contact active= {active === '/contact'}></Contact>
+        </div>
+
+    )
+}
+  
+export default Body
+```
+
+
+
+以Home.js为例
+
++ 传入的active变成了boolean类型
+
+```react
+import Page from "../../../Page"
+
+
+const Home = ({active}) =>{
+    return(
+        <Page active={active}>
+            Home Page
+        </Page>
+    )
+}
+
+
+export default Home
+```
+
+
+
+Page.js
+
++ 传入的active为boolean类型, 用来控制conditional classname的生成
+
+```react
+import "./Page.css"      // ! 只用classNames(), 不用css module的写法 !
+
+import classNames from 'classnames'     // for conditional class name
+
+// Page is like a mold, it is used to instantiate a page instance: home, service, contact....
+// ! 注意这里的props.active的值是boolean
+const Page = (
+    {children,
+    active}
+) => {
+
+    return (
+        <div 
+            className={classNames("container", {"active": active})} // ! 只用classNames(), 不用css module的写法 !
+        >
+            {children}
+        </div>
+     
+    )
+}
+
+export default Page
+```
+
+
+
+
+
+2h22min-
+
+状态提升完成后, 要再次回看, 提升代码可读性
+
+看到这里!
+
+
 

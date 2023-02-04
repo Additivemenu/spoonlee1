@@ -275,7 +275,7 @@ const NavItem = ({href, label}) =>{
 
 
 
-## 实现conditional classsname 58min-1h10min
+## :moon: 实现conditional classsname 58min-1h10min
 
 上面利用函数产生相似标签中, 标签的className一直是"nav_item", 现在我们来做conditional classname.  满足某个条件使得NavItem的className变成 ‘nav_item nav_item--active’
 
@@ -617,9 +617,18 @@ Logo.css
 
 使用classnames(用来解决conditioanl className的)和css module(用来解决className人为起名容易重名的)一起: 用bind
 
-(了解即可, 我个人不喜欢classnames这个包)
+:question: 还是得知道classnames和css module如何同时使用
 
 
+
++ className（）可以单独使用, 此时需要import "Component.css"
++ classnames和css module共同使用需要, bind
+
+
+
+classnames的文档里也有提到如何和css module一起用
+
+https://github.com/JedWatson/classnames
 
 
 

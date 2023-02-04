@@ -3,12 +3,15 @@ import Logo from './components/Logo'
 import Nav from './components/Nav'
 
 // 函数名首字母大写
-const Header = () => {
+const Header = ({
+    active,
+    setActive
+}) => {
     return(
         //!!注意这里我们是直接用styles object的container属性来为className赋值 !!
         <div className={styles.container}>
                 <Logo></Logo>
-                <Nav></Nav>
+                <Nav active={active} setActive={setActive}></Nav>
          </div>
     )
 }

@@ -6,15 +6,19 @@ import { useState } from 'react';
 const ITEMS = [
     {href: '/home', value: 'HOME'},
     {href: '/resume', value: 'Resume'},
-    {href: 'service', value: 'Services'},
+    {href: '/services', value: 'Services'},
     {href: '/blog', value: 'Blog'},
-    {href: 'contact', value: 'Contact'}
+    {href: '/contact', value: 'Contact'}
 ]
 
-const Nav = () => {
+const Nav = ({
+    active,
+    setActive
+}) => {
 
-    // flag is a String, setFlag(String), !!用来代表点击NavItem的状态信息!!
-    const [flag, setFlag] = useState('/home')     // active is a variable, setActive is a function
+    // active状态提升前的代码
+    // // active is a String, setActive(String), !!用来代表点击NavItem的状态信息!!
+    // const [active, setActive] = useState('/home')     // active is a variable, setActive is a function
 
     return (
         <nav className={styles.container}>
@@ -22,9 +26,10 @@ const Nav = () => {
             {/* 减少copy, passte, 和下面的代码等效, 写法比较高级 map(), destruct, HTML标签的props传递综合在一起 */}
             {ITEMS.map(({href, value}) => (
                 <Item 
+                    key={href} 
                     href={href} 
-                    active={flag=== href} 
-                    onClick={() => setFlag(href)} // !!! *****改动在这里, 代表一个函数变量, 将会把一段代码（操作）传入到Item函数里****** !!!
+                    active={active=== href} 
+                    onClick={() => setActive(href)} // !!! *****改动在这里, 代表一个函数变量, 将会把一段代码（操作）传入到Item函数里****** !!!
                 >
                     {value}
                 </Item>

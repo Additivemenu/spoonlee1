@@ -20,8 +20,8 @@ const Item = ({href, children, active, onClick}) =>{
         <a 
         href = {href} 
         onClick = {handleClick}             // declarative: do something when this tag is onClick
-        className={classNames('nav__item', {
-            'nav__item--active': active})}> 
+        className={classNames('nav__item', {    // conditional className
+            'nav__item--active': active})}>     
             {children}
         </a>
     )
