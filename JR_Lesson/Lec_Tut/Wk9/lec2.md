@@ -1,6 +1,18 @@
-1-31 react
+1-31 react lec3
 
 
+
+# 要点
+
++ Hooks, 为什么需要hooks
++ 状态参数在兄弟相传
++ Virtual DOM 与 selective render
+
+
+
+
+
+---
 
 上节课回顾
 
@@ -29,6 +41,8 @@ SPA: single page application (浏览器在渲染不同内容时, 不通过切换
 MPA: muliple page application 远古网页
 
 
+
+## 为什么需要hooks
 
 demonstration: 
 
@@ -523,7 +537,7 @@ export default Item
 
 
 
-# 1h24min- 继续
+# Virtual DOM 1h24min- 
 
 上面的代码中在ITEMS.map()中动态生成HTML元素时如果没写`key = {href}`, 有可能报错:
 
@@ -651,7 +665,7 @@ document.querySelector('#root').appendChild(Count())
 
 
 
-## React 提出了virtual DOM的概念 1h39min-
+## :full_moon: React 提出了virtual DOM的概念 1h39min-
 
 DOM 是tree view (树状结构)
 
@@ -668,7 +682,7 @@ JS 的运行效率远大于 Browser的DOM的渲染效率
 
 + React: render -> VDOM -> compare (其实是reconcilation, 要比compare复杂) with DOM  -> know which element neeed update -> only update element that needs to be updated
   + React需要给用jsx生成的标签打上标记(key), 来uniquely identify HTML中的每个元素, 这样才能比对知道到底是哪个元素改变了
-  + React规定: 如果HTML标签是动态生成(e.g. 比如上面我们通过array, map()来动态生成html标签元素, 动态指的是声明式的标签生成函数中有变量作为props)的, 必须手动为它们定义key属性; 如果是静态的HTML标签, react自己会打key
+  + :bangbang: React规定: 如果HTML标签是动态生成(e.g. 比如上面我们通过array, map()来动态生成html标签元素, 动态指的是声明式的标签生成函数中有变量作为props)的, 必须手动为它们定义key属性; 如果是静态的HTML标签, react自己会打key
 
 Further reading reconcilation原理:  https://reactjs.org/docs/reconciliation.html
 

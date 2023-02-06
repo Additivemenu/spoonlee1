@@ -10,7 +10,7 @@
 
 
 
-# React简介
+# 0. React简介
 
 **react是什么？**
 
@@ -27,6 +27,8 @@ React用于构建用户界面的JS库。是一个将数据渲染为HTML视图的
 > 在学习之前最好看一下关于npm的知识：下面是我在网上看见的一个写的还不错的npm的文章
 >
 > [npm](https://blog.csdn.net/qq_25502269/article/details/79346545)
+
+
 
 # 1. React入门
 
@@ -162,6 +164,8 @@ const VDOM = React.createElement('h1',{id:"title"},"nihao")
 
 # 2. 面向组件编程
 
+
+
 当应用是以多组件的方式实现，这个应用就是一个组件化的应用
 
 > **注意：** 组件名称必须以大写字母开头。
@@ -250,9 +254,9 @@ ReactDOM.Render(<Welcom name = "ss" />,document.getElementById("div"));
 
 
 
-# 组件实例的三大属性
+## 组件实例的三大属性
 
-## state
+### state
 
 我们都说React是一个状态机，体现是什么地方呢，就是体现在state上，通过与用户的交互，实现不同的状态，然后去渲染UI,这样就让用户的数据和界面保持一致了。state是组件的私有属性。
 
@@ -452,7 +456,7 @@ dem = () =>{
 
 在这两种情况下，React 的事件对象 `e` 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 `bind` 的方式，事件对象以及更多的参数将会被隐式的进行传递。
 
-## Props
+### Props
 
 Props主要用来传递数据，比如组件之间进行传值
 
@@ -604,7 +608,7 @@ function Person(props){
     }
 ```
 
-## Refs
+### Refs
 
  Refs 提供了一种方式，允许我们访问 DOM 节点或在 render 方法中创建的 React 元素。 
 
@@ -1105,6 +1109,8 @@ Diff算法其实就是react生成的新虚拟DOM和以前的旧虚拟DOM的比�
 - 如果旧的虚拟DOM中没有找到了与新虚拟DOM相同的key:
   - 根据数据创建新的真实的DOM,随后渲染到页面上
 
+
+
 # 3. React应用: 基于React脚手架
 
 react提供了一个用于创建react项目的脚手架库：create-react-app
@@ -1452,7 +1458,17 @@ await右边是一个表达式，如果该表达式返回的是一个Promise对�
 
 [fetch](http://www.ruanyifeng.com/blog/2020/12/fetch-tutorial.html)
 
+
+
+
+
+
+
 # 5. React router
+
+127 - 141
+
+
 
 ## SPA
 

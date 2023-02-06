@@ -4,8 +4,8 @@
 + [JS](./JS/myJSNotes.md) 
 
 框架
-+ [React](./React-main/README.md)
-
++ [React](./React/myReact.md)
++ [别人的React笔记](./React-main/README.md)
 ---
 
 学习资源 

@@ -1,62 +1,12 @@
-- [Chapter 4 对象与类](#chapter-4-对象与类)
-  - [4.1 面向对象程序设计概述](#41-面向对象程序设计概述)
-  - [4.2 使用预定义类](#42-使用预定义类)
-    - [4.2.2 Java类库中的LocalDate类](#422-java类库中的localdate类)
-    - [4.2.3 更改器方法与访问器方法](#423-更改器方法与访问器方法)
-  - [4.3 :full\_moon:用户自定义类](#43-full_moon用户自定义类)
-    - [4.3.1 基于上面demo分析(原书4.3.2- 4.3.8)](#431-基于上面demo分析原书432--438)
-      - [1. 概览](#1-概览)
-      - [2. public与private修饰符](#2-public与private修饰符)
-      - [3. 关于构造器](#3-关于构造器)
-      - [4.使用var关键字声明局部变量](#4使用var关键字声明局部变量)
-      - [5.关于使用null引用](#5关于使用null引用)
-      - [6.隐式参数与显示参数](#6隐式参数与显示参数)
-      - [7.封装的优点](#7封装的优点)
-    - [4.3.2 其他碎碎念](#432-其他碎碎念)
-      - [1.基于类的访问权限](#1基于类的访问权限)
-      - [2. 私有方法](#2-私有方法)
-      - [3. final实例字段](#3-final实例字段)
-  - [4.35 编写额外的常用对象方法](#435-编写额外的常用对象方法)
-  - [4.4 静态字段与静态方法](#44-静态字段与静态方法)
-    - [4.4.1 静态字段](#441-静态字段)
-    - [4.4.2 静态常量](#442-静态常量)
-    - [4.4.3 :full\_moon:静态方法](#443-full_moon静态方法)
-    - [4.4.4 工厂方法](#444-工厂方法)
-    - [4.4.5 :full\_moon: main方法](#445-full_moon-main方法)
-  - [4.45 math class](#445-math-class)
-  - [4.46 wrapper class](#446-wrapper-class)
-  - [4.5 :full\_moon:方法参数](#45-full_moon方法参数)
-    - [4.5.0 UniMelb Java content](#450-unimelb-java-content)
-    - [4.5.1 :full\_moon: JavaCore content](#451-full_moon-javacore-content)
-  - [4.6 对象构造](#46-对象构造)
-    - [4.6.0 :full\_moon:  Privacy leaks](#460-full_moon--privacy-leaks)
-    - [4.6.1 重载](#461-重载)
-    - [4.6.2 :full\_moon:默认字段初始化](#462-full_moon默认字段初始化)
-    - [4.6.3 无参数的构造器](#463-无参数的构造器)
-    - [4.6.4 :full\_moon:显式字段的初始化](#464-full_moon显式字段的初始化)
-    - [4.6.5 参数名](#465-参数名)
-    - [4.6.6 :full\_moon:调用另一个构造器](#466-full_moon调用另一个构造器)
-    - [4.6.7 :full\_moon:初始化块 (initialization block)](#467-full_moon初始化块-initialization-block)
-    - [4.6.8 对象析构与finalize方法](#468-对象析构与finalize方法)
-  - [4.7 包](#47-包)
-    - [4.7.0 UniMelb Java: Package](#470-unimelb-java-package)
-    - [4.7.1 包名](#471-包名)
-    - [4.7.2 类的导入](#472-类的导入)
-    - [4.7.3 静态导入](#473-静态导入)
-    - [4.7.4 在包中增加类](#474-在包中增加类)
-    - [4.7.5 包访问](#475-包访问)
-    - [4.7.6 类路径](#476-类路径)
-    - [4.7.7 设置类路径](#477-设置类路径)
-  - [4.8 JAR文件](#48-jar文件)
-  - [4.9 文档注解 (javadoc)](#49-文档注解-javadoc)
-    - [4.9.1 注释的插入](#491-注释的插入)
-    - [4.9.2 类注释](#492-类注释)
-    - [4.9.3 方法注释](#493-方法注释)
-    - [4.9.4 字段注释](#494-字段注释)
-    - [4.9.5 通用注释](#495-通用注释)
-    - [4.9.6 包注释](#496-包注释)
-    - [4.9.7 注释抽取](#497-注释抽取)
-  - [4.10 类设计技巧](#410-类设计技巧)
+
+
+
+
+----
+
+[TOC]
+
+
 
 
 ---
@@ -104,7 +54,7 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 ## 4.2 使用预定义类
 
  1. 对象与对象变量
-   
+
 + 构造对象
   **想要使用对象, 首先必须构造对象, 并对其初始状态, 然后对对象应用方法**
 + 在Java中, 使用构造器(constructor)构造新实例(构造器相当于一种特殊的方法, 用来初始化object的instance variable, 通常一个class中的constructor会被overloaded(重载)). 构造器的名字应和类名相同.例如想构造一个Date对象, 需要在构造器前加上new操作符:
@@ -116,7 +66,7 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 
 + 复用构造的对象-对象变量
   通常会希望复用构造的对象, 此时需要将构造的对象放在对象变量里:
-   
+  
     ```Java
     Date birthday = new Date();
     ```
@@ -125,7 +75,7 @@ An **abstract data type (ADT)** is a data type that is written using good inform
 
 1. :full_moon:注意事项
 + **注意一定要区分对象和对象变量!!!**
-   
+  
     ```JAVA
     Date deadline;
     ```
@@ -146,7 +96,7 @@ An **abstract data type (ADT)** is a data type that is written using good inform
     ```
 
 + **new操作符返回值也是一个引用**
-   
+  
     ```JAVA
     Date deadline = new Date();
     ```
@@ -260,7 +210,7 @@ public Employee(String n, double s, int year, int month, int day){
 ```
 + "严格型"方法: 干脆直接拒绝null参数(不希望接收可有可无的值)
 此时如果用null名字构造了一个Employee对象, 就会产生NullPointerException异常.这种做法有两个好处: 1)异常报告会提供这问题的描述; 2)异常报告会准确指出问题所在的位置, 方便定位错误.
- 
+
 ```java
 public Employee(String n, double s, int year, int month, int day){
     Objects.requireNonNull(n, "The name cannot be null");
@@ -343,7 +293,7 @@ UniMelb Java:
     > ```
 
 2. toString
-[Demo: object_toString](UniMelb/toString/Data.java)
+   [Demo: object_toString](UniMelb/toString/Data.java)
     为毛用javac, java运行不了????????  
     In the example above, check what happens if you replace the last line with the following statement:
     ```java
@@ -405,7 +355,7 @@ public class math{
 >+ 可以使用对象来调用静态方法, 这是合法的, 但是不推荐这么做, 因为这违背了我们使用静态方法的初衷: 静态方法不依赖于对象, 而是属于类的.
 
 2. 以下两种情况可以使用静态方法 
-    
+   
    + 方法不需要访问对象状态, 因为它需要的所有参数都通过显示参数提供.(e.g. Math.pow) 
    + 方法只需访问类的静态字段
 
@@ -418,24 +368,24 @@ UniMelb Java: 注意! 静态方法不能call非静态方法. e.g.:
         private void sayHello () {
             System.out.println ("Hello, World!");
         }
-
+    
         public static void main (String[] args) {
             sayHello (); // static method calls a non-static method, error will pop out
         }
     }
     ```
     Principle:  When a non-static method is called, it is passed a hidden parameter, this, which refers to the object ("instance") of this class from which it is being called.  A static method can be called without an object, like  Main.main(),  and so there is no this variable that it can pass.
-
+    
     + 修改方法一: 给sayHello() 加上modifier: static
-
+    
     + 修改方法二: 非静态方法依赖object来被invoke, 如下
-
+    
     ```java
     class Main {
         private void sayHello () {
             System.out.println ("Hello, World!");
         }
-
+    
         public static void main (String[] args) {
             Main instance = new Main();
             instance.sayHello ();
@@ -605,7 +555,7 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
         int i = integerObject;
         ```
 4. :moon:Static methods of wrapper class
-    
+   
     [Demo: StringManipulation](UniMelb/wrapperClass/stringManipulation.java)
 
     Wrapper classes have static methods that convert a correctly formed string representation of a number to the number of a given type:
@@ -629,11 +579,11 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
     // Replace lower case characters by upper case equivalents, or vice versa
     public static char toUpperCase(char argument)
     public static char toLowerCase(char argument)
-
+    
     // Returns true if the argument is an upper-case letter, and false otherwise.
     public static boolean isUpperCase(char argument)
     public static boolean isLowerCase(char argument)
-
+    
     // The following return true if argument is...
     public static boolean isWhitespace(char argument) // Whitespace (space, tab \t, new line \n)
     public static boolean isLetter(char argument)     // A letter a-z, A-Z, accented chars
@@ -644,11 +594,11 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
     a short example:
     ```java
     import java.util.Scanner;
-
+    
     /**
     Illustrate the use of a static method from the class Character.
     */
-
+    
     public class StringProcessor {
         public static void main (String[] args) {
             System.out.println("Enter a one-line sentence:");
@@ -658,7 +608,7 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
             sentence = sentence.toLowerCase();
             char firstCharacter = sentence.charAt(0); // get the first char of sentence
             sentence = Character.toUpperCase(firstCharacter) + sentence.substring(1); // Capitalizing the first character of sentence
-
+    
             System.out.println("The revised sentence is:");
             System.out.println(sentence);
         }
@@ -670,7 +620,7 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
     this is WRONG
     The revised sentence is:
     This is wrong
-
+    
     ```
 
     > Advanced: Unicode
@@ -712,7 +662,7 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
 
     > Advanced: Virtual memory
     >"Virtual memory" allows the operating system allows some data from "main memory" to be stored on the hard drive instead of in RAM.  That is one reason we talk about main and secondary memory, instead of RAM and hard drive.  Main memory includes RAM plus virtual memory "swap space".
-
+    
     > Conversion
     > 1 Byte = 8 bits
     > 1 kiB = 2^10 = 1024 bytes.  1 kB = 10^3 bytes    (Note the "i" in kiB.)
@@ -760,7 +710,7 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
         arg = arg + 1;
         return arg;
     }
-
+   
     int a = 1;
     int b = myFunction(a);
    ```
@@ -777,11 +727,11 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
     The value plugged into a class type parameter is a reference (memory address) 
 
     + Therefore, the parameter becomes another name for the argument
-  
-    + Any change made to the object named by the parameter (i.e., changes made to the values of its instance variables) will be made to the object named by the argument, because they are the same object
-  
-    + Note that, because it still is a call-by-value parameter, any change made to the class type parameter itself (i.e., its address) will not change its argument (the reference or memory address)
     
+    + Any change made to the object named by the parameter (i.e., changes made to the values of its instance variables) will be made to the object named by the argument, because they are the same object
+    
+    + Note that, because it still is a call-by-value parameter, any change made to the class type parameter itself (i.e., its address) will not change its argument (the reference or memory address)
+   
     The value of the object named by the argument can be updated but the argument itself will not be changed.
 
     > The operators = and == don't do what you might expect when used on class variables. Note class variable is essentially a pointer, the value of a class variable is just an address, so that:
@@ -899,7 +849,7 @@ Java程序设计语言对对象采用的不是按引用调用, 实际上, **对�
     {
         return born; //dangerous, 相当于return了内存中born object的指针, 直接掏心掏肺了属于是
     }
-
+    
         public Date getBirthDate()
     {
         return new Date(born); //correct, return了另一个完全独立于内存中born object的copy, 不会影响到原来的born object, 阴阳合同的感觉
@@ -1172,12 +1122,12 @@ Java允许使用包(package)来将类组织在一个集合中. 借助包我们�
 ### 4.7.2 类的导入
  **一个类可以使用所属包中的所有类, 以及其他包中的公共类**, 对于后者, 我们有两种方法来访问:
   + 使用完全限定名(fully qualified name)
-   即包名后面跟着类名(很繁琐), 但是这样做容易区分不同package中相同的class, 例如:
+      即包名后面跟着类名(很繁琐), 但是这样做容易区分不同package中相同的class, 例如:
     ```java
     java.time.LocalDate today = java.time.LocalDate.now();
     ```
   + 使用import语句 
-   可以使用import语句导入一个特定的类或整个包
+      可以使用import语句导入一个特定的类或整个包
     ```java
     import java.time.*; // import all package
     import java.time.LocalDate; // import the specified class
@@ -1207,12 +1157,12 @@ Java允许使用包(package)来将类组织在一个集合中. 借助包我们�
 >> import java.util.*;
 >> import java.sql.*;
 >> import java.util.Date;
->> ``` 
+>> ```
 >+ 在类名前加上完整的包名
 >> ```java
 >> var deadline = new java.util.Date();
 >> var today = new java.sql.Date();
->> ``` 
+>> ```
 
 ---
 
