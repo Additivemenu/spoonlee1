@@ -237,7 +237,7 @@ App {卡片居中， 背景图片, Layout}
 
 					|--- Icon {图片}
 
-	|--- Divider {样式} //新加的
+	|--- Divider {样式} //新加的, 竖着的那个黑线
 
 	|--- Forecast	{Layout, 内间距}
 
@@ -256,11 +256,21 @@ App {卡片居中， 背景图片, Layout}
 
 
 
-看到这里 2h15min-
+根据上面的设计图, 接着写css  2h15min-2h43min
+
+因为此时要考虑布局, 在html中加入一些辅助的div或者嵌套来做布局
+
+有时可能还要在最外层包一个.wrapper调整页面颜色(滤镜, 一般包在最外层, 里面一层包background (如果有的话), 再往里一层包container)
+
+
 
 
 
 ## Step 3: Identify The Minimal (but complete) Representation Of UI State
+
+
+
+下节react课从这里开始
 
 
 
@@ -277,6 +287,10 @@ App {卡片居中， 背景图片, Layout}
 
 
 ## Step 4: Identify Where Your State Should Live
+
+
+
+
 
 
 

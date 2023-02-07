@@ -2,7 +2,7 @@ package Practice2;
 
 /**
  * 421
- * 创建3个窗口卖票, 总票数为100张
+ * 创建3个窗口卖票, 总票数为100张, 使用继承Thread类的方式来创建线程
  * @author xueshuo
  * @create 2023-02-06 10:09 am
  */
