@@ -42,6 +42,37 @@ branch的写法选择 (优先级从高到低):
 
 
 
+```js
+if (有包子){
+  买包子
+}else if (有油条) {
+  买油条
+}else {
+  买馒头
+}
+
+
+// 短路计算
+买包子 || 买油条 || 买馒头			// 一行顶上面7行
+
+
+
+// 字典数据, 把条件和执行代码做一一对应---------
+const color = blue
+
+const behaviourM = {
+  blue: 买包子,
+  green: 买馒头
+  yellow: 买油条
+}[color]
+```
+
+
+
+
+
+
+
 :moon: 自学: composition vs. inheritance
 
 https://reactjs.org/docs/composition-vs-inheritance.html
@@ -182,7 +213,7 @@ Settings: JavaScript > update imports on file move 移动文件自动更新impor
 ```js
 App {卡片居中， 背景图片, Layout}
 
-	|--- CurrentCity	{内间距, 背景图片, Layout}
+	|--- CurrentCity	{内间距, 背景图片, Layout, 底部黑框分割线}
  
 			|--- Temperature {font}
  
@@ -206,6 +237,8 @@ App {卡片居中， 背景图片, Layout}
 
 					|--- Icon {图片}
 
+	|--- Divider {样式} //新加的
+
 	|--- Forecast	{Layout, 内间距}
 
 			|--- Day	{Layout}
@@ -218,6 +251,12 @@ App {卡片居中， 背景图片, Layout}
 ```
 
 
+
+休息闲聊 1h41min- 2h15min
+
+
+
+看到这里 2h15min-
 
 
 
