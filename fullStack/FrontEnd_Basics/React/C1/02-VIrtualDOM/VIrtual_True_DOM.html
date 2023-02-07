@@ -1,0 +1,52 @@
+<!-- use JSX to create virtual DOM -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>use JSX to create virtual DOM</title>
+</head>
+<body>
+    <!-- 准备好容器 -->
+    <div id="test"></div>
+    <div id="demo"></div>
+
+    <!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+    <script src="../js/react.development.js" type="text/javascript"></script>
+    <script src="../js/react-dom.development.js" type="text/javascript"></script>
+    <script src="../js/babel.min.js" type="text/javascript"></script>
+
+    <!--这里使用了babel用来解析jsx语法-->
+    <script type="text/babel">  // 注意这里必须写 “text/babel” 表示以下是利用babel的jsx语法
+            // 1.创建虚拟DOM, 这个地方使用的是JSX语法，这里不是String不需要加"" 
+            const VDOM = (
+                <h1 id="title">
+                    <span>Hello, React</span>
+                </h1> 
+            ) 
+            // 2.渲染，如果有多个渲染同一个容器，后面的会将前面的覆盖掉
+            ReactDOM.render(VDOM,document.getElementById("test"));        // render(Virtual DOM, container)
+
+            console.log('Virtual DOM: ', VDOM)
+            console.log(typeof VDOM)
+            console.log(VDOM instanceof Object)
+
+            const TDOM = document.getElementById('demo');
+            console.log('True DOM: ', TDOM)
+            debugger;
+
+            /*
+                关于虚拟DOM:
+                1. 本质是Object类型的对象 (一般对象)
+                2. Virtual DOM 比较"轻", True DOM 比较"重", 因为虚拟DOM是React内部在用, 无需真实DOM上那么多的属性
+                3. 虚拟DOM 最终会被React转化为真实DOM, 呈现在页面上
+            
+            */
+
+    </script>
+
+</body>
+
+</html>
