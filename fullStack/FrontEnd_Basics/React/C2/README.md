@@ -21,12 +21,19 @@
 # 3. 收集表单数据
 
 
-# 3. :moon: 组件的生命周期
+
+
+# 4. :moon: 组件的生命周期
 37-47
 
-# 4. Virtual DOM 
+
+
+
+
+
+
+# 5. Virtual DOM 
 48
 
 ## DOM Diffing algorithm
-
 

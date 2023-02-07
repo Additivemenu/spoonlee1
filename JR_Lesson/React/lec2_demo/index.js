@@ -1,5 +1,7 @@
 let num = 0
 
+
+
 const Count = () =>{
 
     const container = document.createElement('div')
@@ -16,6 +18,9 @@ const Count = () =>{
         document.querySelector('#root').appendChild(Count())
     }
     
+
+    // DOM ---------------------------------------------
+
     const button = document.createElement('button')
     button.innerHTML = 'Plus'
     button.type = 'button'
