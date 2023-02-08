@@ -14,7 +14,7 @@ JavaSE ---> DB (MySQL ---> <u>JDBC</u> ) ---> JavaWeb ---> SSM(Spring + SpringMV
 
 
 
-# Intro 
+# Part0 Intro 
 
 ## Why DBMS
 
@@ -38,13 +38,21 @@ Unimelb前3周讲的
 
 
 
+
+
 # Part1 搭建PostgresSQL DB
 
 
 
 用锤姐17-Java的weather-app project (里面有一份docker-compose.yml配置文件)里, 使用Docker搭建数据库, pgadmin再连接数据库
 
-Docker-compose.yml:
+
+
+记得安装Intellij的settings > plugin > docker插件
+
+
+
+## docker-compose.yml
 
 ```yml
 version: '3.7'
@@ -109,7 +117,17 @@ networks:
 
 
 
-Terminal跑下面的指令来通过docker建立数据库(可能得等10分钟搭建...)
+上面这个yml对应3部分services: 
+
++ postgres
++ pgadmin
++ graphical-engine
+
+
+
+## docker-compose
+
+接下来, 在Terminal跑下面的指令来通过docker建立数据库(可能得等10分钟搭建...)
 
 ```bash
 docer-compose up -d
@@ -117,11 +135,49 @@ docer-compose up -d
 
 
 
-之后在pgadmin register server
+之后在docker可以看到对应的3个services, 以及他们对应的port number (port on the local host : standard port number)
 
-填入信息和上面的docker-compose.yml相匹配
+<img src="./Src_md/docker_afterCompose.png" style="zoom:50%;" />
 
-+ Port: 15432
+
+
+这样其实是在docker container里分别起了postgres和pgadmin两个服务器, 并将他们的内部端口号 映射为 localhost端口号 
+
++ Postgres: 5432 ---> 15432 
++ pgAdmin: 80 ---> 18002
+
+<img src="./Src_md/docker_container.png" style="zoom: 50%;" />
+
+
+
+## 连接postgres与pgAdmin
+
+有两种办法可以打开pgAdmin (JR18期SQL):
+
+方式1:
+
+在浏览器输入 `localhost:18002`, 即可打开pgadmin的localhost登陆页面, 接着按刚才配置的文件输入User与Password
+
+<img src="./Src_md/pgAdmin_localhost.png" style="zoom:50%;" />
+
+
+
+方式2: 
+
+打开下载好的pgadmin App
+
+
+
+这两种方式都可以连接刚刚通过docker-compose.yml起好的postgres, 区别在于
+
++ 如果由localhost:18002启动pgAdmin, 则在连接postgres时， postgres的端口号应为5432; 因为此时pgAdmin和postgres都在docker container里
++ 如果由pgAdmin app连接postgres, 则postgres的端口号应声明为15432; 因为此时pgAdmin在docker container之外, 需要通过localhost的port number与postgres相连接
+
+
+
+现在在pgAdmin里点击Add New Server, 填入要连接的postgres server的信息, 注意要上面的docker-compose.yml相匹配, 这样就将pgAdmin和postgres连接起来了
+
++ Port: 15432 (if pgAdmin app) / 5432 (if pgAdmin 网页端)
 
 + POSTGRES_DB=weather
 + POSTGRES_USER=postgres
@@ -129,7 +185,7 @@ docer-compose up -d
 
 
 
-
+## 创建表
 
 如果手动在pgadmin中创建database的话, 邮件点击database > create new database, 之后右键新建的database > query tool, 在query editor里面输入DDL:
 
@@ -211,8 +267,13 @@ DROP COLUMN nationality;
 
 JR17-Java-sql代码见 [DDL: create table](./JR17_ava_SQL/DDL.sql), 不过还是UniMelb的SQL练习更全面
 
+pgAdmin可以像MySQL那样对数据库进行图形化界面操作, 这里就是展示如何在pgAdmin里通过query tool写SQL并对数据库数据进行操作, JR这部分内容不用怎么看了
 
----
+
+
+
+
+
 
 # Part2 SQL 语言部分
 
