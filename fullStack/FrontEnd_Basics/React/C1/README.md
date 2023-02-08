@@ -194,11 +194,40 @@ JSX其实就是JS原生方式创建Virtual DOM 的 语法糖, JSX就是为了解
 
 # 3. React JSX
 
-05-06
+05
 
-该看这个了
+JSX: JavaScript XML 
+
+react定义的一种类似于XML的JS扩展语法: JS + XML本质是**React.createElement(component, props, ...children)**方法的语法糖
+
+JSX允许我们在JS中编写Virtual DOM (并不是真正的HTML语言), 而Virtual DOM 可以被React转化为True DOM (真正的HTML)
 
 
+
+:gem: [JSX 语法](./03-JSXSyntax/JSX.html)
+
+JSX语法规则:
+
++ 用JSX定义Virtual DOM 时, 不要写引号
++ 标签里如果标签中混入JS表达式时, 要用{}
+
++ JSX中, 样式的类名指定不要用class, 而要用className
++ JSX中, 内联样式要用 style = {{key:value, key:value}}的形式去写, 外面的{}表示是要写JS表达式, 里面的{}表示要写JS的对象
+
++ JSX中, Virtual DOM必须只有1个根标签 
++ JSX中, 标签必须闭合
+
++ 标签首字母
+  + 若小写字母开头, 则JSX会将标签转为html中同名元素; 若html中无该标签对应的同命元素, 则报错 --> 所以别乱写标签
+  + 若大写字母开头, 则React会去渲染对应的组件, 若组件没有定义, 则报错
+
+
+
+
+
+06 JSX小练习
+
+看到这里
 
 
 

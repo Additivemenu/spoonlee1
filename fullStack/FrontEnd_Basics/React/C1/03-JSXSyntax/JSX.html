@@ -1,0 +1,67 @@
+<!-- use JSX to create virtual DOM -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSX Syntax</title>
+    <style>
+        .title{
+            background-color: aqua;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 准备好容器 -->
+    <div id="test"></div>
+
+    <!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+    <script src="../js/react.development.js" type="text/javascript"></script>
+    <script src="../js/react-dom.development.js" type="text/javascript"></script>
+    <script src="../js/babel.min.js" type="text/javascript"></script>
+
+    <!--这里使用了babel用来解析jsx语法-->
+    <script type="text/babel">  // 注意这里必须写 “text/babel” 表示以下是利用babel的jsx语法
+        const myId = 'aTgUiGu'
+        const myData = 'hello, rEACT'
+
+        // 1. create virtual DOM
+        const VDOM = (
+            <div>
+                <h2 className="title" id={myId.toLowerCase()}>
+                    <span style = {{color: 'white', fontSize:'40px'}}>{myData.toLocaleLowerCase()}</span>
+                </h2>
+                <h2 className="title" id={myId.toUpperCase()}>
+                    <span style = {{color: 'white', fontSize:'40px'}}>{myData.toLocaleLowerCase()}</span>
+                </h2>
+                <input type="text" />
+
+            </div>
+
+
+        )
+
+        // 2. render VDOM on webpage
+        ReactDOM.render(VDOM, document.getElementById('test'));
+
+        
+        /*
+            jsx语法规则:
+                1. 用JSX定义Virtual DOM 时, 不要写引号
+                2. 标签里如果标签中混入JS表达式时, 要用{}
+                3. JSX中, 样式的类名指定不要用class, 而要用className
+                4. JSX中, 内联样式要用 style = {{key:value, key:value}}的形式去写, 外面的{}表示是要写JS表达式, 里面的{}表示要写JS的对象
+                5. JSX中, Virtual DOM必须只有1个根标签 
+                6. JSX中, 标签必须闭合
+                7. 标签首字母
+                    a. 若小写字母开头, 则JSX会将标签转为html中同命元素; 若html中无该标签对应的同命元素, 则报错
+                    b. 若大写字母开头, 则React会去渲染对应的组件, 若组件没有定义, 则报错
+        */
+    </script>
+
+</body>
+
+</html>

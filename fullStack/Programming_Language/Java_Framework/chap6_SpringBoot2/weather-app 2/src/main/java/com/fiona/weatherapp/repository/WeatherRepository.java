@@ -18,6 +18,9 @@ import java.util.Optional;
 @Repository                                           // <entity, pk data type>
 public interface WeatherRepository extends JpaRepository<Weather, Long> {
     Optional<Weather> findByCityAndCountry(String city, String country); // Optional class避免nullPointer
+
+    // Optional<Weather> findByCityLike(String city);
+
     Page<Weather> findByCountry(String country, Pageable pageable);
     List<Weather> findAllByCountry(String country, Pageable pageable);
 }

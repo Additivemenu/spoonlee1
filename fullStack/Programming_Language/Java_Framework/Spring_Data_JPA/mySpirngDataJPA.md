@@ -216,16 +216,14 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
 
 
+
+
+### test repository 55min- 1h15min
+
 repository test的tricky point:
 
 + 要造数据来mock数据库的行为
 + 数据库其实作为第三方依赖, 这里其实就不是unit test而是某种层面的integration test
-
-
-
-
-
-### test repository 55min-
 
  
 
@@ -307,7 +305,7 @@ Q & A  1h10min - 1h15min
 
 锤姐: 不要在repository里滥用SQL
 
-
+谨慎使用selectAll, delete
 
 
 
@@ -317,9 +315,94 @@ Q & A  1h10min - 1h15min
 
 
 
+预先生成的方法
+
+
+
+JpaRepository, PagingAndSortingRepository, CrudRepository 之间的关系
+
+
+
+
+
+自定义简单查询 1h19min-
+
+
+
+P15 有一个表
+
+
+
+
+
+# 复杂查询 1h23min-
+
+在实际的开发中, 需要用到分页, 筛选, 连表等查询的时候, 就需要用到特殊的方法或者自定义SQL
+
+
+
+## 分页查询 1h23min-
+
+WeatherRepository 中 有3个方法, 现在我们采用测试分页查询
+
+```java
+@Repository                                           // <entity, pk data type>
+public interface WeatherRepository extends JpaRepository<Weather, Long> {
+    Optional<Weather> findByCityAndCountry(String city, String country); // Optional class避免nullPointer
+
+    // Optional<Weather> findByCityLike(String city);
+
+    Page<Weather> findByCountry(String country, Pageable pageable);		// return  a Page
+    List<Weather> findAllByCountry(String country, Pageable pageable);		// return a List
+}
+```
+
+
+
+
+
+Spring Data JPA已经帮我们实现了分页的功能, 在查询的方法中, 需要传入参数Pageable 当查询中有多个参数的时候, Pageable建议做为最后一个参数输入:
+
+
+
+在WeatherRepository对应的Test Class中写入如下测试方法
+
+unit test: pageable
+
+```java
+@Test
+public void testPageQuery() {
+
+    // save mock data into database
+    OffsetDateTime now = OffsetDateTime.now();
+    Weather syd = Weather.builder().city("Sydney").country("AU").description("Cloudy").updatedTime(now).build();
+    Weather mel = Weather.builder().city("Melbourne").country("AU").description("Windy").updatedTime(now).build();
+    repository.save(mel);
+    repository.save(syd);
+
+    // page的settings
+    int page = 0, size = 10;
+    Sort sort = Sort.by(Sort.Direction.DESC, "id"); // 由id降序sort
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    // 分别测试WeatherRepository中的3个方法
+    Page<Weather> all = repository.findAll(pageable);
+    Page<Weather> countryPage = repository.findByCountry("AU", pageable);
+    List<Weather> allCities = repository.findAllByCountry("AU", pageable);
+
+    System.out.println("test");
+}
+```
+
+
+
+:question: Pageable, Page 各代表啥, 上面这个测试结果呈现什么样子???
+
+
+
+## 限制查询 1h29min
+
 看到这里
-
-
 
 
 
