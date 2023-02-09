@@ -60,9 +60,9 @@ public class WeatherRepositoryTest {
         repository.save(mel);
         repository.save(syd);
 
-        //
+        // page index, items per page
         int page = 0, size = 10;
-        Sort sort = Sort.by(Sort.Direction.DESC, "id"); // 由id降序sort
+        Sort sort = Sort.by(Sort.Direction.DESC, "id"); // 指定由id降序sort
         Pageable pageable = PageRequest.of(page, size, sort);
 
         // 分别测试WeatherRepository中的3个方法

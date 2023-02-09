@@ -42,6 +42,8 @@ Java集合可以分为Collection和Map两种体系:
 
 <img src="./Src_md/java_map.png" width=80%>
 
+
+
 # 2. Collection Interface
 
 ## 2.1 :full_moon: Collection的常用方法
