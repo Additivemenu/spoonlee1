@@ -152,6 +152,8 @@ CREATE TABLE "user" (
 
 在entity包下新建对应刚创建sql table的entity class
 
+(one to many: pk on 'one' side becomes FK on 'many' side)
+
 ```java
 @Entity   // 证明这是个Entity, 是要与数据库作用的
 @Getter
@@ -260,6 +262,8 @@ public class PropertyService {
 
 PropertyPostDto
 
+:bangbang: 这里就没有把FK: userId转化为UserPostDto
+
 ```java
 @Getter
 @Setter
@@ -333,7 +337,7 @@ PropertyService
 ```java
 public PropertyGetDto getProperty(Long propertyId){
 
-        // step1:  look up database to find property entity given propertyId
+        // step1:  query database and find property entity given propertyId
         Property property = propertyRepository.findById(propertyId)
           																		.orElseThrow(() -> new ResourceNotFoundException("Property " + propertyId));
 

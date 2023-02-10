@@ -6,7 +6,7 @@
 
 01-04 intro
 
-[chap1: 七大设计原则 05-22](./Chap1/README.md)
+[chap1: 设计模式的指导思想: 七大软件设计原则 05-22](./Chap1/README.md)
 [chap2: UML class diagram 23-27](./Chap2/README.md)
 [chap3: 设计模式大类一: 创建型模式 28-59](./Chap3/README.md)
 [chap4: 设计模式大类二: 结构型模式 60-95](./Chap4/README.md)

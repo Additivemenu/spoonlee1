@@ -13,6 +13,7 @@
 + SpringBoot exception handling的写法
   + 错误信息应由足够独特的Exception携带
   + 将错误信息返回给前端, 而不仅仅是在后端显示
++ Http Status code的返回
 
 
 
@@ -38,6 +39,8 @@ public void getUser(@PathVariable Long userId){
   	userService.getUser(userId);
 }
 ```
+
+
 
 在UserService里写入:
 
@@ -376,10 +379,10 @@ UserService:
 
 改: 分为4步
 
-+ 从数据库中查到指定id的user entity, 返回
++ 从数据库中查到指定id的user tuple, map to an entity, 返回该entity
 + 改动这个entity的某个属性
 + 再将这个entity存回数据库
-+ 最后返回一个状态更新后的UserGetDto给前台 (RESTful api的标准规定这么做的)
++ :bangbang: 还没完! 最后还需要返回一个状态更新后的UserGetDto给前台 (RESTful api的标准规定这么做的)
 
 ```java
 // 改

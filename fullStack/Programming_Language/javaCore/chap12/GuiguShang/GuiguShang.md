@@ -426,13 +426,13 @@ a线程中调用b.join(), 此时a线程阻塞, b线程cut in执行, 待b线程�
 
 
 
-## 线程安全问题
+## 4.1 线程安全问题
 
 429
 
 问题的提出
 
-+ 多个线程执行的不确定性引起执行结果的不稳定 
++ 多个线程执行顺序的不确定性引起执行结果的不稳定 
 
 + 多个线程对账本的共享，会造成操作的不完整性，会破坏数据
   + e.g. Alice和Bob共享一个银行账户, 他们想从余额为1000的账户中取走1000块钱, 在Alice的取钱操作还未完成时(此时银行账户仍为1000), Bob也开始了取钱操作, 导致银行账户被取走了2000块钱
@@ -443,11 +443,89 @@ a线程中调用b.join(), 此时a线程阻塞, b线程cut in执行, 待b线程�
 
 线程安全问题与举例
 
-430
+430 见package: threadSync > WindowTest1
+
+还是以3个窗口卖票为例子
+
+
+
+如果我们在Window1的run()中加入使线程阻塞的操作, 则会大大提高出现错票的概率
+
+```java
+public class WindowTest1 {
+
+    public static void main(String[] args) {
+        Window1 w1 = new Window1();
+
+        Thread t1 = new Thread(w1);
+        t1.setName("Window1");
+        Thread t2 = new Thread(w1);
+        t2.setName("Window2");
+        Thread t3 = new Thread(w1);
+        t3.setName("Window3");
+
+        // Window1中的ticket不需要写成static的, t1, t2, t3也能共享100张票, 因为只有1个实现了Runnable接口的类的对象 w1
+        // 即三个线程共同来操作一个实现了Runnable接口的类的对象. 刀 ---> Thread,  鱼 ---> 实现了Runnable的对象
+        t1.start();
+        t2.start();
+        t3.start();
+
+    }
+}
+
+class Window1 implements Runnable{
+
+    private int ticket = 100;       // 用实现的方式创建thread不用写static
+
+    @Override
+    public void run(){
+        while(true){
+            if(ticket > 0){
+
+                try {
+                    // sleep()导致的线程阻塞 大大提高了引起错票的概率: ticket = -1 or 0; sleep时间越长, 错票概率越高
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println(Thread.currentThread().getName() + ": sell ticket, ticket index: "+ ticket);
+
+                ticket--;
+            } else{
+                break;
+            }
+        }
+    }
+}
+```
+
+
+
+原因如下, 现在只有1张票了, t1进入run()的if statement中由于sleep()被阻塞了, 此时t2被分配到了cpu执行权, 在t1未执行完成时也进入了if statement, 这时ticket 会被错误地多减去1一次.
+
+
+
+<img src="./Src_md/Thread_Safety1.png" style="zoom: 33%;" />
+
+
+
+线程安全问题总结:
+
+1. 问题: 卖票过程中出现重票与错票 ---> 出现了线程安全问题
+2. 问题出现的原因: 当某个线程来操作车票数(共享数据)的过程中, 尚未完成时其他线程参与了进来也对车票数(车票数)进行操作
+
+3. 如何解决: 当一个线程a在操作车票数(共享数据)时, 其他线程不能参与进来, 直到线程a操作完车票数时, 其他线程才可以开始操作ticket. 这种情况下， 即使线程a出现了阻塞, 也不能改变
 
 
 
 
+
+## 4.2 Java对线程安全问题的解决方案
+
+431 
+
+该看这了
 
 
 
