@@ -10,17 +10,23 @@ JR17: 22-9-25 lec
 
 # 要点概述
 
++ 什么是ORM, 什么是JPA
++ Spring Data JPA的好处, Hibernate和Mybatis相比的异同
++ 使用Spring Data JPA做query
+  + 基本查询
+  + 复杂查询 
+    + JPQL (:question: 懵逼状态)
++ repository 的'unit test'
++ Spring Data JPA如何支持Transaction (:question: 懵逼状态)
++ Database migration
 
 
 
 
 
+# 1. Introduction to JPA 0-12min
 
-# Introduction to JPA 0-12min
-
-
-
-## ORM
+## 1.1 ORM
 
 **Object Relational Mappinp (ORM)** 模式是一种为了解决**面向对象**与**关系数据库**存在的互不匹配的现象技术。简单的说，ORM 是通过使用描述对象和数据库之间映射的元数据，将程序中的对象**自动持久化**到<u>关系数据库</u>中
 
@@ -34,7 +40,7 @@ JR17: 22-9-25 lec
 
 
 
-## JPA
+## 1.2 JPA
 
 JPA (Java Persistence API) 是 Sun官方提出的 Java 持久化规范，它为Java 开发人员提供了一种对象/关联映射工具来管理 Java 应用中的关系数据，它的出现主要是为了简化现有的持久化开发工作和整合 ORM 技术，结束现在 Hibernate、TopLink、JDO 等 ORM 框架各自为营的局面
 
@@ -50,7 +56,7 @@ JPA (Java Persistence API) 是 Sun官方提出的 Java 持久化规范，它为J
 
 
 
-## Spring Data JPA
+## 1.3 Spring Data JPA
 
 Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套**JPA 应用框架**，可使开发者用极简的代码即可实现对数据的访问和操作。它提供了包括CRUD等在内的常用功能，且易于扩展。学习并使用 Spring Data JPA 可以极大提高开发效率。
 
@@ -62,7 +68,7 @@ Spring Data JPA 让我们解脱了 DAO 层的操作 (就是早期程序员需要
 
 
 
-# Hands-on 12min-
+# 2. Hands-on 12min-
 
 ## Spring Data Jpa依赖与配置
 
@@ -413,7 +419,11 @@ Spring Data JPA的性能有局限性, 如果是频繁做findAll()这种需要que
 
 
 
-# 基本查询 1h15min-
+# 3. Spring Data JPA 查询方法
+
+
+
+## 3.1 基本查询 1h15min-
 
 基本查询分两种:
 
@@ -422,7 +432,7 @@ Spring Data JPA的性能有局限性, 如果是频繁做findAll()这种需要que
 
 
 
-## 预先生成方法
+### 预先生成方法
 
 Spring Data JPA默认预先生成了一些基本的CRUD的方法. e.g. Inside of your repository class
 
@@ -447,7 +457,7 @@ So if you don't needthe repository to have the functions providedby JpaRepositor
 
 
 
-## 自定义简单查询 1h19min-
+### 自定义简单查询 1h19min-
 
 自定义的简单查询就是根据方法名来自动生成 SQL，主要的语法是 findXXBy、readAXXBy、queryXXBy、countXXBy、getXXBy 后面跟属性名称
 
@@ -469,13 +479,13 @@ List<User> findByUserNameOrderByEmailDesc(Stringemail);
 
 
 
-# 复杂查询 1h23min-
+## 3.2 复杂查询 1h23min-
 
 在实际的开发中, 需要用到分页, 筛选, 连表等查询的时候, 就需要用到特殊的方法或者自定义SQL
 
 
 
-## 分页查询 1h23min-
+### 分页查询 1h23min-
 
 WeatherRepository 中 有3个方法, 现在我们测试 分页查询
 
@@ -539,7 +549,7 @@ debug  testPageQuery(), 可以看到 all, countPage, allCities到底是个啥
 
 
 
-## 限制查询 1h29min
+### 限制查询 1h29min
 
 有时候需要查询前 N 个元素，或者只取前一个实体。
 
@@ -563,7 +573,7 @@ mySQL, Postgres等不同数据库写SQL限制数据时有略微不同, 使用Spr
 
 
 
-## 自定义SQL查询： JPQL 1h30min-
+### 自定义SQL查询： JPQL 1h30min-
 
 使用Spring Data的大部分SQL都可以根据方法名定义的方式来实现, 但是由于某些原因我们想使用自定义的SQL来查询, Spring Data也可以完美支持: 
 
@@ -598,7 +608,7 @@ User findByEmail(String email);
 
 
 
-### :full_moon: 多表查询1h34min-
+#### :full_moon: 多表查询1h34min-
 
 
 
@@ -697,7 +707,7 @@ public class UserDetailsRepositoryTest {
 
 
 
-### 多参数 1h40min-
+#### 多参数 1h40min-
 
 :question: lecturer似乎并没有想教会我们
 
@@ -740,7 +750,7 @@ Collection<User> findAllActiveUsersNative();
 
 
 
-# Transactional 1h55min-
+# 4. Transactional 1h55min-
 
 + `value` and `transactionManager`
 
@@ -805,7 +815,7 @@ Be careful when you have multiple database sources. Consider using Transactional
 
 
 
-# 连接多个数据源 2h13min-
+# 5. 连接多个数据源 2h13min-
 
 了解即可, P3应该还用不到
 
@@ -841,7 +851,7 @@ pring:
 
 
 
-# More 2h15min-
+# 6. More 2h15min-
 
 使用枚举的时候, 如果选择数据库中存储的是枚举对应的String类型, 而不是枚举的索引值, 需要在属性上面添加@Enumerated(EnumType.STRING)注解:
 
@@ -869,21 +879,64 @@ private int age;			// 保存不变的数据(e.g. birthday)在数据库中, 计�
 
 
 
+# 7. :full_moon: Database migration 2h23min-
 
-
-# Database migration 2h23min-
-
-正确的数据库操作: Database Migration
-
-看到这里!
+简历和面试一定要准备Database migration!
 
 
 
+让hibernate自动更新数据库(我们在本节课33min-做的)是不可取的, 
+
+正确的数据库操作: Database Migration: enable flyway & disable auto update of hibernate
+
+Application.yml
+
+```yml
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/postgres?currentSchema=weather
+    username: postgres
+    password: admin
+  flyway:
+    enabled: true		# enabled flyway!
+    schemas: weather
+  jpa:
+    properties:
+      hibernate:
+        default_schema: weather
+        jdbc:
+          time_zone: UTC
+    show-sql: true
+    #hibernate:						# don't do this!
+      #ddl-auto: update		# don't do this in real production
+```
 
 
 
 
-How flyway works
+
+## why database migration
+
+我们在开发时, 不同的环境下往往需要不同的独立的database, 这些环境下的database的version应有一致性
+
+database migration就是为了方便做Database改动的version control
+
+
+
+<img src="./Src_md/why_database_migration.png" style="zoom:50%;" />
+
+
+
+## database migration tools 2h27min-
+
+Flyway vs. Liquidbase
+
+
+
+工具能做的是如果看到source code中有对应version, 但是数据库中没有对应的version, 我们就会设置让它去run对应的version 这样保证数据库是一样的, 也验证这些脚本对数据库的改动是正确的
+
+<img src="./Src_md/database_version_control.png" style="zoom: 67%;" />
 
 
 
@@ -891,11 +944,116 @@ How flyway works
 
 
 
-#  SQL injection 
+## How flyway works
+
+Default directory for flyway: src/main/resources/db/migration
 
 
 
 
 
+<img src="./Src_md/flyway_naming.png" style="zoom: 33%;" />
 
+
+
+### src/main/resources/db/migration下空的
+
+先保证postgres > schema 下没有weather schema
+
+然后运行application, 可以看到pgAdmin中postgres > schema > weather > table 中有flyway_schema_history这个table
+
+里面的column有 version, script, checksum
+
+其中checksum是对script进行计算的结果, 如果script被改动了, checksum也会变, 所以千万不要改动已经有的flyway script(包括往里加空格), 否则flyway会fail
+
+
+
+### src/main/resources/db/migration下创建一个文件
+
+在src/main/resources/db/migration下, 新建V1__create_weather_table.sql
+
+```sql
+CREATE TABLE weather (
+    id BIGSERIAL PRIMARY KEY,
+    city VARCHAR(127) NOT NULL,
+    country VARCHAR(2) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    updated_time TIMESTAMP WITH TIME ZONE NOT NULL
+);
+CREATE UNIQUE INDEX weather_city_country ON weather(city, country);
+```
+
+
+
+再次运行application, 可见log提示我们 now at version 1
+
+```bash
+2023-02-10 09:35:32.378  INFO 38751 --- [  restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.015s)
+2023-02-10 09:35:32.387  INFO 38751 --- [  restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema "weather": null
+2023-02-10 09:35:32.392  INFO 38751 --- [  restartedMain] o.f.core.internal.command.DbMigrate      : Migrating schema "weather" to version "1 - create weather table"
+2023-02-10 09:35:32.418  INFO 38751 --- [  restartedMain] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "weather", now at version v1 (execution time 00:00.036s)
+```
+
+
+
+同时可以看到pgAdmin中postgres > schema > weather > table 中有一个weather table被新建了, 而且flyway_schema_history这个table中也有了新的tuple:
+
+<img src="./Src_md/flyway_history.png" style="zoom:50%;" />
+
+
+
+:bangbang: 之后千万别在V1_create_weather_table.sql中改动任何字符(哪怕加空格)
+
+
+
+
+
+#  8. Security: SQL injection 2h43min-2h53min
+
+SQL注入是比较常⻅的网络攻击方式之一，它不是利用操作系统的BUG来实现攻击，而是针对程序员编程时的疏忽，通过SQL语句，实现无帐号登录，甚至篡改数据库
+
+UniMelb DB wk8 也有讲
+
+
+
+比如在一个登录界面，要求输入用户名和密码, 可以这样输入实现免帐号登录：
+
+```sql
+username： ‘or 1 = 1 --
+password：
+```
+
+点登陆,如若没有做特殊处理,那么这个非法用户可以登陆进去
+
+从理论上说，后台认证程序中会有如下的SQL语句：
+
+```sql
+String sql = "select * 
+from user_table 
+where username=' "+userName+" ' and password=' "+password+" '";
+```
+
+当输入了上面的用户名和密码，上面的SQL语句变成：
+
+```sql
+SELECT * 
+FROM user_table 
+WHERE username='’or 1 = 1 -- and password='’
+```
+
+这样 Where statement为true (因为(username=' ') or (1 = 1)永远是true, --后面是注释了), 这将会泄漏所有user的信息
+
+
+
+UI输入时, 注意事项
+
+1.永远不要信任用户的输入，要对用户的输入进行校验，可以通过正则表达式，或限制⻓度，对单引号和双"-"进行转换等。
+
+2.永远不要使用*动态拼装SQL*，取而代之，请使用*参数化的SQL*或者直接使用存储过程进行数据查询存取。
+
+3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。
+
+4.不要把机密信息*明文*存放，请加密或者hash掉密码和敏感的信息。
+
+5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装，把异常信息存放在独立的表中。如果使用原始错误信息, 有可能会带出来某些泄漏安全的信息
 
