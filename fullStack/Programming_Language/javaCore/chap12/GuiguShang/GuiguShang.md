@@ -513,7 +513,7 @@ class Window1 implements Runnable{
 线程安全问题总结:
 
 1. 问题: 卖票过程中出现重票与错票 ---> 出现了线程安全问题
-2. 问题出现的原因: 当某个线程来操作车票数(共享数据)的过程中, 尚未完成时其他线程参与了进来也对车票数(车票数)进行操作
+2. 问题出现的原因: 当某个线程来操作车票数(共享数据)的过程中, 尚未完成时, 其他线程参与了进来也对车票数(共享数据)进行操作
 
 3. 如何解决: 当一个线程a在操作车票数(共享数据)时, 其他线程不能参与进来, 直到线程a操作完车票数时, 其他线程才可以开始操作ticket. 这种情况下， 即使线程a出现了阻塞, 也不能改变
 
@@ -523,9 +523,129 @@ class Window1 implements Runnable{
 
 ## 4.2 Java对线程安全问题的解决方案
 
-431 
 
-该看这了
+
+Java中, 我们通过同步机制, 来解决线程安全问题
+
++ 好处: 解决了线程的安全问题.
+
++ 局限性: 操作同步代码时， 只能有1个线程参与, 其他线程等待, 相当于是1个单线程的过程.
+
+
+
+### 方式一: 同步代码块
+
+431-432
+
+```java
+synchronized(同步监视器){
+	// 需要被同步的代码
+}
+```
+
++ 需要被同步的代码: 操作共享数据的代码, 即为需要被同步的代码
+
++ 共享数据: 多个线程共同操作的变量. 比如: ticket就是共享数据
+
++ 同步监视器, 俗称: 锁. 任何一个类的对象都可以充当锁
+  + :bangbang: 要求: 多个线程必须要共用同一把锁. 小心充当锁的对象是在哪里被实例化出来的, 如果写错位置了很难debug
+
+
+
+情况一: 处理实现的方式创建线程带来的线程安全问题
+
+```java
+public class WindowTest1 {
+
+    public static void main(String[] args) {
+        Window1 w1 = new Window1(); // w1只对应1个ticket, 1 个 obj锁
+
+        Thread t1 = new Thread(w1);
+        t1.setName("Window1");
+        Thread t2 = new Thread(w1);
+        t2.setName("Window2");
+        Thread t3 = new Thread(w1);
+        t3.setName("Window3");
+
+        // Window1中的ticket不需要写成static的, t1, t2, t3也能共享100张票, 因为只有1个实现了Runnable接口的类的对象 w1
+        // 即三个线程共同来操作一个实现了Runnable接口的类的对象. 刀 ---> Thread,  鱼 ---> 实现了Runnable的对象
+        t1.start();
+        t2.start();
+        t3.start();
+
+    }
+}
+
+
+class Window1 implements Runnable{
+    private int ticket = 100;       // 用实现的方式创建thread不用写static
+    Object obj = new Object();      // 充当锁, 写在这里为了保证多个对Window1实例进行操作的线程共享同一把锁
+
+    @Override
+    public void run(){
+        while(true){
+          // any incoming threads attempting to exe the code block below will be stopped here until the lock is released
+          // -----------------------------------------------------------------------
+            synchronized (obj) {
+                if (ticket > 0) {
+
+                    try {
+                        // sleep()导致的线程阻塞 大大提高了引起错票的概率: ticket = -1 or 0; sleep时间越长, 错票概率越高
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + ": sell ticket, ticket index: " + ticket);
+
+                    ticket--;
+                } else {
+                    break;
+                }
+            }
+          // ------------------------------------------------------------------------
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+情况二: 处理继承的方式创建线程时, 带来的线程安全问题
+
+
+
+该看这个了
+
+
+
+### 方式二: 同步方法
+
+433-434
+
+情况一: 处理实现的方式创建线程时, 带来的线程安全问题
+
+
+
+情况二: 处理继承的方式创建线程带来的线程安全问题
+
+
+
+
+
+### 线程安全的单例模式之懒汉式
+
+
+
+### 死锁的问题
+
+
+
+### Lock锁方式解决线程安全问题
 
 
 
@@ -534,6 +654,10 @@ class Window1 implements Runnable{
 # 5. 线程的通信
 
 439
+
+
+
+
 
 
 
