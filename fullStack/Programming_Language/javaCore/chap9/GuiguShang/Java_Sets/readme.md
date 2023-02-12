@@ -6,8 +6,6 @@
 
 [TOC]
 
-
-
 ---
 
 # 1. Java 集合框架概述
@@ -30,8 +28,8 @@ Array在存储数据方面的弊端:
 Java集合可以分为Collection和Map两种体系:
 
 + `Collection` interface: **单列数据**, 定义了存取一组对象的方法的集合
-  + `List`: 元素有序 (index有意义), 可重复的集合
-  + `Set`: 元素无序, 不可重复的集合
+  + `List` interface: 元素有序 (index有意义), 可重复的集合
+  + `Set` interface: 元素无序, 不可重复的集合
 + `Map` (映射) interface: **双列数据**, 保存具有映射关系的"key-value pair"的集合
 
 
@@ -736,7 +734,7 @@ System.out.println(destList);               // [123, 43, 765, -97, 0]
 
 **同步控制(多线程相关)**
 
-Collections 类中提供了多个 `synchronizedXxx() `方法，该方法可使将指定集 合包装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全 问题
+Collections 类中提供了多个 `synchronizedXxx() `方法，该方法可使将指定集合包装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全问题
 
 ```java
 // 返回的list1即为线程安全的

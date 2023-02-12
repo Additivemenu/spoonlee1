@@ -12,10 +12,38 @@
 
 
 ---
-# Part1: Enum
+# Part1: Enum 枚举类
+
+496-501
+
+## 1. 自定义枚举类
+
+
+
+## 2. 使用enum
+
+
+
+## 3. Emun类的主要方法
+
+
+
+
+
+## 4. 实现接口的枚举类
+
+
+
 
 
 # Part2: Annotation (注解)
+
+502-516
+
+
+
+
+
 ## 1. Annotation introduction
 + 从JDK5.0开始, Java增加了对元数据(MetaData)的支持, 也就是Annotation(注解)
 + Annotation其实就是代码里的**特殊标记** (e.g. @Override), 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理. 
@@ -135,5 +163,4 @@ public void buyBook(String username, String isbn){
 
 
 ## 6. JDK8中注解的新特性
-
 

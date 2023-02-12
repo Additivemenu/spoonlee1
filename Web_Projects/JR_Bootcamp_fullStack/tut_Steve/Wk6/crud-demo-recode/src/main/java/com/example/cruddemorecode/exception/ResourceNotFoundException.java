@@ -6,6 +6,7 @@ package com.example.cruddemorecode.exception;
  */
 public class ResourceNotFoundException extends RuntimeException {
 
+    // No Argument Constructor: general exception info
     public ResourceNotFoundException(){
         super("Resource not found!");
     }

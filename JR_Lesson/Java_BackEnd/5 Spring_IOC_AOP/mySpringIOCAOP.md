@@ -8,7 +8,7 @@ Spring IOC & AOP
 
 
 
-# Intro
+# 1. Intro
 
 Dependency Insersion Principle
 
@@ -124,7 +124,7 @@ Spring最根本的使命：简化Java开发。 为了降低Java开发的复杂
 
 
 
-# :moon: Spring中的IoC 24min-
+# 2. :moon: Spring中的IoC 24min-
 
 IoC（Inversion of Control，控制倒转），是spring的核心，贯穿始终。
 
@@ -149,9 +149,9 @@ IoC（Inversion of Control，控制倒转），是spring的核心，贯穿始终
 
 
 
-## The Spring IoC Container
+## 2.1 The Spring IoC Container
 
-Spring中将**IoC容器**管理的对象称为Bean，这个和JavaBean并没有什么关系。。
+**Spring中将IoC容器管理的对象称为Bean (Bean是指对象!!!)**，这个和JavaBean并没有什么关系。。
 
 + `BeanFactory`接口：在 Spring 的定义中，它要求所有的 IoC 容器都需要实现接口BeanFactory，它是一个顶级容器接口。Bean工厂，借助于配置文件能够实现对JavaBean的配置和管理，用于向使用者提供Bean的实例。
 
@@ -159,7 +159,7 @@ Spring中将**IoC容器**管理的对象称为Bean，这个和JavaBean并没有�
 
 
 
-## 通过扫描装配Bean 30min-
+## 2.2 通过扫描装配Bean 30min-
 
 如果一个个的 Bean 使用注解`@Bean` 注入 Spring IoC 容器中，很麻烦。
 
@@ -173,13 +173,15 @@ Spring 允许我们进行扫描装配 Bean 到 IoC 容器中，对于扫描装�
 
 
 
-### Constructor-Based DependencyInjection 34min-
+### Constructor-Based Dependency Injection 34min-
 
-the container will invoke a constructor with argumentseach representing a dependency we want to set.
+用的多一些
+
+the container will invoke a constructor with arguments each representing a dependency we want to set.
 
 ```java
-@Configurationpublic 
-class AppConfig {     
+@Configuration
+public class AppConfig {     
   @Bean    
   public Item item1() {        
     return new ItemImpl1();    
@@ -191,33 +193,189 @@ class AppConfig {
 }
 ```
 
-+ The `@Configuration` annotation indicates that theclass is a source of bean definitions. Also, we canadd it to multiple configuration classes.
++ The `@Configuration` annotation indicates that the class is a source of bean definitions. Also, we can add it to multiple configuration classes.
 
 + The `@Bean` annotation is used on a method todefine a bean. 
   + If we don’t specify a custom name,the bean name will default to the method name.
 
-For a bean with the default singleton scope, Springfirst checks if a cached instance of the beanalready exists and only creates a new one if itdoesn’t. If we’re using the prototype scope, thecontainer returns a new bean instance for eachmethod call. :question: 这单例模式?
-
-看到36min- 回去看单例模式
+For a bean with the default singleton scope(单例模式), Spring first checks if a cached instance of the bean already exists and only creates a new one if itdoesn’t. If we’re using the prototype scope(原型模式), the container returns a new bean instance for each method call. 
 
 
 
 
 
-### Setter-Based DependencyInjection
+### Setter-Based Dependency Injection
+
+36min-
+
+其实用的很少
+
+:question: 17期锤姐的ppt忘了加例子了, 看18期的
+
+
+
+Constructor-based and setter-based types of injection can be combined for the same bean.The Spring documentation recommends using constructor-based injection for mandatorydependencies, and setter-based injection for optional ones.
+
+
+
+### Field-Based Dependency Injection
+
+38min-
+
+we can inject the dependencies by marking them with an` @Autowired` annotation:
+
+`@Autowired`用在field上
+
+```java
+public class Store {    
+  @Autowired    
+  private Item item;
+}
+```
+
+While constructing the Store object, if there’s no constructor or setter method to injectthe Item bean, the container will use reflection to inject Item into Store.
+
+
+
+:bangbang: This approach might look simpler and cleaner but <u>is not recommended</u> to use because it has a few drawbacks such as:
+
++ This method uses reflection to inject the dependencies, which is costlier thanconstructor-based or setter-based injection
+
++ It’s really easy to keep adding multiple dependencies using this approach. 因为使用简单， 你可能容易往里面注入太多依赖, 这容易违反Single Responsibility Principle.  If you wereusing constructor injection having multiple arguments would have made us think thatthe class does more than one thing which can violate the Single Responsibility
+
+
+
+#### Autowired注解
+
+45min-
+
+@Autowired 的缺省规则：首先它会根据类型找到对应的 Bean (被Spring Ioc容器管理的对象)，如果对应类型的 Bean不是唯一的，那么它会根据其属性名称和 Bean 的名称进行匹配。如果匹配得上，就会使用该 Bean；如果还无法匹配，就会抛出异常。
+
+<img src="./Src_md/Spring_Autowiring_Modes.png" width=60%>
+
+消除歧义性: @Primary & @Qualifier
+
++ `@Primary` 的含义告诉 Spring IoC 容器，当发现有多个同样类型的 Bean 时，请优先使用这个进行注入
+
++ `@Qualifier` 的配置项 value 需要一个字符串去定义，它将与@Autowired 组合在一起，通过类型和名称一起找到 Bean。
 
 
 
 
 
+带有参数的构造方法类的装配
+
+51min-
+
+使用@Autowired注解对构造方法的参数进行注入
+
+`@Autowired`用在参数上
+
+```java
+@Component
+public class BussinessPerson implements Person {
+  private Animal animal = null;
+  
+  public BussinessPerson(@Autowired @Qualifier("dog") Animal animal) {
+    this.animal = animal;
+  }
+  
+  @Override 
+  public void service() { 
+    this.animal.use();
+  }
+  
+  @Override 
+  public void setAnimal(Animal animal) {
+    this.animal = animal;
+  }
+}
+```
+
+
+
+52min-
+
+另一个不推荐用@Autowired的缘故是, 它是依赖于Spring的, Java原生也有支持注入的Annotation
+
+| Annotation | Package                                     | Source |
+| ---------- | ------------------------------------------- | ------ |
+| @Resource  | javax.annotation                            | Java   |
+| @Inject    | javax.inject                                | Java   |
+| @Qualifier | javax.inject                                | Java   |
+| @Autowired | org.springframework.bean.factory.annotation | Spring |
+
+
+
+# Bean's life cycle 53min-
+
+Spring IoC 初始化和销毁 Bean 的过程，这便是 Bean 的生命周期的过程，它大致分为4个阶段:
+
+1. Bean 定义
+2. Bean 的初始化
+3. Bean 的生存期和
+4. Bean 的销毁
+
+
+
+## Bean的定义过程
+
+Bean 定义过程大致如下：
+
++ Spring 通过我们的配置，如@ComponentScan 定义的扫描路径去找到带有@Component 的类，这个过程就是一个资源定位的过程
++ 一旦找到了资源，那么它就开始解析，并且将定义的信息保存起来。注意，此时还没有初始化Bean，也就没有 Bean 的实例，它有的仅仅是 Bean 的定义
++ 然后就会把 Bean 定义发布到 Spring IoC 容器中。此时，IoC 容器也只有 Bean 的定义，还是没有Bean 的实例生成。
+
+完成了这3步只是一个资源定位并将 Bean 的定义发布到 IoC 容器的过程，还没有 Bean 实例的生成，更没有完成依赖注入。在默认的情况下，Spring 会继续去完成 Bean 的实例化和依赖注入，这样从IoC 容器中就可以得到一个依赖注入完成的 Bean。
+
+
+
+## Bean的初始化
+
+ComponentScan 中还有一个配置项 lazyInit，只可以配置 Boolean 值，且默认值为false，也就是默认不进行延迟初始化，因此在默认的情况下 Spring 会对 Bean 进行实例化和依赖注入对应的属性值。
+
+<img src="./Src_md/Bean_Init.png" width=80%>
 
 
 
 
-### Field-Based DependencyInjection
+
+56min-
+
+到这里
 
 
 
+## Bean的作用域1h02min-
+
+```java
+@Component
+@Scope(WebApplicationContext.SCOPE_REQUEST)
+```
 
 
-## Autowired注解
+
+<img src="./Src_md/Bean_Scope.png" width=70%>
+
+一般我们只用singleton与prototype
+
+
+
+## 使用@Profile 指定不同环境 1h04min-
+
+针对开发环境、测试环境、staging环境（用于模拟真实生产环境部署所用）和生产环境的切换，每一套环境的上下文是不一样的。例如，它们会有各自的数据库资源，这样就要求在不同的数据库之间进行切换。Spring 提供了Profile 机制，很方便地实现各个环境之间的切换
+
+
+
+1h06min-1h15min
+
+实际工作中, 我们一般在不同环境下, 可以加不同的配置文件 (property file)
+
+也可以用环境变量注入重要信息 (e.g. Password)
+
+
+
+休息 1h15min- 1h25min 
+
+# Aspect oriented programming (AOP) 1h25min-
+

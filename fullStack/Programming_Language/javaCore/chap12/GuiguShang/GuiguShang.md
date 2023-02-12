@@ -302,11 +302,11 @@ Java的调度方法
 创建多线程的方式2: 实现Runnable接口
 + Step1: 创建实现了Runnable接口的类
 
-+ Step2: 实现类去实现Runnable中的抽象方法 run()
++ Step2: 实现类去实现Runnable接口中的抽象方法 run()
 
 + Step3: 创建实现类的对象   ---> 创建将被线程操作的"鱼"
 
-+ Step4: 将此对象作为参数传递到Thread类的构造器, 创建Thread类的对象 ---> 创建将操作"鱼"的一把把刀, 并把"鱼"放到案板上
++ Step4: 将此对象作为参数传递到Thread类的构造器, 创建Thread类的对象 ---> 把"鱼"放到案板上, 并创建将操作"鱼"的一把把刀; 即使得Thread类的实例与实现类的实例之间发生依赖
 
 + Step5: 通过Thread类的对象, 调用start()
 
@@ -480,8 +480,9 @@ class Window1 implements Runnable{
     @Override
     public void run(){
         while(true){
+          
             if(ticket > 0){
-
+              
                 try {
                     // sleep()导致的线程阻塞 大大提高了引起错票的概率: ticket = -1 or 0; sleep时间越长, 错票概率越高
                     Thread.sleep(100);
@@ -543,12 +544,14 @@ synchronized(同步监视器){
 }
 ```
 
-+ 需要被同步的代码: 操作共享数据的代码, 即为需要被同步的代码
++ **需要被同步的代码: 操作共享数据的代码, 即为需要被同步的代码 
+  + :bangbang:难点一: synchronized{}不能包代码包多了(包多了是更加安全了, 但这样可能一个线程把活全干完了, 完全不留给其他线程机会), 也不能包代码包少了(并行逻辑发生错误, 线程安全问题可能依旧存在)
 
-+ 共享数据: 多个线程共同操作的变量. 比如: ticket就是共享数据
+
++ 共享数据: 多个线程共同操作的变量. 比如: ticket就是共享数据 
 
 + 同步监视器, 俗称: 锁. 任何一个类的对象都可以充当锁
-  + :bangbang: 要求: 多个线程必须要共用同一把锁. 小心充当锁的对象是在哪里被实例化出来的, 如果写错位置了很难debug
+  + :bangbang: 难点二: 要求**不管是使用实现还是继承的方式创建线程, 必须保证多个线程共用同一把锁.** 格外注意充当锁的对象是在哪里被实例化出来的, 如果写错位置了很难debug因为编译时无法察觉
 
 
 
@@ -560,7 +563,7 @@ public class WindowTest1 {
     public static void main(String[] args) {
         Window1 w1 = new Window1(); // w1只对应1个ticket, 1 个 obj锁
 
-        Thread t1 = new Thread(w1);
+        Thread t1 = new Thread(w1);	// Thread类的实例与实现类的实例发生依赖
         t1.setName("Window1");
         Thread t2 = new Thread(w1);
         t2.setName("Window2");
@@ -579,14 +582,15 @@ public class WindowTest1 {
 
 class Window1 implements Runnable{
     private int ticket = 100;       // 用实现的方式创建thread不用写static
-    Object obj = new Object();      // 充当锁, 写在这里为了保证多个对Window1实例进行操作的线程共享同一把锁
+    Object obj = new Object();      // 充当锁, 写在这里为了保证多个对Window1实例进行操作的多个线程共享同一把锁
 
     @Override
     public void run(){
         while(true){
           // any incoming threads attempting to exe the code block below will be stopped here until the lock is released
           // -----------------------------------------------------------------------
-            synchronized (obj) {
+          // 方式一: 用this来充当锁 
+            synchronized (this) {        // 方式二: 用另外的obj充当锁 synchronized (obj) {
                 if (ticket > 0) {
 
                     try {
@@ -609,7 +613,7 @@ class Window1 implements Runnable{
 }
 ```
 
-
++ 此时可以用实现类的本身作为锁, 因为main()中只有1个实现类的实例, 锁是唯一的
 
 
 
@@ -617,9 +621,58 @@ class Window1 implements Runnable{
 
 情况二: 处理继承的方式创建线程时, 带来的线程安全问题
 
+```java
+public class WindowTest {
+    public static void main(String[] args) {
+        Window w1 = new Window();
+        Window w2 = new Window();
+        Window w3 = new Window();
+
+        w1.setName("w1");
+        w2.setName("w2");
+        w3.setName("w3");
+
+        w1.start();
+        w2.start();
+        w3.start();
+    }
+}
+
+class Window extends Thread{
+    private static int ticket = 100;
+    private static Object obj = new Object();       // 注意得是 static, 保证多个Window的实例共享同一把锁
+
+    @Override
+    public void run(){
+        while(true){
+
+            // 方式一: 用Window.class作为锁
+            synchronized (Window.class) {   // 方式二: 使用Thread子类的静态成员变量作为锁, synchronized (obj) {
+         
+                if (ticket > 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + ": sell ticket, ticket index is: " + ticket);
+                    ticket--;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+}
+```
+
++ 注意不能用Thread子类的this作为锁, 因为main()中是实例化多个Thread子类来start(), 此时锁不唯一
++ 但是可以考虑用当前类作为锁
 
 
-该看这个了
+
+
 
 
 
@@ -627,11 +680,127 @@ class Window1 implements Runnable{
 
 433-434
 
+```
+
+```
+
+如果操作共享数据的代码完整的声明在一个方法中, 我们不妨将此方法声明为synchronized
+*        同步方法仍然涉及到同步监视器(锁), 只是不需要我们显式地声明
+*        非静态的同步方法, 同步监视器是: this
+*        静态的同步方法, 同步监视器是: 当前类本身
+
+
+
 情况一: 处理实现的方式创建线程时, 带来的线程安全问题
+
+```java
+public class WindowTest2 {
+
+    public static void main(String[] args) {
+        Window2 w2 = new Window2(); // w1只对应1个ticket, 1 个 obj锁
+
+        Thread t1 = new Thread(w2);
+        t1.setName("Window1");
+        Thread t2 = new Thread(w2);
+        t2.setName("Window2");
+        Thread t3 = new Thread(w2);
+        t3.setName("Window3");
+
+        // Window1中的ticket不需要写成static的, t1, t2, t3也能共享100张票, 因为只有1个实现了Runnable接口的类的对象 w1
+        // 即三个线程共同来操作一个实现了Runnable接口的类的对象. 刀 ---> Thread,  鱼 ---> 实现了Runnable的对象
+        t1.start();
+        t2.start();
+        t3.start();
+
+    }
+}
+
+
+class Window2 implements Runnable{
+
+    private int ticket = 100;       // 用实现的方式创建thread不用写static
+    Object obj = new Object();      // 充当锁, 写在这里为了保证多个对Window1实例进行操作的线程共享同一把锁
+
+    @Override
+    public void run(){
+        while(true){
+
+            show();
+        }
+    }
+
+    // 同步方法
+    private synchronized void show(){       // 锁: this
+        if (ticket > 0) {
+
+            try {
+                // sleep()导致的线程阻塞 大大提高了引起错票的概率: ticket = -1 or 0; sleep时间越长, 错票概率越高
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(Thread.currentThread().getName() + ": sell ticket, ticket index: " + ticket);
+            ticket--;
+        }
+    }
+
+}
+```
+
+上面代码还存在无法跳出while()循环的问题, 小问题先不cover了
 
 
 
 情况二: 处理继承的方式创建线程带来的线程安全问题
+
+```java
+public class WindowTest2 {
+    public static void main(String[] args) {
+        Window2 w1 = new Window2();
+        Window2 w2 = new Window2();
+        Window2 w3 = new Window2();
+
+        w1.setName("w1");
+        w2.setName("w2");
+        w3.setName("w3");
+
+        // 仍然有问题, 存在重票
+        // 需要线程安全的知识来解决, 待解决
+        w1.start();
+        w2.start();
+        w3.start();
+    }
+}
+
+class Window2 extends Thread{
+    private static int ticket = 100;
+
+    @Override
+    public void run(){
+        while(true){
+
+            show();
+        }
+    }
+
+    private static synchronized void show(){        // 锁是: 当前类 Window2.class
+        // private synchronized void show(){           // 锁是 this, 在main()对应t1,t2,t3并不唯一, 此种解决方式依然存在线程安全问题
+            if (ticket > 0) {
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(Thread.currentThread().getName() + ": sell ticket, ticket index is: " + ticket);
+            ticket--;
+        }
+    }
+
+}
+```
 
 
 
@@ -639,15 +808,27 @@ class Window1 implements Runnable{
 
 ### 线程安全的单例模式之懒汉式
 
+435
+
+看到这里
 
 
-### 死锁的问题
+
+## 4.3 死锁的问题
+
+436
 
 
 
-### Lock锁方式解决线程安全问题
+## 4.4 Lock锁方式解决线程安全问题
+
+437
 
 
+
+## 4.5 同步机制的练习
+
+438
 
 
 

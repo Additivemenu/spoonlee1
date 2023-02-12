@@ -29,7 +29,7 @@ get
 
 
 
-## 将get的结果打印在terminal
+## 将get的结果打印在后端terminal
 
 接上节课, 在UserController里写入:
 
@@ -69,9 +69,9 @@ User(id=2, email=user1@gmail.com, name=user, password=password888               
 
 
 
-Controller ---dto---> service ----entity----> repository 
+Controller ---PostDto---> service ----entity----> repository 
 
-Controller <---dto--- service <----entity---- repository 
+Controller <---GetDto--- service <----entity---- repository 
 
 其中entity class需要@entity annotation, 用来表示是要与数据库交互的, 对成员变量有很多类似SQL DDL的constraint
 
@@ -100,7 +100,7 @@ public UserGetDto getUser(Long userId) {
 
     User user = optionalUser.get();
     System.out.println(user);
-
+		// entity ---> GetDto
     UserGetDto userGetDto = new UserGetDto();
     userGetDto.setId(userId);
     userGetDto.setName(user.getName());
@@ -130,7 +130,7 @@ Postman > get request: http://localhost:8080/api/v1/users/2
 
 
 
-## 处理用户的不合法输入26min- 
+# 2. :full_moon: 处理用户的不合法输入26min- 
 
 精简
 
@@ -154,8 +154,6 @@ Postman中返回的:
 ```
 
 返回的错误信息太广了, 应该narrow down一下
-
-
 
 
 
@@ -212,13 +210,13 @@ User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException());
 
 
 
-但是错误信息只在后端显示, 并没有返回给用户
+但是现在错误信息只在后端显示, 并没有返回给用户. 要返回给用户, 我们还得借助 ExceptionHandler class以及`@RestControllerAdvice`
 
----
 
-把错误信息返回到前台36min-
 
-在exception包下新建如下类
+## 2.1 把错误信息返回到前台36min-
+
+在exception包下新建如下类, 用来handle controller里有可能抛出的Exception
 
 ```java
 @RestControllerAdvice   // 监视Controller, 如果controller里的方法报了异常的化, 做如下处理
@@ -247,11 +245,11 @@ Q&A 43min-58min
 
 
 
-## 进一步指明错误信息, 并返回给前台 58min-
+## 2.2 进一步指明错误信息 58min-
 
 
 
-ResourceNotFoundException中新定义有参构造器
+刚才ResourceNotFoundException中仅仅有一个默认的空参构造器, 不足以指明我们的错误信息的具体含义, 现在我们再新定义有参构造器:
 
 ```java
 public class ResourceNotFoundException extends RuntimeException {
@@ -299,25 +297,31 @@ public class ControllerExceptionHandler {
 
 
 
-总结: 在可能出错的地方throw exception (这个exception应该足够独特, 最好自己自定义一个Exception class, 并添加有参构造器方便指明具体的错误信息对象), 并编写一个ExceptionHanler class在其中处理该独特的exception并将错误信息返回给前台
+总结: 
+
+step1: 在service中可能出错的地方throw Exception(我们在controller里调用service里的方法), 这个Exception应该足够独特, 最好自己在exception包下自定义一个Exception class, 并添加有参构造器方便指明具体的错误信息对象
+
+Step2: 在exception包下编写一个ExceptionHanler class在其中处理该独特的exception并将错误信息返回给前台, 标注好返回的 HTTP error status code (一般400 - 599)
 
 
 
 
 
-# 2. HttpStatus 相关 1h16min- 
+## 2.3 :moon: HttpStatus code相关 1h16min- 
 
-HttpStatus很讲究, 不能乱写
+Http Status很讲究, 不能乱写
 
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+:book: [MDN: HTTP status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET 遵循这个标准, 具体一个RESTful API是否该有body, status应该返回几
+:book: [MDN: HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)
+
+遵循这个标准, 具体一个RESTful API是否该有body, status应该返回几
 
 Created-201
 
 Deleted-204
 
-
+也可以问chatGPT， 更加直接
 
 
 
