@@ -1,0 +1,51 @@
+.App {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+/* 从上往下写 */
+
+.title{
+  display: flex;
+  justify-content: center;
+}
+
+.container{
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.list-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.list-group-item{
+  padding: 0.75rem 1.25rem;
+  border: 1px solid rgba(0,0,0,0.125);
+  background-color: #fff;
+
+  /* 消除item的border之间的重叠 */
+  margin-bottom: -1px;;
+  list-style-type: none;
+
+}
+
+.pagination{
+  display: flex;
+  list-style: none;
+
+  /* 让page item可以流动, 当页面宽度缩小时 */
+  flex-wrap:wrap;
+}
+
+.pagination-btn{
+  color: #0d7bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+
+  /* 去除border重叠 */
+  margin-left: -1px;
+  /* 把button 撑大 */
+  padding: 0.5rem 0.75rem;
+}

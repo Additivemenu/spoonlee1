@@ -377,5 +377,159 @@ ComponentScan 中还有一个配置项 lazyInit，只可以配置 Boolean 值，
 
 休息 1h15min- 1h25min 
 
+
+
 # Aspect oriented programming (AOP) 1h25min-
 
+# Intro
+
+面向切面编程是面向对象编程的有益补充。
+
+AOP是将那些与业务无关，却为业务模块所**共同调用**的逻辑或责任进行封装。
+
+
+
+应用AOP的功能举例： 
+
++ Authentication 权限 
+
++ Caching 缓存
+
+ + Context passing 内容传递
+
+ + Error handling 错误处理
+
+ + Lazy loading　懒加载
+
++ Debugging　　调试
+
+
+
+<img src="./Src_md/AOP1.png" width=50%>
+
+
+
+OOP vs. AOP
+
+<img src="./Src_md/OOP_vs_AOP.png" width=50%>
+
+chatGPT: what is the difference between AOP and OOP
+
+> AOP (Aspect-Oriented Programming) and OOP (Object-Oriented Programming) are two distinct programming paradigms.
+>
+> OOP is based on the idea of objects and classes, where objects are instances of classes and contain data and methods that operate on that data. OOP is used to model real-world objects and their interactions and is centered around the concept of encapsulation, which is the idea of hiding the internal details of an object and exposing only what is necessary to interact with it.
+>
+> AOP, on the other hand, is a programming paradigm that aims to separate concerns in a software application. It allows developers to modularize cross-cutting concerns, such as logging, security, and transaction management, into separate components that can be woven into the main application. AOP provides a mechanism for adding behavior to existing code without modifying the code itself(最小化侵入式编程), making it easier to maintain and modify the software over time.
+>
+> In short, OOP is focused on modeling real-world objects and their interactions, while AOP is focused on separating and modularizing cross-cutting concerns. Both paradigms can be used together, and many modern programming languages, such as Java, support both OOP and AOP.
+
+
+
+## AOP terminology 1h30min
+
++ Aspect (切面)
+  + An aspect is a Java class that implements cross-cutting concerns (竖切关注点).The `@Aspect` annotation is used to define a class as an aspect. An aspect is a combination of the kinds of methods to intercept(拦截) and what to do after intercepting them.
+
++ Pointcut (切点)
+  + Pointcuts are expressions(表达式) that determine which method calls will be intercepted.
+
++ Advice
+  + The tasks performed after intercepting a method call are called advices. It is the logic of the methods in a class marked with `@Aspect`.
+
++ Joinpoint
+  + All method calls that are intercepted arejoinpoints. It is a point in the program executionwhere an aspect can be plugged in. It contains thename of the intercepted method call. 
+
+<img src="Src_md/AOP2.png" width=50%>
+
+
+
+
+
+
+
++ Weaving
+  + The process of implementing AOP around method calls iscalled weaving. Weaving links an aspect with objects in theapplication to create an advised object. The aspect is calledat the right moment.
++ Weaver
+  + The framework that ensuresthat an aspect is invoked atthe right time is called aweaver.
+
+<img src="Src_md/AOP3.png" width=40%>
+
+
+
+# Hands-on AOP 1h36min-
+
+Demo: Implement rate limit for querying weather information per user (token)
+
+流量控制: Internet tech里的data link layer (sliding window) 与 transport layer TCP window management 有涉及到类似的思想
+
+如何定义1个小时的范围是核心
+
+
+
+
+
+正式开始1h52min-
+
+step1: Add spring-app
+
+```yml
+implementation 'org.springframework.boot:spring-boot-starter-aop'
+```
+
+
+
+Step2: Add @Aspect class and @EnableAspectJAutoProxy
+
+在和application同路径下 新建aop package, 新建如下类
+
+```java
+@Aspect
+@Component
+//@RequiredArgsConstructor
+public class RateLimitAspect {
+
+
+}
+```
+
+
+
+给application 加上annotation: `@EnableAspectJAutoProxy`
+
+```java
+@EnableAspectJAutoProxy
+@SpringBootApplication
+public class WeatherAppApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(WeatherAppApplication.class, args);
+	}
+
+}
+```
+
+
+
+Step3: create annotation interface
+
+在和application同路径下 新建aop package, 新建如下annotation
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RateLimit {
+
+}
+```
+
+
+
+step4: define a method that contains the logic of thesteps that need to be carried out when a methodcall gets intercepted.
+
+```java
+public Object exceededLimit(ProceedingJoinPointjoinPoint) throws Throwable {..}
+```
+
+
+
+Step5: Pointcut expression:Choose to use `@Around` annotation onour method with annotation interface 1h58min-

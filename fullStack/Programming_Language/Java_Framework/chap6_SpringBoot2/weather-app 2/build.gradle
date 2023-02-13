@@ -24,6 +24,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// Spring AOP
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 	// spring data jpa, postgres, flyway
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'org.postgresql:postgresql'
