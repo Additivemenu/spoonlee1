@@ -522,9 +522,7 @@ class Window1 implements Runnable{
 
 
 
-## 4.2 Java对线程安全问题的解决方案
-
-
+## 4.2 :full_moon: Java对线程安全问题的解决方案
 
 Java中, 我们通过同步机制, 来解决线程安全问题
 
@@ -544,8 +542,10 @@ synchronized(同步监视器){
 }
 ```
 
-+ **需要被同步的代码: 操作共享数据的代码, 即为需要被同步的代码 
++ 需要被同步的代码: 操作共享数据的代码, 即为需要被同步的代码 
+  + 首先要明确哪些代码是操作共享数据的代码
   + :bangbang:难点一: synchronized{}不能包代码包多了(包多了是更加安全了, 但这样可能一个线程把活全干完了, 完全不留给其他线程机会), 也不能包代码包少了(并行逻辑发生错误, 线程安全问题可能依旧存在)
+  
 
 
 + 共享数据: 多个线程共同操作的变量. 比如: ticket就是共享数据 
@@ -783,7 +783,8 @@ class Window2 extends Thread{
             show();
         }
     }
-
+		
+  	// 同步方法
     private static synchronized void show(){        // 锁是: 当前类 Window2.class
         // private synchronized void show(){           // 锁是 this, 在main()对应t1,t2,t3并不唯一, 此种解决方式依然存在线程安全问题
             if (ticket > 0) {
@@ -810,19 +811,263 @@ class Window2 extends Thread{
 
 435
 
-看到这里
+问题所在
+
+```java
+public class BankTest {
+    
+}
+
+class Bank{
+    private Bank(){
+        
+    }
+    
+    private static Bank instance = null;
+    
+    public static Bank getInstance(){           // 调用getInstance() in run(), 意味着可能多个线程要调用getInstance()
+        
+      // 存在线程安全问题, 如果多个Thread同时调用getInstance(), 如果某个Thread在执行getInstance()中block了,
+      // 那么有可能导致instance = new Bank()被执行多次, instance先后被指向了多个Bank的实例, 也就不符合单例模式的初衷了
+      if(instance == null){
+          
+          	// Thread might be blocked at here
+          
+            instance = new Bank();
+        }
+        return instance;
+    }
+}
+```
 
 
 
-## 4.3 死锁的问题
+用线程同步来解决线程安全问题
+
++ 同步方法
+
+```java
+    public static synchronized Bank getInstance(){    // 调用getInstance() in run(), 意味着可能多个线程要调用getInstance()
+          if(instance == null){
+              instance = new Bank();
+          }
+          return instance;
+  	}
+```
+
+
+
++ 同步代码块
+
+方式一: 优化前的. 虽然线程安全了, 但是性能稍差
+
+```java
+
+    public static Bank getInstance(){           // 调用getInstance() in run(), 意味着可能多个线程要调用getInstance()
+
+        // 方式一: 同步代码块 效率差一些. 如果instance已经被创建了,
+        // 之后的线程在调用getInstance()时还必须再去等synchronized释放锁了, 进入同步代码块才能reuturn intance
+        synchronized (Bank.class) {
+            if(instance == null){
+                instance = new Bank();
+            }
+            return instance;
+        }
+    }
+```
+
+方式二: 优化后的
+
+```java
+// 方式二: 同步代码块
+    public static Bank getInstance(){           // 调用getInstance() in run(), 意味着可能多个线程要调用getInstance()
+
+        // 方式二: 效率更高一些. 如果instance已经被创建了,
+        // 那么之后的线程在调用getInstance()时没必要再去等synchronized释放锁了
+        // 直接return创建好的instance的引用
+        if(instance == null){
+            synchronized (Bank.class) {
+                if(instance == null){
+                    instance = new Bank();
+                }
+            }
+        }
+        return instance;
+    }
+```
+
+:bangbang: 面试时, 如果要让你写单例模式, 默认肯定要你写线程安全的
+
+
+
+## 4.3 死锁(dead lock)的问题
 
 436
+
+线程的死锁问题
+
++ 不同的线程分别占用对方需要的同步资源不放弃，都在等待对方放弃 自己需要的同步资源，就形成了线程的死锁
+
++ 出现死锁后，不会出现异常，不会出现提示，只是所有的线程都处于 阻塞状态，无法继续
+
+
+
+
+
+```java
+public class DeadLockTest {
+    public static void main(String[] args) {
+        StringBuffer s1 = new StringBuffer();
+        StringBuffer s2 = new StringBuffer();
+
+        // 线程1: 继承的方式
+        new Thread(){
+            @Override
+            public void run(){
+                synchronized (s1){
+                    s1.append("a");
+                    s2.append("1");
+                    synchronized (s2){
+                        s1.append("b");
+                        s2.append("2");
+
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }.start();
+
+        // 线程2: 实现的方式
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                synchronized (s2){
+                    s1.append("c");
+                    s2.append("3");
+                    synchronized (s1){
+                        s1.append("d");
+                        s2.append("4");
+
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }).start();
+
+
+    }
+}
+```
+
+
+
+
+
+引入sleep, 大大提高出现死锁的概率
+
+```java
+public class DeadLockTest {
+    public static void main(String[] args) {
+        StringBuffer s1 = new StringBuffer();
+        StringBuffer s2 = new StringBuffer();
+
+        // 线程1: 继承的方式
+        new Thread(){
+            @Override
+            public void run(){
+                synchronized (s1){
+                    s1.append("a");
+                    s2.append("1");
+
+                    // 线程1 sleep期间, 线程2可能开始执行了, 当二者结束sleep时可能出现:
+                    // 线程1 拿着 s1锁, 等着s2锁被释放
+                    // 线程2 拿着 s2锁, 等着s1锁被释放
+                    // ---> 出现死锁了
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    synchronized (s2){
+                        s1.append("b");
+                        s2.append("2");
+
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }.start();
+
+        // 线程2: 实现的方式
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                synchronized (s2){
+                    s1.append("c");
+                    s2.append("3");
+
+                    // 线程1sleep期间, 线程2可能开始执行了, 当二者结束sleep时可能出现:
+                    // 线程1 拿着 s1锁, 等着s2锁被释放
+                    // 线程2 拿着 s2锁, 等着s1锁被释放
+                    // ---> 出现死锁了
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    synchronized (s1){
+                        s1.append("d");
+                        s2.append("4");
+
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }).start();
+
+
+    }
+}
+```
+
+
+
+:gem: 还有一个dead lock的演示，见intellij的代码
+
+
+
+后面使用集合, StringBuffer都会用到同步监视器
+
+
+
+解决方法
+
++ 专门的算法、原则
+
++ 尽量减少同步资源的定义 
++ 尽量避免嵌套同步
 
 
 
 ## 4.4 Lock锁方式解决线程安全问题
 
 437
+
+看到这里
+
+
+
+
+
+
 
 
 
@@ -832,9 +1077,19 @@ class Window2 extends Thread{
 
 
 
+
+
+
+
+
+
+
+
 # 5. 线程的通信
 
 439
+
+
 
 
 
