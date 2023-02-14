@@ -1,5 +1,13 @@
 JR-18-Java SpringBoot class3 RESTful api
 
+
+
+主要和RESTful API的设计有关系
+
+
+
+
+
 # 1. Tips 0 -
 
 be careful when you want to use `static`. Define static method only in following scenarios:
@@ -35,7 +43,7 @@ If using default @Service / @Component annotation. should avoid adding any field
 
 # 2. RESTful API 10min-
 
-REST stands for *REpresentational State Transfer*. **REST is a web standards based architecture and uses HTTp Protocol for data communication.** It revolves around resources where every component is a resource and a resource is accessed by a common interface using HTTP standard methods. 
+REST stands for *Representational State Transfer*. **REST is a web standards based architecture and uses HTTP Protocol for data communication.** It revolves around resources where every component is a resource and a resource is accessed by a common interface using HTTP standard methods. 
 
 In REST architecture, a REST Server simply provides access to resources and the REST client accesses and presents the reousrces.
 
@@ -53,7 +61,9 @@ REST server and REST client:
 
 ## 2.1 Resource 18min-
 
-In REST architecture, everything is a resource. A **REST Server** simply provides access to resources and the **REST client** accesses and presents the reousrces. I/O流的产物.
+**In REST architecture, everything is a resource.** 
+
+A **REST Server** simply provides access to resources and the **REST client** accesses and presents the reousrces. I/O流的产物.
 
 + Here each resource is identified by **URIs / Global IDs**. Every resource is unique.
 
@@ -120,11 +130,13 @@ https://samples.openweathermap.org/data/2.5/forecast?q=Melbourne,au&appid=b6907d
 
 
 
-## 2.3 Addressing 49min-
+## 2.3 Addressing: URI 49min-
 
 Addressing refers to locating a resource or multiple resources **lying on the server**.
 
 e.g. https://samples.openweathermap.org/data/2.5/forecast?q=Melbourne,au&appid=b6907d289e10d714a6e88b30761fae22 is URL, in which: <u>data/2.5/forecast?q=Melbourne,au&appid=b6907d289e10d714a6e88b30761fae22</u> is URI
+
+
 
 Constructing a standard URI:
 
@@ -140,11 +152,11 @@ Constructing a standard URI:
 GET http://localhost:8080/UserManagement/rest/UserService/getUser/1
 DELETE http://localhost:8080/UserManagement/rest/UserService/deleteUser/1
 
-// good practice
+// good practice: 添加 version number
 GET http://localhost:8080/usermanagement/api/v1/userservice/users/1
 DEL http://localhost:8080/usermanagement/api/v1/userservice/users/1
 
-// better
+// better： more concise
 GET http://localhost:8080/api/v1/users/1
 DEL http://localhost:8080/api/v1/users/1
 ```
@@ -163,15 +175,21 @@ CRUD:
 
 + **GET:** provides a read only access to a resource
 + **POST:** used to create a new resource
-+ **PUT:** used to update an existing resource or create a new resource
++ **PUT (两个功能):** used to update an existing resource or create a new resource
 + **DELETE:** used to remove a resource (大多数情况下不会用, 我们不会随便删除生产环境的数据)
 + **OPTIONS:** used to get the supported operations on a resource
+
+---
 
 中间穿插一些Q&A
 
 :question: what are the differences between GET and POST ?
 
+
+
 :gem: e.g.
+
+URI 应该具有可读性, 别人看到就知道啥意思
 
 | HTTP Method | URI       | Operation                                    |
 | :---------- | --------- | -------------------------------------------- |
@@ -201,7 +219,7 @@ Ideompotency: 幂等性. 当用户短时间内输入多次相同的操作时, �
 
 
 
-Stateless Pros vs. Cons
+### Stateless Pros vs. Cons
 
 + Pros
   + web services can treat each method request independently. 很大程度上降低server side的软件设计复杂度.
@@ -218,7 +236,7 @@ Stateless Pros vs. Cons
 
 
 
-## 2.6 Caching 1h57min-
+## 2.6 :moon: Caching 1h57min-
 
 Caching refers to **storing the server response in the client itself**, so that a client need not make a server request for the same resource again and again, especially for some large sized multi-media files e.g. icons, imgs... Cache本质是空间换时间的思想, 我们需要Cache是因为通常I/O 操作 (e.g. HTTP request, HTTP response) 经常成为performance的bottle neck (e.g. establish connection很耗费时间), 应当尽量减少I/O操作的次数
 
@@ -285,15 +303,17 @@ public User getUserByParameter(@NotBlank @RequestParam String email, final HttpS
 
 
 
-## 2.7 REST Principle: Client/Server Separation 2h28min-
+## 2.7 :full_moon: REST Principle: Client/Server Separation 2h28min-
 
 
 
 如何设计一个好的REST API? 有哪些principle?
 
-https://microsoft.github.io/code-with-engineering-playbook/design/design-patterns/rest-api-design-guidance/
+:book: https://microsoft.github.io/code-with-engineering-playbook/design/design-patterns/rest-api-design-guidance/
 
-https://rapidapi.com/learn/rest/rest-apis-for-experts/principles-of-rest-api
+:book: https://rapidapi.com/learn/rest/rest-apis-for-experts/principles-of-rest-api
+
+
 
 
 
@@ -338,6 +358,8 @@ visit: http://localhost:8080/swagger-ui/index.html 显示swaggerUI (更好看), 
 
 GraphQL tool - Hasura
 
+作为自己选学的内容
+
 
 
 ## 其他接口通信方式3h-
@@ -353,12 +375,6 @@ GraphQL tool - Hasura
 
 
 
-
-
-
-
-
-## 
 
 
 

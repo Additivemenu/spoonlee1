@@ -1,15 +1,30 @@
 1-30 React
 
-Blog List Demo
-
-下节课讲状态管理
+React tut1: Blog List Demo
 
 
 
 # 要点
 
++ jsx中js写法要用{ }包住, 必须有一个`<div>` (或其他的block 元素)爆竹要返回的html代码 
 + useState, useEffect的使用
-+ 如何从后端索要数据
++ 如何通过axios向后端索要数据
+  + 需要try-catch来handle Exception: 如果数据没有索要成功呢
+
++ 写react project的基本流程
+  + step1: 准备工作: 先根据ui, 建立目录结构
+  + step2: 根据ui, 先写个假的静态页面调试css
+  + :star: step3: 写hooks, 同时定义交互逻辑
+    + 需要哪些state ---> useState
+    + 何时触发交互逻辑 ---> useEffect(arg1, arg2)
+      + Arg1: 待触发的函数
+      + Arg2: [ele1, ele2...] 表示任何一项变化时就触发arg1
+        + [] 表示初次加载页面时触发arg1
+
+
+
+
+下节课讲状态管理: useReducer, useContext
 
 
 
@@ -25,7 +40,7 @@ Blog List Demo
 
 
 
-# 准备工作
+# 1. 准备工作
 
 5min-
 老师在code sandbox react中写, 
@@ -80,9 +95,9 @@ Pagination.js
 
 
 
-# 正式开始 22min-
+# 2. 正式开始 22min-
 
-## 静态页面, 调试css
+## 2.1 静态页面, 调试css
 
 先按照需求的ui写个mock的静态页面 22min-
 
@@ -230,17 +245,25 @@ App.css
 
 
 
-## 接收从后端发来的数据 39min-
+## 2.2 接收从后端发来的数据 39min-
 
 
 
-现在我们开始考虑如何把后端发来的List数据做成分页的
+现在我们开始考虑如何把后端发来的List数据做成分页的, 先做好接收后端发来的数据
 
 
 
 useEffect 43min-
 
-在初次渲染和后续更新的时候会刷新
+如下， 当第二个argument为[], 表示在初次渲染和后续更新的时候会刷新
+
+```react
+useEffect(()=>{
+		functionToBeImplemented()
+  }, [])
+```
+
+
 
 
 
@@ -306,7 +329,9 @@ function App() {
 export default App;
 ```
 
-可以看到后端传来的数据
+
+
+至此, 可以看到后端传来的数据
 
 <img src="./Src_md/axiosData.png" width=70%>
 
@@ -316,19 +341,11 @@ export default App;
 
 
 
-## 思考如何将list数据分页 59min-
+## 2.3 :moon: 将list数据分页 59min-
 
-现在我们应该将axios返回来的list, 分页, 然后只显示currentPage的内容
+现在我们应该将axios返回来的list进行分页, 然后每次点击对应page的button只显示currentPage内的posts
 
-
-
-看到这里
-
-
-
-创建新的state
-
-App.js
+在App.js里新定义几个state, 用来做分页
 
 ```react
 const [currentPage, setCurrentPage] = useState(1);
@@ -338,122 +355,287 @@ const [postsPerPage] = useState(10);
 
 
 
+找state 和 props放进useEffect()的第二个argument
+
+在App.js中定义如何将post list分页, 以及何时分页
+
+```react
+useEffect(()=>{
+    // get current page posts. 
+    // e.g. 点击'5'的button, 对应显示在post lists 中index为40-49的posts
+    const indexOfLastPost = currentPage * postsPerPage;  // 50 
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;  // 40
+    const currentPostArr = posts.slice(indexOfFirstPost, indexOfLastPost);  //[40, 50) 左闭右开
+    setCurrentPosts(currentPostArr);
+  }, [currentPage, postsPerPage, posts])    // 当[currentPage, postsPerPage, posts]中任何一项发生变化. 就会触发useEffect()中的第一个argument的函数
+```
+
+
+
+
+
+
+
 ---
 
-面试题 1h17min-
+一道面试题 1h17min-1h21min
 
 Props 与 state的区别
 
-+ 父传子props:  readonly, immutable
++ 父传子props:  是readonly, immutable
 + 子传父: callback
-+ 父传孙子(不直接相关的component share 数据):  redux toolkit, context
++ 父传孙子(不直接相关的component share 数据):  redux toolkit(大项目用这个), context
 
+---
 
-
-currentPagePost做完
-
-
-
-1h29min- pagination
+### 2.3.1 将currentPosts里的数据反馈到Post组件里去 1h21min-
 
 
 
 
 
+App.js
+
++ 将currentPosts, loading 从App.js传给Post component
+
+```react
+return (
+    <div className="container">
+      <h1 className="title">My blog list</h1>
+      <Post currentPosts={currentPosts} loading={loading}/>
+      <Pagination/>
+    </div>
+  );
+```
 
 
-1h41min- 
-
-Pagination.js 
-
-useEffect() 依赖项
 
 
 
+Post.js
+
++ 将currentPosts, loading 从App.js传过来
++ 将currentPosts适时转化为html, 用map()
+  + 边界条件的check: 只有当currentPosts内有内容再转化为html
++ 注意下jsx中要写js语法, 需要{}
+
+```react
+const Post = ({currentPosts, loading}) =>{
+
+    if(loading){    // if still loading data, remind user 
+        return <h2>Loading</h2>
+    }
+
+    return (
+        <ul className = 'list-group'>
+            {   
+                currentPosts.length > 0 &&      // boundary condition: currentPosts有内容再返回html
+                currentPosts.map(ele => {
+                    return (
+                        <li key={ele.id} className='list-group-item'>
+                            {ele.title}
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    )
+}
+
+export default Post;
+```
 
 
-1h45min-
+
+
+
+### 2.3.2 pagination 1h29min-
+
+
+
+#### 将posts的数据反馈到pagination里
+
+App.js 
+
++ 将几个state传入 Pagination Component
+
+```react
+return (
+    <div className="container">
+      <h1 className="title">My blog list</h1>
+      <Post currentPosts={currentPosts} loading={loading}/>
+      <Pagination 
+        postPerPage = {postsPerPage} 
+        totalPosts = {posts.length} 
+        currentPage = {currentPage}
+        setCurrentPage = {setCurrentPage}
+      />
+    </div>
+  );
+```
+
+
+
+
 
 Pagination.js
 
-Button onClick
++ 定义如何计算总共多少页, 何时计算
+  + 注意一定是App.js中我们先通过后端接收到 posts, 再去计算总共多少页, 所以useEffect()的依赖argument不能为[]
++ 注意pageNumbers 作为state存在, 而不是普通的变量, 而且目前我们还没把它传递到别的组件
+  + 是不是因为pageNumbers要参与jsx? :question: 需要看下尚硅谷的state理解
++ 用map时注意key要unique
+
+```react
+import { useState, useEffect } from "react";
+
+const Pagination = ({postsPerPage, totalPosts, currentPage, setCurrentPage}) =>{
+
+    const [pageNumbers, setPageNumbers] = useState([])
+
+    useEffect(()=>{
+        let arr = [];
+        for(let i =1; i <= Math.ceil(totalPosts/postsPerPage); i++){
+                arr.push(i);
+        }
+        setPageNumbers (arr);
+        
+    },[totalPosts, postsPerPage])       // 当[totalPosts, postPerPage]任意一项改变时, 触发第一个argument函数 
+    // 注意如果你第二个argument为[], 表示初次加载页面时会触发执行函数, 而我们接收从后端的数据也是初次加载页面时触发
+    // 如果这样, 那PageNumbers就是空的
+    // 很明显有一个先后顺序: 应该是先接收后端数据， 再执行这里的useEffect()中的函数.  
+
+    return (
+        <nav>
+            <ul className="pagination">
+                {
+                    pageNumbers.map(number => {
+                        return (
+                            <li key={number} className="pagination-item">
+                            <button className='pagination-btn'>{number}</button>
+                         </li>
+                        )
+                    })
+                }
+            </ul>
+        </nav>
+    )
+}
+
+export default Pagination;
+```
 
 
 
 
 
+#### on click pagination button 1h45min-1h52min
+
+Pagination.js的最终return项:
+
++ Button onClick, 点击button 就setCurrentPage为当前页面的index， 同时控制conditional style 的background
++ Conditional style也可直接写在jsx里
+
+```react
+return (
+        <nav>
+            <ul className="pagination">
+                {
+                    pageNumbers.map(number => {
+                        return (
+                            <li key={number} className="pagination-item">
+                            <button 
+                                className='pagination-btn' 
+                                onClick= {()=> setCurrentPage(number)}
+                                style={{background: currentPage === number ? 'lightblue':null}}
+                                >
+                                    {number}
+                            </button>
+                         </li>
+                        )
+                    })
+                }
+            </ul>
+        </nav>
+    )
+```
 
 
-# 至此, 效果实现了
 
 
 
-# 最终代码
+至此, 需求的效果就实现了
+
+
+
+
+
+# 3. 最终代码
 
 App.js
 
 ```react
-import React, { useState, useEffect } from "react";
+import {useState, useEffect} from 'react'   // 注意要导入hooks
+import axios from 'axios';
 
-import "./App.css";
-import Posts from "./components/Posts";
-import Pagination from "./components/Pagination";
-import axios from "axios";
+import './App.css';
 
-const App = () => {
-  // states -------------------------------------
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPosts, setCurrentPosts] = useState([]);
-  const [postsPerPage] = useState(10);
+import Pagination from './components/Pagination'
+import Post from './components/Post'
 
-  // fetch all posts using axios API -----------------
-  const fetchPosts = async () => {
-    // note JS is single threaded, use try-catch to
-    // handle exceptions like axios API fails
-    setLoading(true);
-    try {
-      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-      console.log("res", res);
-      setPosts(res.data); // 将API返回的data赋值给state: posts
-      setLoading(false); // 表示data loading完毕
-    } catch (error) {
-      setLoading(false); // data loading 出错
+
+function App() {
+
+  const[posts, setPosts]= useState([]);            // 用来存后端发来的post list
+  const[loading, setLoading] = useState(false);    // 用来表示是否loading后端发来的数据
+  
+  const[currentPage, setCurrentPage] = useState(1);     // 表示currentPage index
+  const[currentPosts, setCurrentPosts] = useState([]);  // 用来存currentPage对应的post lists
+  const[postsPerPage] = useState(10);     // currentPage对应的post lists的长度
+
+  const fetchPosts = async() => {
+    setLoading(true); // 表示开始loading后端的数据
+    // 因为js是单线程的, 所以需要try-catch包住 axios.get('')以防其失败整个页面崩溃
+    try{
+      const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+      console.log('res', res);  
+      setPosts(res.data); // res is an object, res.data is an array
+      setLoading(false);  // 成功load到后端的数据, loading状态应该改为false
+    }catch(error){    // 可以具体在这里写error handlding的逻辑, 这里就先不写了
+      setLoading(false);
+      // 甚至可以具体set一个状态值, 比如401, 404, 500, 对应处理
     }
-  };
+  }
 
-  useEffect(() => {
-    // fetch all posts 在第一次挂载时就执行
-    fetchPosts();
-  }, []);
+  // 当组件渲染时, 调用fetchPosts()
+  useEffect(()=>{
+    fetchPosts()
+  }, [])  // 第二个argument为[], 表示第一次挂载App时就会调用fetchPosts()
 
-  // 当[currentPage, postsPerPage, posts]中有任意一项改变时,
-  // 执行 () => {}里的代码: setCurrentPosts()
-  useEffect(() => {
-    // get current posts (on current page): page 5: posts[40, 49]
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    // 从posts里截取current page的posts
-    const currentPostArr = posts.slice(indexOfFirstPost, indexOfLastPost);
+  // 定义如何将post list分页, 以及何时分页
+  useEffect(()=>{
+    // get current page posts. 
+    // e.g. 点击'5'的button, 对应显示在post lists 中index为40-49的posts
+    const indexOfLastPost = currentPage * postsPerPage;  // 50 
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;  // 40
+    const currentPostArr = posts.slice(indexOfFirstPost, indexOfLastPost);  //[40, 50) 左闭右开
     setCurrentPosts(currentPostArr);
-  }, [currentPage, postsPerPage, posts]);
+  }, [currentPage, postsPerPage, posts])    // 当[currentPage, postsPerPage, posts]中任何一项发生变化. 就会触发useEffect()中的第一个argument的函数
 
 
-  // jsx return html -------------------
   return (
     <div className="container">
-      <h1 className="title">My Blog</h1>
-      <Posts currentPosts={currentPosts} loading={loading} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={posts.length}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+      <h1 className="title">My blog list</h1>
+      <Post currentPosts={currentPosts} loading={loading}/>
+      <Pagination 
+        postsPerPage = {postsPerPage} 
+        totalPosts = {posts.length}   
+        currentPage = {currentPage}
+        setCurrentPage = {setCurrentPage}
       />
     </div>
   );
-};
+}
 
 export default App;
 ```
@@ -464,46 +646,54 @@ App.css
 
 ```react
 .App {
-  font-family: sans-serif;
   text-align: center;
+  font-family: sans-serif;
 }
 
-.title {
+/* 从上往下写 */
+
+.title{
   display: flex;
   justify-content: center;
 }
 
-.container {
+.container{
   max-width: 80%;
   margin: 0 auto;
 }
 
-.list-group {
+.list-group{
   display: flex;
   flex-direction: column;
 }
 
-.list-group-item {
-  padding: 1.75rem 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+.list-group-item{
+  padding: 0.75rem 1.25rem;
+  border: 1px solid rgba(0,0,0,0.125);
   background-color: #fff;
-  /* 让上面的post的bottom border往上收一收, 防止和下面的post border重叠 */
-  margin-bottom: -1px;
 
-  list-style: none;
+  /* 消除item的border之间的重叠 */
+  margin-bottom: -1px;;
+  list-style-type: none;
+
 }
 
-.pagination {
+.pagination{
   display: flex;
   list-style: none;
-  flex-wrap: wrap;
+
+  /* 让page item可以流动, 当页面宽度缩小时 */
+  flex-wrap:wrap;
 }
 
-.page-btn {
+.pagination-btn{
   color: #0d7bff;
   background-color: #fff;
   border: 1px solid #dee2e6;
+
+  /* 去除border重叠 */
   margin-left: -1px;
+  /* 把button 撑大 */
   padding: 0.5rem 0.75rem;
 }
 ```
@@ -513,79 +703,76 @@ App.css
 components > Posts.js
 
 ```react
-// 当前页面的posts
-import React from "react";
+const Post = ({currentPosts, loading}) =>{
 
-const Posts = ({ currentPosts, loading }) => {
-  if (loading) {
-    // if data not ready (loading = true)
-    return <h2>Loading</h2>;
-  }
+    if(loading){    // if still loading data, remind user 
+        return <h2>Loading</h2>
+    }
 
-  // jsx
-  return (
-    <ul className="list-group">
-      {currentPosts.length > 0 &&
-        currentPosts.map((post) => (
-          <li key={post.id} className="list-group-item">
-            {post.title}
-          </li>
-        ))}
-    </ul>
-  );
-};
+    return (
+        <ul className = 'list-group'>
+            {   
+                currentPosts.length > 0 &&      // boundary condition: currentPosts有内容再返回html
+                currentPosts.map(ele => {
+                    return (
+                        <li key={ele.id} className='list-group-item'>
+                            {ele.title}
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    )
+}
 
-export default Posts;
+export default Post;
 ```
+
+
 
 components > Pagination.js
 
 ```react
-// 底部的页码
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-const Pagination = ({
-  postsPerPage,
-  totalPosts,
-  currentPage,
-  setCurrentPage
-}) => {
-  // state
-  const [pageNumbers, setPageNumbers] = useState([]);
+const Pagination = ({postsPerPage, totalPosts, currentPage, setCurrentPage}) =>{
 
-  //
-  useEffect(() => {
-    let arr = [];
-    for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
-      arr.push(i);
-    }
-    setPageNumbers(arr);
-  }, [totalPosts, postsPerPage]);
+    const [pageNumbers, setPageNumbers] = useState([])
 
-  // jsx ----------------------------------------
-  return (
-    <nav>
-      <ul className="pagination">
-        {/* 将一个array的信息转化为一组html tag */}
-        {pageNumbers.map((number) => (
-          <li key={number} className="page-item">
-            <button
-              style={{
-                background: currentPage === number ? "lightblue" : null
-              }}
-              className="page-btn"
-              onClick={() => {
-                setCurrentPage(number);
-              }}
-            >
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
+    useEffect(()=>{
+        let arr = [];
+        for(let i =1; i <= Math.ceil(totalPosts/postsPerPage); i++){
+                arr.push(i);
+        }
+        setPageNumbers (arr);
+        
+    },[totalPosts, postsPerPage])       // 当[totalPosts, postPerPage]任意一项改变时, 触发第一个argument函数 
+    // 注意如果你第二个argument为[], 表示初次加载页面时会触发执行函数, 而我们接收从后端的数据也是初次加载页面时触发
+    // 如果这样, 那PageNumbers就是空的
+    // 很明显有一个先后顺序: 应该是先接收后端数据， 再执行这里的useEffect()中的函数.  
+
+    return (
+        <nav>
+            <ul className="pagination">
+                {
+                    pageNumbers.map(number => {
+                        return (
+                            <li key={number} className="pagination-item">
+                            <button 
+                                className='pagination-btn' 
+                                onClick= {()=> setCurrentPage(number)}
+                                style={{background: currentPage === number ? 'lightblue':null}}
+                                >
+                                    {number}
+                            </button>
+                         </li>
+                        )
+                    })
+                }
+            </ul>
+        </nav>
+    )
+}
 
 export default Pagination;
 ```
@@ -594,17 +781,58 @@ export default Pagination;
 
 
 
-另一种做法 1h52min- 2h
+# 另一种给pagination传递setCurrentPage的方式 1h52min- 2h
 
-子传父: callback
+App.js中把setCurrentPage()放进一个function里, 再把这个function作为props传递到Pagination Component
+
+这种做法工作中也常用, 一般这个function里可以放更多的setter, 这里只放了一个setter, 只是为了说明这个意思
+
+```react
+
+const updateActivePage = (number) => setCurrentPage(number)
+return (
+    <div className="container">
+      <h1 className="title">My blog list</h1>
+      <Post currentPosts={currentPosts} loading={loading}/>
+      <Pagination 
+        postsPerPage = {postsPerPage} 
+        totalPosts = {posts.length}   
+        currentPage = {currentPage}
+        updateActivePage = {updateActivePage}
+        // setCurrentPage = {setCurrentPage}
+      />
+    </div>
+  );
+```
 
 
 
+Pagination.js中用updateActivePage()来设置onClick
 
-
-
-
-
+```react
+return (
+        <nav>
+            <ul className="pagination">
+                {
+                    pageNumbers.map(number => {
+                        return (
+                            <li key={number} className="pagination-item">
+                            <button 
+                                className='pagination-btn' 
+                              	onClick= {()=> updateActivePage(number)}
+                                //onClick= {()=> setCurrentPage(number)}
+                                style={{background: currentPage === number ? 'lightblue':null}}
+                                >
+                                    {number}
+                            </button>
+                         </li>
+                        )
+                    })
+                }
+            </ul>
+        </nav>
+    )
+```
 
 
 

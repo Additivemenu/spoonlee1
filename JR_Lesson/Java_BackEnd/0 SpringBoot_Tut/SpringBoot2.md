@@ -350,7 +350,13 @@ public void deleteUser(Long userId) {
 
 
 
-# 4. 改 1h23min-
+# 4. :moon: 改 1h23min-
+
+PATCH: 改动entity部分参数, 用的多一些
+
+PUT: 改动entity全部参数
+
+
 
 UserController
 
@@ -428,8 +434,6 @@ public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
 # 5. 查找: getUserByEmail 1h49min- 2h05min
 
 用户希望通过email来定位自己在数据库中的id
-
-
 
 UserController
 

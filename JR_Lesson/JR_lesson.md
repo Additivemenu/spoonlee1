@@ -1,5 +1,8 @@
-Java or NodeJs?
-- 给自己3天时间跟进度, 届时看看能不能跟上锤姐讲的内容. 如果还是很吃力, 那就转NodeJs
+
+
+:pencil: [git](./Git/JR_Git.md)
+:pencil: [react](./React/JR_React.md)
+
 
 
 

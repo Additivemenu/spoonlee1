@@ -13,4 +13,4 @@ react官方文档: https://reactjs.org/docs/hello-world.html
 + [chap5: React router & React router6](./C5/README.md)
 + [chap6: React UI 组件库](./C6/README.md)
 + :moon: [chap7: React redux](./C7/README.md)
-+ [chap8: React 补充基础](./C8/README.md)
++ [chap8: React 补充基础 116-126](./C8/README.md)

@@ -1,6 +1,6 @@
 
-[git](./git.md)
-[gitPractice](./Git_Practice/gitPractice.md)
+:pencil: [我的git指令手册](./gitCommand.md)
+:pencil: [gitPractice](./Git_Practice/gitPractice.md)
 
 ---
 
