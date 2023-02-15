@@ -169,6 +169,12 @@ context就是专门用来做祖先和(深层)后代组件之间的通信的
 
 
 
+## 使用context
+
+第二种方式使用Provider, Consumer适用性更广, 所以 一般我们用第二种. 这种方式就有点通信的意思了, Prodiver作为发送方, 一开始声明好Provider的value有哪些内容, 再用`<Provider>`包住有接收value的组件范围, Consumer作为接收方, 直接接收Provider中的value的值
+
+如果Consumer只需要一个值, 那value就可以是primitative type, 如果Consumer需要多个值, value可以是对象, 里面什么都可以有 (函数, 对象...), 就把value看成是一个packet就好
+
 ```js
 1) 创建Context容器对象：
 	const XxxContext = React.createContext()  
@@ -284,6 +290,7 @@ const {Provider, Consumer} = MyContext;
 
 
 export default class A extends Component {
+  
   state = { username: "tom" , age: 18};
 
 

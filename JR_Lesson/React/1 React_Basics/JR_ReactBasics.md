@@ -35,7 +35,7 @@
    }
    
    
-   export default from ComponentName
+   export default ComponentName
    
    // index.js作为组件的索引, 只需写一句话
    export {default} from './ComponentName'

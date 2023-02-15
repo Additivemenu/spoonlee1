@@ -6,17 +6,21 @@ Content
   - [1.0 Var](#10-var)
   - [1.1 Let](#11-let)
   - [1.2 const](#12-const)
-- [2. :moon: 变量的数据类型](#2-moon-变量的数据类型)
-  - [2.1 Number](#21-number)
-  - [2.2 Boolean \& if statement](#22-boolean--if-statement)
-  - [2.3 String](#23-string)
-    - [2.3.1 :star:String拼接](#231-starstring拼接)
-  - [2.4 Data type conversion](#24-data-type-conversion)
+- [2. 变量的数据类型](#2-变量的数据类型)
+  - [2.0 :moon: JS 数据类型概述](#20-moon-js-数据类型概述)
+  - [2.1 :full\_moon:truthy \& falsy](#21-full_moontruthy--falsy)
+  - [2.2 primitive type](#22-primitive-type)
+    - [2.1 Number](#21-number)
+    - [2.2 Boolean \& if statement](#22-boolean--if-statement)
+    - [2.3 String](#23-string)
+      - [2.3.1 String拼接](#231-string拼接)
+  - [2.3 :moon: Data type conversion](#23-moon-data-type-conversion)
 - [3. Operator](#3-operator)
   - [3.1 Arithmetic Operator](#31-arithmetic-operator)
   - [3.2 :star: Compare Operator](#32-star-compare-operator)
   - [3.3 三联运算符](#33-三联运算符)
   - [3.4 Logical Operator](#34-logical-operator)
+    - [短路计算](#短路计算)
   - [3.5 :moon: Spread Operator](#35-moon-spread-operator)
   - [3.6 严格模式](#36-严格模式)
 - [4. Control flow](#4-control-flow)
@@ -562,8 +566,25 @@ const loginMessage = welcomeMessage || "login success!" // if left is true, retu
 
 JS特色的`...`
 
+:book: [MDN: spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+
 场景1: 用来展开一个array (shallowCopy to 1 layer)
 :gem: [Demo: Spread Operator](./10-spread_operator.html)
+
+```js
+// 1. Copying an array
+//output ['Apple','Orange','Banana']
+let fruits = ["Apple", "Orange", "Banana"];
+let newFruitArray = [...fruits];        // do shadowCopy only to 1 layer
+console.log(newFruitArray);   
+
+// 2. Concatenating arrays
+//output ['A', 'B', 'C', 'X', 'Y', 'Z']
+let arr1 = ["A", "B", "C"];
+let arr2 = ["X", "Y", "Z"];
+let arr3 = [...arr1, ...arr2];
+console.log(arr3);
+```
 
 
 场景2: 用在函数的argument里
@@ -747,7 +768,7 @@ function(currentValue, index, arr){
 
 :book: [w3school: filter()](https://www.w3schools.com/jsref/jsref_filter.asp)
 
-+ The `filter()` method **returns a new array** filled with elements that pass a test provided by a function.
++ The `filter()` method **returns a new array** filled with elements tha**t pass a test** provided by a function.
 + The `filter()` method does not change the original array.
 
 ```js
@@ -756,11 +777,13 @@ array.filter(function(currentValue, index, arr), thisValue)
 
 function(currentValue, index, arr){
   ...
-  return filtering_booleanCondition;
+  return filtering_booleanCondition;		// true: keep element
 }
 ```
 
 :gem: [Demo: filter()](./18-filter.html)
+
+
 
 ### 5.4.3 reduce()
 

@@ -5,10 +5,10 @@
 
 Content
 
-- [1. Stream API](#1-stream-api)
+- [1. :full\_moon: Stream API](#1-full_moon-stream-api)
   - [Stream API Introduction](#stream-api-introduction)
   - [Step1: Stream 的创建](#step1-stream-的创建)
-    - [by set](#by-set)
+    - [by collection (List, Set)](#by-collection-list-set)
     - [by array](#by-array)
     - [无限流](#无限流)
   - [Step2: Stream API 中间操作](#step2-stream-api-中间操作)
@@ -19,10 +19,11 @@ Content
     - [match \& find](#match--find)
     - [reduce](#reduce)
     - [collect](#collect)
-- [2. Optional Class](#2-optional-class)
+      - [Collectors 类](#collectors-类)
+- [2. :moon:Optional Class](#2-moonoptional-class)
   - [创建Optional instance:](#创建optional-instance)
   - [判断Optional容器中是否包含对象](#判断optional容器中是否包含对象)
-  - [获取Optional容器的对象](#获取optional容器的对象)
+  - [获取Optional容器内的对象](#获取optional容器内的对象)
 
 ---
 
@@ -102,10 +103,10 @@ Stream的操作3个步骤:
 多个中间操作可以连起来形成一个**流水线**, 除非流水线上触发终止操作, 否则中间操作不会执行任何的处理! 而在终止操作时一次性全部处理, 这被称为"惰性操作"
 
 ### filter
-<img src="../Src_md/filter_and_slice.png" width=70%>
+<img src="./Src_md/filter_and_slice.png" width=70%>
 
 ### map
-<img src="../Src_md/Stream_map.png" width=70%>
+<img src="./Src_md/Stream_map.png" width=70%>
 
 map会对stream中的每个元素进行操作. 相当于java自动loop over elements in the stream, you just need to define what to do with the element when pointers is on it
 
@@ -120,24 +121,23 @@ map会对stream中的每个元素进行操作. 相当于java自动loop over elem
 
 ### match & find
 
-<img src="../Src_md/StreamAPI_match_find.png" width=70%>
+<img src="./Src_md/StreamAPI_match_find.png" width=70%>
 
 ### reduce
-<img src="../Src_md/streamAPI_reduce.png" width=70%>
+<img src="./Src_md/streamAPI_reduce.png" width=70%>
 
 
 
 ### collect
-<img src="../Src_md/streamAPI_collect.png" width=70%>
+<img src="./Src_md/streamAPI_collect.png" width=70%>
 
 #### Collectors 类
 
 搭配collect(Collector c)使用
 
-<img src="../Src_md/streamAPI_collectors.png" width=70%>
+<img src="./Src_md/streamAPI_collectors.png" width=70%>
 
-
-<img src="../Src_md/streamAPI_collectors2.png" width=70%>
+<img src="./Src_md/streamAPI_collectors2.png" width=70%>
 
 # 2. :moon:Optional Class
 Why introducing Optional Class in Java8?  
