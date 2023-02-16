@@ -58,3 +58,16 @@ sudo n stable
 // 下载最新版node
 sudo n latest
 ```
+
+
+
+# TS和yarn, react的兼容开发
+
+先安装好yarn, 问chatGPT没啥好说的
+
+接着问chatGPT `how to create react app using typescript and yarn?`, follow instruction 即可
+
+总的来讲, 按照上述步骤, 基本上和用普通js和npm start写react app没什么区别
+
+
+
