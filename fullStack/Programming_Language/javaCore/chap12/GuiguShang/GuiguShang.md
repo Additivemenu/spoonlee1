@@ -874,7 +874,7 @@ class Bank{
     }
 ```
 
-方式二: 优化后的
+方式二: 优化后的 (即DoubleCheck方式)
 
 ```java
 // 方式二: 同步代码块
@@ -883,9 +883,9 @@ class Bank{
         // 方式二: 效率更高一些. 如果instance已经被创建了,
         // 那么之后的线程在调用getInstance()时没必要再去等synchronized释放锁了
         // 直接return创建好的instance的引用
-        if(instance == null){
+        if(instance == null){	// 当第一个线程已经创建好instance后, 之后的线程不需要再等待同步监视器被释放才能return instance, 提升效率
             synchronized (Bank.class) {
-                if(instance == null){
+                if(instance == null){	// 防止跟在第一个new instance的线程后面的几个线程再次new instance, 解决线程安全问题
                     instance = new Bank();
                 }
             }
@@ -1125,11 +1125,7 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 438
 
-
-
-
-
-看到10min的面试题
+看到这里
 
 
 

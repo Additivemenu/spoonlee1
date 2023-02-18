@@ -25,6 +25,7 @@ class Singleton{
     }
 
     // 对外提供一个static public method, 当该方法被用到时, 才去创建instance
+    // 但这种写法线程不安全
     // 即懒汉式
     public static Singleton getInstance(){
         if(instance == null){

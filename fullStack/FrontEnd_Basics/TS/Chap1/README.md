@@ -1,5 +1,15 @@
 
 
+# 和react一起使用
+
++ passing props via functional components in React using TypeScript is very similar to passing props in regular JavaScript, with the *additional step of specifying the types of the props.*
+
+
+
+
+
+
+
 # TS类型声明
 
 ## 基本用法

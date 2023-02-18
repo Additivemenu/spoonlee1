@@ -767,6 +767,8 @@ Beans are the objects of classes that are managed by Spring. Traditionally, obje
 
 > P3的要求: Controller层的所有API必须参与参数校验, 字段长度相关建议与数据库保持一致
 
+
+
 # 11. 自定义Filter 2h20min-2h28min
 
 FIlter作用在controller之前, 用来筛选数据, 符合要求的才会被forward给controller. 通常Filters用于记录请求日志, 排除有XSS威胁的字符, 执行权限验证等等. Spring Boot自动添加了OrderedCharacterEncodingFilter, HiddenHttpMethodFilter, 并且可以自定义Filter.

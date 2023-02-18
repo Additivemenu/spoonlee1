@@ -79,6 +79,7 @@ git vs. github
 + `git config --global core.editor "code --wait"`
 + and more ...
   
+
 如果上面的指令不带`--global`, 那么就是在local的config
 
 ### Set up repository
@@ -101,11 +102,11 @@ OR
 + `git diff`
 
 
-## step 1: 一条线的历史 commit 47min-
+## Step 1: 一条线的历史 commit 47min-
 
 git 工作原理
 
-working directory ---`git add`---> stage ---`git commit`---> git repo
+本地: working directory ---`git add`---> stage ---`git commit`---> git repo
 
 ### 常用 git command 
 
@@ -142,26 +143,32 @@ stage是在本地还是在云端? --本地啊
 
 + `git revert commit_id`
   用一个新的commit对历史记录进行回滚, 这个新的commit是指定commit的反操作(e.g. 指定commit中删除了style.css文件, 现在revert那个commit, 就是恢复了style.css文件)
+  
   + 不会删除commit
-
+  
   <img src="./Src_md/git_revert.png" width=70%>
-
+  
 + `git reset commit_id`
   从log中删除指定commit及之后的所有commit,  因而非常危险!
+  
   + soft reset: put commit into stage, 还没丢失
   + hard reset: 直接删除, 非常危险!
   <img src="./Src_md/git_reset.png" width=70%>
-
+  
   <img src="./Src_md/git_reset_soft.png" width=70%>
-
+  
   + `git reset HEAD^`和`git reset --soft HEAD~1`: 都是返回到输入`git commit -m"commit2"`之前的时刻, commit1 - now这段时间内做的修改都得以保留
   + 区别是, `git reset HEAD^`是把commit1-commit2这段时间做的修改返回到工作区; 而`git reset --soft HEAD~1`是将commit1-commit2这段时间做的修改返回到暂存区; commit2-now这段时间内的修改本来就在工作区
     
-  <img src="./Src_md/git_reset_hard.png" width=70%>
 
+  <img src="./Src_md/git_reset_hard.png" width=70%>
+  
   + `git reset --hard HEAD~1`: commit1 - now 之间所有做过的修改丢失
 
-## step 2: 两条线的历史 branch & merge  1h38min-
+
+
+## Step 2: 两条线的历史 branch & merge  1h38min-
+
 一般每个人是在自己的branch上工作, 工作完成后大家的branch会汇总到main-branch上.
 
 node代表一个commit对象， 创建新的branch就是在branch上创建新的node
@@ -174,7 +181,6 @@ node代表一个commit对象， 创建新的branch就是在branch上创建新的
 + `git checkout branch_name`: 切换到指定branch
   + vscode中点击左下角的branch name, 就可以切换branch
 
-
 Semantic branch names
 `<type>/<ticket-number>-<title>`
 e.g. feat/JR-101-create-header-for-home-papge
@@ -185,17 +191,20 @@ e.g. feat/JR-101-create-header-for-home-papge
 
 <img src="../Git/Src_md/merge.png" width=70%>
 
-+ `git merge branch_name`: 将branch_name合并到当前所在的branch上; **这个command本质上包含两步操作:** 
++ `git merge branch_name`: 将branch_name合并到<u>当前所在的branch上</u>; **这个command本质上包含两步操作:** 
+  
+  想象我们现在站在master-branch上, git merge Feature-branch
+  
   1. auto-merging: 将branch_name中的代码merge到当前所在的branch上(期间有可能发生conflict, 此时需要manual merge和manual commit); 
   2. commit: 在当前所在的branch上commit第一步的结果(即在当前branch上产生一个新的commit node). commit之后可以在history里查看merge branch的历程
 
 
-注意:
+:bangbang: 注意:
 
 
 + :book: [lesson7: git merge conflict and how to resolve it](https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git#:~:text=How%20to%20Resolve%20Merge%20Conflicts%20in%20Git%3F%201,a%20new%20merge%20commit%20to%20finalize%20the%20merge):  A merge conflict is an event that takes place when Git is unable to automatically resolve differences in code between two commits. **Git can merge the changes automatically only if the commits are on different lines or branches. (即不同branch的相同文件的同一行如果不一样, merge时会产生conflict)**
   + 我的理解:  一般工作中commit可不是随随便便的, 最好两个人别负责同一个文件的同一个函数模块的编辑, 不然太容易出conflict了. 
-  + 公司不会让程序员直接去master branch上编程， 因为master branch是product environment. 程序员都是在branch上工作, 在merge工作到main branch之前, 需要先把master-branch pull到本地, 把本地的master-branch merge到自己负责的branch上, 然后在其上做一系列严格的test, 之后才能被批准将自己的branch merge到main branch上 
+  + 公司不会让程序员直接去master branch上编程， 因为master branch是product environment. :star: 程序员都是在branch上工作, 在merge工作到main branch之前, 需要先把master-branch pull到本地, 把本地的master-branch merge到自己负责的branch上, 然后在其上做一系列严格的test, 之后才能被批准将自己的branch merge到main branch上 
 + branch 和main-branch合并成功后, branch依旧可以独自运作而不影响main-branch, 因为git merge的本质只是把sub-branch的代码合并到master-branch上然后再在master branch上commit, `git merge`执行时**不存在建立两个branch的dependency**
 
 
@@ -216,7 +225,7 @@ git conflict 2h15min-2h25min
 
 
 
-## step 3: 多条线的历史 远程协作 2h25min-
+## Step 3: 多条线的历史 远程协作 2h25min-
 step3之前的都是在local上的操作, 这里就需要引入github: a remote repository
 
 + `git clone <url>`: 从github clone remote repo onto local
@@ -242,20 +251,27 @@ step3之前的都是在local上的操作, 这里就需要引入github: a remote 
 
 ---
 
-### :full_moon: remote branch 2h39min-
+### :full_moon::full_moon: remote branch 2h39min-
 create branch --> doing something at that branch --> commit --> publish branch (then you can see the branch on github)
 
 
+
 pull request
+
 在github上做Merge, 通过pull request(PR)
+
 + add reviewer --> create PR
 
+
+
 Q&A
+
 local 与 remote repo的branch name的匹配
 
 
----
+
 ### :full_moon: merge vs. rebase 3h-3h06min
+
 rebase, merge不要混用: 如果一个project刚开始就用rebase, 之后一直用rebase; 一个project一开始用merge, 之后一直用merge
 
 + `git merge`: commit之间是多线结构, 特点是保留所有的分支结构以及commit的时间顺序

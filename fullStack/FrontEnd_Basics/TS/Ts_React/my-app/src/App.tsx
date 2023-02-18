@@ -6,7 +6,7 @@ import Title from './components/Title';
 function App() {
   return (
     <div className="App">
-      <Title/>
+      <Title name={'weili'} age = {26}/>
     </div>
   );
 }

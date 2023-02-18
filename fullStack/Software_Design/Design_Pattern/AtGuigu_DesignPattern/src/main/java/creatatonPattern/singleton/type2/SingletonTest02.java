@@ -1,6 +1,8 @@
 package creatatonPattern.singleton.type2;
 
 /**
+ *
+ * 饿汉式: 静态代码块
  * @author xueshuo
  * @create 2023-02-11 10:05 pm
  */

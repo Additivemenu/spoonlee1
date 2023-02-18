@@ -172,7 +172,7 @@ class Singleton{
 优缺点说明:
 
 1. 起到了Lazy Loading的效果，但是只能在单线程下使用。
-2. 如果在多线程下，一个线程进入了if (singleton == null)判断语句块，还未来得及往下执行，另一个线程也通过了这个判断语句，这时便会产生多个实例。所以 在多线程环境下不可使用这种方式
+2. 如果在多线程下，一个线程进入了if (singleton == null)判断语句块，如果还未来得及往下执行，另一个线程也通过了这个判断语句，这时便会产生多个实例 (很明显这里应该有一个线程同步的状态)。所以 在多线程环境下不可使用这种方式.
 3. 结论:在实际开发中，不要使用这种方式.
 
 
@@ -182,11 +182,44 @@ class Singleton{
 32
 
 ```java
+public class SingletonTest04 {
+    public static void main(String[] args) {
+        System.out.println("lazy mode, 线程安全");
+        Singleton instance = Singleton.getInstance();
+        Singleton instance1 = Singleton.getInstance();
+
+        System.out.println(instance == instance1);      // true
+        System.out.println("instance.hashCOde = " + instance.hashCode());
+        System.out.println("instance1.hashCOde = " + instance1.hashCode());
+    }
+}
+
+class Singleton{
+    private static Singleton instance;
+  
+    private Singleton(){
+
+    }
+    // 对外提供一个static public method, 当该方法被用到时, 才去创建instance
+    // 同步方法解决线程安全问题
+    // 即懒汉式
+    public static synchronized Singleton getInstance(){
+        if(instance == null){
+            instance = new Singleton();
+        }
+        return instance;
+    }
+
+}
 ```
 
-看到这里
 
 
+优缺点:
+
+1) 解决了线程不安全问题
+2) 但是效率太低了，每个线程在想获得类的实例时候，执行getInstance()方法都要进行 同步。而其实这个方法只执行一次实例化代码就够了，后面的想获得该类实例，直接return就行了。方法进行同步效率太低 
+3) 结论:在实际开发中，不推荐使用这种方式
 
 
 
@@ -196,11 +229,112 @@ class Singleton{
 
 
 
+```java
+public class SingletonTest05 {
+    public static void main(String[] args) {
+        System.out.println("lazy mode, 线程安全");
+        Singleton instance = Singleton.getInstance();
+        Singleton instance1 = Singleton.getInstance();
+
+        System.out.println(instance == instance1);      // true
+        System.out.println("instance.hashCOde = " + instance.hashCode());
+        System.out.println("instance1.hashCOde = " + instance1.hashCode());
+    }
+}
+
+class Singleton{
+    private static Singleton instance;
+  
+    private Singleton(){
+
+    }
+    // 对外提供一个static public method, 当该方法被用到时, 才去创建instance
+    // 试图使用同步代码块解决效率问题, 但是顾此失彼了, 线程安全问题没有解决
+    // 即懒汉式
+    public static  Singleton getInstance(){
+      
+        if(instance == null){
+          
+          	synchronized (Singleton.class){
+              instance = new Singleton();
+            }
+        }
+        return instance;
+    }
+
+}
+```
+
+优缺点说明:
+
+1) 这种方式，本意是想对第四种实现方式的改进，因为前面同步方法效率太低， 改为同步产生实例化的的代码块
+2) 但是这种同步并不能起到线程同步的作用。跟第3种实现方式遇到的情形一 致，假如一个线程进入了if (singleton == null)判断语句块，还未来得及往下执行， 另一个线程也通过了这个判断语句，这时便会产生多个实例  ----> 解决方案看DoubleCheck方式
+3) 结论:在实际开发中，不能使用这种方式
 
 
-## 1.3 DoubleCheck
+
+
+
+### DoubleCheck （同步代码块的改进版）
 
 34
+
+
+
+```java
+public class SingletonTest06 {
+    public static void main(String[] args) {
+        System.out.println("Double check: lazy mode, 线程安全");
+        Singleton instance = Singleton.getInstance();
+        Singleton instance1 = Singleton.getInstance();
+
+        System.out.println(instance == instance1);      // true
+        System.out.println("instance.hashCOde = " + instance.hashCode());
+        System.out.println("instance1.hashCOde = " + instance1.hashCode());
+    }
+}
+
+class Singleton{
+    private static volatile Singleton instance;
+
+    private Singleton(){
+
+    }
+
+    // 对外提供一个static public method, 当该方法被用到时, 才去创建instance
+    // DoubleCheck方式, 实现了lazy mode 同时解决线程安全问题和l效率问题
+    // 即懒汉式
+    public static Singleton getInstance(){
+        if(instance == null){       // 当第一个线程已经创建好instance后, 之后的线程不需要再等待同步监视器被释放才能return instance, 提升效率
+
+            synchronized (Singleton.class){
+                if(instance == null){       // 防止跟在第一个new instance的线程后面的几个线程再次new instance, 解决线程安全问题
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+
+}
+```
+
++ Person的成员变量 instance需要多一个`volatile`作为修饰
++ DoubleCheck: 在getInstance()中有两次判断`intance == null` , 分别解决线程安全和效率问题
+
+
+
+优缺点说明:
+
+1) Double-Check概念是多线程开发中常使用到的, 如代码中所示, 我们进行了两 次if (singleton == null)检查，这样就可以保证线程安全了。
+
+1. 这样，实例化代码只用执行一次，后面再次访问时，判断if (singleton == null)， 直接return实例化对象，也避免的反复进行方法同步.
+2. 线程安全;延迟加载;效率较高
+3. 结论:在实际开发中，推荐使用这种单例设计模式
+
+
+
+
 
 
 
@@ -208,11 +342,17 @@ class Singleton{
 
 35
 
+看到这里
+
+
+
 
 
 ## 1.5 枚举
 
 36
+
+
 
 
 

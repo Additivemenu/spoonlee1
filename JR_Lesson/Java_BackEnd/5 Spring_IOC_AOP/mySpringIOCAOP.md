@@ -425,7 +425,7 @@ chatGPT: what is the difference between AOP and OOP
 
 
 
-## AOP terminology 1h30min
+## :moon: AOP terminology 1h30min
 
 + Aspect (切面)
   + An aspect is a Java class that implements cross-cutting concerns (竖切关注点).The `@Aspect` annotation is used to define a class as an aspect. An aspect is a combination of the kinds of methods to intercept(拦截) and what to do after intercepting them.
@@ -470,7 +470,7 @@ Demo: Implement rate limit for querying weather information per user (token)
 
 正式开始1h52min-
 
-step1: Add spring-app
++ step1: Add spring-app
 
 ```yml
 implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -478,23 +478,22 @@ implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 
 
-Step2: Add @Aspect class and @EnableAspectJAutoProxy
++ Step2: Add @Aspect class and @EnableAspectJAutoProxy
 
-在和application同路径下 新建aop package, 新建如下类
+在和application同路径下 新建aop package, 新建如下类, 定义一个aspect
 
 ```java
 @Aspect
 @Component
-//@RequiredArgsConstructor
+//@RequiredArgsConstructor	// 这个不一定用
 public class RateLimitAspect {
-
 
 }
 ```
 
 
 
-给application 加上annotation: `@EnableAspectJAutoProxy`
+同时, 给application 加上annotation: `@EnableAspectJAutoProxy`
 
 ```java
 @EnableAspectJAutoProxy
@@ -510,9 +509,9 @@ public class WeatherAppApplication {
 
 
 
-Step3: create annotation interface
++ Step3: create annotation interface
 
-在和application同路径下 新建aop package, 新建如下annotation
+在和application同路径下的aop package, 新建如下annotation
 
 ```java
 @Target(ElementType.METHOD)
@@ -524,12 +523,48 @@ public @interface RateLimit {
 
 
 
-step4: define a method that contains the logic of thesteps that need to be carried out when a methodcall gets intercepted.
++ step4: in aspect, define a method that contains the logic of the steps that need to be carried out when a methodcall gets intercepted. 即写advice
+
+1h57min-
 
 ```java
-public Object exceededLimit(ProceedingJoinPointjoinPoint) throws Throwable {..}
+@Aspect
+@Component
+//@RequiredArgsConstructor
+public class RateLimitAspect {
+
+    public Object exceedingLimit (ProceedingJoinPoint jointPoint) throws Throwable{
+        // TODO: implement logics codes
+
+        return jointPoint.proceed();
+    }
+}
 ```
 
 
 
-Step5: Pointcut expression:Choose to use `@Around` annotation onour method with annotation interface 1h58min-
++ Step5: Pointcut expression: Choose to use `@Around` annotation on our method with annotation interface 
+
+1h59min
+
+还是在aspect里的advice头上加上`@Around`
+
+```java
+@Aspect
+@Component
+//@RequiredArgsConstructor
+public class RateLimitAspect {
+	
+  	@Around("@annotation(RateLimit)")		// 表示当使用`@RateLimit`时, 就会执行下面这个方法, 来判断是否超过rate limit
+    public Object exceedingLimit (ProceedingJoinPoint jointPoint) throws Throwable{
+        // TODO: implement logics codes
+
+        return jointPoint.proceed();
+    }
+}
+```
+
+
+
+不是, 之后锤姐哪儿来的controller的写好的代码????
+

@@ -16,9 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RateLimit {
 
-    public Object exceededLimit(ProceedingJoinPoint joinPoint) throws Throwable {
-        // TODO: implement logi
 
-        return joinPoint.proceed();
-    }
 }
