@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/AtGuigu23_chap17_Reflection" />
             <option value="$PROJECT_DIR$/CommonClass" />
             <option value="$PROJECT_DIR$/EnumAndAnnotation" />
             <option value="$PROJECT_DIR$/Exception_Handling" />
