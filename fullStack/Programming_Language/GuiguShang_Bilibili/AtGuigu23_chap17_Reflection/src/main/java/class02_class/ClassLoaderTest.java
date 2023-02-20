@@ -34,6 +34,10 @@ public class ClassLoaderTest {
         System.out.println(name + ", " + password);
     }
 
+    /**
+     * 通过IO stream来读取配置文件的信息
+     * @throws IOException
+     */
     @Test
     public void test4() throws IOException {
         Properties pros = new Properties();

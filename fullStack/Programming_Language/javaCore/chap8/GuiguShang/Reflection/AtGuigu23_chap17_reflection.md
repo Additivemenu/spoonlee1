@@ -575,7 +575,7 @@ public class TestClassLoader {
 
 
 
-#### 3.3.4 使用ClassLoader获取流
+#### 3.3.4 :moon: 使用ClassLoader获取流
 
 189 46min-
 
@@ -592,6 +592,8 @@ System.out.println(in);
 ```
 
 举例：
+
+方式一: IO 流的方式来读取配置文件
 
 ```java
 // IO 流的方式来读取配置文件
@@ -610,7 +612,7 @@ public void test4() throws IOException {
 }
 ```
 
-
+方式二: 类加载器的方式读取配置文件
 
 ```java
 //需要掌握如下的代码
@@ -639,25 +641,64 @@ public void test5() throws IOException {
 
 
 
+## 4. 反射的基本应用
 
+190 0min- 
 
-## 4. :full_moon: 反射的基本应用
-
-190 0min-
+见包class03_reflectionApplication
 
 
 
 有了Class对象，能做什么？
 
-### 4.1 应用1：创建运行时类的对象
+### 4.1 :full_moon: 应用1：创建运行时类的对象
+
+190 0min- 
+
+
 
 这是反射机制应用最多的地方。创建运行时类的对象有两种方式：
 
 **方式1：直接调用Class对象的newInstance()方法**
 
-要 求： 1）类必须有一个无参数的构造器。2）类的构造器的访问权限需要足够。
+```java
+@Test
+    public void test1() throws InstantiationException, IllegalAccessException {
+        Class clazz = Person.class;
+
+        // 创建Person类的实例
+        Person per = (Person) clazz.newInstance();
+        // 实际上还是调用Person的空参构造器, 如果Person类中没有空参构造器, throw InstantiationException
+        // 如果Person类中空参构造器的权限不够, throw IllegalAccessException
+
+        System.out.println(per);
+    }
+```
+
+要 求:
+
++ 运行时类必须提供一个无参数的构造器。否则 throw InstantiationException
++ 类的构造器的访问权限需要足够。否则 throw IllegalAccessException
+
+思考题
+
+```java
+1.3 回忆: JavaBean中要求给当前类提供一个public的空参构造器, 有什么用?
+    场景一: 子类对象在实例化时, 子类的构造器的首行默认调用父类空参构造器. 
+    场景二: 在反射当中, 经常用于创建运行时类的对象. 那么我们要求各个运行时类都提供一个空参构造器, 便于我们编写运行时类对象的代						 码,提高通用性
+  
+1.4 在 jdk9中, newInstance() 被标识为deprecated, 应该替换为什么结构?
+    通过Constructor类调用newInstance()
+  
+```
+
+11min- 更改intellj module 使用的JDK版本
+
+
 
 **方式2：通过获取构造器对象来进行实例化**
+
+
 
 方式一的步骤：
 
@@ -722,22 +763,40 @@ public class TestCreateObject {
 }
 ```
 
-### 4.2 应用2：获取运行时类的完整结构
 
-可以获取：包、修饰符、类型名、父类（包括泛型父类）、父接口（包括泛型父接口）、成员（属性、构造器、方法）、注解（类上的、方法上的、属性上的）。
 
-#### 4.2.1 相关API
+
+
+### 4.2 应用2：获取运行时类的完整结构信息
+
+190 17min-
+
+认识到, 只需要给定我一个运行时类名, 我就可以知道它的完整结构的信息
+
+可以获取：包、修饰符、类型名、父类（包括泛型父类）、父接口（包括泛型父接口）、成员（属性、构造器、方法）、注解（类上的、方法上的、属性上的).
+
+```Java
+主要分为两部分
+  1) (了解)获取运行时类的内部结构1: 所有属性, 所有方法
+  2) (熟悉)获取运行时类的内部结构2: 所有构造器, 父类， 接口, 包, 带范型的父类, 父类的范型等
+  
+康师傅: 这里的方法涉及到的很多, 但是不需要你去全部记忆, 有像chatGPT这样的工具或者自己积累这些方法的使用, 用到的时候查就行. 作为程序员, 真正的价值体现在于你进入公司之后对于业务的把控, 对于业务所需要的技术架构的掌握. 
+```
+
+
+
+#### 4.2.0 相关API
 
 ```java
-//1.实现的全部接口
+//1.实现的全部接口 -------------------------------
 public Class<?>[] getInterfaces()   
 //确定此对象所表示的类或接口实现的接口。 
 
-//2.所继承的父类
+//2.所继承的父类 -------------------------------
 public Class<? Super T> getSuperclass()
 //返回表示此 Class 所表示的实体（类、接口、基本类型）的父类的 Class。
 
-//3.全部的构造器
+//3.全部的构造器 -------------------------------
 public Constructor<T>[] getConstructors()
 //返回此 Class 对象所表示的类的所有public构造方法。
 public Constructor<T>[] getDeclaredConstructors()
@@ -751,7 +810,7 @@ public String getName();
 //取得参数的类型：
 public Class<?>[] getParameterTypes();
 
-//4.全部的方法
+//4.全部的方法 -------------------------------
 public Method[] getDeclaredMethods()
 //返回此Class对象所表示的类或接口的全部方法
 public Method[] getMethods()  
@@ -767,7 +826,7 @@ public int getModifiers()
 public Class<?>[] getExceptionTypes()
 //取得异常信息
 
-//5.全部的Field
+//5.全部的Field -------------------------------
 public Field[] getFields() 
 //返回此Class对象所表示的类或接口的public的Field。
 public Field[] getDeclaredFields() 
@@ -781,11 +840,11 @@ public Class<?> getType()
 public String getName()  
 //返回Field的名称。
 
-//6. Annotation相关
+//6. Annotation相关 -------------------------------
 get Annotation(Class<T> annotationClass) 
 getDeclaredAnnotations() 
 
-//7.泛型相关
+//7.泛型相关 -------------------------------
 //获取父类泛型类型：
 Type getGenericSuperclass()
 //泛型类型：ParameterizedType
@@ -796,7 +855,9 @@ getActualTypeArguments()
 Package getPackage() 
 ```
 
-#### 4.2.2 获取所有的属性及相关细节
+
+
+#### 4.2.1 获取所有的属性及相关细节
 
 ```java
 package com.atguigu.java2;
@@ -868,7 +929,11 @@ public class FieldTest {
 
 ```
 
-#### 4.2.3 获取所有的方法及相关细节
+
+
+#### 4.2.2 获取所有的方法及相关细节
+
+24min-
 
 ```java
 package com.atguigu.java2;
@@ -887,19 +952,19 @@ public class MethodTest {
 	public void test1() {
 
 		Class clazz = Person.class;
-		// getMethods():获取到运行时类本身及其所有的父类中声明为public权限的方法
-		// Method[] methods = clazz.getMethods();
-		//
-		// for(Method m : methods){
-		// System.out.println(m);
-		// }
+       //getMethods():获取到运行时类本身及其所有的父类中声明为public权限的方法
+       Method[] methods = clazz.getMethods();
 
-		// getDeclaredMethods():获取当前运行时类中声明的所有方法
-		Method[] declaredMethods = clazz.getDeclaredMethods();
-		for (Method m : declaredMethods) {
-			System.out.println(m);
-		}
-		//
+       	for(Method m : methods){
+       		System.out.println(m);
+		 		}
+
+			// getDeclaredMethods():获取当前运行时类中声明的所有方法
+      Method[] declaredMethods = clazz.getDeclaredMethods();
+      for (Method m : declaredMethods) {
+        	System.out.println(m);
+      }
+      //
 	}
 
 	// 注解信息
@@ -959,7 +1024,11 @@ public class MethodTest {
 
 ```
 
-#### 4.2.4 获取其他结构(构造器、父类、接口、包、注解等)
+
+
+#### 4.2.3 取其他结构(构造器、父类、接口、包、注解等)
+
+31min-
 
 ```java
 package com.atguigu.java2;
@@ -1048,7 +1117,11 @@ public class OtherTest {
 
 ```
 
-#### 4.2.5 获取泛型父类信息（选讲）
+
+
+##### 4.2.4 获取泛型父类信息（选讲）
+
+基于4.2.3获取运行时类的带范型父类, 我们进一步去获取其中的父类的范型
 
 示例代码获取泛型父类信息：
 
@@ -1104,7 +1177,9 @@ class Son extends Father<String,Integer>{
 }
 ```
 
-#### 4.2.6 获取内部类或外部类信息（选讲）
+
+
+##### 4.2.5 获取内部类或外部类信息（选讲）
 
 public Class<?>[] getClasses()：返回所有公共内部类和内部接口。包括从超类继承的公共类和接口成员以及该类声明的公共类和接口成员。
 
@@ -1129,20 +1204,27 @@ Class<?> getEnclosingClass() ：返回某个内部类的外部类
 	}
 ```
 
-
-
-#### 4.2.7 小 结
+#### 4.2.6 小 结
 
 1. 在实际的操作中，取得类的信息的操作代码，并不会经常开发。
 
 2. 一定要熟悉java.lang.reflect包的作用，反射机制。
 
-### 4.3 应用3：调用运行时类的指定结构
+
+
+### 4.3 :full_moon: 应用3：调用运行时类的指定结构
+
+191 
+
+使用频率仅次于应用1 创建运行时类的对象
+
+
 
 #### 4.3.1 调用指定的属性
 
 在反射机制中，可以直接通过Field类操作类中的属性，通过Field类提供的set()和get()方法就可以完成设置和取得属性内容的操作。
 
+```java
 （1）获取该类型的Class对象
 
 Class clazz = Class.forName("包.类名");
@@ -1155,23 +1237,34 @@ Field field = clazz.getDeclaredField("属性名");
 
 field.setAccessible(true);
 
+
+
 （4）创建实例对象：如果操作的是非静态属性，需要创建实例对象
 
 Object obj = clazz.newInstance(); //有公共的无参构造
 
 Object obj = 构造器对象.newInstance(实参...);//通过特定构造器对象创建实例对象
 
-（4）设置指定对象obj上此Field的属性内容
+
+
+（5）设置指定对象obj上此Field的属性内容
 
 field.set(obj,"属性值");
 
-> 如果操作静态变量，那么实例对象可以省略，用null表示
+		> 如果操作静态变量，那么实例对象可以省略，用null表示
 
-（5）取得指定对象obj上此Field的属性内容
+（6）取得指定对象obj上此Field的属性内容
 
 Object value = field.get(obj);
 
-> 如果操作静态变量，那么实例对象可以省略，用null表示
+		> 如果操作静态变量，那么实例对象可以省略，用null表示
+```
+
+看到10min
+
+
+
+
 
 示例代码：
 
@@ -1335,6 +1428,8 @@ public class TestMethod {
 }
 
 ```
+
+
 
 #### 4.3.3 练习
 
