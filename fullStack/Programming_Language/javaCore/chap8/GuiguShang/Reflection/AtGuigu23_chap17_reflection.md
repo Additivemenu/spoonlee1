@@ -1222,15 +1222,22 @@ Class<?> getEnclosingClass() ：返回某个内部类的外部类
 
 #### 4.3.1 调用指定的属性
 
+191 0min-
+
+
+
 在反射机制中，可以直接通过Field类操作类中的属性，通过Field类提供的set()和get()方法就可以完成设置和取得属性内容的操作。
 
 ```java
+// 一般步骤为：
+
+// step1 获取运行类对应的Class实例
 （1）获取该类型的Class对象
 
 Class clazz = Class.forName("包.类名");
 
-（2）获取属性对象
 
+// step2.1 获取属性对象
 Field field = clazz.getDeclaredField("属性名");
 
 （3）如果属性的权限修饰符不是public，那么需要设置属性可访问
@@ -1238,7 +1245,7 @@ Field field = clazz.getDeclaredField("属性名");
 field.setAccessible(true);
 
 
-
+// step2.2 获取运行类的对象
 （4）创建实例对象：如果操作的是非静态属性，需要创建实例对象
 
 Object obj = clazz.newInstance(); //有公共的无参构造
@@ -1246,8 +1253,8 @@ Object obj = clazz.newInstance(); //有公共的无参构造
 Object obj = 构造器对象.newInstance(实参...);//通过特定构造器对象创建实例对象
 
 
-
-（5）设置指定对象obj上此Field的属性内容
+// step3 反射的方式: 属性调用对象
+（5）设置指定对象obj上此Field的属性内容 
 
 field.set(obj,"属性值");
 
@@ -1260,7 +1267,7 @@ Object value = field.get(obj);
 		> 如果操作静态变量，那么实例对象可以省略，用null表示
 ```
 
-看到10min
+
 
 
 
@@ -1351,29 +1358,38 @@ public class TestField {
   - 使得原本无法访问的私有成员也可以访问
 - 参数值为false则指示反射的对象应该实施Java语言访问检查。
 
+
+
 #### 4.3.2 调用指定的方法
+
+15min-
 
 <img src="images/image-20220417181700813.png" alt="image-20220417181700813" style="zoom:80%;" />
 
-（1）获取该类型的Class对象
 
+
+```java
+// step1: 反射的源头 获取该类型的Class对象
 Class clazz = Class.forName("包.类名");
 
-（2）获取方法对象
-
+// step2: 获取方法对象
 Method method = clazz.getDeclaredMethod("方法名",方法的形参类型列表);
 
-（3）创建实例对象
-
+// setAccessible(true): 确保该方法是accessible的
+method.setAccessible(true)l;
+  
+// step3: 创建运行类实例对象
 Object obj = clazz.newInstance();
 
-（4）调用方法
-
+// step4: 调用方法 反射的方式: 方法调用对象
 Object result = method.invoke(obj, 方法的实参值列表);
 
 > 如果方法的权限修饰符修饰的范围不可见，也可以调用setAccessible(true)
 >
-> 如果方法是静态方法，实例对象也可以省略，用null代替
+> 如果方法是静态方法，运行类的实例对象也可以省略，用null代替
+```
+
+
 
 示例代码：
 
@@ -1431,7 +1447,58 @@ public class TestMethod {
 
 
 
-#### 4.3.3 练习
+#### 4.3.3 调用指定的构造器
+
+```java
+step1. 通过Class实例调用getDeclaredConstructor(CLass ... args), 获取指定参数类型的构造器
+step2. 确保此构造器是accessible
+step3. 通过Constructor实例调用newInstance(Object ... objs), 返回一个运行时类的实例
+```
+
+
+
+```java
+// private Person(String name, int age)
+@Test
+public void test1() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    Class clazz = Person.class;
+
+    // 1. 通过Class实例调用getDeclaredConstructor(CLass ... args), 获取指定参数类型的构造器
+    Constructor declaredConstructor = clazz.getDeclaredConstructor(String.class, int.class);
+
+    // 2. 确保此构造器是accessible
+    declaredConstructor.setAccessible(true);
+
+    // 3. 通过Constructor实例调用newInstance(Object ... objs), 返回一个运行时类的实例
+    Person per = (Person) declaredConstructor.newInstance("Tom", 12);
+
+    System.out.println(per);
+}
+
+//
+// 使用Constructor替换原来的使用`clazz.newInstance()`的方式创建对象
+@Test
+public void test2() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    Class clazz = Person.class;
+
+    // 1. 通过Class实例调用getDeclaredConstructor(CLass ... args), 获取指定参数类型的构造器
+    Constructor declaredConstructor = clazz.getDeclaredConstructor();
+
+    // 2. 确保此构造器是accessible
+    declaredConstructor.setAccessible(true);
+
+    // 3. 通过Constructor实例调用newInstance(Object ... objs), 返回一个运行时类的实例
+    Person per = (Person) declaredConstructor.newInstance();
+
+    System.out.println(per);
+}
+```
+
+
+
+
+
+#### 4.3.4 练习
 
 读取user.properties文件中的数据，通过反射完成User类对象的创建及对应方法的调用。
 
@@ -1516,7 +1583,13 @@ public class ReflectTest {
 
 
 
-## 5. 应用4：读取注解信息
+## 5. :moon: 应用4：读取注解信息
+
+192 0min-
+
+看到这里
+
+
 
 一个完整的注解应该包含三个部分：
 （1）声明
