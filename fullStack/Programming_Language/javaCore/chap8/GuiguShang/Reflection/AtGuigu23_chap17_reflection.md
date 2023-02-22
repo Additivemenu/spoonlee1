@@ -117,21 +117,29 @@ Java反射机制提供的功能：
 
 ### 1.4 反射相关的主要API
 
-`java.lang.Class`：代表一个类
-java.lang.reflect.Method：代表类的方法
-java.lang.reflect.Field：代表类的成员变量
-java.lang.reflect.Constructor：代表类的构造器
-… …
+
+
+```java
+java.lang.Class：//代表一个类
+java.lang.reflect.Method：//代表类的方法
+java.lang.reflect.Field：//代表类的成员变量
+java.lang.reflect.Constructor：//代表类的构造器
+// ....
+```
 
 
 
-### 1.5 反射的优缺点
+
+
+
+
+### 1.5 :moon: 反射的优缺点
 
 **优点：**
 
-- 提高了Java程序的灵活性和扩展性，`降低了耦合性`，提高`自适应`能力
+- 提高了Java程序的灵活性和扩展性，`降低了耦合性`(实现了程序和数据的分离, 程序可以专注写逻辑)，提高`自适应`能力
 
-- 允许程序创建和控制任何类的对象，无需提前`硬编码`目标类
+- 允许程序创建和控制任何类的对象，无需提前`硬编码`目标类,
 
 **缺点：**
 
@@ -140,7 +148,7 @@ java.lang.reflect.Constructor：代表类的构造器
 
 - 反射会`模糊`程序内部逻辑，`可读性较差`。
 
-
+:bangbang: 平时开发中, 我们开发者使用的并不多， 主要是在框架的底层使用
 
 
 
@@ -153,9 +161,17 @@ java.lang.reflect.Constructor：代表类的构造器
 要想`解剖`一个类，必须先要获取到该类的Class对象。而剖析一个类或用反射解决具体的问题就是使用相关API:
 
 - java.lang.Class
-- java.lang.reflect.*
+- java.lang.reflect.
 
-所以，Class对象是反射的根源。
+Class对象是反射的根源: 
+
+```java
+针对于编写好的.java源文件进行编译(使用javac.exe), 会生成一个或多个.class字节码文件. 
+
+接着, 我么使用java.exe命令对指定的.class文件进行解释运行, 这个解释运行的过程中, 我们需要将.class字节码文件加载 (使用类的加载器)到内存中(存放在方法区). 加载到内存中好的.class文件对应的结构即为Class的一个实例.
+```
+
+
 
 
 
@@ -191,6 +207,8 @@ public final Class getClass()
 
 说明：上图中字符串常量池在JDK6中存储在方法区；JDK7及以后，存储在堆空间。
 
+
+
 ### 2.2 :moon: 获取Class类的实例(四种方法)
 
 + 方式1：要求编译期间已知类型
@@ -203,7 +221,7 @@ public final Class getClass()
 Class clazz = String.class;
 ```
 
-+ 方式2：获取对象的运行时类型
++ 方式2：获取对象的运行时类型 (硬编码方式)
 
 前提：已知某个类的实例，调用该实例的getClass()方法获取Class对象
 
@@ -213,11 +231,13 @@ Class clazz = String.class;
 Class clazz = "www.atguigu.com".getClass();
 ```
 
-+ 方式3：可以获取编译期间未知的类型
++ :star: 方式3：可以获取编译期间未知的类型 (最能体现反射的动态性, 因而用的最多)
 
 前提：已知一个类的全类名，且该类在类路径下，可通过Class类的静态方法forName()获取，可能抛出ClassNotFoundException
 
-用的最多, 最能体现反射提供的'动态'特性, 因为类名可以以String变量的形式传入forName(), 而方式1,2类名都写死了.
+用的最多, 最能体现反射提供的'动态'特性, 因为类名可以以String变量的形式传入forName(), 而方式1,2类名都写死了. 
+
+:bangbang: 获取Class类实例的过程, 是先load指定类, 如果类已经load到内存了, 就不会再次load而是直接去获取内存中的Class实例
 
 实例：
 
@@ -259,6 +279,8 @@ public class GetClassObject {
     }
 }
 ```
+
+
 
 ### 2.3 哪些类型可以有Class对象
 
@@ -336,11 +358,7 @@ System.out.println(name);
 
 主要是了解, 更多细节在JVM的课程中
 
-
-
 JVM基本流程讲解
-
-
 
 
 
@@ -510,10 +528,6 @@ ClassLoader loader1 = new ClssLoader(loader0);		//  其实loader0只是loader1�
 
 老师是在JDK8下演示的, 但是JDK9之后ClassLoader的架构就变了, 这里只做了解即可, 具体Intellij中老师的代码就不展示了. 具体见JVM课程
 
-
-
-
-
 （1）获取默认的系统类加载器
 
 ```java
@@ -657,9 +671,17 @@ public void test5() throws IOException {
 
 有了Class对象，能做什么？
 
-### 4.1 :full_moon: 应用1：创建运行时类的对象
+### 4.1 :full_moon: 应用1：创建运行时类的对象 (两种方式)
 
 190 0min- 
+
+
+
+```java
+作为应用频率最高的反射应用, 创建运行时类主要有两种方式:
+方式一:  调用Class实例的方法newInstance()  // deprecated
+方式二: 通过构造器对象来实例化			// preferred
+```
 
 
 
@@ -673,7 +695,7 @@ public void test5() throws IOException {
         Class clazz = Person.class;
 
         // 创建Person类的实例
-        Person per = (Person) clazz.newInstance();
+        Person per = (Person) clazz.newInstance();	// deprecated, 一般不用这种方式
         // 实际上还是调用Person的空参构造器, 如果Person类中没有空参构造器, throw InstantiationException
         // 如果Person类中空参构造器的权限不够, throw IllegalAccessException
 
@@ -702,9 +724,7 @@ public void test5() throws IOException {
 
 
 
-**方式2：通过获取构造器对象来进行实例化**
-
-
+:star: **方式2：通过获取构造器对象来进行实例化**
 
 方式一的步骤：
 
@@ -1222,7 +1242,14 @@ Class<?> getEnclosingClass() ：返回某个内部类的外部类
 
 191 
 
+```java
 使用频率仅次于应用1 创建运行时类的对象
+  调用属性: // 用的比较少, 因为一般方法我们提供getter, setter
+  调用方法: // 用的最多
+  调用构造器
+```
+
+
 
 
 
@@ -1272,10 +1299,6 @@ Object value = field.get(obj);
 
 		> 如果操作静态变量，那么实例对象可以省略，用null表示
 ```
-
-
-
-
 
 
 
@@ -1744,9 +1767,11 @@ public class ReflectionTest {
 
     //体会反射的动态性：动态的创建给定字符串对应的类的对象
     public <T> T getInstance(String className) throws Exception {
-
+				
+      	// forName（）方法获得Class类的实例
         Class clazz = Class.forName(className);
-
+      
+				// 通过获取构造器对象来实例化
         Constructor constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
         return (T) constructor.newInstance();
@@ -1796,8 +1821,6 @@ public class ReflectionTest {
     }
 }
 ```
-
-
 
 
 
@@ -1888,13 +1911,42 @@ fruitName=class04_other.exer.Apple
 
 
 
-
-
 ## 6. 复习与企业面试真题
 
 P193 0min-
 
-看到这里
+
+
+复习 0-18min
+
+根据复习内容, 我在前面的笔记上做了补充
+
+
+
+企业面试真题 18min-37min
+
+```java
+1. Class.forName("全路径") 会调用哪些方法? 会调用构造方法吗？ 加载的类会放到哪里? 
+  Class.forName()会执行类构造器方法 
+  不够调用构造方法(构造器)
+  加载的类放在方法区
+
+2. 通过Class.forName()的方式和使用类加载器的方式获取Class实例有何区别? （实际上是JVM相关的面试题） 25min-
+  
+3. 创建对象有哪几种方法? 27min-
+   new: 普通的new / Xxx的静态方法 / XxxBuilder or XxxFactory的静态方法
+   反射: CLass的newInstance() /  Constructor的newInstance()
+   clone(): 不调用任何构造器, 当前类需要实现Cloneable接口, 实现clone()
+   反序列化: 从文件, 网络中获取一个对象的二进制流
+     
+4. JDK自身的类(e.g. String)中如果结构被private修饰， JDK17中就不允许通过`setAccessible(true)`暴力反射了
+```
+
+
+
+
+
+
 
 
 
