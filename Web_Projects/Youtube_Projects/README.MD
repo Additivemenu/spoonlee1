@@ -37,3 +37,5 @@
 + 在google fonts网站选择需要的字体样式的适应大小
 + 注意font-family属性写在*{}里面
 
+
+[day10: css: clip-path属性]()

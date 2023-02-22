@@ -323,6 +323,14 @@ mui doc > component > LAYOUT
 
 
 
+Box
+
+
+
+Container
+
+
+
 Grid
 
 
@@ -442,6 +450,10 @@ function App() {
 
 
 Navbar
+
++ 注意 `<Badge>`的使用
++ 注意时如何做UserBox和Icons的responsive效果的
++ mui component的sx属性编辑自己的css style
 
 ```react
 import { AppBar, Toolbar, styled, Typography, Box, InputBase, Badge, Avatar } from "@mui/material";

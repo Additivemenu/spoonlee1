@@ -40,6 +40,12 @@ obj.getClass()
 
 :gem: 见intellij > class01-reflection-example
 
+```java
+
+
+
+```
+
 
 
 ```java
@@ -1583,11 +1589,13 @@ public class ReflectTest {
 
 
 
-## 5. :moon: 应用4：读取注解信息
+### 4.4 :moon: 应用4：读取注解信息
 
 192 0min-
 
-看到这里
+见intellij class04-other package
+
+需要懂注解的基础知识
 
 
 
@@ -1596,7 +1604,7 @@ public class ReflectTest {
 （2）使用
 （3）读取
 
-### 5.1 声明自定义注解
+#### Step1: 声明自定义注解
 
 ```java
 package com.atguigu.annotation;
@@ -1630,7 +1638,11 @@ public @interface Column {
 * 可以使用 default 关键字为抽象方法指定默认返回值
 * 如果定义的注解含有抽象方法，那么使用时必须指定返回值，除非它有默认值。格式是“方法名 = 返回值”，如果只有一个抽象方法需要赋值，且方法名为value，可以省略“value=”，所以如果注解只有一个抽象方法成员，建议使用方法名value。
 
-### 5.2 使用自定义注解
+
+
+#### Step2: 使用自定义注解
+
+将自定义注解写到想要修饰的结构头上
 
 ```java
 package com.atguigu.annotation;
@@ -1669,7 +1681,9 @@ public class Student {
 
 ```
 
-### 5.3 读取和处理自定义注解
+
+
+#### Step3: 读取和处理自定义注解
 
 自定义注解必须配上注解的信息处理流程才有意义。
 
@@ -1713,9 +1727,17 @@ public class TestAnnotation {
 
 ```
 
-## 6. 体会反射的动态性
 
-**体会1：**
+
+## 5. :moon: 体会反射的动态性
+
+192 14min-
+
+主要是为了实现程序和数据分离, 程序能够动态地响应实时数据(配置文件, 或者用户实时发来的request)来创建对象并使其参与各种运算.
+
+
+
+### **体会1：** 动态的创建给定字符串对应的类的对象
 
 ```java
 public class ReflectionTest {
@@ -1740,25 +1762,33 @@ public class ReflectionTest {
 }
 ```
 
-**体会2：**
+### **体会2： **动态的创建指定字符串对应类的对象，并调用指定的方法
+
+192 24-29min 康师傅讲了一个关于这种模式在前端后端数据库三者结合开发时的应用场景
 
 ```java
 public class ReflectionTest {
     //体会反射的动态性：动态的创建指定字符串对应类的对象，并调用指定的方法
     public Object  invoke(String className,String methodName) throws Exception {
+     	  // step 0. Class实例是反射的源头
         Class clazz = Class.forName(className);
+      
+      	// step 1. 动态地创建全类名对应的运行时类的对象
         Constructor constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
-        //动态的创建指定字符串对应类的对象
         Object obj = constructor.newInstance();
-
+				
+      	// step 2. 获取运行时类中指定的方法
         Method method = clazz.getDeclaredMethod(methodName);
         method.setAccessible(true);
+      	
+      	// step 3. step2,3的结果结合 ---> 反射的方式调用方法: 方法调用对象
         return method.invoke(obj);
     }
 
     @Test
     public void test2() throws Exception {
+      // 虽然这里指定的类名和方法名是写死的, 实际中他们可能会从配置文件中读取, 或者用户发送http request时被读取, 从而实现动态地调用指定类的指定方法
         String info = (String) invoke("com.atguigu.java1.Person", "show");
 
         System.out.println("返回值为：" + info);
@@ -1767,7 +1797,34 @@ public class ReflectionTest {
 }
 ```
 
-**体会3：**
+
+
+
+
+### :gem: practice
+
+192 29min-39min
+
+```java
+案例：榨汁机榨水果汁，水果分别有苹果(Apple)、香蕉(Banana)、桔子(Orange)等。
+
+效果如图。
+
+提示：
+1、声明(Fruit)水果接口，包含榨汁抽象方法：void squeeze(); /skwiːz/
+
+2、声明榨汁机(Juicer)，包含运行方法：public void run(Fruit f)，方法体中，调用f的榨汁方法squeeze()
+
+3、声明各种水果类，实现水果接口，并重写squeeze();
+
+4、在src下，建立配置文件：config.properties，并在配置文件中配上fruitName=xxx（其中xx为某种水果的全类名） 即在配置文件中写上你想榨哪种水果的汁
+
+5、在FruitTest测试类中，
+（1）读取配置文件，获取水果类名，并用反射创建水果对象，
+（2）创建榨汁机对象，并调用run()方法
+```
+
+代码:
 
 ```java
 public class ReflectionTest {
@@ -1775,22 +1832,25 @@ public class ReflectionTest {
     public void test1() throws Exception {
         //1.加载配置文件，并获取指定的fruitName值
         Properties pros = new Properties();
-        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("config.properties");
+       	// 使用IO流默认路径在 module下; 类的加载器的方式默认路径在resources下
+        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("config.properties"); 
         pros.load(is);
-        String fruitStr = pros.getProperty("fruitName");
-        //2.创建指定全类名对应类的实例
+        String fruitStr = pros.getProperty("fruitName"); // 得到配置文件中key为fruitName对应的value
+        
+      	//2.创建指定全类名对应类的实例
         Class clazz = Class.forName(fruitStr);
         Constructor constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
         Fruit fruit = (Fruit) constructor.newInstance();
-        //3. 调用相关方法，进行测试
+        
+      	//3. 调用相关方法，进行测试
         Juicer juicer = new Juicer();
         juicer.run(fruit);
 
     }
-
 }
 
+// ---------------------------------------
 interface Fruit {
 	public void squeeze();
 }
@@ -1807,7 +1867,8 @@ class Orange implements Fruit {
 	}
 }
 
-class Juicer {
+// 榨汁机 --------------------------------
+class Juicer {	
 	public void run(Fruit f) {
 		f.squeeze();
 	}
@@ -1815,9 +1876,25 @@ class Juicer {
 
 ```
 
-其中，配置文件【config.properties】存放在当前Module的src下
+其中，配置文件【config.properties】存放在当前Module的src下.
 
+```properties
+fruitName=class04_other.exer.Apple
 ```
-com.atguigu.java1.Orange
-```
+
+<img src="./images/reflectionApp_eg1.png" width=60%>
+
+这样就实现了你在配置文件里指明类名, 之后可以在程序运行时去创建指定类名的对象, 并让其参与各种操作. 实现脚本化创建对象, 实现程序和数据(配置文件)分离
+
+
+
+
+
+## 6. 复习与企业面试真题
+
+P193 0min-
+
+看到这里
+
+
 

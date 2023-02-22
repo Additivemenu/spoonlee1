@@ -12,4 +12,5 @@ include 'chap15_Java_Reflection'
 include 'chap6_OOP3'
 include 'chap8_Concurrecy'
 include 'AtGuigu23_chap17_Reflection'
+include 'chap10_Enum_Annotations'
 

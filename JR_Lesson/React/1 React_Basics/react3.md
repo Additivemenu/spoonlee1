@@ -380,7 +380,7 @@ const Item = ({href, children, active, setActive}) =>{
 
 
 
-## 继续优化代码写法55min-
+## :moon: 继续优化代码写法55min-
 
 上面Nav.js中我们仍有许多重复的代码, 我们采用Array来批量输入HTML tag的props参数 (JS技巧)
 

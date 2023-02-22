@@ -109,7 +109,9 @@ VsCode
 <img src="./Src_img/vs_shortcut_mac.png" >
 
 
+
 # 代码模板
+
 [vscode java template](./myJavaVscodeTemplate.json)
 
 vscode: File ---> preferences ---> configure user snippets ---> define a JSON file
@@ -124,7 +126,9 @@ With tabstops, you can make the editor cursor move inside a snippet. Use $1, $2 
 With tabstops, you can make the editor cursor move inside a snippet. Use $1, $2 to specify cursor locations. The number is the order in which tabstops will be visited, whereas $0 denotes the final cursor position.
 
 
+
 # Extensions on VSCode
+
 打开vscode json setting: 左下角的小齿轮图标 -->settings --> 右上角的open settings(json), 可以configure设置
 
 ## Theme extensions:
@@ -139,4 +143,10 @@ With tabstops, you can make the editor cursor move inside a snippet. Use $1, $2 
 + Icon extensions:
 + Fluent icons
 + Icons
+
+
+
+
+
+
 

@@ -38,11 +38,11 @@ Experiences I've learned from P3
 
 还有其他方法处理这种问题吗?
 
+:star: 最好使用git rebase而不是git merge: 先git pull保证main branch最新, 然后跳转到自己的branch去git rebase main, 这样就把main那段在公共祖先之后的部分嫁接到自己的branch上了, 我们自己的branch上后于公共祖先的commit 在嫁接过来的main 的commits的后面, 这样保证时间顺序不被打乱
+
+
+
 — 一般一个branch只去做一件事情, 如果你已经merge到main了, 然后发现某个地方需要再修缮下, 这时就再去new一个branch然后修改, 一定注意kanban上 be blocked by, 如果你的任务是被前置任务block的, 那么你最好等那个前置任务完成了, 被merge到main了之后再去new 自己的branch完成自己的卡
-
----
-
-
 
 
 
@@ -104,3 +104,43 @@ Axios模拟数据, 不需要mock data
 使用theme provider中提供的css变量
 
 - 参考components > posts 怎么写, 其实就直接在styled component中写就好, 原理好像是themeprovider把它的属性注入到styled component里了不太懂原理
+
+
+
+将hook返回的东西作为props通过functional components 向下传递给后代
+
+n React functional components, you can pass state as props to child components. To pass state with TypeScript, you'll need to define the shape of the state using an interface. Here's an example:
+
+```ts
+import React, { useState } from 'react';
+
+const Parent = () => {
+  const [text, setText] = useState('');
+
+  return (
+    <Child text={text} setText={setText} />
+  );
+}
+
+// ----
+interface ChildProps {
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Child = ({ text, setText }: ChildProps) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setText(event.target.value);
+  };
+
+  return (
+    <div>
+      <input type="text" value={text} onChange={handleChange} />
+    </div>
+  );
+}
+
+```
+
+
+
