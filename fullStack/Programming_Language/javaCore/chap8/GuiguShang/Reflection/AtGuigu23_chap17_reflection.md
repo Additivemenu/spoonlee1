@@ -1946,6 +1946,267 @@ P193 0min-
 
 
 
+## 7. 反射的应用: 动态代理
+
+2019年宋红康Java视频讲解, 2023最新版把这部分去掉了
+
+660-663
+
+代理设计模式的原理: 使用一个<u>代理</u>将对象包装起来, 然后用该代理对象取代原始对象。任何对原始对象的调用都要通过代理。代理对象决定是否以及何时将方法调用转到原 始对象上。
+
++ 之前在interface那章为大家讲解过代理机制的操作，属于静态代理，<u>特征是代理类和目标 对象的类都是*在编译期间确定下来*</u>，不利于程序的扩展。同时，每一个代理类只能为一个接口服务，这样一来程序开发中必然产生过多的代理。最好可以通过一个代理类完成全部的代理功 ----> 动态代理
+
+```java
+动态代理是指客户通过代理类来调用其它对象的方法，并且是在程序**运行时**根据需要动态创建目标类的代理对象。
+
+动态代理使用场合: 1) 调试; 2) 远程方法调用
+
+动态代理相比于静态代理的优点:  抽象角色中(接口)声明的所有方法都被转移到调用处理器一个集中的方法中处理，这样，我们可以更加灵活和统一的处理众多的方法。
+```
+
+
+
+代理模式的三要素: 1) 接口, 2,3) 实现了同一个接口的被代理类和代理类.  其中代理类依赖被代理类(被代理类对象被代理类对象使用), 之所以实现相同的接口, 是为了保证代理类可以调用被代理类的同名方法
+
+<img src="./images/ProxyMode.png" width=40%>
+
+
+
+
+
+### 静态代理
+
+661
+
+先来看静态代理的例子
+
++ 特点是代理类写死了
+
+```java
+public class StaticProxyTest {
+
+    public static void main(String[] args) {
+        // 创建被代理类对象
+        NikeClothFactory nikeClothFactory = new NikeClothFactory();
+        // 创建代理类对象, 通过构造器依赖注入
+        ProxyClothFactory proxyClothFactory = new ProxyClothFactory(nikeClothFactory);
+
+        // 代理类对象执行
+        proxyClothFactory.produceCloth();
+    }
+}
+
+
+interface ClothFactory{
+    void produceCloth();
+}
+
+
+// Proxy: 静态代理的特点, 代理类写死了 --------------------------------------------
+// 被代理类作为成员出现在代理类中被使用, 即代理类依赖于被代理类
+class ProxyClothFactory implements ClothFactory{
+    private ClothFactory factory;       // 用被代理类对象进行实例化 / 多态: 接口的实现类可以被实例化
+
+    public ProxyClothFactory (ClothFactory factory){        // dependency injection
+        this.factory = factory;
+    }
+
+    @Override
+    public void produceCloth() {
+        System.out.println("proxy factory do some preliminary work");
+        factory.produceCloth();
+        System.out.println("Proxy factory do some post work");
+    }
+}
+
+// 被代理类 -------------------------------------------
+class NikeClothFactory implements ClothFactory{
+    @Override
+    public void produceCloth(){
+        System.out.println("Nike工厂生产一批运动服");
+    }
+
+}
+```
+
+
+
+### 动态代理
+
+662
+
++ 特点是代理类不需要写死, 而是采用静态工厂去动态地生成代理类. 所实现的最终效果就是: 你给定我一个被代理类的对象, 我可以动态地去创建出一个对应的代理类的对象, 允许你通过这个代理类的对象来调用被代理类的同名方法
+
+```java
+/**
+ * 19年视频教程 662: 动态代理举例
+ * 要实现动态代理, 要解决的核心问题: 
+ * 		问题一: 如何根据加载到内存中的被代理类, 动态地创建一个代理类及其对象
+ * 		问题二: 当通过代理类的对象调用方法时, 如何动态地去调用被代理类中的同名方法?
+ * @author xueshuo
+ * @create 2023-02-23 10:19 am
+ */
+public class DynamicProxyTest {
+
+    // 最终实现的效果就是, 只需要给我被代理类的对象, 我就可以动态地生成一个对应代理类的对象, 允许你通过代理类去调用被代理类的同命方法
+    public static void main(String[] args) {
+        // 创建被代理类对象
+        SuperMan superMan = new SuperMan();
+        // proxyInstance: 动态地生成代理类的对象
+        Human proxyInstance = (Human) ProxyFactory.getProxyInstance(superMan);
+        // 当通过代理类对象调用方法时, 会自动地去调用被代理类中的同名方法
+        System.out.println(proxyInstance.getBelief());         //  其实是回去调用handler里的invoke()方法
+        proxyInstance.eat("四川麻辣烫");
+
+        System.out.println("e.g. 2 *****************************");
+        // 创建被代理类对象
+        NikeClothFactory nikeClothFactory = new NikeClothFactory(); // 被代理类来自上面静态代理的例子
+        // 动态的创建代理类
+        ClothFactory proxyClothFactory = (ClothFactory) ProxyFactory.getProxyInstance(nikeClothFactory);
+        // 通过代理类来调用被代理类中的同名方法
+        proxyClothFactory.produceCloth();
+    }
+}
+
+
+interface Human{
+    String getBelief();
+    void eat(String food);
+}
+
+// 被代理类 ------------------------------------------------------
+class SuperMan implements Human{
+    @Override
+    public String getBelief() {
+        return  "I believe I can fly!";
+    }
+
+    @Override
+    public void eat(String food) {
+        System.out.println("I like eating " + food);
+    }
+}
+
+// Proxy: 动态代理的特点, 不写死代理类, 而是用静态工厂去动态地生成代理类 -------------------------------------------------------
+class ProxyFactory{
+    // 调用此方法, 返回一个代理类的对象,
+    // 注意方法的argument的类型指被代理类的类型, 返回值类型指代理类的类型, 因为我们要实现动态代理所以他们都只写Object
+    public static Object getProxyInstance(Object obj){      // obj: 被代理类的对象
+        MyInvocationHandler handler = new MyInvocationHandler();
+
+        handler.bind(obj);	// 依赖注入
+
+        // 该方法的前两个参数 解决问题一: 如何根据加载到内存中的被代理类, 动态地创建一个代理类及其对象 (利用反射去读取被代理类的ClassLoader, 以及Class实例)
+        // 第三个参数解决问题二: 当通过代理类的对象调用方法时, 如何动态地去调用被代理类中的同命方法?
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), handler);
+
+    }
+}
+
+// 解决问题二: 当通过代理类的对象调用方法时, 如何动态地去调用被代理类中的同命方法?
+class MyInvocationHandler implements InvocationHandler{
+    private Object obj; // 被代理类对象, 赋值时使用被代理类对象
+
+    public void bind(Object obj){       // 依赖注入
+        this.obj = obj;
+    }
+
+    // 当我们通过代理类的对象调用方法a时， 就会自动地调用如下的方法: invoke()
+    // 将被代理类要执行的方法a的功能就声明在invoke()方法中
+    // arg1: proxy即我们的代理类对象, arg2: method即代理类对象想要调用的方法对象的实例, arg3: args即同名方法的参数
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        // 即为代理类对象调用的方法, 此方法也就作为了被代理类对象要调用的方法
+        // 参数中的obj 即为被代理类的对象
+        Object returnValue = method.invoke(obj, args);   // 利用反射： 方法(对象)调用对象
+        // returnValue即作为当前类中invoke()的返回值
+        return returnValue;
+    }
+}
+```
+
+
+
+其中最关键的问题二的解决时, 需要定义一个实现了InvocationHandler的类, 在这个类中我们重写invoke()方法, 当我们通过代理类的对象调用方法a时， 就会自动地调用这个被重写的invoke( )方法. 在这个invoke()方法里，method是作为参数传入的因而是动态可变的,  我们可以借助这点来实现AOP
+
+
+
+### AOP与动态代理
+
+663
+
+最naive的写法, 用到相同的代码片段时, 复制粘贴, 很拉
+
+<img src="./images/AOP1.png" width=50%>
+
+改进: 我们可以考虑将相同的代码片段集合封装起来实现复用 ----> 代码段1、代码段2、代码段3和深色代码段分离开了，但代码段1、2、3又和一个特定的方法A耦合了!    *最理想的效果是:代码块1、2、3既可以执行方法A，又无须在程序中以硬编码 (指写死代码) 的方式直接调用深色代码的方法, 从而降低耦合性提高灵活度*
+
+<img src="./images/AOP2.png" width=50%>
+
+
+
+#### AOP代理
+
++ 使用Proxy生成一个动态代理时，往往并不会凭空产生一个动态代理，这样没有 太大的意义。通常都是为指定的目标对象生成动态代理
+
++ :star: 这种动态代理在AOP中被称为AOP代理，AOP代理可代替目标对象，AOP代理包含了目标对象的全部方法。**但AOP代理中的方法与目标对象的方法存在差异: AOP代理里的方法可以在执行目标方法之前、之后插入一些通用处理**. 即我们可以在通过代理类调用被代理类同名方法的切面上进行额外的代理操作(指下图中的通用方法1, 通用方法2), 并且中间调用的代理的类的方法是可以动态变化的 (不需要hard code写死到底调用哪个方法), 这就牛逼了
+
+<img src="./images/AOP3.png" width=30%>
+
+
+
+还是以上面的动态代理为例子:
+
+在实现了InvocationHandler的类的invoke()方法中, 我们可以在代理类调用同名方法时, 在执行目标方法的之前, 和之后添加一些通用处理代码块 如下
+
+```java
+// ..............
+// ..............
+
+class HumanUtil {
+    public void method1(){
+        System.out.println("================== 通用方法一 ==================");
+    }
+
+    public void method2(){
+        System.out.println("================== 通用方法二 ==================");
+    }
+}
+
+// ..............
+// ..............
+
+class MyInvocationHandler implements InvocationHandler{
+    private Object obj; // 被代理类对象, 赋值时使用被代理类对象
+
+    public void bind(Object obj){       // 依赖注入
+        this.obj = obj;
+    }
+
+    // 当我们通过代理类的对象调用方法a时， 就会自动地调用如下的方法: invoke()
+    // 将被代理类要执行的方法a的功能就声明在invoke()方法中
+    // arg1: proxy即我们的代理类对象, arg2: method即代理类对象想要调用的方法对象的实例, arg3: args即同名方法的参数
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        HumanUtil util = new HumanUtil();
+        util.method1();     // AOP:  代表固定的代码块
+
+        // AOP: 代表可变的代码块------------------------------------------------------
+        // 即为代理类对象调用的方法, 此方法也就作为了被代理类对象要调用的方法
+        // 参数中的obj 即为被代理类的对象
+        Object returnValue = method.invoke(obj, args);   // 利用反射： 方法(对象)调用对象
+        // returnValue即作为当前类中invoke()的返回值
+        // ------------------------------------------------------------------------
+
+        util.method2();     // AOP:  代表固定的代码块
+
+        return returnValue;
+    }
+}
+```
+
 
 
 
