@@ -1,17 +1,17 @@
 package com.example.cruddemorecode.controller;
 
-import com.example.cruddemorecode.dto.PropertyGetDto;
-import com.example.cruddemorecode.dto.UserGetDto;
-import com.example.cruddemorecode.dto.UserPatchDto;
+import com.example.cruddemorecode.dto.*;
 import com.example.cruddemorecode.entity.Property;
 import com.example.cruddemorecode.service.PropertyService;
 import com.example.cruddemorecode.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.example.cruddemorecode.dto.UserPostDto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import java.util.List;
 
 /**
@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("users")    // URL中跟着/api/v1的成分
 @RequiredArgsConstructor    // for UserService
+@Validated
 public class UserController {
     private final UserService userService;  // controller要调用service, 以传递数据 不要在controller调用repository
 
@@ -47,16 +48,27 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    // http://localhost:8080/api/v1/users/{userId}/properties
+    // http://localhost:8080/api/v1/users/{userId}/properties 之前不采用分页时
+    // http://localhost:8080/api/v1/users/1/properties?page=1&size=10 采用分页后对应的url
     @GetMapping("/{userId}/properties")
-    public List<PropertyGetDto> getPropertiesByUserId(@PathVariable Long userId){
+    public PropertyPageDto getPropertiesByUserId(@PathVariable Long userId, @RequestParam int page, @RequestParam @Max(value = 50) int size){
 
-//        // 方法一
-//       return  propertyService.getPropertyByUserId(userId);
+        // 没采用分页 这个方法的返回值类型是List<PropertyGetDto> -----------------
+        // 方法一
+       //return  propertyService.getPropertyByUserId(userId);
 
         // 方法二: 利用 User {List<Property>}
-       return userService.getPropertiesByUserId(userId);
+       // return userService.getPropertiesByUserId(userId);
+
+
+        // 采用分页 这个方法的返回值类型是PropertyPageDto -------------
+        return propertyService.getPropertyByUserId(userId, page, size);
+
     }
+
+
+
+
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId){

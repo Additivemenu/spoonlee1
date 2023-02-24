@@ -15,3 +15,4 @@ spring:
         default_schema: public
         jdbc:
           time_zone: UTC
+    show-sql: false   # 生产环境下一般是false的

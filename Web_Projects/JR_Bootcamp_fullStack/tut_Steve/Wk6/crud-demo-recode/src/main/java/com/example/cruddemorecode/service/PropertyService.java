@@ -1,6 +1,7 @@
 package com.example.cruddemorecode.service;
 
 import com.example.cruddemorecode.dto.PropertyGetDto;
+import com.example.cruddemorecode.dto.PropertyPageDto;
 import com.example.cruddemorecode.dto.PropertyPostDto;
 import com.example.cruddemorecode.entity.Property;
 import com.example.cruddemorecode.entity.User;
@@ -9,6 +10,9 @@ import com.example.cruddemorecode.mapper.PropertyMapper;
 import com.example.cruddemorecode.mapper.UserMapper;
 import com.example.cruddemorecode.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -83,6 +87,23 @@ public class PropertyService {
                 .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
                 .toList();
     }
+
+
+    public PropertyPageDto getPropertyByUserId(Long userId, int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        Page<Property>  properties = propertyRepository.findByUser_Id(userId, paging);
+
+        // 拿到page里的list
+        List<Property> propertyList = properties.getContent();
+
+        return PropertyPageDto.builder()
+                .totalPage(properties.getTotalPages())
+                .totalNumber(properties.getNumberOfElements())
+                .propertyGetDtoList(properties.stream().map(property -> propertyMapper.mapPropertyToPropertyGetDto(property)).toList())
+                .build();
+    }
+
 
 
 

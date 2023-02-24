@@ -30,7 +30,7 @@ public class Property {
 
     // for OOP: a User object should be a member variable in Property entity class
     // 这里就体现了entity和database tuple之间的mapping
-    @ManyToOne // FK: property : user --> many to one
+    @ManyToOne // FK: property : user --> many to one           默认fetch EAGER
     @JoinColumn(name = "owner_id")  // define how to reference user based on database column "owner_id"
     private User user;
 

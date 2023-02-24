@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * @author xueshuo
  * @create 2023-01-26 11:26 am
@@ -23,4 +25,13 @@ public class ControllerExceptionHandler {
 
         return e.getMessage();            // 返回该值直接到前台
     }
+
+    // e.g. when violating  @Max int size
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleConstraintViolationException(ConstraintViolationException e){
+        return  e.getMessage();
+
+    }
+
 }

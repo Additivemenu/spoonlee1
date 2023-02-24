@@ -6,8 +6,6 @@
 
 ---
 
-
-
 # 1. Introduction to generics and generic classes
 
 [Tutorial: geeksforgeeks](https://www.geeksforgeeks.org/generics-in-java/)

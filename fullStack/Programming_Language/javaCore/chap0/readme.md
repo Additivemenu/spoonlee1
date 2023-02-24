@@ -103,7 +103,8 @@ File --> Settings
 
 
 ### Build, Execution, Deployment
-`Build, Execution, Deployment` - `Compiler`: 勾选 
+:star: `Build, Execution, Deployment` - `Compiler`: 勾选 
+
 + Build Project automatically
 + Compile independent modules in parallel
 

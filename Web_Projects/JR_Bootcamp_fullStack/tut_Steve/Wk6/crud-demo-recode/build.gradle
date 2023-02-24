@@ -26,6 +26,8 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 
+	compileOnly "org.springframework.boot:spring-boot-starter-security"
+
 	compileOnly 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.h2database:h2'
@@ -35,7 +37,6 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 
 }
 
