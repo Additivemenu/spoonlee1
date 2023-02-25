@@ -1055,11 +1055,11 @@ public class DeadLockTest {
 
 
 
-## 4.4 Lock锁方式解决线程安全问题
+## 4.4 方式三: Lock锁方式解决线程安全问题
 
 437
 
-从JDK 5.0开始，Java提供了更强大的线程同步机制——通过显式定义同 步锁对象来实现同步。同步锁使用Lock对象充当。
+从JDK 5.0开始，Java提供了更强大的线程同步机制——通过显式定义同 锁对象来实现同步。同步锁使用Lock对象充当。
 
 + java.util.concurrent.locks.Lock接口是控制多个线程对共享资源进行访问的 工具。锁提供了对共享资源的独占访问，每次只能有一个线程对Lock对象 加锁，线程开始访问共享资源之前应先获得Lock对象。
   + ReentrantLock (re-entrant lock 再次进入的锁)类实现了 Lock ，它拥有与 synchronized 相同的并发性和 内存语义，在实现线程安全的控制中，比较常用的是ReentrantLock，可以 显式加锁、释放锁。
@@ -1117,7 +1117,7 @@ synchronized 与 Lock 的对比
 
 优先使用顺序:
 
-Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) ----->同步方法 (在方法体之外)
+Lock -----> then 同步代码块(已经进入了方法体，分配了相应资源) -----> then 同步方法 (在方法体之外)
 
 
 
@@ -1125,7 +1125,111 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 438
 
-看到这里
+银行有一个账户, 有两个储户分别向同一个账户存3000元, 每次存1000, 存3次, 每次存完打印账户余额
+
+依次分析：
+ *  1. 是否是多线程问题? 是的, 两个线程分别是代表储户的线程
+ *  2. 是否涉及共享数据? 是的, 账户 (账户余额)
+ *  3. 涉及到线程安全吗? 有
+ *  4. 考虑如何解决线程安全问题 --> 同步机制: 三种方式
+
+
+
+线程不安全时
+
+```java
+/**
+ *  P438
+ *
+ * @author xueshuo
+ * @create 2023-02-25 4:34 pm
+ */
+public class AccountTest {
+    public static void main(String[] args) {
+        Account acct = new Account();
+        // c1, c2同时依赖于acct, 于是他们就共享同一个acct的数据了
+        Customer c1 = new Customer(acct);
+        Customer c2 = new Customer(acct);
+
+        c1.setName("tom");
+        c2.setName("alice");
+
+        c1.start();
+        c2.start();
+    }
+}
+
+
+class Account{
+    private double balance;
+
+    public Account(double balance) {
+        this.balance = balance;
+    }
+
+    // 存钱
+    public void deposit(double amt){
+        if (amt > 0){
+
+            balance += amt;
+
+            // 引入线程安全问题出现的几率
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(Thread.currentThread().getName() +  ": 存钱成功, 余额为: "+ balance);
+        }
+    }
+
+    public Account() {
+    }
+}
+
+
+class Customer extends Thread{
+    private Account acct;
+    public Customer(Account acct){
+        this.acct = acct;
+    }
+
+    @Override
+    public void run(){
+        for(int i = 0; i < 3; i++){
+            acct.deposit(1000);
+        }
+    }
+
+}
+```
+
+输出结果可能为
+
+```bash
+tom: 存钱成功, 余额为: 2000.0
+alice: 存钱成功, 余额为: 2000.0
+alice: 存钱成功, 余额为: 4000.0
+tom: 存钱成功, 余额为: 4000.0
+tom: 存钱成功, 余额为: 6000.0
+alice: 存钱成功, 余额为: 6000.0
+```
+
+明显存在安全问题, 这是因为线程不同步， c1进入deposit执行完`balance += amt;` 进入阻塞状态1s, 在这1s内, c2也进入deposit也执行了`balance += amt`, 当c1,c2结束阻塞状态时, balance上就出现了2000块. 
+
+
+
+只需要在Account里的deposit()变为 synchronized method 即可
+
++ :bangbang:  回忆之前讲到的, 同步方法的同步监视器问题, 如果是非静态的方法, 同步监视器是this, 静态的方法的同步监视器是当前类本身, 这里我们没有把deposit声明为静态方法, 它的同步监视器是this, 但是多个线程共用1个Account实例, 所以c1,c2 只有1个同步监视器, 这是合法的有效的. 
+
+```java
+public synchronized void deposit(double amt){
+  
+ 	// ... 
+}
+```
 
 
 
@@ -1137,8 +1241,132 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 # 5. 线程的通信
 
+## 5.1 线程通信例题
+
 439
 
+使用两个线程打印1 ~ 100, 要求两个线程交替打印
+
+
+
+涉及到的三个方法:
+ * wait(): 一旦执行此方法, 当前线程就进入阻塞状态, 并释放同步监视器
+ * notify():  一旦执行此方法, 就会唤醒被wait()的一个线程, 如果有多个线程被wait， 就唤醒优先级高的那个
+ * notifyAll(): 一旦执行此方法, 就会唤醒所有被wait的线程
+
+:bangbang: 说明:
+ * wait(), notify(), notifyAll() 三个方法必须使用在同步代码块或同步方法中 (Lock使用线程通信有别的方式)
+ * wait(), notify(), notifyAll() 三个方法的调用者**必须是同步代码块或同步方法中的同步监视器**, 否则会出现IllegalMonitorStateException
+ * wait(), notify(), notifyAll() 三个方法是定义在java.lang.object中, 因为任何类的对象都可以充当同步监视器
+
+
+
+```java
+/**
+ * P439
+ * 线程通信的例子: 使用两个线程打印1 ~ 100, 要求两个线程交替打印
+ *
+ * @author xueshuo
+ * @create 2023-02-25 5:06 pm
+ */
+public class CommunicationTest {
+
+    public static void main(String[] args) {
+        Number number = new Number();
+
+        Thread t1 = new Thread(number);
+        Thread t2 = new Thread(number);
+
+        t1.setName("t1");
+        t2.setName("t2");
+
+        t1.start();
+        t2.start();
+
+    }
+}
+
+
+class Number implements Runnable{
+    private int number = 1;
+
+
+    @Override
+    public void run() {
+
+        synchronized (this) {
+
+            while(true){
+                // 唤醒线程
+                notify();       // 唤醒其他处于阻塞状态的1个线程, 优先级越高越先被唤醒
+
+                if(number <= 100){
+
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + ": "+ number);
+                    number++;
+
+                    try {
+                        // 使得调用如下wait()方法的线程进入阻塞状态
+                        // 执行wait()的线程会释放拿到的锁, 但s执行sleep()的线程不会释放拿到的锁
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+}
+```
+
+
+
+实现交替打印的过程: 
+
+不妨设t1先抢到了锁, 在执行完
+
+```java
+System.out.println(Thread.currentThread().getName() + ": "+ number);
+number++;
+```
+
+后, t1 执行wait()进入阻塞状态, 同时释放了锁, 此时t2得以拿到锁而进入synchronized代码块, 执行`notify(); ` 唤醒了t1, 接着t2执行完
+
+```java
+System.out.println(Thread.currentThread().getName() + ": "+ number);
+number++;
+```
+
+后, t2执行wait()进入阻塞, 同时释放锁, t1得以拿到锁而进入synchronized代码块 
+
+如此往复...
+
+
+
+---
+
+面试题: Sleep()与wait()的异同
+
+440
+
+相同点
+
++ 一旦执行方法, 都会使执行方法的线程进入阻塞状态
+
+不同点
+
++ 两个方法声明的位置不同: Thread类中声明sleep( ), Object类中声明wait( )
++ 调用的要求不同: sleep( )可以在任何需要的场景下调用, 而wait( ) 必须使用在同步代码块或同步方法中
++  关于释放同步监视器： 如果两个方法都使用在同步代码块或同步方法中, sleep() 方法不会释放同步监视器, 但是wait()则会释放同步监视器
 
 
 
@@ -1146,6 +1374,9 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 
 
+## 5.2 生产者消费者例题
+
+441
 
 
 
@@ -1157,7 +1388,7 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 作为2.线程的创建和使用的补充
 
-## 多线程的创建 方式三: 实现Callable接口
+## 多线程的创建 方式四: 实现Callable接口
 
 442
 
@@ -1167,6 +1398,6 @@ Lock -----> 同步代码块(已经进入了方法体，分配了相应资源) --
 
 
 
-## :full_moon: 多线程的创建 方式四: 使用线程池
+## :full_moon: 多线程的创建 方式五: 使用线程池
 
 444

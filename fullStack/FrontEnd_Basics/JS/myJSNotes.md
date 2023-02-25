@@ -13,6 +13,8 @@ Chapter |
 [C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md) |
 [C5: JS Debug & Exception](./C5_Debug/README.md) |
 
+[ES6: Promose](./Promise/myPromise.md)
+
 ---
 学习资源
 
