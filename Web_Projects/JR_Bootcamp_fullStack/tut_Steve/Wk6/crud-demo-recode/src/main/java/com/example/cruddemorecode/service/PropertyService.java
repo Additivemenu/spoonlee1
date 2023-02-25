@@ -4,7 +4,7 @@ import com.example.cruddemorecode.dto.PropertyGetDto;
 import com.example.cruddemorecode.dto.PropertyPageDto;
 import com.example.cruddemorecode.dto.PropertyPostDto;
 import com.example.cruddemorecode.entity.Property;
-import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.entity.UserInfo;
 import com.example.cruddemorecode.exception.ResourceNotFoundException;
 import com.example.cruddemorecode.mapper.PropertyMapper;
 import com.example.cruddemorecode.mapper.UserMapper;
@@ -43,8 +43,8 @@ public class PropertyService {
         property.setType(propertyPostDto.getType());
         property.setLandSize(propertyPostDto.getLandSize());
         // FK
-        User user = userService.findUser(propertyPostDto.getUserId());
-        property.setUser(user);
+        UserInfo userInfo = userService.findUser(propertyPostDto.getUserId());
+        property.setUserInfo(userInfo);
 
         // step: save property entity into database
         propertyRepository.save(property);

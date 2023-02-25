@@ -46,11 +46,41 @@ Experiences I've learned from P3
 
 
 
+## IntelliJ VCS
+
+intellij open project > get from vsc, 先绑定intellij和你的github账号, 可以选择clone你github上涉及到的哪一个repository
+
+
+
+图形化界面操作
+
+```java
+左下角git可以查看branch, commit 记录
+
+顶部的工具栏面板中的git, 可以选择各种commit 操作
+
+右下角可以切换branch
+```
+
+
+
+或者在intellij的terminal里可以直接跑 git command, 就和在vscode 里一样
+
+```java
+只是每次 checkout切换branch时, 接一个ls才能刷新显示当前branch
+```
+
+
+
+顶部工具栏 view > tool window > commit, 可以在左侧打开类似vs code中source control的window, 查看staging area 和 working area
+
+
+
+:bangbang: 先确保你在remote create branch, 然后在这个branch上写代码. 不要先在本地create branch (虽然现在本地创建新branch再push到remote, 但是不推荐!) 
+
 # 项目代码规范
 
 使用eslint来做代码规范检查, 甚至不让用`i++`
-
-
 
 # Vscode extension
 

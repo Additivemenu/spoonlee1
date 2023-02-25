@@ -5,17 +5,16 @@ import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPatchDto;
 import com.example.cruddemorecode.dto.UserPostDto;
 import com.example.cruddemorecode.entity.Property;
-import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.entity.UserInfo;
 import com.example.cruddemorecode.exception.ResourceNotFoundException;
 import com.example.cruddemorecode.mapper.PropertyMapper;
 import com.example.cruddemorecode.mapper.UserInfoMapper;
-import com.example.cruddemorecode.mapper.UserMapper;
 import com.example.cruddemorecode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xueshuo
@@ -31,25 +30,30 @@ public class UserService {
 
     private final PropertyMapper propertyMapper;
 
+    private final PasswordEncoder passwordEncoder;  // 注入这个依赖, 以对user password进行加密
+
     // 增
     public void createUser(UserPostDto userPostDto){
-        System.out.println(userPostDto);
+        // spring security: 给密码encode
+        userPostDto.setPassword(passwordEncoder.encode(userPostDto.getPassword()));
 
-        User user = userMapper.mapUserPostDtoToUser(userPostDto);
+        // System.out.println(userPostDto);
+
+        UserInfo userInfo = userMapper.mapUserPostDtoToUser(userPostDto);
 
         // 将user存进table
-        userRepository.save(user);      // argument必须是entity, not dto
+        userRepository.save(userInfo);      // argument必须是entity, not dto
     }
 
 
     // 查
     public UserGetDto getUser(Long userId) {
 
-        User user = findUser(userId);
+        UserInfo userInfo = findUser(userId);
 
-        System.out.println(user);
+        System.out.println(userInfo);
 
-        return userMapper.mapUserToUserGetDto(user);
+        return userMapper.mapUserToUserGetDto(userInfo);
     }
 
 
@@ -62,32 +66,32 @@ public class UserService {
     // 改
     public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
         // step1
-        User user = findUser(userId);
+        UserInfo userInfo = findUser(userId);
 
         // step2
-        user.setName(userPatchDto.getName());
+        userInfo.setName(userPatchDto.getName());
 
         // step3
-        userRepository.save(user);
+        userRepository.save(userInfo);
 
         // step4: 将update过后的user entity转化为UserGetDto返回给前台
-        return userMapper.mapUserToUserGetDto(user);
+        return userMapper.mapUserToUserGetDto(userInfo);
     }
 
     public UserGetDto getUserByEmail(String email) {
         // step1
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
+        UserInfo userInfo = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
         // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
 
         // step2: entity --> dto, then return to front end
-        return userMapper.mapUserToUserGetDto(user);
+        return userMapper.mapUserToUserGetDto(userInfo);
     }
 
 
 
     // helper function: try to find user in database
     // not private because other table might also want to find user when joining tables
-    public User findUser(Long userId){
+    public UserInfo findUser(Long userId){
 //        Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
 //        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
 //        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
@@ -98,8 +102,8 @@ public class UserService {
     }
 
     public List<PropertyGetDto> getPropertiesByUserId(Long userId) {
-        User user = findUser(userId);
-        List<Property> propertyList = user.getPropertyList();
+        UserInfo userInfo = findUser(userId);
+        List<Property> propertyList = userInfo.getPropertyList();
 
         return propertyList.stream()
                 .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))

@@ -8,7 +8,8 @@
 | [2](./SpringBoot2.md) | Exception Handling, 用SpringBoot实现CRUD中的RUD |
 | [3](./SpringBoot3.md) | 利用flyway创建新的table, JPA实现连表查询service,  格式转化: mapper, mapStruct |
 | [4](./SpringBoot4.md) | Entity之间的联动, @builder |
-| [5](./SpringBoot5.md) |  |
+| [5](./SpringBoot5.md) | 分页, spring security introduction |
+| [6](./SpringBoot6.md) | spring security |
 
 
 

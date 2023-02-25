@@ -1,6 +1,5 @@
 package com.example.cruddemorecode.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,7 +21,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@Table(name = "user")       // entity名和数据库中的table名不同时， 需要用@Table指明映射关系
+public class UserInfo {
     @Id     // 指定修饰的属性为primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 指定主键自动生成模式： 自增长
     private Long id;

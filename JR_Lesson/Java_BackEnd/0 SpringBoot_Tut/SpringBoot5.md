@@ -79,9 +79,9 @@ where property0_.id=?
 
 总之看业务需求调fetch type, 决定查询时对于外键是否进行连表查询
 
-# 开始正式讲
 
-## 分页 14min- 38min
+
+# 分页 14min- 38min
 
 使用场景:  getPropertyByUserId()
 
@@ -349,13 +349,15 @@ public class ControllerExceptionHandler {
 
 # 登录验证 53min 
 
-全新的领域, 需要用到Spring security (之前我们并没有加入这个dependency)
+全新的领域, 需要用到Spring security (之前我们并没有加入这个dependency), 用spring security扩展性好
 
-这部分只需要知道怎么用即可,  简单知道原理就行, 将来工作如果不是新项目可能也接触不太到, junior职位一般也不会让你碰安全相关的东西
+这部分只需要知道怎么用即可,  简单知道原理就行, 将来工作时如果不是新项目可能也接触不太到spring security, 面试时问的也不多, junior职位一般也不会让你碰安全相关的东西
 
 
 
-## 准备工作57min-
+
+
+## 准备工作 57min-
 
 https://docs.spring.io/spring-security/reference/getting-spring-security.html#getting-gradle
 
@@ -363,9 +365,19 @@ https://docs.spring.io/spring-security/reference/getting-spring-security.html#ge
 
 ```gradle
 compileOnly "org.springframework.boot:spring-boot-starter-security"
+
+不行 加入
+implementation 'org.springframework.boot:spring-boot-starter-security'		
+testImplementation 'org.springframework.security:spring-security-test:5.7.3'		// 做测试用的
 ```
 
 :bangbang: 注意导入后可以在external resources查看是否导入成功, 如果不成功可以尝试重启intellij
+
+>  如果你还需要实现第三方登录等额外功能, spring securityy 还不够, 见上面的doc链接
+
+
+
+
 
 
 
@@ -377,7 +389,15 @@ compileOnly "org.springframework.boot:spring-boot-starter-security"
 
 
 
-直接跑application, 会发现原来的代码不起作用了 (md 我没出现这种情况) 因为SpringSecurity默认配置会启用, 此时你应该手动配置让SpringSecurity失效
+直接跑application, 会发现原来的代码不起作用了 (md 我没出现这种情况) 因为SpringSecurity默认配置会启用导致加密, 此时你应该手动配置让SpringSecurity失效
+
+Intellij 运行之后的log里会出现如下的信息
+
+```bash
+Using generated security password: 7210fda5-866c-4688-9fda-13233f62815b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+```
 
 
 
@@ -406,13 +426,118 @@ public class SecurityConfiguration {
 }
 ```
 
-正常情况下现在可以正常run application了
+现在run application之后postman可以正常响应了
 
 
 
-而我一直报错
+## 登录验证 1h16min-
 
-```bash
-Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.cruddemorecode.configuration.SecurityConfiguration] from ClassLoader [jdk.internal.loader.ClassLoaders$AppClassLoader@7aec35a]
+### API 选择
+
+登录操作不属于CRUD, 登录的restful api 基本是固定的
+
+```java
+用post而不用get的原因:
+把用户密码放在body里而不是url里, 不容易被黑客破解
 ```
+
+
+
+### 登录流程 1h22min-
+
+```java
+拿到刚输入的用户名和密码 ---> 和数据库里的用户名密码比对, 匹配了的话就返回success
+```
+
+
+
+Step1 1h27min-
+
+:bangbang: 常识L 不会把密码明文存在数据库里, 需要先加密再存到数据库, 不然一旦数据库泄漏, 公司就承受非常大损失
+
+在SecurityConfiguration类中加入如下方法
+
+```java
+@Bean		// 记得@Bean和当前类头上的@Configuration一起用
+public PasswordEncoder passwordEncoder(){
+    return new BCryptPasswordEncoder();
+}
+```
+
+
+
+在UserService中, 对createUser这个方法进行修改, 使得user post的密码被加密后再存入数据库
+
++ 加入passwordEncoder这个成员, 以调用加密方法
+
+```java
+private final PasswordEncoder passwordEncoder;  // 注入这个依赖, 以对user password进行加密  
+
+// 增
+  public void createUser(UserPostDto userPostDto){
+      // spring security: 给密码encode
+      userPostDto.setPassword(passwordEncoder.encode(userPostDto.getPassword()));
+
+      // System.out.println(userPostDto);
+
+      User user = userMapper.mapUserPostDtoToUser(userPostDto);
+
+      // 将user存进table
+      userRepository.save(user);      // argument必须是entity, not dto
+  }
+```
+
+创建User table时, password 类型为 char, 而不是varchar, 方便做加密
+
+
+
+之后run application, 在postman: post http://localhost:8080/api/v1/users, 并在post body里输入
+
+```json
+{
+    "name": "sponge bob",
+    "email": "spongeBob@gmail.com",
+    "password": "password888"
+}
+```
+
+
+
+在postgres的user table就能看到如下, 可见存入数据库的密码确实被加密了
+
+<img src="./Src_md/passwordEncoding.png">
+
+
+
+> ```java
+> passwordEncoder.matches(userPostDto.getPassword(), 数据库查到的password)		// 两个arg都是加密后的
+> ```
+
+
+
+### 大致的security原理讲解 1h41min-
+
+入门看视频学的快, 但是入门之后看文档学习, 比看视频学习更快 
+
+去看 spring security的doc: get started
+
+https://docs.spring.io/spring-security/reference/servlet/architecture.html
+
+数据从客户端发出, 先进入filter chain 而不是controller, 为了安全不能让所有数据都能到达controller, 在filterchain我们对用户发来的request做安全相关的考量. 这样也保证我们从controller往后, 不需要太多考虑数据的合法性问题, 而只需要专注于业务逻辑, 解耦合了相当于. 之后我们的操作基本就是在filter chain做的
+
+我们甚至可以自定义filter加入filter chain
+
+
+
+
+
+Q&A  1h52min- 1h55min
+
+
+
+预览将来要学什么 1h55min-
+
+
+
+
 

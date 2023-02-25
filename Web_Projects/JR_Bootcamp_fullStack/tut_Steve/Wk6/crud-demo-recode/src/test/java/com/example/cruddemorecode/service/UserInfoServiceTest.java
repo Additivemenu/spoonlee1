@@ -2,7 +2,7 @@ package com.example.cruddemorecode.service;
 
 import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPostDto;
-import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.entity.UserInfo;
 import com.example.cruddemorecode.mapper.PropertyMapper;
 import com.example.cruddemorecode.mapper.UserInfoMapper;
 import com.example.cruddemorecode.repository.UserRepository;
@@ -12,11 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +23,7 @@ import static org.mockito.Mockito.*;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class UserInfoServiceTest {
     // UserService里的依赖其他类的方法不会测试 -- 如何理解???
     // 而是用mock结果替换运行时的那行调用其他类的代码
 
@@ -54,7 +49,7 @@ public class UserServiceTest {
             .password("password")
             .build();
 
-    private final User user =User.builder()
+    private final UserInfo userInfo = UserInfo.builder()
             .email("s1@gmail.com")
             .name("s")
             .password("password")
@@ -81,8 +76,8 @@ public class UserServiceTest {
     @Test
     void shouldGetUserDtoWhenGetUser() {
         Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(userMapper.mapUserToUserGetDto(user)).thenReturn(mockUserGetDto);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userInfo));
+        when(userMapper.mapUserToUserGetDto(userInfo)).thenReturn(mockUserGetDto);
 
         UserGetDto userGetDto = userService.getUser(userId);
 

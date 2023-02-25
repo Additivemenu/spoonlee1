@@ -32,7 +32,7 @@ public class Property {
     // 这里就体现了entity和database tuple之间的mapping
     @ManyToOne // FK: property : user --> many to one           默认fetch EAGER
     @JoinColumn(name = "owner_id")  // define how to reference user based on database column "owner_id"
-    private User user;
+    private UserInfo userInfo;
 
     @CreationTimestamp      // 指定自动管理
     private OffsetDateTime createdTime;

@@ -2,7 +2,7 @@ package com.example.cruddemorecode.mapper;
 
 import com.example.cruddemorecode.dto.UserGetDto;
 import com.example.cruddemorecode.dto.UserPostDto;
-import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.entity.UserInfo;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public UserGetDto mapUserToUserGetDto(User user){
+    public UserGetDto mapUserToUserGetDto(UserInfo userInfo){
         // 方式1
 //        UserGetDto userGetDto = new UserGetDto();
 //
@@ -24,17 +24,17 @@ public class UserMapper {
 
         // 方式2: 通过builder来写
         UserGetDto userGetDto = UserGetDto.builder()
-                .createdTime(user.getCreatedTime())
-                .id(user.getId())
-                .email(user.getEmail())
-                .updatedTime(user.getUpdatedTime())
-                .name(user.getName())
+                .createdTime(userInfo.getCreatedTime())
+                .id(userInfo.getId())
+                .email(userInfo.getEmail())
+                .updatedTime(userInfo.getUpdatedTime())
+                .name(userInfo.getName())
                 .build();
 
         return userGetDto;
     }
 
-    public User mapUserPostDtoToUser(UserPostDto userPostDto){
+    public UserInfo mapUserPostDtoToUser(UserPostDto userPostDto){
 
 //        // 方式1: Getter Setter
 //        User user = new User();
@@ -44,14 +44,14 @@ public class UserMapper {
 //        user.setPassword(userPostDto.getPassword());
 
         // 方式2: @builder
-        User user = User.builder()
+        UserInfo userInfo = UserInfo.builder()
                 .email(userPostDto.getEmail())
                 .name(userPostDto.getName())
                 .password(userPostDto.getPassword())
                 .build();
 
 
-        return user;
+        return userInfo;
     }
 
 

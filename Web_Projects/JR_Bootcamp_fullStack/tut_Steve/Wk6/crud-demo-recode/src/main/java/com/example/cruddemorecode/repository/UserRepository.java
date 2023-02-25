@@ -1,6 +1,6 @@
 package com.example.cruddemorecode.repository;
 
-import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.entity.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -14,6 +14,6 @@ import java.util.Optional;
 // <User, Long>:
 //      |--- User对应User entity, 而User entity对应User table, 表示我们是要对User table进行增删改查的
 //      |--- Long是User的pk类型
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+public interface UserRepository extends JpaRepository<UserInfo, Long> {
+    Optional<UserInfo> findByEmail(String email);
 }
