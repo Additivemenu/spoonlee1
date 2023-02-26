@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise 封装AJAX操作</title>
+</head>
+<body>
+    <script>
+        // 封装一个函数 sendAJAX 发送GET AJAX请求
+        // 参数 URL
+        // 返回结果Promise对象
+        function sendAJAX(url){
+            return new Promise((resolve, reject)=>{
+                //1. 创建对象
+                const xhr = new XMLHttpRequest();
+                // 2. 初始化
+                xhr.open("GET", url)
+                // 3. 发送
+                xhr.send()
+                // 4. 处理响应结果
+                xhr.onreadystatechange = function (){
+                    if(xhr.readyState === 4){
+                        // 判断成功
+                        if (xhr.status >= 200 & xhr.status < 300){
+                            resolve(xhr.response);
+                        }else {
+                            reject(xhr.status);
+                        }
+                    }
+                }
+            })
+        }
+
+        sendAJAX('https://jsonplaceholder.typicode.com/posts')
+        .then(value => {
+            console.log(value)
+        }, reason => {
+            console.warn(reason)
+        })
+
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">
+            Promise 封装AJAX操作
+        </h2>
+        <button class="btn btn-primary" id="btn">
+            点击发送AJAX
+        </button>
+    </div>
+
+    <script>
+
+        // 选择节点
+        const btn = document.querySelector('#btn')
+
+
+        // 给节点绑定事件
+        // // 方式一 回调函数的形式 -------------------------------------------------
+        // btn.addEventListener('click', function(){
+        //     // 1. 创建对象
+        //     const xhr = new XMLHttpRequest()
+        //     // 2. 初始化
+        //     xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+        //     // 3. 发送
+        //     xhr.send();
+        //     // 4. 处理响应结果
+        //     xhr.onreadystatechange = function(){
+        //         if(xhr.readyState === 4){
+        //             // 判断响应状态码 2xx
+        //             if (xhr.status >= 200 && xhr.status < 300){
+        //                 // 控制台输出response body
+        //                 console.log(xhr.response)
+        //             }else{
+        //                 // 控制台输出response status code
+        //                 console.log(xhr.status)
+        //             }
+        //         }
+        //     }
+        // })
+
+        // 方式二: Promise -----------------------------------------------------
+        btn.addEventListener('click', function(){
+            // step1: 实例化Promise
+            const p = new Promise ((resolve, reject) =>{
+                // 1. 创建对象
+                const xhr = new XMLHttpRequest()
+                // 2. 初始化
+                xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+                // 3. 发送
+                xhr.send();
+                // 4. 处理响应结果
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState === 4){
+                        // 判断响应状态码 2xx
+                        if (xhr.status >= 200 && xhr.status < 300){
+                            // 控制台输出response body
+                            resolve(xhr.response)
+                        }else{
+                            // 控制台输出response status code
+                            reject(xhr.status)
+                        }
+                    }
+                }
+            })
+            // step2:
+            p.then(value=>{
+                console.log(value)
+            }, reason=>{
+                console.warn(reason)
+            })
+
+
+        })
+
+
+    </script>
+
+</body>
+</html>
