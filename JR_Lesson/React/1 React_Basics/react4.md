@@ -261,7 +261,7 @@ App {卡片居中， 背景图片, Layout}
 
 
 
-根据上面的设计图, 接着写css  2h15min-2h43min
+根据上面的设计图, 接着写css (其实就是用html,css写静态页面)  2h15min-2h43min
 
 因为此时要考虑布局, 在html中加入一些辅助的div或者嵌套来做布局
 
@@ -283,23 +283,7 @@ App {卡片居中， 背景图片, Layout}
 
 
 
-
-
-
-
-
-
-
-
 ## Step 4: Identify Where Your State Should Live
-
-
-
-
-
-
-
-
 
 
 

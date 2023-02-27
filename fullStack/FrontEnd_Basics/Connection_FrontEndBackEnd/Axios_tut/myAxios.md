@@ -2,9 +2,9 @@ https://www.bezkoder.com/axios-request/
 
 
 
+前置知识： Promise
+
 Axios is a promise-based HTTP Client Javascript library for Node.js and Browser. In this tutorial, we will create examples that use Axios to make Get/Post/Put/Delete request. The final section shows a simple Axios HTTP Client to interact with Rest API.
-
-
 
 # 1. Introduction
 
@@ -169,14 +169,12 @@ async function getTutorial() {
 
 
 
-# 3. Axios CRUD
+# 3. :full_moon: Axios CRUD
 
 一般有两种方式: 
 
 + then( )
 + Async/await : 用的更多, 最后给的例子里用的都是这种方式
-
-
 
 ```js
 // 以下API一般都遵守下面的格式 arg1: url, arg2: body, arg3: {
@@ -184,6 +182,8 @@ axios.CRUD(url, 										// arg1
            {body}, 									// arg2
            {headers:{}, params: {}}	// arg3
 )
+
+// axios.CRUD() 这类API返回的是一个包含着response信息的Promise对象, 我们可以借助async和await直接从中抽取信息
 ```
 
 这些就跟在postman里写API doc一样的, 指明什么方法, 然后指明body 或者params headers之类的
@@ -212,7 +212,7 @@ axios.get('/bezkoder.com/tutorials')
 ```js
 async function getTutorial() {
   try {
-    const response = await axios.get('/bezkoder.com/tutorials');
+    const response = await axios.get('/bezkoder.com/tutorials');		// await允许我们抽取Promise对象中 PromiseResult属性的信息
     console.log(response);
   } catch (error) {
     console.error(error);
