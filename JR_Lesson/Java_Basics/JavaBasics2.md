@@ -195,7 +195,7 @@ start from open/close principle
 
 
 
-common code smell: 重复的代码
+common code smell: 重复的代码, 下面我们将使用flocking rule来逐步消除重复代码， 当然中间会产生新的function()
 
 ```java
 flocking rules
@@ -270,7 +270,9 @@ Refactor流程: 先找到最小不同， 然后利用函数把不同点提出来
 
 还可以继续合并消除if else分支, 减少verse()中的重复代码 2h37min-2h43min
 
-需要导入Apache的capatilize() 函数
+看锤姐上传的代码吧
+
+这需要导入Apache的capatilize() 函数
 
 
 
@@ -285,6 +287,8 @@ Refactor流程: 先找到最小不同， 然后利用函数把不同点提出来
 
 
 ### 重构开始向面向对象跟进:
+
+在减少重复代码的同时， 我们引入了不少function, 接下来我们对这些function做处理
 
 把通过flocking rule新加的function转移到另一个类中, 因为这些方法都只接收1个number
 
@@ -319,7 +323,7 @@ public class BottoleNumber {
 
 
 
-更近一步, 我们把这些方法的输入的参数(number)看成对象, 把上面的类的行为规范抽离到interface里
+更近一步, 我们把这些方法的输入的参数(number)看成对象, 把上面的类的行为规范抽离到interface里, 再去定义一个个的实现类
 
 ```java
 public interface IBottoleNumber{
@@ -397,6 +401,7 @@ public class BottleNumber implements IBottleNumber{
 BottleNumberFactory 3h2min-
 
 ```java
+// 根据i 生产一个实现了IBottleNumber接口的类的对象
 public BottleNumberFactory{
   public IBottleNumber build(int i){		// 返回类型体现多态
     switch (i){
@@ -419,22 +424,89 @@ public BottleNumberFactory{
 
 ```java
 public class Bottles{
-  	private BottleNumberFactory bf = new BottleNumberFactory();
-  
-  public String verse(int i){
-    
-    IBottleNumber bottle = bf.build(i)
-    IBottleNumber nextBottle = bf.build(i-1);
-    
-    return StringUtils.capitalize(bottle.numberString()) + " " + bottle.container + " of beer on the wall, "
-      + bottle.numberString() + " " + bottle.container() + " of beer. \n"
-      + bottle.action()
-      + next.bottle.numberString() + " " + nextBottle.container() + " of beer on the wall.";
-  }
+    private BottleNumberFactory bf = new BottleNumberFactory();
+
+    public String verse(int i){
+
+      IBottleNumber bottle = bf.build(i)
+      IBottleNumber nextBottle = bf.build(i-1);
+
+      return StringUtils.capitalize(bottle.numberString()) + " " + bottle.container + " of beer on the wall, "
+        + bottle.numberString() + " " + bottle.container() + " of beer. \n"
+        + bottle.action()
+        + next.bottle.numberString() + " " + nextBottle.container() + " of beer on the wall.";
+    }
 }
 ```
 
 
 
 ### 新的需求3h06min-
+
+如果数字是6， 则对应歌词变成如下
+
+```java
+1 six-pack of beer on the wall, 1 six-pack of beer.
+Take one down and pass it around, 5 bottles of beer on the wall.
+  
+ // 原来
+6 bottles of beer on the wall, 6 bottles of beer.
+Take one down and pass it around, 5 bottles of beer on the wall.
+```
+
+
+
+创建新的实现类
+
+```java
+public class NumberSix implements IBottleNumber {
+
+  @Override
+  public String action() {
+    return "Take " + pronoun() + " down and pass it around, ";
+  }
+
+  @Override
+  public String pronoun() {
+    return "one";
+  }
+
+  @Override
+  public String numberString() {
+    return "1";
+  }
+
+  @Override
+  public String container() {
+    return "six-pack";
+  }
+}
+```
+
+对应地, 修改工厂方法, 添加生产NumberSix的条件
+
+```java
+public class BottleNumberFactory {
+  public IBottleNumber build(int i) {
+    switch (i) {
+      case -1:
+        return new NumberNegativeOne();
+      case 0:
+        return new NumberZero();
+      case 1:
+        return new NumberOne();
+      case 6:
+        return new NumberSix();		// 添加这个
+      default:
+        return new BottleNumber(i);
+    }
+  }
+}
+```
+
+这样我们就遵守了open-close原则
+
+对main function: close for modififaction, 我们没有修改任何主函数的代码
+
+对辅助function: open for extension, 我们只是根据新需求, 添加工厂能生产的对象
 

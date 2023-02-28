@@ -6,7 +6,10 @@
 
 # 要点概述
 
-
++ 对于动态页面的分析: 核心的state和action是什么
+  + Context -- Provider组件: 封装核心的state和action 
+  + 其他组件获取指定Context的Provider的包裹, 并根据核心的state和action来推导其他的state和action
++ useReducer()的使用, useEffect的使用
 
 # 预览效果 0min-
 
@@ -192,6 +195,8 @@ input[type="number"] {
 
 
 ## 静态页面15min-
+
+HTML, css基本功
 
 ```js
 |--- components
