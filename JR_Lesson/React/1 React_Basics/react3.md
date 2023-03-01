@@ -32,7 +32,7 @@
 
 
 
-# React state 5min-
+# 1. React state 5min-
 
 
 
@@ -537,7 +537,7 @@ export default Item
 
 
 
-# Virtual DOM 1h24min- 
+# 2. Virtual DOM 1h24min- 
 
 上面的代码中在ITEMS.map()中动态生成HTML元素时如果没写`key = {href}`, 有可能报错:
 
@@ -690,7 +690,7 @@ Further reading reconcilation原理:  https://reactjs.org/docs/reconciliation.ht
 
 
 
-# 继续2h-
+# 3. 继续2h-
 
 实现点击NavItem, 能够跳转到不同的页面
 

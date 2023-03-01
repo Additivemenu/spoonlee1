@@ -132,6 +132,7 @@ public class Example{
 private final byte[] value;
 ```
 **String immutable可不是指那些指向堆空间中的String对象的变量的值不能改(String变量名只是个指针而已, 随意改它指向谁很正常)**, change stack中的str变量在change()传入参数时是指向堆空间中的String intance的 (上图画错了, 画的是函数按地址传递, :star: javaCore1 4.5: java函数总是值传递, 方法得到的是参数值的一个副本), 但change()的执行代码中
+
 ```java
 str = "test ok"
 ```
@@ -280,6 +281,8 @@ String 常见算法题
 
 
 ## Math
+
+
 
 
 

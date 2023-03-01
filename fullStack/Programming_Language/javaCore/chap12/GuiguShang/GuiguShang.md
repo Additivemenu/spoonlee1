@@ -1541,20 +1541,197 @@ https://developer.aliyun.com/article/52846
 
 
 
+PPT 上有
+
+```java
+```
+
+
+
+
+
+PPT上还提供了另一个 练习的例子
+
+
+
 # 6. JDK5.0新增的线程创建方式
 
 作为2.线程的创建和使用的补充
 
-## 多线程的创建 方式四: 实现Callable接口
+## 多线程的创建 方式三: 实现Callable接口
 
 442
 
-看到这里...
+与使用Runnable相比， Callable功能更强大些 
+
++ 相比run()方法，可以有返回值. e.g. 一个线程执行完任务返回一个值供另一个线程使用
++ 方法可以抛出异常. run()只能try-catch在内部handle掉异常
++ 支持泛型的返回值. 
++ 需要借助FutureTask类，比如获取返回结果
+
+```java
+ Future接口
++ 可以对具体Runnable、Callable任务的执行结果进行取消、查询是 否完成、获取结果等。
++ FutrueTask是Futrue接口的唯一的实现类
++ FutureTask 同时实现了Runnable, Future接口。它既可以作为Runnable被线程执行，又可以作为Future得到Callable的返回值
+```
+
+
+
+一共6步
+
+```java
+/**
+ * 442
+ * 创建线程的方式三: 实现Callable接口 --- JDK 5.0 新增
+ *  如何理解实现Callable接口创建多线程比实现Runnable接口创建多线程要强大?
+ *  1. call() 可以有返回值
+ *  2. call() 可以抛出异常， 被外面的操作捕获, 获取异常信息
+ *  3. Callable是支持generics的
+ *
+ * @author xueshuo
+ * @create 2023-03-01 12:31 pm
+ */
+public class ThreadNew {
+
+    public static void main(String[] args) {
+        // 3. 创建Callable接口实现类的对象
+        NumThread numThread = new NumThread();
+
+        // 4. 将此Callable接口实现类的对象作为参数传递到FutureTask的构造器中，创建FutureTask的对象
+        FutureTask futureTask = new FutureTask(numThread);
+
+        // 5. 将futureTask对象作为参数传递到THread类的构造器中, 创建Thread对象, 并调用start()启动线程任务
+        Thread t1 = new Thread(futureTask);     // FutureTask也实现了Runnable
+        t1.start();     // 执行线程任务
+
+        // 6. 获取Callable中call方法的返回值 (如果不感兴趣就可以不用调用 futureTask.get())
+        try {
+            // get 方法的返回值即为FutureTask构造器参数Callable实现类重写的call()的返回值
+            Object sum = futureTask.get();
+            System.out.println("sum is " + sum);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// 1. 提供一个实现了Callable接口的实现类
+class NumThread implements Callable{
+    // 2. 实现call方法, 将此线程需要执行的操作声明在call() 中
+    @Override
+    public Object call() throws Exception {
+        int sum = 0;
+        // 遍历100以内的偶数, 返回他们的和
+        for(int i = 1; i <= 100; i++){
+            if (i % 2 == 0){
+                System.out.println(i);
+                sum += i;
+            }
+        }
+        return sum;
+    }
+}
+```
 
 
 
 
 
-## :full_moon: 多线程的创建 方式五: 使用线程池
 
-444
+
+## :full_moon: 多线程的创建 方式四: 使用线程池
+
+443-444
+
+使用线程池的好处
+
++ 背景:经常创建和销毁、使用量特别大的资源，比如并发情况下的线程， 对性能影响很大。
+
++ 思路:提前创建好多个线程，放入线程池中，使用时直接获取，使用完 放回池中。可以避免频繁创建销毁、实现重复利用。类似生活中的公共交通工具 (前几个线程创建方式就类似自己造交通工具从A到B, 到B又把造出来的交通工具给销毁了)。 后面讲的数据库连接池的思想也类似
+
+```java
+好处:
+1. 提高响应速度(减少了创建新线程的时间)
+2. 降低资源消耗(重复利用线程池中线程，不需要每次都创建)  
+3. 便于线程管理, 可以控制:
+	 + corePoolSize:核心池的大小
+ 	 + maximumPoolSize:最大线程数
+ 	 + keepAliveTime:线程没有任务时最多保持多长时间后会终止 
+   + ...
+```
+
+
+
+```java
+JDK 5.0起提供了线程池相关API:ExecutorService 和 Executors  
+  
+ExecutorService: 真正的线程池接口。常见子类ThreadPoolExecutor
++ void execute(Runnable command) :  //执行任务/命令，没有返回值，一般用来执行 Runnable
++ <T> Future<T> submit(Callable<T> task):  //执行任务，有返回值，一般用来执行 Callable
++ void shutdown() : //关闭连接池
+
+Executors: 工具类、线程池的工厂类，用于创建并返回不同类型的线程池
++ Executors.newCachedThreadPool():  // 创建一个可根据需要创建新线程的线程池
++ Executors.newFixedThreadPool(n);  //创建一个可重用固定线程数的线程池
++ Executors.newSingleThreadExecutor() :  //创建一个只有一个线程的线程池
++ Executors.newScheduledThreadPool(n):  //创建一个线程池，它可安排在给定延迟后运 行命令或者定期地执行。
+```
+
+
+
+示例
+
+```java
+public class ThreadPool {
+
+    public static void main(String[] args) {
+        // 1. 利用Executors工具类生成含有指定线程数量的线程池
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        // System.out.println(executorService.getClass());     // 查看executorService的类
+
+//        // optional: 设置线程池属性 方便管理
+//        ThreadPoolExecutor service1 = (ThreadPoolExecutor) executorService;
+//        service1.setCorePoolSize(15);
+//        service1.setKeepAliveTime(5, TimeUnit.SECONDS);
+
+
+        // 2. 执行指定的线程操作, 需要提供实现了RUnnable接口或Callable接口实现类的对象
+        executorService.execute(new NumberThread());      // 适合适用于Runnable
+        executorService.execute(new NumberThread1());      // 适合适用于Runnable
+
+        //executorService.submit(Callable callable);  // 适合使用于Callable
+
+        // 3. 关闭线程池
+        executorService.shutdown();
+    }
+}
+
+
+class NumberThread implements Runnable {
+
+    @Override
+    public void run() {
+        for(int i=1; i<=100;i++){
+            if (i % 2 == 0){
+                System.out.println(Thread.currentThread().getName()+": "+ i);
+            }
+        }
+    }
+}
+
+class NumberThread1 implements Runnable {
+
+    @Override
+    public void run() {
+        for(int i=1; i<=100;i++){
+            if (i % 2 != 0){
+                System.out.println(Thread.currentThread().getName()+": "+ i);
+            }
+        }
+    }
+}
+```
+

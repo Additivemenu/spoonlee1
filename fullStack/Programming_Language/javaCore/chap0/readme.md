@@ -115,7 +115,7 @@ File --> Settings
 
 `Build, Execution, Deployment` - `Build Tools`: 勾选any changes, 这样当改变build.gradle中的dependency时, 对应external resources也会自动跟着改变
 
-## 1.4 IDEA keymap
+## 1.4 :moon: IDEA keymap
 411
 
 IDEA的很多快捷键和Eclipse不同. 
@@ -127,6 +127,7 @@ IDEA的很多快捷键和Eclipse不同.
 + `alt`+`insert` / `cmd`+`N`: generate Constructor, getter, accessor
 + `command` + `O`: search for the class and check the source code
 + `command` + `fn` + `F12`: display all methods in current class
++ `command` + `p` : view argument of a function
 
 more on pdf or google
 
