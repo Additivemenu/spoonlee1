@@ -12,8 +12,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {UserInfoMapper.class})       // 指明利用UserInfoMapper中的 User <--> UserGetDto方法
 public interface PropertyMapper {
 
-    // Property entity{ User }  ----> PropertyGetDto{ UserGetDto }
-    @Mapping(source = "user", target="userGetDto")
+    // Property entity{ UserInfo }  ---->  PropertyGetDto{ UserGetDto }
+    @Mapping(source = "userInfo", target="userGetDto")
     PropertyGetDto mapPropertyToPropertyGetDto(Property property);
 
 }

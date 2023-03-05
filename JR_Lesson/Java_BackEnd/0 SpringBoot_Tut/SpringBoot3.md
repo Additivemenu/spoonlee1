@@ -514,3 +514,93 @@ public PropertyGetDto getProperty(Long propertyId){
     }
 ```
 
+
+
+
+
+
+
+# Unit Test
+
+website 1-28 part1 video
+
+
+
+此时的代码:
+
+user ---> userGetDto 手写, UserService中只有userRepository 1个依赖
+
+
+
+写测试的目的: 测试代码逻辑是否正确
+
+```java
+// 对 getUser() 方法进行测试
+  
+public UserGetDto getUser(Long userId) {
+  User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User "+ userId))
+  
+  // entity ---> GetDto
+  UserGetDto userGetDto = new UserGetDto();
+  userGetDto.setId(userId);
+  userGetDto.setName(user.getName());
+  userGetDto.setEmail(user.getEmail());
+  userGetDto.setCreatedTime(user.getCreatedTime());
+  userGetDto.setUpdatedTime(user.getUpdatedTime());
+
+  return userGetDto;
+}
+```
+
+Scenario: 我们的getUser()的逻辑写的没错, 但是如果docker没起来导致报错,这就会让我们误认为是自己的代码写的有问题，
+
+:star: **unit test的核心目的是: 为了测试getUser()的逻辑有错没有(如果unit test失败， 则只会因为是unit内部的逻辑出错了), 应该排除掉其他因素(隔绝unit之外的环境)的干扰. 上面的例子中， 我们应该排除掉其他依赖(e.g. userRepository)对unit内部的影响**
+
+
+
+test module下:
+
+UserServiceTest.java
+
+```java
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest{
+  @Mock
+  private UserRepository userRepository;
+  
+  @InjectMocks
+  private UserService userService;
+  
+  // 造的假数据
+  private final User user = User.builder()
+    .id(1L)
+    .email("s@gmail.com")
+    .name("s")
+    .password("password")
+    .build();
+  
+  @Test
+  void shouldGetUserDtoWhenGetUser(){
+    Long userId = 1L;
+    
+    // 以下: 不希望真的去查数据库, 而是when running userRepository.findById(userId)时, 不去真的执行它, 而是
+    // return Optional.of(user). 这样我们就不必真的去使用被测试方法中的unit之外的东西，而是以假数据代之
+    // 此时我们不需要去启动数据库也能测试userService.getUser(userId)方法啦!
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user))
+    
+    // 调用被测试方法:
+    UserGetDto userGetDto = userService.getUser(userId);
+    
+    assertEquals(userGetDto.getId(), 1L);
+    assertEquals(userGetDto.getName(), "s");
+    assertEquals(userGetDto.getEmail, "s@gmail.com");
+  }
+  
+  
+}
+```
+
+回过头来看, 其实userService.getUser(userId)做的只是把其内部的依赖 -- userRepository查到的user转化数据格式为userGetDto, 查找数据库的操作其实是userRepository做的
+
+另外， 如果要测试 UserRepository, 其实它很难是unit test了, 而是integration test
+

@@ -224,7 +224,7 @@ send后, 返回
 ---
 # 2. :full_moon: 搭建与连接数据库 28min-
 
-## 2.1 Docker: 搭建数据库 28min-
+## 2.1 Docker: 在Docker container中搭建数据库 28min-
 
 在intellij的project路径下, 创建docker-compose.yml文件
 
@@ -305,7 +305,7 @@ environment:
 
 
 
-## 2.2 Pgadmin: 可视化刚才搭建的数据库 40min-
+## 2.2 pgAdmin: 可视化操作刚才在Docker container中搭建的数据库 40min-
 
 即连接pgadmin和刚才用docker搭建的数据库
 
@@ -362,7 +362,7 @@ spring:
 
 其中:
 
-+ server及其下属的配置用来确定URL (我们目前的输入都是通过URL来实现的)
++ server及其下属的配置用来确定application server对应的URL (我们目前的输入都是通过URL来实现的)
   + `Context-path: /api/v1` 是指定我们的URL, 之后在postman里测试的URL, 都是接着`/api/v1`
 + Spring
   + 注意上面的datasource > username, password应该和搭建数据库时的配置一样

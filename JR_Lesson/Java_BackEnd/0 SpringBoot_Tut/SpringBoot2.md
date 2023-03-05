@@ -222,7 +222,7 @@ User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException());
 @RestControllerAdvice   // 监视Controller, 如果controller里的方法报了异常的化, 做如下处理
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(value = {ResourceNotFoundException.class})        // 如果controller里报了ResourceNotFoundException, handle it (back-end terminal will not show Exception message)
+    @ExceptionHandler(value = {ResourceNotFoundException.class})        // 如果controller里(controller会调用service, 所以service中throw error也会在这里被处理)报了ResourceNotFoundException, handle it (back-end terminal will not show Exception message)
     @ResponseStatus(HttpStatus.NOT_FOUND)           // 让前台返回信息中HttpStatus为404
     public String handleResourceNotFoundException(){
         return "Resource not found";            // 返回该值直接到前台

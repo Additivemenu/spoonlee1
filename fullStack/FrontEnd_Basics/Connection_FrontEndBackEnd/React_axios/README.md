@@ -14,7 +14,7 @@
 
 
 
-# React Axios example Overview
+# 1. React Axios example Overview
 
 We will build a React Client with React Query and Axios library to make CRUD requests to Rest API in that:
 
@@ -91,9 +91,9 @@ The response for a Axios request contains:
 
 
 
-# CRUD
+# 2. CRUD
 
-## React Axios Get JSON data
+## 2.1 React Axios Get JSON data
 
 Let’s implement <u>a React component</u> to fetch JSON data from API:
 
@@ -137,7 +137,6 @@ function App() {
 
   const [getResult, setGetResult] = useState(null);
 	
-  
   // functions ===================================================================
   // 辅助函数, 做格式转化
   const fortmatResponse = (res) => {
@@ -168,7 +167,8 @@ function App() {
     if (id) {
       try {
         const res = await apiClient.get(`/tutorials/${id}`);
-
+				
+        // 整理response里的信息
         const result = {
           data: res.data,
           status: res.status,
@@ -195,7 +195,8 @@ function App() {
             title: title,
           },
         });
-
+				
+        // 整理response里的信息
         const result = {
           status: res.status + "-" + res.statusText,
           headers: res.headers,
@@ -253,7 +254,7 @@ export default App;
 
 
 
-## React Axios Post
+## 2.2 React Axios Post
 
 Let’s use React Axios POST Json data to create new Tutorial.
 
@@ -343,7 +344,7 @@ export default App;
 
 
 
-## React Axios Put
+## 2.3 React Axios Put
 
 
 
@@ -351,10 +352,10 @@ export default App;
 
 
 
-## React Axios Delete
+## 2.4 React Axios Delete
 
 
 
 
 
-# Conclusion
+# 3. Conclusion

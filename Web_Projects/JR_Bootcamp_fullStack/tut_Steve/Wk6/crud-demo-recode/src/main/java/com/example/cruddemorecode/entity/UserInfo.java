@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")       // entity名和数据库中的table名不同时， 需要用@Table指明映射关系
-public class UserInfo {
+public class UserInfo {     // 这里其实就是表示数据库中User的entity, 后来用Spring Security中有类和User重名了所以改名为UserInfo
     @Id     // 指定修饰的属性为primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 指定主键自动生成模式： 自增长
     private Long id;

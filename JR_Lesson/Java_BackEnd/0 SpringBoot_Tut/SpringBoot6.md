@@ -103,8 +103,6 @@ UserDetailService: 公安身份证系统的数据库查询
 
 ## filter 雏形 40min-
 
-
-
 在application路径下新建filter package, 然后在里面新建如下类
 
 ```java
@@ -395,7 +393,7 @@ public class EmailAndPasswordFilter extends UsernamePasswordAuthenticationFilter
 关于循环依赖的问题
 
 ```java
-@RequiredArgsConstructor 方式注入依赖 可以检测循环依赖, 一般选择这种方式注入依赖
+@RequiredArgsConstructor 方式注入依赖, 可以检测循环依赖, 一般选择这种方式注入依赖
 
 @Autowired 方式注入依赖 无法检测循环依赖, 可能要到生产环境才能发现crash, 不推荐使用
 ```
