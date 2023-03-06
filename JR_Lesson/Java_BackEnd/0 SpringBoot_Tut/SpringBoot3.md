@@ -520,9 +520,342 @@ public PropertyGetDto getProperty(Long propertyId){
 
 
 
-# Unit Test
+# Unit Test 1h22min-
 
-website 1-28 part1 video
+
+
+## 老师的例子
+
+对应代码放在desktop > JR_materials > fullStack > Steven_prior_SpringSecurity
+
+被测试类
+
+```java
+package com.example.cruddemorecode.service;
+
+import com.example.cruddemorecode.dto.PropertyGetDto;
+import com.example.cruddemorecode.dto.UserGetDto;
+import com.example.cruddemorecode.dto.UserPatchDto;
+import com.example.cruddemorecode.dto.UserPostDto;
+import com.example.cruddemorecode.entity.Property;
+import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.exception.ResourceNotFoundException;
+import com.example.cruddemorecode.mapper.PropertyMapper;
+import com.example.cruddemorecode.mapper.UserInfoMapper;
+import com.example.cruddemorecode.mapper.UserMapper;
+import com.example.cruddemorecode.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * @author xueshuo
+ * @create 2023-01-25 12:29 pm
+ */
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    // private final UserMapper userMapper;         // 自己写的UserMapper
+    private final UserInfoMapper userMapper;        // 通过@Mapper自动创建的
+
+    private final PropertyMapper propertyMapper;
+
+    // 增
+    public void createUser(UserPostDto userPostDto){
+        // System.out.println(userPostDto);
+
+        User user = userMapper.mapUserPostDtoToUser(userPostDto);
+
+        // 将user存进table
+        userRepository.save(user);      // argument必须是entity, not dto
+    }
+
+
+    // 查
+    public UserGetDto getUser(Long userId) {
+
+        // User user = findUser(userId);  // 最开始的写法
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User " + userId));
+
+        // System.out.println(user);
+
+        return userMapper.mapUserToUserGetDto(user);
+    }
+
+
+    // 删
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
+    // 改
+    public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
+        // step1
+        User user = findUser(userId);
+
+        // step2
+        user.setName(userPatchDto.getName());
+
+        // step3
+        userRepository.save(user);
+
+        // step4: 将update过后的user entity转化为UserGetDto返回给前台
+        return userMapper.mapUserToUserGetDto(user);
+    }
+
+    public UserGetDto getUserByEmail(String email) {
+        // step1
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User " + email));     // Optional类的方法
+        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+
+        // step2: entity --> dto, then return to front end
+        return userMapper.mapUserToUserGetDto(user);
+    }
+
+
+
+    // helper function: try to find user in database
+    // not private because other table might also want to find user when joining tables
+    public User findUser(Long userId){
+//        Optional<User> optionalUser = userRepository.findById(userId);      // repository的方法, 和数据库交互
+//        User user = optionalUser.orElseThrow(() -> new ResourceNotFoundException("User " + userId));     // Optional类的方法
+//        // T orElseThrow(Supplier<? extends X> exceptionSupplier): 如果有值则将其返回, 否则抛出由Supplier interface实现提供的异常.
+//        return user;
+
+        // 三行写作一行
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User " + userId));
+    }
+
+    public List<PropertyGetDto> getPropertiesByUserId(Long userId) {
+        User user = findUser(userId);
+        List<Property> propertyList = user.getPropertyList();
+
+        return propertyList.stream()
+                .map(property -> propertyMapper.mapPropertyToPropertyGetDto(property))
+                .toList();
+    }
+}
+
+```
+
+
+
+
+
+对应测试类
+
+```java
+package com.example.cruddemorecode.service;
+
+import com.example.cruddemorecode.dto.UserGetDto;
+import com.example.cruddemorecode.dto.UserPostDto;
+import com.example.cruddemorecode.entity.User;
+import com.example.cruddemorecode.mapper.PropertyMapper;
+import com.example.cruddemorecode.mapper.UserInfoMapper;
+import com.example.cruddemorecode.repository.UserRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+
+import java.time.OffsetDateTime;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+/**
+ * @author xueshuo
+ * @create 2023-01-28 8:53 pm
+ */
+
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+    // UserService里的依赖其他类的方法不会测试 -- 如何理解???
+    // 而是用mock结果替换运行时的那行调用其他类的代码
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private UserInfoMapper userMapper;        // 通过@Mapper自动创建的
+    @Mock
+    private  PropertyMapper propertyMapper;
+
+    @InjectMocks
+    private UserService userService;        // what we want to test
+
+
+    // generate some mock results
+    private final UserPostDto userPostDto = UserPostDto.builder()
+            .email("s1@gmail.com")
+            .name("s")
+            .password("password")
+            .build();
+
+    private final User user =User.builder()
+            .email("s1@gmail.com")
+            .name("s")
+            .password("password")
+            .build();
+
+    private final UserGetDto mockUserGetDto = UserGetDto.builder()
+            .email("s@gmail.com")
+            .name("s")
+            .updatedTime(OffsetDateTime.now())
+            .createdTime(OffsetDateTime.now())
+            .build();
+
+    // test methods ------------------------------------
+    // 原则上讲, 所有的public method都要写对应的test
+    // 注意 测试方法名要有可读性
+
+    // 测试一般分为3步：
+    // 1. 声明哪些外部依赖项应该被mock data取代
+    // 2. 调用被测试方法
+    // 3. 验证测试结果
+    //      + 如何被测方法没有返回值, 用verify()
+    //      + 如果被测方法有返回值, 用assertEquals()
+
+
+    @Test
+    void shouldSaveNewUserInUserRepoWhenCreateUser(){
+        // 被测试方法createUser()中的外部依赖: userMapper, userRepository
+
+        // 1. 声明哪些依赖项应该被替换掉
+        when(userMapper.mapUserPostDtoToUser(userPostDto)).thenReturn(user);    // user here is mocked
+
+        // 2. 调用被测试方法
+        userService.createUser(userPostDto);    // userPostDto here is mocked
+
+        // 3. 验证结果
+        verify(userRepository).save(user);      // 方法没有返回值, 用verify
+    }
+
+
+    @Test
+    void shouldGetUserDtoWhenGetUser() {
+        // 被测试方法中的外部依赖: userRepository, userMapper
+        // 一共就两步, 第一步依赖userRepository, 第二部依赖userMapper, 我们这里测试把这两步全用mock data
+        // 来替换了. 看起来不是很make sense. 在实际开发中, 往往一个方法会很复杂, 不止只有外部依赖的步骤, 而unit
+        // test的核心思想就是去测试哪些没有外部依赖的步骤的逻辑是否正确
+
+        Long userId = 1L;
+        // 1. 声明哪些依赖项应该被替换掉
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));        // user is mocked
+        when(userMapper.mapUserToUserGetDto(user)).thenReturn(mockUserGetDto);
+
+        // 2. 调用被测试方法
+        UserGetDto userGetDto = userService.getUser(userId);
+
+        // 3. 验证结果
+        assertEquals(userGetDto, mockUserGetDto);
+    }
+
+    @Test
+    void shouldDeleteUser(){
+        Long userId = 1L;
+
+        // 2. 调用被测试方法
+        userService.deleteUser(userId);
+
+        // 3. 验证结果
+        verify(userRepository).deleteById(userId);
+
+    }
+
+}
+
+```
+
+
+
+1h41min- 打断点debug 查看具体执行流程
+
+Q & A 1h50min- 
+
+
+
+
+
+## chatGPT给的例子
+
+can you give me exmaple of unit test for creating User in springboot2 without using @Autowired， and also corresponding createUser() and UserRepository?
+
+```java
+public class UserServiceTest {
+
+    private UserService userService;
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository = mock(UserRepository.class);
+        userService = new UserServiceImpl(userRepository);
+    }
+
+    @Test
+    public void testCreateUser() {
+        // Create a new user
+        User user = new User();
+        user.setName("John");
+        user.setEmail("john@example.com");
+        user.setPassword("password");
+
+        // 1. Configure the mock repository to return the saved user
+        when(userRepository.save(user)).thenReturn(user);
+
+        // 2. Call the service method to create the user
+        User savedUser = userService.createUser(user);
+
+        // 3. Verify that the user was saved
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getName()).isEqualTo(user.getName());
+        assertThat(savedUser.getEmail()).isEqualTo(user.getEmail());
+        assertThat(savedUser.getPassword()).isEqualTo(user.getPassword());
+
+        verify(userRepository).save(user);	// 
+    }
+}
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+	
+  	// dependency injection: using constructor
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+}
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+}
+
+```
+
+we are using the `verify` method to check that the `save` method on the `UserRepository` was called exactly once with the expected `User` object. This helps ensure that the `createUser` method is working correctly and interacting with the `UserRepository` as expected.
+
+
+
+
+
+# Unit Test: website 1-28 part1 video
+
+steven又用简单的语言再次讲了下上面的内容
 
 
 
