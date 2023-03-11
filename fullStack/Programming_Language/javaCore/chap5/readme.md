@@ -1,3 +1,5 @@
+References:
+
 :pencil: [尚硅谷: 继承 / 多态 / 反射](./GuiguShang/Guigushang.md)
 
 
@@ -147,18 +149,18 @@ In the above example, the function sayHelloHello called the function sayHello.  
 
   + **Overloading**: When a method in a derived class has a _different signature_ from the method in the base class
     + Note that when the derived class overloads the original method, it still inherits the original method from the base class as well.
-  
+    
     ```java
         class Main {
             public static void main (String[] args) {
             }
         }
-
+    
         class Child extends Main {
             public static void main (String[] args) {
                 // This overrides the main class
             }
-
+    
             public static void main (int i) {
                 // This overloads main
             }
@@ -174,31 +176,31 @@ In the above example, the function sayHelloHello called the function sayHello.  
               Main var = new Child (); // In particular, it can be assigned to a variable of any of its ancestor classes.
           }
       }
-
+      
       class Child extends Main {
       }
       ```
-        
+      
    1. That is the motivation for **covariant return types** introduced in Java 5.0.
 
    + If a method returns a primitive type (int, double, ...) or an array, then the overriding method must return the same type.
 
    + However, if the return type is a class type, then the returned type may be changed to that of any descendant class of the return type. (The reason for it to be a descendant is so that code written for the original function will still receive an object of a type it can handle.)
-    
+        
         ```JAVA
         // An example of covariant return types is:
-
+        
         public class BaseClass {
             // method in base class
             public Employee getSomeone (int someKey) {
-
+        
             }
         }
-
+        
         class DerivedClass extends BaseClass {
             // overridden method
             public HourlyEmployee getSomeone(int SomeKey) {
-
+        
             }
         }
         ```
@@ -215,21 +217,21 @@ In the above example, the function sayHelloHello called the function sayHello.  
         ```java
         // Given the following method header in a base case:
         protected void doSomething()
-
+        
         // The following method header is valid in a derived class:
         public void doSomething()
-
+        
         // However, the opposite is not valid------------------------------------
         // Given the following method header in a base case:
         public void doSomething()
-
+        
         // The following method header is not valid in a derived class:
         private void doSomething()        // illegal
-
-        ```     
+        
+        ```
 
 ## 2.3 Preventing overriding and inheritance
-   
+
   + If the modifier **final** is placed before the definition of a **method**, then that method may not be redefined in a derived class.
 
   + If the modifier **final** is placed before the definition of a **class**, then that class may not be used as a base class to derive other classes.
@@ -240,14 +242,14 @@ In the above example, the function sayHelloHello called the function sayHello.  
         final static public void main (String[] args) {
         }
     }
-
+    
     final class Major extends Main {
         static public void main (String[] args) { // error: you cannot overridden a final method
         }
     }
-
+    
     class Minor extends Major { // error: you cannot extend a fina class
-
+    
     }
     ```
 
@@ -440,7 +442,7 @@ JavaCore
     这里, 变量staff[0]与boss引用同一个对象. 但编译器只将staff[0]看成是一个Employee对象. 
     ```java
     boss.setBonus(5000); // OK
-
+    
     staff[0].setBonus(5000); // error! 因为staff[0]的声明类型是Employee, 而setBonus不是Employee类的方法
     ```
 
@@ -453,7 +455,7 @@ JavaCore
 
     因为不是所有的员工都是经理. 如果赋值成功, m有可能引用一个不是经理的Employee对象, 而在后面有可能会调用m.setBonus(...), 这时就会发生运行错误
 
---- 
+---
 
 A derived class demonstrates an "is a" relationship between it and its base class. Forming an "is a" relationship is one way to make a more complex class out of a simpler class.
 

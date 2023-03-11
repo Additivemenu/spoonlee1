@@ -1,3 +1,4 @@
+视频教程
 
 :computer: [尚硅谷chap16 Java8新特性： lamda & functional interface P666-690 (685-690复习)](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
@@ -23,6 +24,7 @@ lambda表达式正是为了能够更方便地传递代码块而被发明的, 它
 
 基本语法:
 像JS中的箭头函数
+
 ```java
 (para1, para2) -> your_codes     // 这个整体我们成为lambda表达式
 ```
@@ -60,3 +62,4 @@ Java内置的functional interface:
 ## 1.2 Method Reference
 
 ### Constructor Reference
+

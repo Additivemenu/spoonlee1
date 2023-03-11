@@ -96,12 +96,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
----
 # 1. 前期准备 0min-
 
 ## 安装:
 
-+ docker: 通过docker-compose.yml配置文件, 用来创建数据库
++ docker: 通过docker-compose.yml配置文件, 用来创建和运行数据库
 + postman: 模拟HTTP request, 做测试
 + Pgadmin: 数据库可视化工具?
 
@@ -139,8 +138,6 @@ send后, 返回
 然后可以把post request body中的信息作为entity存入database
 
 
-
----
 
 ## spring initializer
 
@@ -221,10 +218,10 @@ send后, 返回
     
 
 
----
+
 # 2. :full_moon: 搭建与连接数据库 28min-
 
-## 2.1 Docker: 在Docker container中搭建数据库 28min-
+## 2.1 Docker: 在Docker container中搭建postgres数据库 28min-
 
 在intellij的project路径下, 创建docker-compose.yml文件
 
@@ -250,6 +247,8 @@ volumes:
 启动docker desktop, 之后在intellij的terminal输入来创建数据库: 
 ```bash
 docker-compose up
+or:
+docker-compose up -d
 ```
 
 之后可以看到intellij的console最后显示database system is ready to accept connections
@@ -259,9 +258,7 @@ crud-demo-recode-database-1  | 2023-01-24 23:21:04.604 UTC [1] LOG:  database sy
 
 ```
 
-同时在docker你也能看到对应的数据库建立记录
-
-当database跑起来后, 你也可以在docker看到记录. 
+同时在docker你也能看到对应的数据库建立记录, 当database跑起来后, 你也可以在docker看到记录. 
 
 :bangbang: 当你关闭了database后, 你需要在docker重新启动database再去跑application, 这样application才能访问database, 同样也需要先在docker启动database, 才能在pgadmin可视化database
 
@@ -273,33 +270,27 @@ crud-demo-recode-database-1  | 2023-01-24 23:21:04.604 UTC [1] LOG:  database sy
 docker-compose.yml 配置文件的讲解
 
 ```yml
-image: postgres:13.0-alpine
+image: postgres:13.0-alpine   		// 想安装postgres
 ```
-
-想安装postgres
 
 ```yml
 volumes:
-	- postgresql_data:/var/lib/postgresql/data/
+	- postgresql_data:/var/lib/postgresql/data/									// 数据库信息的存储位置
 ```
-
-数据库信息的存储位置
 
 ```yml
 ports:
-	- "5400:5432"
+	- "5400:5432"							// 绑定数据库到这个port 5400是docker内的port, 5432是local machine上的port
 ```
-
-绑定数据库到这个port
 
 ```yml
-environment:
+environment:							
   - POSTGRES_DB=postgres
-  - POSTGRES_USER=postgres
-  - POSTGRES_PASSWORD=admin
+  - POSTGRES_USER=postgres				// 数据库登录的用户名
+  - POSTGRES_PASSWORD=admin				// 数据库登录的密码
 ```
 
-数据库的登录名与密码
+
 
 
 
@@ -309,13 +300,17 @@ environment:
 
 即连接pgadmin和刚才用docker搭建的数据库
 
-打开pgadmin, 右键点击server > register server >在General随便起个名字, 在Connection中 输入和刚才docker-compose.yml相匹配的参数(DB, user, password), 之后save, 此时可以看到左侧栏中出现了一个大象头图标, 表示连接成功
+打开pgadmin, 右键点击server > register server >在General随便起个名字, 在Connection中 输入和刚才docker-compose.yml相匹配的参数(DB, user, password), hostname/address填localhost, port填docker-compose.yaml中port属性左边的那个port number,  之后save, 此时可以看到左侧栏中出现了一个大象头图标, 表示连接成功
+
+
 
 :bangbang: 注意如果关闭pgadmin, 之后还会需要docker-compose.yml中的用户名和密码来access server
 
 
 
 pgadmin是作为一个数据库可视化工具吗?
+
+
 
 
 
@@ -342,13 +337,13 @@ application.properties --> application.yml, 然后复制粘贴如下配置信息
 
 ```yml
 server:
-	port: 8080
+  port: 8080
   servlet:
     context-path: /api/v1
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5400/postgres
+    url: jdbc:postgresql://localhost:5400/postgres		# 注意这里数据库的port number要和你docker里起的数据库是一样的
     username: postgres
     password: admin
   jpa:
@@ -362,9 +357,9 @@ spring:
 
 其中:
 
-+ server及其下属的配置用来确定application server对应的URL (我们目前的输入都是通过URL来实现的)
++ **server**及其下属的配置用来确定application server对应的URL (我们目前的输入都是通过URL来实现的)
   + `Context-path: /api/v1` 是指定我们的URL, 之后在postman里测试的URL, 都是接着`/api/v1`
-+ Spring
++ **Spring**
   + 注意上面的datasource > username, password应该和搭建数据库时的配置一样
 
 
@@ -460,6 +455,7 @@ public class UserPostDto {
 @RestController
 @RequestMapping("users")    // URL中跟着/api/v1的成分
 public class UserController {
+  
     @PostMapping
     public String createUser(@RequestBody UserPostDto userPostDto){
         System.out.println(userPostDto);
@@ -491,9 +487,9 @@ UserPostDto(name=user, email=user@gmail.com, password=password888)
 
 
 
----
 
-## 3.2 实现createUser() 1h27min-
+
+## 3.2 正式实现createUser() 1h27min-
 
 实现把前台接收到的request body转化为entity, 然后将其放到数据库
 
@@ -590,6 +586,7 @@ public class UserService {
 @RequestMapping("users")    // URL中跟着/api/v1的成分
 @RequiredArgsConstructor    // for UserService
 public class UserController {
+  
     private final UserService userService;  // controller要调用service, 以传递数据 不要在controller调用repository
 
     // 接收URL作为输入， 然后进行一系列操作

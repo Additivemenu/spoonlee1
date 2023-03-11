@@ -49,7 +49,7 @@ Table of Contents:
 学习>做笔记>做项目>反思>循环
 
 
-学习Tips: 
+**学习Tips:** 
 + YouTube上web project, 自己写出一遍以后可以尝试改变代码微调出自己想要的款式，如果出现问题尝试思考为什么会出现再解决它。
 + YouTube直接搜html, css, js, 有很多项目
 + 全身心投入学习(学习>做笔记>做项目>反思>循环) ，最后才能找到还不错的工作 
@@ -57,7 +57,16 @@ Table of Contents:
 
 ---
 
+# Typora theme
+
+Settings > preference > appearance > get themes, 下载想要的theme的zip
+
+接着解压zip, 然后将css 和folder复制粘贴到Settings > preference > appearance > open theme folder路径下, 重启typora即可
+
+
+
 # Ubantu
+
 + sudo apt update
 
 ---

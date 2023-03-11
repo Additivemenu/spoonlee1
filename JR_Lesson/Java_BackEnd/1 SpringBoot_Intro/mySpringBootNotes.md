@@ -411,6 +411,8 @@ intellij可以允许我们方便地测试main下的class, 右键点击 HelloWorl
 
 run test method, 注意不是run project!
 
+
+
 ## 7.2 test UserController: POST方法 28min-
 
 方法二: 用@WebMvcTest + @Autowired MockMcv  (与方法一没有本质区别) 
@@ -420,8 +422,6 @@ run test method, 注意不是run project!
 
 
 # 8. :moon: Controller层级错误处理 51min-
-
-
 
 遇到exception, 不能只log exception的第一个参数, 要把step tree log下来.
 

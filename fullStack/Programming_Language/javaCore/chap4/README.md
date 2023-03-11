@@ -1,10 +1,17 @@
+References:
+
+
 
 :pencil: [尚硅谷 面向对象(下): static, 代码块, final (313-340)](./GuiguShang/GuiguShang.md)
+
+:pencil: [尚硅谷 面向对象(上): JVM, Encapsulation, 四种权限](./GuiguShang/OOP1.md)
+
+
 
 
 ----
 
-[TOC]
+
 
 
 
@@ -727,9 +734,9 @@ e.g., Integer.decode(String s) converts a decimal string to an Integer.
     The value plugged into a class type parameter is a reference (memory address) 
 
     + Therefore, the parameter becomes another name for the argument
-    
+   
     + Any change made to the object named by the parameter (i.e., changes made to the values of its instance variables) will be made to the object named by the argument, because they are the same object
-    
+   
     + Note that, because it still is a call-by-value parameter, any change made to the class type parameter itself (i.e., its address) will not change its argument (the reference or memory address)
    
     The value of the object named by the argument can be updated but the argument itself will not be changed.

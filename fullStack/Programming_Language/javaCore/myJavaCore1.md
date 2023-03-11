@@ -37,9 +37,10 @@ Stream, I/O stream API见JavaCore2
 + 推荐书籍: thinking in java, effective java(recommended, canva面试必备), head first design patterns, code complete, refactoring
 + 最好搜英文文档
 
----
+
 
 # 学习方法
+
 + [阅读Java联机API文档](https://docs.oracle.com/en/java/javase/18/)  
 当使用的类不是定义在基本java.lang包中时， 一定要使用import指令导入相应的包  
 例如读取System.in, 需要import java.util包, 来使用[Scanner类](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Scanner.html) , 你可以查看它的定义, method之类的说明
@@ -48,7 +49,7 @@ Stream, I/O stream API见JavaCore2
 学习语言还是要集中精力快速, 慢慢磨不好
 但是学计算机基础你可以慢慢磨
 
----
+
 
 # IDE相关
 
@@ -66,8 +67,10 @@ Stream, I/O stream API见JavaCore2
     + [start with gradle](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#add_code)
     + [intall intellij idea on ubuntu](https://linuxhint.com/install-intellij-idea-on-ubuntu-20-04/)
 
----
+
+
 # configure class path in VSCode:
+
 左下java projects --> 点击... --> configure class path
 
 之后cd到指定的class path, 再用javac 和java来编译运行program
@@ -76,12 +79,15 @@ Stream, I/O stream API见JavaCore2
 
 更改classpath会带来很大的不方便, 需要重新修改每个java file的package, 一旦project的文件夹架构和class path定了下来, 轻易不要更改.
 
+
+
 # unit test in vscode
+
 需要extension: Test Runner for Java
 
 在java test file中`import org.junit.test`
 
----
+
 
 # debugging
 

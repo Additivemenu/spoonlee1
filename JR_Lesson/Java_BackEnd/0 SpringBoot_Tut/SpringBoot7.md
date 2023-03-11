@@ -8,7 +8,7 @@ controller中deleteUser这个api返回类型为void, @ResponseStatus正确就可
 
 ## 关于业务中的''权限'' 14min- 
 
-权限一般不会通过接口来做(不放在AuthorityController里), 一般放在JWT中. 前端可以直接读取到user的authority, 通过这个信息来做判断呈现不同的ui
+权限一般不会通过接口来做(不放在AuthorityController里), 一般放在JWT(JSON Web Token)中. 前端可以直接读取到user的authority, 通过这个信息来做判断呈现不同的ui
 
 
 

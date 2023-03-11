@@ -1,4 +1,5 @@
 
+
 :pencil: [我的git指令手册](./gitCommand.md)
 :pencil: [gitPractice](./Git_Practice/gitPractice.md)
 
@@ -292,7 +293,7 @@ rebase, merge不要混用: 如果一个project刚开始就用rebase, 之后一�
 + `git rebase`: 另一种merge的方法, commit之间是单线结构, 特点是分支结构会被破坏且commit的时间顺序也会被打乱
   + 追溯历史更加直观, 工作中用的更多
   + rebase是把所有的commit在另一个分支上replay一遍，会丢失历史状态
-  + 千万别在公共分支上rebase
+  + 千万别在''公共分支''上rebase
   + `git rebase <branch_name>`: 将commit chain rebase on specified branch上 
   ```bash
   // 不要在公共分支上执行rebase操作.
@@ -305,17 +306,46 @@ rebase, merge不要混用: 如果一个project刚开始就用rebase, 之后一�
   git merge feature1
   //... then do tests on local master
   ```
-  <img src="./Src/../Src_md/git_rebase.png" width=70%>
+  <img src="./Src/../Src_md/git_rebase.png" width=60%>
   
   **过程是把当前branch的后于公共祖先的commit(的copy, 因为其实commit id不一样, 图中用5', 7'表示)嫁接到rebase branch的commit的后面**
-  + 注意上面的图例中是在main branch上git rebase develop, 这是不安全的, 永远不要在main branch上rebase! 在main branch上只做merge操作
+  
+  + 注意上面的图例中是在main branch上git rebase develop, 这是不安全的, 永远不要在main branch上rebase! 在main branch上只做merge操作. 
+  
+  
+  
+  :gem: 一个实际开发中常见的case
+  
+  当我们在自己的feature branch上进行开发时, 往往会遇到自己的工作还未完成, main branch上已经新加入了新的commit(如下图中的master branch上的C5-C6), 此时我们在push之前, 必须保证这些新加入的commit也加入了自己的feature branch, 此时应该如何做? 
+  
+  + 事实上, 站在''公共分支''上进行rebase都是不合适的, 所谓'公共分支‘指的是大家都可以修改代码的分支, 比如我在自己的branch 写了C2,C3,C4 三个commit, 然后push了一下,  那么我自己的branch其实就变成了一个'公共分支' (因为在remote大家都可以来查看修改我的branch上的代码了)， 若此时在local我接着在自己的分支git rebase main, local下我的branch就变成了 C5-C6-C2'-C3'-C4'的状态, 此时就会显示remote和local不同步, 需要你去pull 才行, 
+    + 如果你此时去pull, C2-C3-C4代码其实和C2'-C3'-C4'的代码是一样的 (一个commit只是记录你新修改, 添加和删除了哪些代码, 不会记录你所有的代码.) , 然后你再push, 在你的remote就会发现自己的commit记录里包含着别人的C5, C6 这是不make sense的. 
+    + 此时不要pull, 如果你完全可以确定自己的branch只有自己在写, 可以此时使用 `git push -f` 强制把C5-C6-C2'-C3'-C4' push到remote来替代掉C2-C3-C4
+
+<img src="./Src_md/git_rebase2.png" width=50%>
+
+
+
+> my_featureBranch: git rebase main
+>
+> 含义是, 在my_featureBranch修改commit 链表结构(历史结构)，**在本地** 以 main为基准, 将my_featureBranch上后于与main 的公共祖先的commit (指C2-C3-C4)的copy嫁接到main的后面, 形成 C5-C6-C2'-C3'-C4'. 
+>
+> 注意此时, 
+>
+> + 这些修改my_featureBranch的commit链表结构的操作只是发生在本地, 未push前远端的my_featureBranch的结构未变. 
+> +  main branch的commit链表结构也没有变, 我们只是修改my_featureBranch的commit历史结构
 
 
 
 :tv: [ali could blibili: git merge vs. git rebase](https://www.bilibili.com/video/BV1Xb4y1773F/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
 :tv: [git merge vs. git rebase](https://www.bilibili.com/video/BV1VG411F7rB/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 :gem: [git visualizer](https://git-school.github.io/visualizing-git/)
+
+进阶: `git rebase -i` 甚至可以rebase onto commit, 允许我们来合并一条分支上的commits
+
+
 
 ---
 

@@ -1,3 +1,5 @@
+跳转
+
 :pencil: [尚硅谷chap16 Java8新特性: lamda & functional interface](./GuiguShang/GuiguShang.md)
 
 
@@ -77,7 +79,7 @@ An interface specifies a set of methods that any class that implements the inter
   public interface Moveable{
     void move (double x, double y);  // only method heading
   }
-
+  
   public interface Powered extends Moveable{
     double milePerGallon();     // only method heading
   }

@@ -171,6 +171,7 @@ public class Property {
     // FK: property : user --> many to one
     @ManyToOne
     @JoinColumn(name = "owner_id")
+  	@JsonBackReference		// probably also need this annotation to cut off inifinte loop of binirectional mapping 
     private User user;
     
     @CreationTimestamp      // 指定自动管理
@@ -178,7 +179,6 @@ public class Property {
 
     @UpdateTimestamp        // 指定自动管理
     private OffsetDateTime updatedTime;
-
 
 }
 ```
@@ -247,7 +247,7 @@ public class PropertyService {
       	Property property = new Property();
         property.setType(propertyPostDto.getType());
         property.setLandSize(propertyPostDto.getLandSize());
-        // FK
+        // FK处理
         User user = userService.findUser(propertyPostDto.getUserId());
         property.setUser(user);
 
@@ -271,7 +271,6 @@ public class PropertyPostDto {
     private String type;
     private Integer landSize;
     private Long userId;
-
 }
 ```
 
@@ -283,8 +282,6 @@ PropertyRepository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
 }
-
-
 ```
 
 
@@ -356,9 +353,6 @@ public PropertyGetDto getProperty(Long propertyId){
         return propertyGetDto;
 
     }
-
-
-
 ```
 
 

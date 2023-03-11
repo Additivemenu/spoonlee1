@@ -65,9 +65,9 @@ User(id=2, email=user1@gmail.com, name=user, password=password888               
 
 
 
+
+
 ## 把get的结果返回到前台去 14min-
-
-
 
 Controller ---PostDto---> service ----entity----> repository 
 
@@ -431,7 +431,7 @@ public UserGetDto updateUser(UserPatchDto userPatchDto, Long userId) {
 
 
 
-# 5. 查找: getUserByEmail 1h49min- 2h05min
+# 5. :moon: 查找: getUserByEmail 1h49min- 2h05min
 
 用户希望通过email来定位自己在数据库中的id
 
@@ -453,6 +453,7 @@ UserRepository
 UserRepository继承自JpaRepository, 自身并没有findByEmail方法
 
 + 但我们只需写上`Optional<User> findByEmail(String email);`就可以了, 太神奇了
++ :bangbang: 注意JPA是根据interface中方法名来匹配对应的属性的! 所以方法名不要写错了!
 
 ```java
 // <User, Long>:

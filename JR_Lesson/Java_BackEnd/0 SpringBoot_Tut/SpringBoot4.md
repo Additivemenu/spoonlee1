@@ -72,8 +72,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 }
 ```
 
-
-
 run application, Postman > get: http://localhost:8080/api/v1/users/1/properties
 
 
@@ -92,8 +90,13 @@ User里定义
 
 ```java
 @OneToMany(mappedBy = "user")       // 对应Property里User的成员变量名
+@JsonBackReference		// 切断entity 之间birectional mapping的 循环 (steven可没讲, Kelo自己搜的)
 private List<Property> propertyList;
 ```
+
+
+
++ ``@JsonBackReference``: When a bidirectional relationship exists between entities, each entity holds a reference to the other. Without proper handling, this can lead to an infinite loop of serialization and deserialization. The @JsonBackReference annotation is used to break this loop by marking the entity property that should not be serialized.
 
 
 
@@ -111,13 +114,11 @@ Spring security 加密user的password
 
 
 
-
-
 # 继续优化mapper的代码书写1h07min-
 
 上节课我们讲了使用mapstruct工具来快速生成mapper, 也可以自己手动写mapper. 这里我们再提供一种手动写mapper的方式:
 
-用 lombok @Builder
+用 lombok `@Builder`
 
 
 
