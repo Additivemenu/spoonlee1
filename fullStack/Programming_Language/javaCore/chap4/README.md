@@ -1,10 +1,8 @@
 References:
 
-
+:pencil: [尚硅谷 面向对象(上): JVM, Encapsulation, 四种权限](./GuiguShang/OOP1.md)
 
 :pencil: [尚硅谷 面向对象(下): static, 代码块, final (313-340)](./GuiguShang/GuiguShang.md)
-
-:pencil: [尚硅谷 面向对象(上): JVM, Encapsulation, 四种权限](./GuiguShang/OOP1.md)
 
 
 

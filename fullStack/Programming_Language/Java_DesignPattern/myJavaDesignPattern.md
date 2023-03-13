@@ -1,1 +1,0 @@
-:computer: [尚硅谷: Java图解设计模式](https://www.bilibili.com/video/BV1G4411c7N4?p=1&vd_source=c6866d088ad067762877e4b6b23ab9df)

@@ -19,7 +19,7 @@
 3. 懒汉式(线程不安全)
 4. 懒汉式(线程安全，同步方法) 
 5. 懒汉式(线程安全，同步代码块) 
-6. 双重检查
+6. 懒汉式(双重检查)
 7. 静态内部类
 8. 枚举
 
@@ -334,15 +334,67 @@ class Singleton{
 
 
 
-
-
-
-
 ## 1.4 静态内部类
 
 35
 
-看到这里
+```java
+
+/**
+ * 35
+ * 使用静态内部类完成单例模式
+ * @author xueshuo
+ * @create 2023-02-12 9:31 am
+ */
+public class SingletonTest07 {
+    public static void main(String[] args) {
+        System.out.println("静态内部类实现Singleton");
+        Singleton instance = Singleton.getInstance();
+        Singleton instance1 = Singleton.getInstance();
+
+        System.out.println(instance == instance1);      // true
+        System.out.println("instance.hashCOde = " + instance.hashCode());
+        System.out.println("instance1.hashCOde = " + instance1.hashCode());
+    }
+}
+
+// 静态内部类完成, 推荐使用
+class Singleton{
+
+    private static volatile Singleton instance;
+
+    // 构造器私有化
+    private Singleton(){
+
+    }
+
+    // 静态内部类, 该类中有一个静态的属性 Singleton
+    private static class SingletonInstance{
+        private static final Singleton INTANCE = new Singleton();
+    }
+
+
+    // 对外提供一个static public method, 直接返回SingletonInstance.INSTANCE
+    public static Singleton getInstance(){
+        return SingletonInstance.INTANCE;
+    }
+
+}
+```
+
+
+
+:bangbang: 需要先去学习final, static 关键字背后的机理
+
+
+
+优缺点说明:
+
+1. 这种方式采用了类装载的机制来保证初始化实例时只有一个线程。
+2. 静态内部类方式在Singleton类(外部类)被装载时并不会立即实例化，而是在需要实例化 时，调用getInstance方法，才会装载SingletonInstance类，从而完成Singleton的实例化。
+3. 类的静态属性只会在第一次加载类的时候初始化，所以在这里，JVM帮助我们 保证了线程的安全性，在类进行初始化时，别的线程是无法进入的。
+4. 优点:避免了线程不安全，利用静态内部类特点实现延迟加载，效率高
+5. 结论:推荐使用.
 
 
 
@@ -352,7 +404,7 @@ class Singleton{
 
 36
 
-
+看到这里
 
 
 

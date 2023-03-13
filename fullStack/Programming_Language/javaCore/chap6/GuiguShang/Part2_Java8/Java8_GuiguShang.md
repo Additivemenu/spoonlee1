@@ -2,16 +2,15 @@
 
 :computer: [尚硅谷chap16 Java8新特性： lamda & functional interface P666-690 (685-690复习)](https://www.bilibili.com/video/BV1Kb411W75N?p=666&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
----
-- [1. :moon: Lambda](#1-moon-lambda)
-  - [1.1 Functional Interface](#11-functional-interface)
-  - [1.2 Method Reference](#12-method-reference)
-    - [Constructor Reference](#constructor-reference)
 
 
----
+
 
 # 1. :moon: Lambda
+
+664-668
+
+
 
 动机: 在java中传递代码块并不是容易的事情, 你不能直接传递代码块. 因为java是面向对象的编程语言, 要想传递代码块, 我们所以必须先构造一个对象, 这个对象的类需要有一个方法包含所需要的代码块.
 
@@ -30,9 +29,12 @@ lambda表达式正是为了能够更方便地传递代码块而被发明的, 它
 ```
 
 
-## 1.1 Functional Interface
-对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口称为**函数式接口(functional interface)**
 
+## 1.1 Functional Interface
+
+669-670
+
+对于**只有一个抽象方法(abstract method)**的接口(interface), 需要这种接口的对象时, 可以提供一个lambda表达式. 这种**只有一个抽象方法**的接口称为`函数式接口(functional interface)`
 
 :gem: e.g.1
 考虑Arrays.sort(), 它的第二个argument是一个Comparator interface instance, Comparator就是函数式接口. 所以我们可以提供一个lambda表达式, 更加简洁:
@@ -59,7 +61,12 @@ Java内置的functional interface:
 <img src="./Src_md/java_otherFuntionalInterface.png" width=70%>
 
 
+
 ## 1.2 Method Reference
+
+671-674
+
+
 
 ### Constructor Reference
 

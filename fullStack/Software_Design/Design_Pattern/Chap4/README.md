@@ -17,7 +17,7 @@
 # 5. 外观模式 (Facade)
 81-85
 
-# 6. 享元模式 (Flyweihgt)
+# 6. 享元模式 (Flyweight)
 86-90
 
 # 7. :moon: 代理模式 (Proxy)

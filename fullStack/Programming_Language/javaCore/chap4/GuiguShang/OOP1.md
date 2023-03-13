@@ -6,9 +6,37 @@ References:
 
 
 
+# Class
 
 
 
+## :moon: 对象的JVM内存解析
+
+181
+
+<img src="./Src_md/JVM_intro.png" alt="JVM_intro" style="zoom:50%;" />
+
+
+
++ `堆(Heap)`，此内存区域的唯一目的 就是**存放对象实例**，几乎所有的对象 实例都在这里分配内存。这一点在 Java虚拟机规范中的描述是:所有的 对象实例以及数组都要在堆上分配。
+
++ `栈(Stack)`，是指虚拟机栈。虚拟机栈用于存储**局部变量 (方法内部声明的变量)**等。 局部变量表存放了编译期可知长度的 各种基本数据类型(boolean、byte、 char 、 short 、 int 、 float 、 long 、 double)、对象引用(reference类型， 它不等同于对象本身，是对象在堆内 存的首地址)。 方法执行完，自动释放。
+
++ `方法区(Method Area)`，用于存储已 被虚拟机加载的类<u>信息、常量、静态 变量、即时编译器编译后的代码</u>等数 据。
+
+
+
+<img src="./Src_md/object_JVM.png" alt="object_JVM" style="zoom: 33%;" />
+
+先在堆空间中分配内存 new 对象, 再将其地址赋值给局部变量
+
+
+
+## 属性与局部变量
+
+182
+
+看到这里
 
 
 
