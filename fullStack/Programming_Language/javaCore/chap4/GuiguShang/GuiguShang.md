@@ -89,6 +89,10 @@ class Chinese{
 
 
 
+
+
+
+
 ## static 应用举例
 
 320
