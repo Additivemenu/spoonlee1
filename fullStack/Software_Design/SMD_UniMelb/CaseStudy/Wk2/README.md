@@ -1,6 +1,6 @@
 # 0. Abstract
 
-+ `Domain class diagram` 和 `System sequence diagram` 都不应涉及到software space, 让一般人都能看懂
++ `Domain class diagram` 和 `System sequence diagram` (domain model)都不应涉及到software space, 让一般人都能看懂
 
 + `Domain class diagram`: 类似数据库设计, 规划整个系统涉及到哪些类以及他们的关系如何
 + `System sequence diagram`: 类似在图形化梳理业务逻辑和流程, 作为implementation时写代码的重要blue print
@@ -176,6 +176,10 @@ This scenario involves the customer interacting with the system in order to add 
 ![tonySSD](/Users/lixueshuo/spoonlee/GitHub_Repo/spoonlee1/fullStack/Software_Design/SMD_UniMelb/CaseStudy/Wk2/Src_md/tonySSD.png)
 
  *Figure 2: A system sequence diagram of the 'Customer places order' scenario. The diagram illustrates interactions between the primary actor (Customer) and the system itself over the course of the scenario. The system is illustrated as a “black box” – at this point we are focusing on the system operations, rather than knowing the details of how the system will perform those operations. Messages and attributes have been named to match those in the domain model and use case descriptions. Frames have been used to manage the complexity of loops and conditional statements in the sequence.* 
+
+虚线头上是名词 (虚线并不代表是response)
+
+实线头上是动词
 
 
 
