@@ -1,30 +1,44 @@
-https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25595350#overview
+References:
 
-更加全面的react教程
+更加全面的react教程 https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25595350#overview
+
+配套Github repo:  https://github.com/academind/react-complete-guide-code/tree/01-getting-started
+
+Community & Discussion board: https://academind.com/community/
+
++ 有很多tutorial
 
 
 
-基础篇
+---
 
-| Episode | Title                                              | Description |
-| ------- | -------------------------------------------------- | ----------- |
-| 1       | Intro                                              |             |
-| 2       | JS Refersh                                         |             |
-| 3       | React basics, working with component               |             |
-| 4       | :star: React state, working with event             |             |
-| 5       | Rendering List, Conditional Content                |             |
-| 6       | Styling React Component                            |             |
-| 7       | Debugging react apps                               |             |
-| 8       | :gem: Practice: a complete Practice Project        |             |
-| 9       | Working with Fragments, portals and "Ref"          |             |
-| 10      | :star: Handing side effect, use Reducers & Context |             |
-| 11      | :gem: Practice: Building a food order App          |             |
-| 12      | Scene behind react & Optimization                  |             |
-| 13      | Alternative way: class component                   |             |
+代码见另一个repo了...
+
+只选取欠缺的章节学习, 节省时间学后端和算法
+
+
+
+React基础篇
+
+| Episode             | Title                                              | Description |
+| ------------------- | -------------------------------------------------- | ----------- |
+| [1](./C1/README.md) | Intro                                              |             |
+| [2](./C2/README.md) | JS Refersh                                         |             |
+| 3                   | React basics, working with component               |             |
+| 4                   | :star: React state, working with event             |             |
+| 5                   | Rendering List, Conditional Content                |             |
+| 6                   | Styling React Component                            |             |
+| 7                   | Debugging react apps                               |             |
+| 8                   | :gem: Practice: a complete Practice Project        |             |
+| 9                   | Working with Fragments, portals and "Ref"          |             |
+| 10                  | :star: Handing side effect, use Reducers & Context |             |
+| 11                  | :gem: Practice: Building a food order App          |             |
+| 12                  | Scene behind react & Optimization                  |             |
+| 13                  | Alternative way: class component                   |             |
 
 中级篇
 
-| 14   | sending HTTP request                                     |      |
+| 14   | :star: sending HTTP request                              |      |
 | ---- | -------------------------------------------------------- | ---- |
 | 15   | :star: Building custom react hooks                       |      |
 | 16   | Working with forms & User input                          |      |

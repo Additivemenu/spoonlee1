@@ -342,17 +342,59 @@ public class AccountTest {
 
 # 2. main()方法 与代码块
 
-327-331
-
-该看这个了
-
-
-
 ## main()
 
+327
+
+```java
+ main()方法的使用说明
+* 1. main()作为程序的入口
+* 2. main() 方法也是普通的静态方法,
+*      即可以通过类去调用main()
+*      main()内部不能通过类调用非静态方法, 而只能通过对象调用非静态方法
+* 3. main() 的形参, 允许我们与控制台交互 (之前我们是用Scanner)
+```
 
 
 
+```java
+public class MainTest {
+
+    public static void main(String[] args) {
+
+        Main.main(new String[100]);
+      
+        // main()内部只能通过对象调用非静态结构
+        MainTest test = new MainTest();
+        test.show();
+    }
+
+    public void show(){
+
+    }
+}
+
+class Main{
+
+    public static void main(String[] args) {
+
+        for(int i = 0 ; i < args.length; i++){
+            args[i] = "args_" + i;
+            System.out.println(args[i]);
+        }
+    }
+}
+```
+
+
+
+了解即可, 通过控制台交互: 给main() 输入args: 
+
+```bash
+(base) ➜  Main git:(master) ✗ javac MainDemo.java						// 编译
+(base) ➜  Main git:(master) ✗ java MainDemo arg1 "89" 90 		// 运行, 同时指定args
+
+```
 
 
 
@@ -360,9 +402,362 @@ public class AccountTest {
 
 ## 代码块
 
+328-331
+
+```java
+* 类的成员之四: 代码块
+*  1. 代码块的作用: 用来初始化类, 对象。 不能被主动调用, 而是被动执行
+*
+*  2. 代码块如果有修饰的话, 只能用static
+*        分类: 静态代码块 vs. 非静态代码块
+*
+*  3. 静态代码块
+*      > 内部可以有输出语句
+*      > 随着类的加载而执行, 而且只执行1次
+*      > 作用: 初始化类的信息
+*      > 如果一个类中定义了多个静态代码块, 则按照声明的先后顺序执行 (不过一般写1个就够了)
+*          > 静态代码块的执行要优先于非静态代码块的执行
+*      > 静态代码块内只能调用静态的结构, 不能调用非静态的结构
+*
+*  4. 非静态代码块
+*      > 内部可以有输出语句
+*      > 随着对象的创建而执行, 每当创建一个对象就执行1次非静态代码块
+*      > 作用: 可以在创建对象时, 对对象的属性进行初始化
+*      > 如果一个类中定义了多个非静态代码块, 则按照声明的先后顺序执行(不过一般写1个就够了)
+*      > 非静态代码块内部, 可以调用静态的结构, 也可以调用非静态的结构
+  
+*      至此, 对属性(成员变量)可以赋值的位置:
+*           1. 默认初始化
+*           2. 显式初始化
+*           3. 构造器中初始化
+*           4. 有了对象之后, 通过"对象.属性" or "对象.方法"的方式进行赋值
+*           5. 在代码块中赋值
+```
 
 
 
+学到这里, 其实一个类的内部分4个部分了: field ; constructors; block; methods
+
+```java
+public class BlockTest {
+    public static void main(String[] args) {
+       String desc = Person.desc;
+        System.out.println(desc);
+
+        Person person1 = new Person();
+        Person person2 = new Person();
+        System.out.println("age of person2 is" +  person2.age);
+    }
+
+}
+
+class Person{
+		// fields --------------------------------------------
+    String name;
+    int age;
+    static String desc = "I am a person";
+
+    // constructors ---------------------------------------
+    public Person(){
+
+    }
+
+    public Person(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    // block -----------------------------------------------
+    // 静态代码块
+    static {
+        System.out.println("hello, static block - 1");
+        desc = "I am a person loving Java!";
+    }
+
+    static {
+        System.out.println("hello, static block - 2");
+    }
+    // 非静态代码块
+    {
+        System.out.println("hello, block - 1");
+        this.age = 1;
+    }
+
+    {
+        System.out.println("hello, block - 2");
+    }
+
+    // methods ---------------------------------------------
+    public void eat(){
+        System.out.println("eat");
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public static void info(){
+        System.out.println("I am a happy person");
+    }
+}
+```
+
+
+
+### 开发中代码块的使用
+
+329
+
+用来辅助初始化类或者对象的信息, 尤其当这种信息的要求比较复杂时（比如要求成员变量的初始化是满足单例模式的）
+
+```java
+public class JDBCUtils {
+	
+	private static DataSource dataSource = null;
+  
+  // 使用static block辅助完成 dataSource的初始化, 保证在JDBCUtils加载时 dataSource有值且单例
+	static{
+		InputStream is = null;
+		try {
+      // 初始化的必备前置操作
+			is = DBCPTest.class.getClassLoader().getResourceAsStream("dbcp.properties");
+			Properties pros = new Properties();
+			pros.load(is);
+			//调用BasicDataSourceFactory的静态方法，获取数据源。
+			dataSource = BasicDataSourceFactory.createDataSource(pros);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			if(is != null){
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+  
+	//使用DBCP数据库连接池实现数据库的连接
+	public static Connection getConnection2() throws SQLException{
+		Connection conn = dataSource.getConnection();
+		System.out.println(conn);
+		return conn;
+	}
+	
+}
+```
+
+
+
+### 代码块的课后练习
+
+:gem:  e.g.1
+
+```java
+/**
+ * 总结: 由父及子, 静态先行
+ *
+ */
+class Root{
+	static{
+		System.out.println("Root的静态初始化块");
+	}
+
+	{
+		System.out.println("Root的普通初始化块");
+	}
+	public Root(){
+		System.out.println("Root的无参数的构造器");
+	}
+}
+
+class Mid extends Root{
+	static{
+		System.out.println("Mid的静态初始化块");
+	}
+
+	{
+		System.out.println("Mid的普通初始化块");
+	}
+
+	public Mid(){
+		System.out.println("Mid的无参数的构造器");
+	}
+
+	public Mid(String msg){
+		//通过this调用同一类中重载的构造器
+		this();
+		System.out.println("Mid的带参数构造器，其参数值："
+			+ msg);
+	}
+}
+class Leaf extends Mid{
+
+	static{
+		System.out.println("Leaf的静态初始化块");
+	}
+
+	{
+		System.out.println("Leaf的普通初始化块");
+	}
+
+	public Leaf(){
+		//通过super调用父类中有一个字符串参数的构造器
+		super("尚硅谷");
+		System.out.println("Leaf的构造器");
+	}
+}
+
+public class LeafTest{
+	public static void main(String[] args){
+		new Leaf();
+		System.out.println();
+		new Leaf();
+	}
+}
+```
+
+结果: 
+
+```bash
+Root的静态初始化块
+Mid的静态初始化块
+Leaf的静态初始化块
+Root的普通初始化块
+Root的无参数的构造器
+Mid的普通初始化块
+Mid的无参数的构造器
+Mid的带参数构造器，其参数值：尚硅谷
+Leaf的普通初始化块
+Leaf的构造器
+
+Root的普通初始化块
+Root的无参数的构造器
+Mid的普通初始化块
+Mid的无参数的构造器
+Mid的带参数构造器，其参数值：尚硅谷
+Leaf的普通初始化块
+Leaf的构造器
+```
+
+
+
+:gem: e.g.2
+
+```java
+class Father {
+	static {
+		System.out.println("Father's 静态代码块");
+	}
+
+	{
+		System.out.println("Father's 非静态代码块");
+	}
+
+	public Father() {
+		System.out.println("Father 无参构造器");
+
+	}
+
+}
+
+public class Son extends Father {
+	static {
+		System.out.println("Son's 静态代码块");
+	}
+
+	{
+		System.out.println("Son's 非静态代码块");
+	}
+
+	public Son() {
+		System.out.println("Son's 无参构造器");
+	}
+
+
+	public static void main(String[] args) { // 由父及子 静态先行
+		// main 也是静态方法, 需要依赖类来调, 先加载son类, 再调用main
+
+		System.out.println("77777777777");
+		
+		System.out.println("************************");
+		new Son();
+		
+		System.out.println("************************");
+		new Son();
+		
+		System.out.println("************************");
+		new Father();
+	}
+
+}
+```
+
+执行结果
+
+```bash
+Father's 静态代码块
+Son's 静态代码块
+77777777777
+************************
+Father's 非静态代码块
+Father 无参构造器
+Son's 非静态代码块
+Son's 无参构造器
+************************
+Father's 非静态代码块
+Father 无参构造器
+Son's 非静态代码块
+Son's 无参构造器
+************************
+Father's 非静态代码块
+Father 无参构造器
+```
+
+
+
+
+
+### 属性赋值的先后顺序
+
+```java
+ * 至此, 对属性(成员变量)可以赋值的位置, 他们的执行顺序是:
+ *       1. 默认初始化
+ *       2. 显式初始化 3. 在代码块中赋值  (2 & 3 同级别， 谁先写谁先执行)
+ *       4. 构造器中初始化
+ *       5. 有了对象之后, 通过"对象.属性" or "对象.方法"的方式进行赋值
+```
+
+
+
+```````java
+public class OrderTest {
+    public static void main(String[] args) {
+        Order order = new Order();
+        System.out.println(order.orderId);
+
+    }
+}
+
+class Order{
+    int orderId =3;
+
+    {
+        orderId = 4;
+    }
+}
+```````
+
+执行结果,  因为2. 显式初始化 3. 在代码块中赋值  (2 & 3 同级别， 谁先写谁先执行)
+
+```bash
+4
+```
 
 
 
@@ -374,7 +769,144 @@ public class AccountTest {
 
 332-335
 
+final可以修饰的结构: 类, 方法, 变量
+
+## 修饰类
+
+final修饰一个类: 此类不能被其他类所继承
+*         比如: String类, System类, StringBuffer类
+
+## 修饰方法
+
+final修饰一个方法: 表明此方法不可以被重写
+*         比如: Object类中的getCLass()
 
 
 
+## 修饰变量
+
+final修饰一个变量: 此时的'变量'成为一个常量. '变量'分为两种: 属性(类的成员变量)和局部变量(声明在方法体里的变量)
+
+
+
+### 修饰属性
+
+final 修饰属性, 可以考虑初始化的位置有： 
+
++ 显式初始化 (默认初始化失效), 
++ 代码块中初始化
++ 构造器中初始化
+
+:bangbang: 注意不能通过方法来给被final修饰的属性‘初始化’, 因为当类被实例化时, 属性就应该在堆空间中被初始化, 通过方法并不能保证这点
+
+```java
+public class FinalTest {
+    // 1. 显式初始化
+    final int WIDTH = 10;
+
+    // 2. 代码块初始化final修饰的属性
+    final int LEFT;
+    {
+        LEFT = 1;
+    }
+
+    // 3. 构造器初始化final修饰的属性
+    final int RIGHT;
+    public FinalTest(){
+        RIGHT = 2;
+    }
+
+    public FinalTest(int n){
+        RIGHT = n;
+    }
+
+    // 不可以通过方法来'初始化'fianl修饰的属性
+//    final int DOWN;
+//
+//    public void setDown(int down){
+//        this.DOWN = down;
+//    }
+
+    // 在被final修饰的'变量'被初始化后, 不可以修改它
+    public void doWidth(){
+//        WIDTH = 20;
+    }
+}
+```
+
+
+
+### 修饰局部变量
+
+ fianl 修饰局部变量:
+*                  尤其是用final修饰形参时, 表明此形参是一个常量. 当我们调用此方法时, 才会给常量形参赋一个实参. 一旦赋值后, 就只能在方法体内使用此形参但不能重新赋值
+
+```java
+public class FinalTest {
+   
+
+    // 局部变量 ---------------------------------------
+    // 1. 普通的局部变量
+    public void show () {
+        final int NUM = 10;     // 常量
+//        NUM += 20;
+    }
+
+    // 2. 形参
+    public void show(final int num){
+//        num = 100; // 编译不通过
+        System.out.println(num);
+    }
+
+    public static void main(String[] args) {
+        FinalTest test = new FinalTest();
+        test.show(10);
+    }
+
+}
+```
+
+
+
+> `static final` 用来修饰 属性:  很常见, 表示全局常量
+>
+> `static final` 用来修饰 方法:  用的少, 一般自己写代码很少修饰方法为final
+
+
+
+## final课后练习
+
+
+
+```java
+// 排错
+public class Something {
+    public int addOne(final int x) {
+
+        return ++x;		// 编译不通过
+        // return x + 1;		// 可以, 并没有改变x的值
+    } 
+}
+
+```
+
+
+
+```java
+// 排错
+public class Something {
+    public static void main(String[] args) {
+				Other o = new Other();
+				new Something().addOne(o); 
+    }
+  
+    public void addOne(final Other o) { 
+      // o = new Other();			// 编译会报错
+      o.i++;		// 没问题
+    } 
+}
+
+class Other { public int i;
+}
+```
 
