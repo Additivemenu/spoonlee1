@@ -19,7 +19,10 @@ Interface
 比如:public abstract void talk();
 + 含有抽象方法的类必须被声明为抽象类。
 
+
+
 :bangbang: 注意:
+
 + **抽象类不能被实例化, 抽象类是用来被<u>继承</u>的**. abstract 与 inheritance, polymorph有着天然的关联性
   + 抽象类的子类必须重 写父类的抽象方法，并提供方法体。若没有重写全部的抽象方法，仍为抽象类。
 + 不能用abstract修饰变量、代码块、构造器
@@ -639,10 +642,8 @@ class Man extends Father implements Filial, Spoony{
 
 1. Java允许将一个类A声明在另一个类B中, 则类A被称为内部类, 类B称为外部类
    
-
 2. Inner class分类: 成员内部类(静态, 非静态) vs. 局部内部类 (方法内, 代码块内, 构造器内)
    
-
 3. 成员内部类:
 
 ​	一方面, 作为外部类的成员:

@@ -17,8 +17,6 @@ Back End:
 Database:
 + [Database](./Database/myDatabase.md)
 
-
-
 Good practice:
 + [Software Design](./Software_Design/mySoftwareDesign.md)
 

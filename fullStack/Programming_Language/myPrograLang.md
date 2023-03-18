@@ -1,17 +1,16 @@
+References
+
 :book:  + [Java doc 不离手](https://docs.oracle.com/en/java/javase/17/docs/api/)
 
 
 
 跳转:
 
-+ [C++](./CPP/readme.md)
-
 Java
 + [JavaCore1](./javaCore/myJavaCore1.md)
   + chap6: lambda表达式, 函数式接口, 方法/构造器引用  
 + [JavaCore2](./javaCore2/myJavaCore2.md)
   + chap1: Stream API, Optional 类(减少空指针异常) 
-+ [尚硅谷JavaSE](./GuiguShang_JavaSE.md)
 + [尚硅谷Java Web](./Java_Web/myJavaWebNotes.md)
 + [Java Dev Framework](./Java_Framework/myJavaFramework.md)
 + [Java projects](./javaProjects/javaProjects.md)

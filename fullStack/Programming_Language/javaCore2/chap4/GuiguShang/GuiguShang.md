@@ -99,15 +99,147 @@ TCP/IP 协议簇: 实用角度 physical layer  -->  data link layer --> Network 
 
 # Part2. 网络编程
 
-## 5. TCP网络编程
+## 5. :full_moon: TCP网络编程
 
 622-625
 
-:gem: Demo1: client side send a message to server side, server side show the message
+
+
+Server-client代码套路:
+
+Server 和 Client都分为3大步:
+
+1. Step1: Socket的建立
+   + Server端实例化ServerSocket
+   + Client端只需要实例化Socket, 说明要和哪个Server连接即可
+
+2. Step2: allocate resources (mainly I/O stream) for the Socket, and implement Communications
+   + Server端还需要让ServerSocket实例 wait and accept incoming request
+   + 其中如何分配I/O stream以及如何利用它们通讯, 见I/O Stream那章
+
+3. Step3: close resources created (I/O stream + Socket)
+   + 要确保step1, step2即使出现了Exceptions, resources也可以被关闭掉, 避免资源浪费. 因此常常需要try-catch-finally block
+   + 先创建的resources后关闭
+   + 用来register server的ServerSocket一般不需要关闭, 但是ServerSocket接听到Client request转接Client到的socket需要关闭
 
 
 
-:gem: Demo2: 客户端发送文件给服务端, 服务端将文件保存在本地
+:bangbang: Server端的step2 & step3 往往是被包在while( ) loop里， 因为Server需要处理源源不断的request
+
+:bangbang: Server 要先起来, Client才能向Server发送请求
+
+
+
+SimpleServer: 只处理1个request就dead了
+
+```java
+// SimpleServer.java: a simple server program
+import java.net.*;
+import java.io.*;
+public class SimpleServer {
+  public static void main(String args[]) throws IOException {
+    // step1: Register service on port 1234
+    ServerSocket s = new ServerSocket(1234);
+    
+    // step2: 
+    // step2.1 Wait and accept a connection
+    Socket s1=s.accept(); 
+    
+    // step2.2 Get a communication stream associated with the socket
+    OutputStream s1out = s1.getOutputStream();
+    DataOutputStream dos = new DataOutputStream (s1out);
+    
+    // step2.3 implement communication 
+    dos.writeUTF("Hi there");
+    
+    // step3: Close the connection, but not the server socket
+    dos.close();
+    s1out.close();
+    s1.close();
+  }
+}
+```
+
+
+
+SimpleServerLoop 处理源源不断的request
+
+```java
+// SimpleServerLoop.java: a simple server program that runs forever in a single thead
+import java.net.*;
+import java.io.*;
+public class SimpleServerLoop {
+  public static void main(String args[]) throws IOException {
+    // step1: Register service on port 1234
+    ServerSocket s = new ServerSocket(1234);
+    
+    while(true)
+    {
+      // step2 
+   	 Socket s1=s.accept(); // Wait and accept a connection
+    	// Get a communication stream associated with the socket
+    	OutputStream s1out = s1.getOutputStream();
+    	DataOutputStream dos = new DataOutputStream (s1out);
+    	// Send a string!
+    	dos.writeUTF("Hi there");
+    	// Close the connection, but not the server socket
+      
+      // step3 
+      dos.close();
+      s1out.close();
+      s1.close();
+    }
+  }
+}
+```
+
+
+
+SimpleClient
+
+```java
+// SimpleClient.java: a simple client program
+import java.net.*;
+import java.io.*;
+public class SimpleClient {
+  public static void main(String args[]) throws IOException {
+    // step1: Open your connection to a server, at port 1234
+    Socket s1 = new Socket(“clouds.cis.unimelb.edu.au",1234);
+                           
+    // step2:
+    // step2.1 Get an input file handle from the socket and read the input
+    InputStream s1In = s1.getInputStream();
+    DataInputStream dis = new DataInputStream(s1In);
+    
+    // step2.2 communicate                 
+    String st = new String (dis.readUTF());
+    System.out.println(st);
+                           
+    // step3: When done, just close the connection and exit
+    dis.close();
+    s1In.close();
+    s1.close();
+  }
+}
+```
+
+
+
+
+
+### :gem: Demo1: TCPTest1
+
+client side send a message to server side, server side show the message
+
+
+
+
+
+### :gem: Demo2: TCPTest2
+
+客户端发送文件给服务端, 服务端将文件保存在本地
+
+
 
 至少需要4个stream:
 
@@ -131,9 +263,19 @@ Client > -------socket------- < Server
 
 
 
-:gem: Demo3:  从客户端发送文件给服务端, 服务端保存到本地, 并返回"发送成功"给客户端, 并关闭相应的连接
+### :gem: Demo3:  TCPTest3
+
+从客户端发送文件给服务端, 服务端保存到本地, 并返回"发送成功"给客户端, 并关闭相应的连接
 
 + 阻塞式方法
+
+
+
+### :gem: Demo4: Interactive Server & client
+
+UniMelb的demo
+
+
 
 
 
@@ -155,14 +297,18 @@ Client > -------socket------- < Server
 
   + 现成的TomCat服务器
 
-:gem: Demo: 康师傅展示通过浏览器(客户端)来访问TomCat(服务端)的资源; 更多细节见Java Web
+
+
+#### :gem: Demo1: 
+
+康师傅展示通过浏览器(客户端)来访问TomCat(服务端)的资源; 更多细节见Java Web, 这里不展示代码了
 
 + 通过terminal启动TomCat
 + 通过URL: localhost:8080/examples/hello.txt 来访问TomCat资源 
 
 
 
-## 6. UDP网络编程
+## 6. :moon: UDP网络编程
 
 626
 
@@ -172,27 +318,30 @@ Client > -------socket------- < Server
 
 
 
-sender --- receiver
+Sender --- Receiver
+
+:bangbang: 相比TCP, UDP 接收与发送 不需要I/O Stream, 数据以DataPacket为载体,   因此关闭资源时只需要关闭 DatagramSocket
 
 ```java
 sender{
   // step1: instantiate DatagramSocket
   
-  // step2: 封装数据包(encoding): readable ---> btye[]
+  // step2: communicate via DataPacket
+    // step2.1: 封装数据包(encoding): readable ---> btye[]
+    // step2.2: send
   
-  // step3: send
-  
-  // // close resource
+  // step3: close resource
 }
 
 receiver{
   // step1: instantiate DatagramSocket
   
-  // step2: receive
+  // step2: communicate via DataPacket
+    // step2.1: receive
+    // step2.2: 解封数据包(decoding):  byte[] ---> Readable
+    // step2.3: reply if necessary
   
-  // step3: 解封数据包(decoding):  byte[] ---> Readable
-  
-  // step4: close resource
+  // step3: close DatagramSocket
 }
 ```
 
@@ -201,7 +350,171 @@ receiver{
 
 
 
-## 7. URL编程
+
+### :gem: Demo from UniMelb
+
+UDPServer: 处理源源不断的request
+
+```java
+import java.net.InetAddress;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.io.IOException;
+
+public class udpServer {
+	
+	public static void main(String args[]) {
+    // step1 -------------------------------------------------------------------------------
+		DatagramSocket serverSocket = null;
+	
+		try
+		{	
+      // step2: Communication --------------------------------------------------------------
+			// prepare for communication
+		  serverSocket = new DatagramSocket(9884);
+      byte[] receiveData = new byte[1024];
+      byte[] sendData = new byte[1024];
+
+      // Listen for incoming connections forever
+      while(true){
+    		  System.out.println("This is  UDP server- Waiting for data to recieve");
+    		    
+    		  // 2.1 Receive: Create a receive Datagram packet and receive through socket
+          DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+          serverSocket.receive(receivePacket);
+					
+        	// 2.2 拆包
+          String receivesentence = new String( receivePacket.getData());
+        	 
+          String sendSentence= "This is Server, I recieved from client- ";
+          sendSentence += receivesentence;
+          System.out.println(" Server Data: " + sendSentence);
+
+          // 2.3 Reply: Get client attributes from the received data 
+          InetAddress IPAddress = receivePacket.getAddress();
+          int port = receivePacket.getPort();
+          String capitalizedSentence = sendSentence.toUpperCase();
+          sendData = capitalizedSentence.getBytes();
+
+          // Create a send Datagram packet and send through socket
+          DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+          serverSocket.send(sendPacket);
+      }
+      
+		}
+		catch(SocketException e){
+			System.out.println("Socket: " + e.getMessage());
+			
+		}catch(IOException e){
+			System.out.println("Socket: " + e.getMessage());
+			
+		}finally {
+      
+      // step3: close resources ----------------------------------------------------------
+			if(serverSocket != null) 
+				serverSocket.close();
+		}
+
+    }
+}
+
+```
+
+
+
+UDPClient
+
+:bangbang: 等等, 这里怎么需要I/O stream
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
+
+public class UDPClient {
+	
+	public static void main(String args[]) {
+		// step1: 
+		DatagramSocket clientSocket = null;
+		  
+		try
+		{
+			  
+      System.out.println("This is UDP Client- Enter some text to send to the UDP server");
+      BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+      // Create a UDP socket object
+      clientSocket = new DatagramSocket();
+      //IP and port for socket
+      InetAddress IPAddress = InetAddress.getByName("localhost");
+      int port = 9884;
+
+      // As UDP Datagrams are bounded by fixed message boundaries, define the length
+      byte[] sendData = new byte[1024];
+      byte[] receiveData = new byte[1024];
+
+      String sentence = inFromUser.readLine();
+      sendData = sentence.getBytes();
+
+      // Create a send Datagram packet and send through socket
+      DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+      clientSocket.send(sendPacket);
+
+      // Response: Create a receive Datagram packet and receive through socket 
+      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+      clientSocket.receive(receivePacket);
+      String modifiedSentence = new String(receivePacket.getData());
+      System.out.println("This is client,  SERVER SENT: " + modifiedSentence);
+      
+      //Close the Socket
+      clientSocket.close();
+		  
+		}catch(SocketException e){
+      System.out.println("Socket: " + e.getMessage());
+
+    }catch(IOException e)
+    {
+      System.out.println("Socket: " + e.getMessage());
+
+    }finally {
+      // step3: close resources
+      if(clientSocket != null) 
+        clientSocket.close();
+
+    }
+ }
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+### :gem: Demo1: UDPTest1
+
+
+
+
+
+
+
+
+
+
+## 7. :moon: URL编程
 
 627-628
 
@@ -225,7 +538,11 @@ http://192.168.1.100:8080/helloworld/index.jsp#a?username=shkstart&password=123
 
 
 
-:gem: Demo: 康师傅演示如何通过URL对象来下载其对应的网络上的资源
+### :gem: Demo1: 
+
+
+
+康师傅演示如何通过URL对象来下载其对应的网络上的资源
 
 
 

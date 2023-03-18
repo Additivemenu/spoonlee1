@@ -1,67 +1,40 @@
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ * URL 网络编程
+ * 1. URL(Uniform Resource Locator): 对应网络上某资源地址
+ * 2. URL格式:
+ *      <传输协议>://<主机名>:<端口号>/<文件名>#片段名?参数列表
+ *      http://192.168.1.100:8080/helloworld/index.jsp#a?username=shkstart&password=123
+ *
+ *
+ *
  * @author xueshuo
- * @create 2023-01-19 5:38 pm
+ * @create 2023-01-19 5:24 pm
  */
 public class URLTest1 {
 
-    /**
-     * 下载url对应的资源
-     * @param args
-     */
-    public static void main(String[] args)  {
-        HttpURLConnection urlConnection = null;
-        InputStream is = null;
-        FileOutputStream fos = null;
+    public static void main(String[] args) {
         try {
-            // get urlConnection (类似Socket的东西)
-            // 这里github似乎对png文件压缩过, 直接下载似乎格式不对, 意思是这个意思
-            URL url = new URL("https://github.com/Additivemenu/spoonlee1/blob/master/fullStack/Src_img/vs_shortcut_mac.png");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
+            URL url = new URL("https://www.bilibili.com/video/BV1Kb411W75N?p=629&vd_source=c6866d088ad067762877e4b6b23ab9df");
 
-            // 边读边写
-            is = urlConnection.getInputStream();
-            fos = new FileOutputStream("chap14_NetWork_Programming//URL_test.png");     // main中相对路径是针对整个project
+            //public String getProtocol( )  获取该URL的协议名
+            System.out.println(url.getProtocol());
+            // public String getHost( )
+            System.out.println(url.getHost());
+            // public String getPort( )
+            System.out.println(url.getPort());
+            // public String getPath( )
+            System.out.println(url.getPath());
+            // public String getFile( )
+            System.out.println("File: " + url.getFile());
+            // public String getQuery() 获取该URL的查询名
+            System.out.println("query: "+ url.getQuery());
 
-            byte[] buffer = new byte[1024];
-            int len;
-            while((len = is.read(buffer)) != -1){
-                fos.write(buffer, 0, len);
-            }
-
-            System.out.println("download compete!");
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            // close resource
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-
-
-
-
     }
+
 }

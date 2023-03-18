@@ -1,3 +1,5 @@
+References:
+
 :computer: [尚硅谷: Java file class 575-578](https://www.bilibili.com/video/BV1Kb411W75N?p=577&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
 :computer: [尚硅谷: I/O stream part1 583-608 (604-608 revision)](https://www.bilibili.com/video/BV1Kb411W75N?p=584&vd_source=c6866d088ad067762877e4b6b23ab9df)
@@ -107,27 +109,27 @@ I/O用于处理设备之间的数据传输, 如read/write, 网络通讯等. Java
 + input: 读取外部数据(磁盘, 光盘等存储设备中的数据)到程序(内存)中
 + output: input的逆过程
 
-## stream的分类
+## 2.1 Stream的分类
 + 按操作数据单位分: 
   + 字节流(byte stream, 基本单位 8 bit) 适合处理binary file, 比如图片视频 (word文件就属于binary file)
-    + 此类stream的类名结尾为 Reader / Writer
+    + 此类stream的类名结尾为 `InputStream` / `OutputStream `
   + 字符流(char stream, 基本单位 16 bit) 适合处理txt file
-    + 此类stream的类名结尾为 InputStream / OutputStream
+    + 此类stream的类名结尾为 `Reader` / `Writer`
 + 按数据流的流向分: 
   + 输入流
   + 输出流
 + 按流的角色分: 
-  + 节点流: **直接**连接文件和内存的stream
+  + 节点流: **直接**连接文件和内存(程序)的stream
   + 处理流: 在已有的stream的基础上, 外面包的那层stream
 
 <img src="../../Src_md/IOStream_classification.png" width=70%>
 
-## IO stream体系结构
+## 2.2 IO stream体系结构
 Java的IO stream共涉及40多个class, 但实际上它们都是从如下4个抽象基类中派生的.
 
 抽象类| byte stream |char stream
 -----|-----|-----
-input stream  |  `InputStream`   |  `Reade`
+input stream  |  `InputStream`   | `Reader` 
 output stream |  `OutputStream`  | `Writer`
 
 
@@ -135,30 +137,42 @@ output stream |  `OutputStream`  | `Writer`
 
 <img src="./Src_md/IOStream_system.png" width=80%>
 
-+ **直接**连接文件的四个流 (上面第三排的): 节点流
++ **直接**连接文件的四个流 (访问文件那行): 节点流, 开头名字都是File
 
-+ 第三排之后的流: 都是处理流
++ 从第三排访问数组往后的流: 都是处理流
 
   
 
-# 3. :full_moon:节点流(文件流)
-**节点流直接与file相连, 完成与file之间的数据交换, 此类stream的类名以File开头.** 之后可以套接处理流, 完成更加特定的输入输出任务.
+# 3. :full_moon: 节点流(file stream)
+I/O stream最基础的流
+
+**节点流直接与file相连, 完成与file之间的数据交换, 此类stream的类名以File开头.** 之后可以套接处理流, 完成更加特定的输入输出任务. 
 
 
-I/O stream的使用一般都分成3步:
+
+:star: 精华: I/O stream的使用一般都分成3步:
+
+1. step 1. instantiate I/O stream (想象成 连接管道 (I/O stream)和物料池 (File))
+
+   + step1.1 实例化File
+
+   + step1.2 节点流实例化: 为节点流注入File依赖
+   + step 1.3 处理流实例化: (如果使用到处理流), 还需要为处理流注入节点流依赖
+
+2. step 2. read & write (想象成 管道.出料)
+
+3. step 3. close stream 为了能够保证顺利关闭资源, 需要使用try-catch-finally (想象成管道.关闭)
+
+有时候我们需要连续使用到input 和output 的I/O stream(例如copy一个文件, 我们需要边读边写), 但无论如何复杂, 都遵循上面的步骤
 
 ```java
-// step 1. instantiate FileReader stream (inlcuding instantiate File class )
-// step 2. read
-// step 3. close stream 为了能够保证顺利关闭资源, 需要使用try-catch-finally
-
 try{
-  	// step1
-    // step2
+  	// step1 连接管道(I/O Stream)和物料池子(File)
+    // step2 R&W 管道.出料
 }catch(IOException e) {
   	e.print()
 }finally{
-  	// step3
+  	// step3 管道.close
 }
 ```
 
@@ -168,23 +182,35 @@ try{
 
 
 
-## 3.1 Char stream (字符流)
+## 3.1 handle Char stream (字符流)
+
+读写txt file
+
+
 
 :star: 注意处理I/O stream中的可能会被throw Exception:
+
   + Exception from step1: instantiate I/O stream `fr = new FileReader(file);`
 
   + Exception from step2: loading `fr.read();`
 
-  如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里, 保证stream一定会被关掉.
+ 如果处理不妥当, I/O stream没有被关闭, 会造成严重的资源浪费和泄露. 因此 I/O stream .close()最好放在finally block里, 保证stream一定会被关掉.
 
-:gem: e.g. 一个标准的FileReader的使用模板, 写的时候先不写try-catch-finally, 最后再加上, 也分两步: 1) step1,2,3放进try-catch-finally 中的try block; 2) step4 放入finally block
+
+
+#### :gem: e.g.1 `read()` 读取一个char
+
+
+
+一个标准的FileReader的使用模板, 写的时候先不写try-catch-finally, 最后再加上, 也分两步: 
+
+(1) step1,2,3放进try-catch-finally 中的try block; 
+
+(2) step4 放入finally block
+
 > `command+`alt`+`t`: surround with 
 
----
 
-#### `read()` 读取一个char
-
-一次只读取一个char
 
 ```java
 /**
@@ -198,21 +224,23 @@ try{
     public void testFileReader() {
         FileReader fr = null;
         try {
-            //  step1: instantiate File class, point out which file you want to manipulate over
+            //  step1: instantiate File class, point out which file you want to manipulate 
             File file = new File("hello.txt");      // unit test中相对路径相较于当前Module(C:\1_Java\GuiguShang_Bilibili\IO_Stream)
-            // step2: provide stream
-            fr = new FileReader(file);      // TODO: might throw FileNotFoundException
-            // step3: load data
+          
+            // step2: 向Stream中注入file依赖 (想象成管道连接物料池)
+            fr = new FileReader(file);      // might throw FileNotFoundException
+          
+            // step3: load data (想象成管道开始出料)
             //          read(): return 读入的一个字符. 如果达到文件末尾, return -1
             int data = fr.read();           // char 也对应int值     TODO: might throw Exception
             while(data != -1){
                 System.out.print((char)data);
-                data = fr.read();           // 相当于i++, condition for next loop  TODO: might throw Exception
+                data = fr.read();           // 相当于i++, condition for next loop. This might throw Exception
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // step4: close stream  千万别忘!  因为JVMl垃圾回收对于物理连接无能为力
+            // step4: close stream  千万别忘!  因为JVM垃圾回收对于物理连接无能为力
             try {
                 if(fr != null){     // TODO:in case fr is not instantiated when `fr = new FileReader(file)` throws exception
                     fr.close();
@@ -226,14 +254,13 @@ try{
 ```
 
 
----
 
-#### `read(char[])` 批量读取char数据
+#### :gem: e.g.2 `read(char[])` 批量读取char数据
 
-一次读取一个char[]; 需要用到辅助变量char[]作为buffer
+一次读取一个char[]; 需要用到一个类型为char[]的辅助变量作为buffer
 
 + **一般遵循一个原则: 读了几个char就操作几个char** 
-  + :bangbang:注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在.
+  + :bangbang: 原因是: 注意每次读取时, 只是反复修改作为buffer的char[]. 假设作为buffer的char[]的长度为5, 有一次loop我们只往buffer中读入了3个char, 那么buffer上次loop中读入的后两个char也还在.
 ```java
 /**
   * 对read()操作升级: 使用read重载方法
@@ -244,13 +271,13 @@ try{
 public void testFileReader1()  {
     FileReader fr = null;
     try {
-        // 1. instantiate File class
+        //instantiate File class
         File file = new File("hello.txt");
 
-        // step1 instantiate FileReader stream
+        // step1 instantiate FileReader stream (向FileReader中注入file依赖)
         fr = new FileReader(file);
 
-        // step2 read(char[]) 批量读取
+        // step2 read(char[]) 批量读取 
         // read(char[] cbuf): return the number of char read into cbuf; return -1 if reaching end of the file
 
         char[] cbuf = new char[5];      // char[] buffer
@@ -288,9 +315,8 @@ public void testFileReader1()  {
 
 }
 ```
----
+#### :gem: e.g.3  FileWriter
 
-FileWriter
 ```java
 /**
   * export data from main memory into hard drive
@@ -306,17 +332,18 @@ FileWriter
 public void testFileWriter()  {
   FileWriter fw = null;
   try {
-      // 1. instantiate file class
+      // step1.1 instantiate file class
       File file = new File("hello1.txt");
-      // 2. instantiate writer stream
+      // step1.2 instantiate writer stream (注入file依赖)
       fw = new FileWriter(file);
-      // 3. write
+    
+      // step2 write
       fw.write("I have a dream!\n".toCharArray());
       fw.write("you need to have a dream!");
   } catch (IOException e) {
       throw new RuntimeException(e);
   } finally {
-      // 4. close writer stream
+      // step3 close writer stream
       if(fw != null){
           try {
               fw.close();
@@ -328,9 +355,10 @@ public void testFileWriter()  {
 }
 ```
 
+#### :gem:e.g.4  practice: copy a file 
 
----
-:gem: practice: copy a file 
+读和写一起上
+
 ```java
 /**
   *
@@ -343,15 +371,15 @@ public void testFileReaderFileWriter() {
     FileReader  fr = null;
     FileWriter fw = null;
     try {
-        // 1. instantiate File class
+        // step1.1 instantiate File class
         File srcFile = new File("hello.txt");
         File destFile = new File("helloCopy.txt");
 
-        // 2. instantiate I/O stream
+        // step1.2 instantiate I/O stream (连接管道(I/O stream)和物料池(file))
         fr = new FileReader(srcFile);
         fw = new FileWriter(destFile);
 
-        // 3. read & write
+        // step2. read & write (管道.出料)
         char[] cbuf = new char[5];
         int len;        // record the number of char read into cbuf
         while((len=fr.read(cbuf))!=-1){
@@ -360,7 +388,7 @@ public void testFileReaderFileWriter() {
     } catch (IOException e) {
         throw new RuntimeException(e);
     } finally {
-        // 4. close stream      TODO: better close in the reverse order of creating streams
+        // step3. close stream      TODO: better close in the reverse order of creating streams
         try {
             if(fw != null)
                 fw.close();
@@ -382,38 +410,184 @@ public void testFileReaderFileWriter() {
 
 
 
-## 3.2 Byte stream (字节流)
-形式和char stream一致, 还是分4步.
+## 3.2 handle Byte stream (字节流)
+读写Binary file
+
+形式和char stream一致, 还是分3步.
 
 可以单独处理一个Byte, 也可批量处理一个Byte[]
 
 
 
 
-# 4. :moon: 常用处理流
 
-## 4.1 缓冲流(buffered stream)
+# 4. 常用处理流
+
+接节点流, 可以完成更加复杂的特定的读写任务. 
+
+这里的缓冲流和转换流在UniMelb distributed system里要大量使用
+
+
+
+## 4.1 :moon:缓冲流(buffered stream)
+593-597
+
 为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant DEFAULT_BUFFER_SIZE (see source code)决定
 
-+ step2 instantiate stream中, 先instantiate节点流, 再instantiate对应的处理流
-+ step4 close stream中, 先close outer stream, 再close inner stream. 但实际上, close outer stream时, inner stream会自动close
 
-byte stream:
+
+Step3 close stream中, 先close outer stream, 再close inner stream. 但实际上, close outer stream时, inner stream会自动close
+
+
+
+for byte stream:
+
 + `BufferedInputStream`
   + `read(btye[] buffer)` 
 + `BufferedOutputStream`
   + `write(btye[] buffer, 0, len])` 
   
 
-char stream:
+
+
+for char stream:
+
 + `BufferedReader`
   + `read(char[] cbuf)`
   + `readLine()`
 + `BufferedWriter`
   + `write(char[] cbuf, 0, len)` 
+
+
+
 ### 4.1.1 缓冲流 vs. 节点流
 
 用了缓冲流速度果然变快了(使用相同的buffer size时)
+
+
+
+:gem: copy a binary file
+
+```java
+		@Test
+    public void BufferedStreamTest()  {
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            // step1.1
+            File srcFile = new File("Dva.jpg");
+            File destFile = new File("Dva2.jpg");
+
+            // step1.2 instantiate stream
+            //  节点流 注入File依赖
+            FileInputStream fis = new FileInputStream(srcFile);
+            FileOutputStream fos = new FileOutputStream(destFile);
+            //  处理流 注入节点流依赖
+            bis = new BufferedInputStream(fis);
+            bos = new BufferedOutputStream(fos);
+
+            // step2 read & write
+            byte[] buffer = new byte[10];
+            int len;
+            // 边读边写
+            while((len = bis.read(buffer)) != -1){
+                bos.write(buffer, 0 , len);
+            }
+            System.out.println(""+srcFile+" copy succeed!");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+
+            // step3 close
+            // firsly close outer stream(处理流), then close inner stream(节点流)
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            // actually, after we are closed outer stream, inner stream will also be closed automatically.
+//          fos.close();
+//          fis.close();
+        }
+
+    }
+```
+
+
+
+:gem: copy a txt file
+
+```java
+   /**
+     * use BufferedReader, BufferedWriter to copy txt file
+     *
+     */
+    @Test
+    public void testBufferedReaderBufferedWriter()  {
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        try {
+            // step 1,2 合并写法
+            br = new BufferedReader(new FileReader(new File("dbcp.txt")));
+            bw = new BufferedWriter(new FileWriter(new File("dbcp_copy.txt")));
+
+            // step 3
+//            // 方式一 read
+//            char[] cbuf = new char[1024];
+//            int len;
+//            while((len = br.read(cbuf)) != -1){
+//                bw.write(cbuf,0, len);
+//            }
+            // 方式二: readLine
+            String dataLine;
+            while((dataLine = br.readLine()) != null){
+//                // 方法一:
+//                bw.write(dataLine + "\n");     // dataLine 本身中不包含换行符
+
+                // 方法二:
+                bw.write(dataLine);             // dataLine 本身中不包含换行符
+                bw.newLine();                   // 换行
+            }
+
+            System.out.println("copy succeed!");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // step 4 close
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
+    }
+```
+
+
+
+
 
 
 
@@ -426,22 +600,30 @@ while((b=fis.read()) != -1){
   fos.write(b^5); // XOR
 }
 ```
+
+
 :gem: buffered stream practice 1: 统计txt file中每个字符出现的次数
 
 
-## 4.2 转换流
-`InputStreamReader`: 用来byte stream --> char stream (解码)
-`OutputStreamWriter`: 用来 char stream --> byte stream (编码)
 
-名字里代表byte stream的`InputStream`, `OutputStream`和`Reader`,`Writer`同时出现, 但本身是char stream(因为名字以Reader, Writer结尾). 
-+ 比较特殊, 之前我们提到的char stream, 输入输出都是以char为最小单位, 这里`InputStreamReader`输入时以byte为最小单位处理, 输出时以char为最小单位处理.
-  
+
+
+## 4.2 :moon: 转换流
+
+598-600
+
+名字里代表byte stream的`InputStream`, `OutputStream`和`Reader`,`Writer`同时出现, 但本身是char stream(因为名字以Reader, Writer结尾): 
+
++ `InputStreamReader`: 用来byte stream --> char stream (解码)
++ `OutputStreamWriter`: 用来 char stream --> byte stream (编码)
+
+
+
+转换流比较特殊, 之前我们提到的char stream, 输入输出都是以char为最小单位, 这里`InputStreamReader`输入时以byte为最小单位处理, 输出时以char为最小单位处理.
 
 转换流提供byte stream 与 char stream之间的转换. 
 
 下图中, utf8.txt必须先通过节点流才能被程序访问, test1中我们先用节点流FileInputStream()来用将utf8.txt转化为byte stream, 然后用InputStreamReader将byte stream转化为char stream, 再用char[]作为buffer来**在程序中**读取并处理这个char stream
-
-
 
 <img src="../../Src_md/IOStream_conversion.png" width=80%>
 
@@ -536,7 +718,9 @@ while((b=fis.read()) != -1){
 ```
 
 
-### 4.2.1 补充: charSet(字符集)
+
+### 补充: charSet(字符集)
+
 常见编码表:
 + ASCII: 美国标准信息交换码, 用一个byte的7 bits可以表示
 + ISO8859-1: 拉丁码表. 欧洲码表. 用一个byte的8 bits表示
@@ -558,9 +742,13 @@ UTF-8编码原理:
 
 <img src="../../Src_md/IOStream_UTF8_encoding.png" width=80%>
 
+
+
 # 5. 其他处理流
 
 ## 5.1 标准输入, 输出流 
+
+601
 
 + `System.in`: standard input, 属于byte stream
 + `System.out`: standard output , 属于byte stream
@@ -636,6 +824,10 @@ UTF-8编码原理:
 
 ## 5.2 打印流
 
+602
+
+
+
 将基本数据类型的数据格式转化为String输出
 
 + `PrintStream`: byte stream
@@ -646,6 +838,10 @@ UTF-8编码原理:
 
 
 ## 5.3 数据流
+603
+
+
+
 为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据.  与对象流向对应.
 e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到程序中.
 
@@ -658,10 +854,13 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 
 
 
-
 ## 5.4 :full_moon: 对象流: 序列化机制
 
+609-613
+
 :computer: [尚硅谷： IO流 part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
+
+
 
 与数据流相对应, 将基本数据类型data和对象data从程序export到file, 或读取file中的基本数据类型data和对象data
 

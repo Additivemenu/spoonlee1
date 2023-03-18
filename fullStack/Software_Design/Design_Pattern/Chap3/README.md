@@ -12,20 +12,28 @@
 
 
 
-单例模式有8种方式
+单例模式有8种方式 (本质只有4种), 加:star:表示推荐使用
 
-1. 饿汉式(静态常量)
-2. 饿汉式(静态代码块)
+1. :star:饿汉式(静态常量)
+2. :star:饿汉式(静态代码块)
 3. 懒汉式(线程不安全)
 4. 懒汉式(线程安全，同步方法) 
 5. 懒汉式(线程安全，同步代码块) 
-6. 懒汉式(双重检查)
-7. 静态内部类
-8. 枚举
+6. :star:懒汉式(双重检查)
+7. :star:静态内部类
+8. :star:枚举
 
 
 
 ## 1.1 饿汉式
+
+核心的思想都是
+
++ 构造器私有化, 不能让外界直接new 对象
+
++ 将类的单例对象作为类的属性, 对外暴露get该属性的方法. 下面两种方式不同之处在于作为属性的单例对象的初始化方式不同
+
+
 
 ### 静态常量
 
@@ -57,7 +65,7 @@ class Singleton{
 
     }
 
-    // step2: 本类内部创建对象实例
+    // step2: 本类内部创建对象实例作为属性
     private final static Singleton instance = new Singleton();
 
     // step3: 对外提供一个公有的静态方法, 返回实例对象
@@ -71,11 +79,11 @@ class Singleton{
 
 优缺点说明:
 
-1. 优点:这种写法比较简单，就是在类装载的时候就完成实例化。避免了线程同 步问题。
+1. 优点:这种写法比较简单，就是在类装载的时候就完成实例化。避免了线程同步问题。
 2. 缺点:在类装载的时候就完成实例化，没有达到Lazy Loading的效果。如果从始至终从未使用过这个实例，则会造成内存的浪费
 3. 这种方式基于classloder机制避免了多线程的同步问题，不过，instance在类装载时就实例化，在单例模式中大多数都是调用getInstance方法， 但是导致类装载的原因有很多种，因此不能确定有其他的方式(或者其他的静态方法)导致类 装载，这时候初始化instance就没有达到lazy loading的效果
 
-结论: 这种单例模式可用，可能造成内存浪费
+结论: 这种单例模式可用，但可能造成内存浪费
 
 
 
@@ -105,7 +113,7 @@ class Singleton{
 
     }
 
-    // step2: 本类内部创建对象实例
+    // step2: 本类内部创建对象实例 作为属性
     private static Singleton instance;
     // 在静态代码块中创建单例对象
     static {
@@ -121,7 +129,7 @@ class Singleton{
 
 优缺点说明:
 
-这种方式和上面的方式其实类似，只不过将类实例化的过程放在了静态代码块 中，也是在类装载的时候，就执行静态代码块中的代码，初始化类的实例。优 缺点和上面是一样的。
+这种方式和上面的方式其实类似，只不过将类实例化的过程放在了静态代码块(当加载类时会执行静态代码块中的代码) 中，也是在类装载的时候，就执行静态代码块中的代码，初始化类的实例。优 缺点和上面是一样的。
 
 结论:这种单例模式可用，但是可能造成内存浪费
 
@@ -334,9 +342,11 @@ class Singleton{
 
 
 
-## 1.4 静态内部类
+## 1.3 静态内部类
 
 35
+
+不太好理解
 
 ```java
 
@@ -400,9 +410,218 @@ class Singleton{
 
 
 
-## 1.5 枚举
+## 1.4 枚举
 
 36
+
+```java
+public class SingletonTest08 {
+    public static void main(String[] args) {
+        Singleton instance = Singleton.INSTANCE;
+        Singleton instance2 = Singleton.INSTANCE;
+
+        System.out.println(instance == instance2);          // true
+
+        System.out.println(instance.hashCode());
+        System.out.println(instance2.hashCode());
+
+        instance.sayOK();           // OK
+    }
+}
+
+// 使用枚举可以实现单例, 推荐使用
+enum Singleton{
+    INSTANCE;       // 属性
+
+    public void sayOK(){
+        System.out.println("OK");
+    }
+}
+```
+
+
+
+优缺点说明:
+
+1) 这借助JDK1.5中添加的枚举来实现单例模式。不仅能避免多线程同步问题，而 且还能防止反序列化重新创建新的对象。
+2) 这种方式是Effective Java作者Josh Bloch 提倡的方式 3) 结论:推荐使用
+
+
+
+## JDK单例模式举例
+
+37
+
+Java.lang.Runtime 使用饿汉式实现单例模式
+
+
+
+## 单例模式总结
+
+38
+
+推荐使用: 枚举，静态内部类, 懒汉式double-check, 饿汉式
+
+
+
+单例模式注意事项和细节说明
+
+1) 单例模式保证了 系统内存中该类只存在一个对象，节省了系统资源，对于一些需 要频繁创建销毁的对象，使用单例模式可以提高系统性能
+2) 当想实例化一个单例类的时候，必须要记住使用相应的获取对象的方法，而不是使 用new
+3) 单例模式使用的场景: 需要频繁的进行创建和销毁的对象、创建对象时耗时过多或 耗费资源过多(即:重量级对象)，但又经常用到的对象、工具类对象、频繁访问数 据库或文件的对象(比如数据源、session工厂等)
+
+
+
+回顾复习Singleton, 之后复习再看!
+
+
+
+
+# 2. :moon: 工厂方法模式 (Factory Method)
+看一个具体的需求
+
+看一个披萨的项目:要便于披萨种类的扩展，要便于维护 
+
+1. 披萨的种类很多(比如 GreekPizz、CheesePizz 等)
+
+2) 披萨的制作有 prepare，bake, cut, box
+3) 完成披萨店订购功能。
+
+
+
+## 简单工厂模式
+
+39-42
+
+### 披萨订购 传统方式
+
+39-40
+
+![conventional](./Src_md/conventional.png)
+
+Pizza
+
+```java
+public abstract class Pizza {
+    protected String name;
+
+    // 准备原材料，不同的披萨不一样, 因此我们做成抽象方法
+    public abstract void prepare();
+    public void bake() {
+        System.out.println(name + " baking;");
+    }
+    public void cut() {
+        System.out.println(name + " cutting;");
+    }
+    public void box() {
+        System.out.println(name + " boxing;");
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+Cheeze
+
+```java
+public class CheesePizza extends Pizza{
+    @Override
+    public void prepare() {
+        System.out.println("Prepare cheese for cheese pizza");
+    }
+}
+```
+
+
+
+Greek
+
+```java
+public class GreekPizza extends Pizza{
+
+    @Override
+    public void prepare() {
+        System.out.println("Prepare materials for Greek Pizza");
+    }
+}
+```
+
+OrderPizza
+
+```java
+public class OrderPizza {
+    // 在构造器里写这么多方法, 第一次见到
+    public OrderPizza(){
+        Pizza pizza = null;
+        String orderTypes; // 订购Pizza的类型
+        do{
+            orderTypes = getType();
+            if(orderTypes.equals("greek")){
+                pizza = new GreekPizza();
+                pizza.setName("greek pizza");
+            }else if(orderTypes.equals("cheese")){
+                pizza = new CheesePizza();
+                pizza.setName("cheese pizza");
+            } else{
+                break;
+            }
+            // 输出Pizza制作过程
+            pizza.prepare();
+            pizza.bake();
+            pizza.cut();
+            pizza.box();
+        }while(true);
+    }
+
+    // 可以动态获取客户希望的披萨种类
+    private String getType() {
+        try {
+            BufferedReader strin = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("input pizza type:");
+            String str = strin.readLine();
+            return str;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+}
+```
+
+PizzaStore (entry of program)
+
+```java
+public class PizzaStore {
+
+    public static void main(String[] args) {
+        OrderPizza orderPizza = new OrderPizza();
+    }
+
+}
+```
+
+
+
+传统的方式的优缺点
+
+1) 优点是比较好理解，简单易操作。
+2) 缺点是违反了设计模式的ocp原则，即对扩展开放，对修改关闭。即当我们给类增加新功能的时候，尽量不修改代码，或者尽可能少修改代码.
+   + 比如我们这时要新增加一个Pizza的种类(Pepper披萨)，我们需要在OrderPizza类中增加else if 代码.
+
+改进的思路
+
+分析 :修改代码可以接受，但是如果我们在其它的地方也有创建Pizza的代码，就意味也需要修改，而创建Pizza的代码，往往有多处。 
+
+思路:把创建Pizza对象封装到一个类中，这样我们有新的Pizza种类时，只需要修改该 类就可，其它有创建到Pizza对象的代码就不需要修改了.-> 简单工厂模式
+
+
+
+### 改进: 简单工厂模式
+
+41
 
 看到这里
 
@@ -410,19 +629,9 @@ class Singleton{
 
 
 
-
-# 2. :moon: 工厂方法模式 (Factory Method)
-39-44
-
-## 简单工厂模式
-
-
-
-
-
 ## 工厂方法模式
 
-
+43-44
 
 
 

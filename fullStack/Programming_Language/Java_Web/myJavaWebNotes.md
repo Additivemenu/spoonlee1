@@ -2,12 +2,15 @@ References:
 
 :computer:[尚硅谷JavaWeb 2022版](https://www.bilibili.com/video/BV1AS4y177xJ/?spm_id_from=333.788.recommend_more_video.0)
 
+前置内容: JDBC
+
 本课程衔接接下来的Spring与后续的SpringBoot框架
 
 
 
 ---
 1-17: 前端  [Part1](./Part1_FrontEnd/README.md)
+
 + P11-15: 穿插静态页面project: 水果清单的实现 
 
 18-89: 后端 [Part2](./Part2_BackEnd/README.md)
