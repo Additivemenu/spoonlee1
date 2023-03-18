@@ -1,4 +1,12 @@
+References
+
 :book: [尚硅谷: I/O stream](./GuiguShang/GuiguShang.md)
+
+
+
+
+
+
 
 ---
 I/O stream
@@ -465,19 +473,19 @@ Many inherent methods in Scanner can throw Exceptions by themselves
     // similar methods
     public long nextLong()
     public boolean hasNextLong()
-
+    
     public byte nextByte()
     public boolean hasNextByte()
-
+    
     public short nextShort()
     public boolean hasNextShort()
-
+    
     public double nextDouble()
     public boolean hasNextDouble()
-
+    
     public float nextFloat()
     public boolean hasNextFloat()
-
+    
     public boolean nextBoolean()
     public boolean hasNextBoolean()
     ```
@@ -1001,7 +1009,7 @@ However, some applications require very rapid access to records in very large da
 The stream class **RandomAccessFile**, which is in the java.io package, provides both read and write random access (指可以任意访问file中的特定部分) to a file in Java.
 
 + **file pointer**
-A **random access file** （包含binary file和txt file吗?） consists of a sequence of numbered bytes. There is a kind of marker called the **file pointer** that is always positioned at one of the bytes.  
+  A **random access file** （包含binary file和txt file吗?） consists of a sequence of numbered bytes. There is a kind of marker called the **file pointer** that is always positioned at one of the bytes.  
   + All reads and writes take place starting at the file pointer location.  
   + The file pointer can be moved to a new location with the method seek.
 
@@ -1124,5 +1132,4 @@ The mode must be one of the following:
     ```java
     public final String readUTF() throws IOException
     ```
-
 

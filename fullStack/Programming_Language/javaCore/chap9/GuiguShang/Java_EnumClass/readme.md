@@ -204,8 +204,6 @@ public void buyBook(String username, String isbn){
 
 505
 
-
-
 + 定义新的 Annotation 类型使用 @interface 关键字
 + 自定义注解自动继承了 java lang annotation Annotation 接口
 + **Annotation 的成员变量在 Annotation 定义中以无参数方法的形式来 声明.** 其方法名和返回值定义了该成员的名字和 类型. 我们 称为**配置参数**. 类型只能是八种基本数据类型, String 类型, Class 类型, enum 类型, Annotation 类型, 以上所有类型的 数组

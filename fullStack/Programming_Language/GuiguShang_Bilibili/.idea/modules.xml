@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/chap11_Java_Collection/chap11_Java_Collection.iml" filepath="$PROJECT_DIR$/chap11_Java_Collection/chap11_Java_Collection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chap12_Generics/chap12_Generics.iml" filepath="$PROJECT_DIR$/chap12_Generics/chap12_Generics.iml" />
       <module fileurl="file://$PROJECT_DIR$/chap13_IO_Stream/chap13_IO_Stream.iml" filepath="$PROJECT_DIR$/chap13_IO_Stream/chap13_IO_Stream.iml" />
       <module fileurl="file://$PROJECT_DIR$/chap16_Java8_Features/chap16_Java8_Features.iml" filepath="$PROJECT_DIR$/chap16_Java8_Features/chap16_Java8_Features.iml" />
       <module fileurl="file://$PROJECT_DIR$/chap9_CommonClass/chap9_CommonClass.iml" filepath="$PROJECT_DIR$/chap9_CommonClass/chap9_CommonClass.iml" />

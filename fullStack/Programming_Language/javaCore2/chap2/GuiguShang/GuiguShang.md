@@ -4,12 +4,13 @@
 
 :computer: [尚硅谷:  I/O stream part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df) 讲对象流, 随机存取...
 
-I/O流与网络编程紧密相关, 网络编程见 [chap4: 网络编程](../chap4/readme.md)
+I/O流与网络编程紧密相关
 
----
-[TOC]
 
----
+
+
+
+
 
 # 1. :moon: File class
 
@@ -700,11 +701,15 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 
 有需求再看
 
+
+
 # 7. NIO.2中Path, Paths, Files class的使用
 
 616
 
 有需求再看
+
+
 
 # 8. 使用第三方jar包实现数据读写
 

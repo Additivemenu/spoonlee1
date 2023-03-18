@@ -2,11 +2,29 @@
 
 
 
-# 0. Content
+# 0. Abstract
 
-[TOC]
+两条主线: 
 
----
++ `Collection` interface
+
+  + List
+    + ArrayList
+    + LinkedList
+  + Set
+    + HashSet
+    + LinedHashSet
+    + TreeSet
+
++ `Map` interface
+
+  + HashMap
+
+    
+
+后续结合Generics使用, 限定容器内元素的类型达到类型安全的目的
+
+
 
 # 1. Java 集合框架概述
 
@@ -684,7 +702,7 @@ public static void main(String[] args) {
 
 557
 
-+ Collections是一个操作Set, List和Map的工具类 (操作数组的工具类是Arrays)
++ Collections是一个操作Set, List和Map的工具类 (操作数组的工具类是Arrays),
 
 + Collections中提供了一系列static method来对集合元素进行排序, 查询和修改等操作, 还提供了对集合对象设置不可变, 对集合对象实现同步控制等方法
 
