@@ -2,9 +2,14 @@ package IO_Stream.Practice;
 
 import org.testng.annotations.Test;
 
-import java.io.*;
-import java.sql.SQLOutput;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+/**
+ * 图片加密
+ */
 public class PicTest {
 
     // encryption on a picture
@@ -13,11 +18,11 @@ public class PicTest {
         FileInputStream fis = null;
         FileOutputStream fos = null;
         try {
-            // 1,2 instantiate stream based on file
+            // 1 instantiate stream based on file
             fis = new FileInputStream(new File("Dva.jpg"));
             fos = new FileOutputStream(new File("Dva_encrypted.jpg"));
 
-            // 3 read & write
+            // 2 read & write
             byte[] buffer = new byte[20];
             int len;
             while((len = fis.read(buffer)) != -1){
@@ -26,9 +31,10 @@ public class PicTest {
     //            for(byte b:buffer){
     //                b = (byte) (b^5);       // 增强for loop是deep copy 原数组, b 并不指向原数组, 因此原数组并没有被改变!!!
     //            }
+
                 // rightful !!!
                 for(int i=0; i<len;i++){
-                    buffer[i] = (byte) (buffer[i]^5);           // Encryption: XOR
+                    buffer[i] = (byte) (buffer[i]^5);           // Encryption: `^` XOR operation
                 }
                 fos.write(buffer, 0, len);
             }
@@ -38,7 +44,7 @@ public class PicTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4 close
+            // 3 close
             if (fos != null) {
                 try {
                     fos.close();

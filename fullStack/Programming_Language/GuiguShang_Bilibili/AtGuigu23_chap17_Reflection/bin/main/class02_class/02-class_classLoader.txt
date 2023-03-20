@@ -1,0 +1,43 @@
+1. Class 类的理解
+(如下针对Java类的加载为例说明)
+针对于编写好的.java源文件进行编译(javac.exe), 会生成一个或多个.class字节码文件. 接着, 我们使用 java.exe命令对指定的
+.class文件进行解释运行. 这个解释运行的过程中, 我们需要将.class字节码文件加载(使用ClassLoader)到内存中. 加载到内存中(存放在方法区)的.class文件对应的结构
+即为Class类的实例
+
+比如: 加载到内存中的Person类, 或者String类或User类, 都作为Class的一个个实例
+
+Class clazz1 = Person.class;        // 运行时类
+Class clazz2 = String.class;
+Class clazz3 = User.class;
+Class clazz4 = Comparable.class;
+
+说明： 运行时类在内存中会缓存起来, 在整个执行期间只会加载一次
+
+2. 体会: Class看作是反射的源头
+
+
+3. 体会获取 (不是创建哦) Class实例的几种方式(掌握前三种)
+
+
+4. Class的实例都可以指向哪些结构呢?
+简言之，所有Java类型！
+（1）class：外部类，成员(成员内部类，静态内部类)，局部内部类，匿名内部类
+（2）interface：接口
+（3）[]：数组
+（4）enum：枚举
+（5）annotation：注解@interface
+（6）primitive type：基本数据类型
+（7）void
+
+
+5. 类的加载过程
+见md笔记
+过程1:
+
+过程2
+
+
+过程3
+
+
+6. 关于类的加载器

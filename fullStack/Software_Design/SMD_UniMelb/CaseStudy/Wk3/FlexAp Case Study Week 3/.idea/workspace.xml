@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="14c5efbb-2e09-45fb-bd42-394102439ac7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/chap13_IO_Stream/src/main/java/IO_Stream/Practice/PicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/chap13_IO_Stream/src/main/java/IO_Stream/Practice/PicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/chap13_IO_Stream/src/main/java/IO_Stream/processing_stream/BufferedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/chap13_IO_Stream/src/main/java/IO_Stream/processing_stream/BufferedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/out/production/chap13_IO_Stream/IO_Stream/Practice/PicTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/out/production/chap13_IO_Stream/IO_Stream/Practice/PicTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/out/production/chap13_IO_Stream/IO_Stream/processing_stream/BufferedTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Programming_Language/GuiguShang_Bilibili/out/production/chap13_IO_Stream/IO_Stream/processing_stream/BufferedTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../Programming_Language/javaCore2/chap2/GuiguShang/GuiguShang.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Programming_Language/javaCore2/chap2/GuiguShang/GuiguShang.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
+  </component>
+  <component name="ProjectId" id="2NH0RzD112Z1hQ2WObIjfSukZGB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lixueshuo/spoonlee/GitHub_Repo/spoonlee1/fullStack/Software_Design/SMD_UniMelb/CaseStudy/Wk3/FlexAp Case Study Week 3&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14c5efbb-2e09-45fb-bd42-394102439ac7" name="Changes" comment="" />
+      <created>1679305695953</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679305695953</updated>
+      <workItem from="1679305697008" duration="13000" />
+      <workItem from="1679305713939" duration="13000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

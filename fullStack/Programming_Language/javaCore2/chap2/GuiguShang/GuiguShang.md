@@ -186,8 +186,6 @@ try{
 
 读写txt file
 
-
-
 :star: 注意处理I/O stream中的可能会被throw Exception:
 
   + Exception from step1: instantiate I/O stream `fr = new FileReader(file);`
@@ -421,7 +419,7 @@ public void testFileReaderFileWriter() {
 
 
 
-# 4. 常用处理流
+# 4. 常用处理流 (Processing stream)
 
 接节点流, 可以完成更加复杂的特定的读写任务. 
 
@@ -432,7 +430,7 @@ public void testFileReaderFileWriter() {
 ## 4.1 :moon:缓冲流(buffered stream)
 593-597
 
-为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant DEFAULT_BUFFER_SIZE (see source code)决定
+为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant `DEFAULT_BUFFER_SIZE` (see source code)决定
 
 
 
@@ -466,7 +464,11 @@ for char stream:
 
 
 
-:gem: copy a binary file
+#### :gem: copy a binary file
+
+src file -----input stream----->  program -----output stream-----> dest file, 到网络编程就是:
+
+src socket -----input stream----->  program -----output stream-----> dest socket
 
 ```java
 		@Test
@@ -482,13 +484,14 @@ for char stream:
             //  节点流 注入File依赖
             FileInputStream fis = new FileInputStream(srcFile);
             FileOutputStream fos = new FileOutputStream(destFile);
-            //  处理流 注入节点流依赖
+            // step1.3 处理流 注入节点流依赖
             bis = new BufferedInputStream(fis);
             bos = new BufferedOutputStream(fos);
 
             // step2 read & write
             byte[] buffer = new byte[10];
             int len;
+          
             // 边读边写
             while((len = bis.read(buffer)) != -1){
                 bos.write(buffer, 0 , len);
@@ -525,7 +528,7 @@ for char stream:
 
 
 
-:gem: copy a txt file
+#### :gem: copy a txt file
 
 ```java
    /**
@@ -537,11 +540,11 @@ for char stream:
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            // step 1,2 合并写法
+            // step 1 实例化处理流, 注入依赖
             br = new BufferedReader(new FileReader(new File("dbcp.txt")));
             bw = new BufferedWriter(new FileWriter(new File("dbcp_copy.txt")));
 
-            // step 3
+            // step 2
 //            // 方式一 read
 //            char[] cbuf = new char[1024];
 //            int len;
@@ -564,7 +567,7 @@ for char stream:
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // step 4 close
+            // step 3 close
             if (bw != null) {
                 try {
                     bw.close();
@@ -589,10 +592,11 @@ for char stream:
 
 
 
+### 4.1.2 缓冲流Practice
+#### :gem: practice 1: 
 
+图片加密
 
-### 4.1.2 Practice
-:gem: buffered stream practice 1: 图片加密
 ```java
 e.g.
 int b =0;
@@ -601,8 +605,9 @@ while((b=fis.read()) != -1){
 }
 ```
 
+#### :gem: practice 2: 
 
-:gem: buffered stream practice 1: 统计txt file中每个字符出现的次数
+统计txt file中每个字符出现的次数
 
 
 

@@ -13,7 +13,7 @@ import java.io.*;
  *              BufferedReader
  *              BufferedWriter
  *      byte stream:
- *           BufferedInputStream
+ *              BufferedInputStream
  *              BufferedOutputStream
  * 2. buffered stream的意义: 提升读写速度, 因为其内部提供了缓存区 DEFAULT_BUFFER_SIZE (see source code)
  * 3. 处理流就是"套接"在节点流的基础上的
@@ -132,11 +132,11 @@ public class BufferedTest {
     }
 
     @Test
-    public  void testCopyFileWithBufferedStream(){
+    public void testCopyFileWithBufferedStream(){
         long start = System.currentTimeMillis();
 
-        String srcPath = "C:\\1_Java\\Beijing.MOV";
-        String destPath = "C:\\1_Java\\Beijing_copy1.MOV";
+        String srcPath = "Dva2.jpg";  // @Test中, 默认路径在module下
+        String destPath = "Dva2_copy2.jpg";
         copyFileWithBufferedStream(srcPath, destPath);
 
         long end = System.currentTimeMillis();
@@ -153,11 +153,11 @@ public class BufferedTest {
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            // step 1,2 合并写法
+            // step 1 合并写法
             br = new BufferedReader(new FileReader(new File("dbcp.txt")));
             bw = new BufferedWriter(new FileWriter(new File("dbcp_copy.txt")));
 
-            // step 3
+            // step 2
 //            // 方式一 read
 //            char[] cbuf = new char[1024];
 //            int len;
