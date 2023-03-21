@@ -8,7 +8,9 @@ import java.net.SocketException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-
+/**
+ * wk3 tut, 主要讲TCP, 自己研究UDP
+ */
 public class UDPClient {
 	
 	public static void main(String args[]) 

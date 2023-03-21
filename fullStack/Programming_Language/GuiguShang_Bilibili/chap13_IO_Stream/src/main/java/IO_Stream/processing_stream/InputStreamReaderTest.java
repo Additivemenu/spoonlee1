@@ -5,7 +5,9 @@ import org.junit.Test;
 import java.io.*;
 
 /**
- * 处理流之二
+ * 598-600
+ *
+ * 常用处理流之二
  * 1. test 转换流
  *  InputStreamReader (本身属于char stream): 将一个字节的输入流转换为字符的输入流, 用于解码
  *  OutputStreamReader (本事属于char stream): 将一个字符的输出流转换为字节的输出流, 用于编码
@@ -27,13 +29,14 @@ public class InputStreamReaderTest {
     public  void test1() {
         InputStreamReader isr1  = null;
         try {
-            // 1,2
+            // step1
             FileInputStream fis = new FileInputStream("dbcp.txt");
+            // 实例化处理流, 注入文件流依赖
             //InputStreamReader isr  = new InputStreamReader(fis);        // 使用系统默认字符集(charSet), IDEA默认是UTF-8
             // argument2 points out charSet, 具体用哪个字符集取决于文件保存的时候使用的字符集
             isr1 = new InputStreamReader(fis,"UTF-8");
 
-            // 3
+            // step2
             char[] cbuf = new char[20];
             int len;
             while((len = isr1.read(cbuf)) != -1){
@@ -43,7 +46,7 @@ public class InputStreamReaderTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4
+            // step3
             if (isr1 != null) {
                 try {
                     isr1.close();
@@ -63,17 +66,17 @@ public class InputStreamReaderTest {
         InputStreamReader isr = null;
         OutputStreamWriter osw = null;
         try {
-            // 1.
+            // step1
             File file1 = new File("dbcp.txt");
             File file2 = new File("dbcp_gbk.txt");
-            // 2.
+            // 文件流注入File依赖
             FileInputStream fis = new FileInputStream(file1);
             FileOutputStream fos = new FileOutputStream(file2);
-
+            // 处理流注入文件流依赖
             isr = new InputStreamReader(fis, "utf-8");
             osw = new OutputStreamWriter(fos, "gbk");
 
-            // 3.
+            // step2
             char[] cbuf = new char[20];
             int len;
             while((len = isr.read(cbuf)) != -1){
@@ -84,7 +87,7 @@ public class InputStreamReaderTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4. close
+            // step3 close
             if (osw != null) {
                 try {
                     osw.close();

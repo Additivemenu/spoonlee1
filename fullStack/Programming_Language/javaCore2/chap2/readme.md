@@ -6,8 +6,6 @@ References
 
 
 
-
-
 ---
 I/O stream
 - [1.Introduction](#1introduction)

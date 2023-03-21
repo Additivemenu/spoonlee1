@@ -111,9 +111,10 @@ I/O用于处理设备之间的数据传输, 如read/write, 网络通讯等. Java
 
 ## 2.1 Stream的分类
 + 按操作数据单位分: 
-  + 字节流(byte stream, 基本单位 8 bit) 适合处理binary file, 比如图片视频 (word文件就属于binary file)
+  + 字节流(byte stream, 基本单位 8 bit) 适合处理any files (主要用来处理binary file), 比如图片视频 (word文件就属于binary file)
     + 此类stream的类名结尾为 `InputStream` / `OutputStream `
-  + 字符流(char stream, 基本单位 16 bit) 适合处理txt file
+    + 可以使用byte stream的input stream来读取txt 文件
+  + 字符流(char stream, 基本单位 2 bytes, 16 bit) 适合处理txt file
     + 此类stream的类名结尾为 `Reader` / `Writer`
 + 按数据流的流向分: 
   + 输入流
@@ -143,7 +144,7 @@ output stream |  `OutputStream`  | `Writer`
 
   
 
-# 3. :full_moon: 节点流(file stream)
+# 3. :full_moon: :full_moon: 节点流(file stream)
 I/O stream最基础的流
 
 **节点流直接与file相连, 完成与file之间的数据交换, 此类stream的类名以File开头.** 之后可以套接处理流, 完成更加特定的输入输出任务. 
@@ -152,12 +153,13 @@ I/O stream最基础的流
 
 :star: 精华: I/O stream的使用一般都分成3步:
 
-1. step 1. instantiate I/O stream (想象成 连接管道 (I/O stream)和物料池 (File))
+1. step 1. establish the connection between program and file (or socket in web programming)(想象成 连接管道 (I/O stream)和物料池 (File))
 
    + step1.1 实例化File
 
    + step1.2 节点流实例化: 为节点流注入File依赖
-   + step 1.3 处理流实例化: (如果使用到处理流), 还需要为处理流注入节点流依赖
+   + step 1.3 处理流实例化: (如果使用到处理流), 还需要为处理流注入节点流依赖. 
+     + 有的时候处理流需要注入其他的处理流依赖, 比如BufferedReader中注入InputStreamReader依赖
 
 2. step 2. read & write (想象成 管道.出料)
 
@@ -231,7 +233,7 @@ try{
             // step3: load data (想象成管道开始出料)
             //          read(): return 读入的一个字符. 如果达到文件末尾, return -1
             int data = fr.read();           // char 也对应int值     TODO: might throw Exception
-            while(data != -1){
+            while(data != -1){		// When the end of the file is reached, the read() method returns -1. 
                 System.out.print((char)data);
                 data = fr.read();           // 相当于i++, condition for next loop. This might throw Exception
             }
@@ -253,7 +255,7 @@ try{
 
 
 
-#### :gem: e.g.2 `read(char[])` 批量读取char数据
+#### :gem: :star: e.g.2 `read(char[])` 批量读取char数据
 
 一次读取一个char[]; 需要用到一个类型为char[]的辅助变量作为buffer
 
@@ -430,7 +432,7 @@ public void testFileReaderFileWriter() {
 ## 4.1 :moon:缓冲流(buffered stream)
 593-597
 
-为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区, 由constant `DEFAULT_BUFFER_SIZE` (see source code)决定
+为了提高节点流的效率, 开发中我们一般都使用缓冲流, 而不是直接用节点流; 原因是buffered stream class中提供了缓存区 (相当于用大卡车拉货, 而不是工人一袋袋搬运), 由constant `DEFAULT_BUFFER_SIZE` (see source code)决定
 
 
 
@@ -628,13 +630,13 @@ while((b=fis.read()) != -1){
 
 转换流提供byte stream 与 char stream之间的转换. 
 
-下图中, utf8.txt必须先通过节点流才能被程序访问, test1中我们先用节点流FileInputStream()来用将utf8.txt转化为byte stream, 然后用InputStreamReader将byte stream转化为char stream, 再用char[]作为buffer来**在程序中**读取并处理这个char stream
+下图中, utf8.txt必须先通过节点流才能被程序访问, test1中我们先用节点流FileInputStream()来用将utf8.txt 持久化的数据 转化为byte stream, 然后用InputStreamReader将byte stream转化为char stream, 再用char[]作为buffer来**在程序中**读取并处理这个char stream
 
 <img src="../../Src_md/IOStream_conversion.png" width=80%>
 
 :gem: test1
 ```java
-/**
+    /**
      * InputStreamReader: 实现字节流的输入转换为字符流的输入
      *
      */
@@ -642,13 +644,14 @@ while((b=fis.read()) != -1){
     public  void test1() {
         InputStreamReader isr1  = null;
         try {
-            // 1,2
+            // step1
             FileInputStream fis = new FileInputStream("dbcp.txt");
+            // 实例化处理流, 注入文件流依赖
             //InputStreamReader isr  = new InputStreamReader(fis);        // 使用系统默认字符集(charSet), IDEA默认是UTF-8
             // argument2 points out charSet, 具体用哪个字符集取决于文件保存的时候使用的字符集
             isr1 = new InputStreamReader(fis,"UTF-8");
 
-            // 3
+            // step2
             char[] cbuf = new char[20];
             int len;
             while((len = isr1.read(cbuf)) != -1){
@@ -658,7 +661,7 @@ while((b=fis.read()) != -1){
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4
+            // step3
             if (isr1 != null) {
                 try {
                     isr1.close();
@@ -672,8 +675,10 @@ while((b=fis.read()) != -1){
 
 :gem: test2
 
+通过转化流, 实现转换文件的编码格式
+
 ```java
-/**
+    /**
      * InputStreamReader, OutputStreamWriter work together
      *
      */
@@ -682,17 +687,17 @@ while((b=fis.read()) != -1){
         InputStreamReader isr = null;
         OutputStreamWriter osw = null;
         try {
-            // 1.
+            // step1
             File file1 = new File("dbcp.txt");
             File file2 = new File("dbcp_gbk.txt");
-            // 2.
+            // 文件流注入File依赖
             FileInputStream fis = new FileInputStream(file1);
             FileOutputStream fos = new FileOutputStream(file2);
-
+            // 处理流注入文件流依赖
             isr = new InputStreamReader(fis, "utf-8");
             osw = new OutputStreamWriter(fos, "gbk");
 
-            // 3.
+            // step2
             char[] cbuf = new char[20];
             int len;
             while((len = isr.read(cbuf)) != -1){
@@ -703,7 +708,7 @@ while((b=fis.read()) != -1){
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4. close
+            // step3 close
             if (osw != null) {
                 try {
                     osw.close();
@@ -813,7 +818,7 @@ UTF-8编码原理:
 ```
 
 :question: step1,2 中节点流呢?谁和system.in直接连接?
-+ 节点流的作用是将file转化为byte stream or char stream, 然后再套接处理流进行处理
++ 节点流的作用是将file 中持久化数据转化为byte stream or char stream, 然后再套接处理流进行处理
 + 这里System.in本身就是一个byte stream, 因此可以直接套接一个处理流来处理
 
 ---
@@ -827,27 +832,79 @@ UTF-8编码原理:
 
 
 
+
+
 ## 5.2 打印流
 
 602
-
-
 
 将基本数据类型的数据格式转化为String输出
 
 + `PrintStream`: byte stream
 + `PrintWrier`: char stream
 
-:gem: 一个应用: `System.setOut(PrintStream out)`: 将System.out从terminal输出改为对应的打印流输出到指定file. 因为System.out本身是byte stream, 所以argument为属于byte stream的`PrintStream`
+
+
+### :gem: e.g.1
+
+一个应用: `System.setOut(PrintStream out)`: 将System.out从terminal输出改为对应的打印流输出到指定file. 因为System.out本身是byte stream, 所以argument为属于byte stream的`PrintStream`
+
+
+
+```java
+  /**
+     * 打印流: PrintStream, PrintWriter
+     *
+     * 提供了一系列重载的print(), println()
+     *
+     */
+    @Test
+    public void test2()  {
+        PrintStream ps = null;
+        try {
+            // step1 connection
+            FileOutputStream fos = new FileOutputStream(new File("PrintStreamTxt.txt"));
+            // 创建打印输出流, 设置为autoFlush mode (写入换行符或'\n'时都会刷新输出缓冲区)
+            ps = new PrintStream(fos, true);
+            if(ps != null){     // 把标准输出流(output at terminal)改成输出到file
+                System.setOut(ps);
+            }
+
+            // step2 R&W
+            for(int i=0; i<= 255; i++){     // 输出ASCII char
+                System.out.print((char) i);
+                if(i % 50 == 0){        // 每50个数据一行
+                    System.out.println();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // step3 close
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
+```
+
+
+
+
 
 
 
 ## 5.3 数据流
 603
 
+与对象流向对应.
 
-
-为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据.  与对象流向对应.
+为了更方便地操作Java中的基本数据类型和String类型(或char[])的数据.  
 e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到程序中.
 
 + `DataInputStream`
@@ -856,6 +913,90 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
   + 套接在`OutputStream`上 
 
 <img src="./Src_md/IOStream_datastream.png" width=70%>
+
+### :gem: e.g.1
+
+```java
+    /**
+     * 数据流: 为了方便地操作Java地primitive data 和 String 类型数据
+     * 1. DataInputStream DataOutputStream
+     *
+     * 2. 作用: 用于读取或写出基本数据类型的变量或字符串
+     *
+     * Practice: 将内存中基本数据类型的变脸export to file
+     */
+    @Test
+    public void test3() {
+        DataOutputStream dos = null;
+        try {
+            // step1 connection
+            dos = new DataOutputStream(new FileOutputStream("data.txt"));
+
+            // step2 R&W
+            dos.writeUTF("xueshuo li");
+            dos.flush();            // flush, export existing data in memory to file
+            dos.writeInt(24);
+            dos.flush();
+            dos.writeBoolean(true);
+            dos.flush();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // step3 close
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+```
+
+
+
+### :gem: e.g.2
+
+```java
+/**
+     * 读取file中保存的数据, 导入程序内存
+     * 注意: 读取数据的顺序要和写入时保存数据的顺序一致
+     *
+     */
+    @Test
+    public void test4(){
+        DataInputStream dis = null;
+        try {
+            // step1 connection
+            dis = new DataInputStream(new FileInputStream("data.txt"));
+
+            // step2 R&W
+            String name = dis.readUTF();
+            int age = dis.readInt();
+            boolean isMale = dis.readBoolean();
+
+            System.out.println("Name: "+ name +", age: "+ age+", isMale: "+ isMale);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // step3 close
+            if (dis != null) {
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
+```
+
+
+
+
 
 
 

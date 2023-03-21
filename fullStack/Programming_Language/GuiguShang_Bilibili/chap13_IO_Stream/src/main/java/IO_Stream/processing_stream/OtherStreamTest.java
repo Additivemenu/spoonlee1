@@ -72,7 +72,7 @@ public class OtherStreamTest {
     public void test2()  {
         PrintStream ps = null;
         try {
-            // 1,2
+            // step1 connection
             FileOutputStream fos = new FileOutputStream(new File("PrintStreamTxt.txt"));
             // 创建打印输出流, 设置为autoFlush mode (写入换行符或'\n'时都会刷新输出缓冲区)
             ps = new PrintStream(fos, true);
@@ -80,7 +80,7 @@ public class OtherStreamTest {
                 System.setOut(ps);
             }
 
-            // 3
+            // step2 R&W
             for(int i=0; i<= 255; i++){     // 输出ASCII char
                 System.out.print((char) i);
                 if(i % 50 == 0){        // 每50个数据一行
@@ -90,7 +90,7 @@ public class OtherStreamTest {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4
+            // step3 close
             if (ps != null) {
                 try {
                     ps.close();
@@ -115,10 +115,10 @@ public class OtherStreamTest {
     public void test3() {
         DataOutputStream dos = null;
         try {
-            // 1,2
+            // step1 connection
             dos = new DataOutputStream(new FileOutputStream("data.txt"));
 
-            // 3
+            // step2 R&W
             dos.writeUTF("xueshuo li");
             dos.flush();            // flush, export existing data in memory to file
             dos.writeInt(24);
@@ -129,7 +129,7 @@ public class OtherStreamTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4
+            // step3 close
             if (dos != null) {
                 try {
                     dos.close();
@@ -149,9 +149,10 @@ public class OtherStreamTest {
     public void test4(){
         DataInputStream dis = null;
         try {
-            // 1,2
+            // step1 connection
             dis = new DataInputStream(new FileInputStream("data.txt"));
-            // 3
+
+            // step2 R&W
             String name = dis.readUTF();
             int age = dis.readInt();
             boolean isMale = dis.readBoolean();
@@ -160,7 +161,7 @@ public class OtherStreamTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            // 4
+            // step3 close
             if (dis != null) {
                 try {
                     dis.close();

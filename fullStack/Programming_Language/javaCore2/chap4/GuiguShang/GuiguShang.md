@@ -105,30 +105,78 @@ TCP/IP 协议簇: 实用角度 physical layer  -->  data link layer --> Network 
 
 
 
-Server-client代码套路:
+### TCP总结
 
-Server 和 Client都分为3大步:
+参考上个章节中I/O stream的操作, 这里把Server - Client 通讯也看做是I/O 操作, 依然分为3大步:
 
-1. Step1: Socket的建立
-   + Server端实例化ServerSocket
-   + Client端只需要实例化Socket, 说明要和哪个Server连接即可
+1. Step1: 建立 本程序 (呈现为program的socket) 和 其他数据源 (socket)的信息交流渠道 (I/O stream). 这步想象成连接管道和物料池. 分为几个小步骤:
 
-2. Step2: allocate resources (mainly I/O stream) for the Socket, and implement Communications
-   + Server端还需要让ServerSocket实例 wait and accept incoming request
-   + 其中如何分配I/O stream以及如何利用它们通讯, 见I/O Stream那章
+   + step 1.1: Socket实例化. 这里相当于做出物料池的入口
 
-3. Step3: close resources created (I/O stream + Socket)
+     ```java
+     // Server端, 涉及到转接request的 liseningSocket 和 真正处理request的clientSocket
+     // liseningSocket应该一直存在, 而clientSocket则是需要时才被创建 (尤其是多线程的情况下)
+     ServerSocket listeningSocket = null;
+     Socket clientSocket = null;
+     
+     listeningSocket = new ServerSocket(4444);
+     // listeningSokcet 转接 incoming request到clientSocket上 (底层是 3-way handshake )
+     clientSocket = listeningSocket.accept(); // This method will block until a connection request is received
+     ```
+
+     ```java
+     // Client端实例Socket, 只需要指明要通讯的Server的IP 与 port即可
+     socket = new Socket("localhost", 4444);
+     ```
+
+   + step 1.2: 为socket intance提供 I/O stream. 这里相当于用管道连接两个物料池的入口 
+
+     + 涉及各种I/O stream 的套接, 一般我们用缓冲流里面套转换流里面套Socket提供的字节流
+
+       ```java
+       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+       BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+       ```
+
+2. Step2: communicate: R&W. 想象为管道.出料, 也是业务操作所在. 
+
+   + ```java
+     // 调用 I/O stream的 read()/write(), 即开始真正的通讯了
+     clientMsg = in.readLine()
+     out.write("Server Ack " + clientMsg + "\n");
+     ```
+
+3. Step3: close resources (socket + I/O stream) for communication
+
+   + 一般, 后创建的resources先关闭
+
    + 要确保step1, step2即使出现了Exceptions, resources也可以被关闭掉, 避免资源浪费. 因此常常需要try-catch-finally block
-   + 先创建的resources后关闭
+
    + 用来register server的ServerSocket一般不需要关闭, 但是ServerSocket接听到Client request转接Client到的socket需要关闭
 
 
 
-:bangbang: Server端的step2 & step3 往往是被包在while( ) loop里， 因为Server需要处理源源不断的request
+其中step1,step3比较mechanical,主要是reources的分配连接以及关闭,   step2是集中业务代码所在
+
+:bangbang:上面 有些步骤往往是被包在while( ) loop里， 因为Server需要处理源源不断的request, Client side也应该能够一直发送请求. 具体看需求决定哪些步骤包在while() 里
 
 :bangbang: Server 要先起来, Client才能向Server发送请求
 
 
+
+Program的通讯模型:
+
++ 一个Program上可以有多个socket, 用来和其他在internet上的program进行end-to-end communication
++ 除了socket, 一个Program上还可以有别的Stream来接入, 用来进行在本地的输入输出 e.g. 键盘的输入指令， 将程序内的数据输出到本地的文件里去
++ 只要是进入了Program的数据一视同仁, 都可以被操作和处理
+
+![communicationModel](./Src_md/communicationModel.jpg)
+
+
+
+
+
+### :gem: Demo0: UniMelb demo
 
 SimpleServer: 只处理1个request就dead了
 
@@ -312,15 +360,23 @@ UniMelb的demo
 
 626
 
-+ UDP数据报通过数据报套接字 `DatagramSocket` 发送和接收，系统不保证 UDP数据报一定能够安全送到目的地，也不能确定什么时候可以抵达
-+ `DatagramPacket` 对象封装了UDP数据报，在datagram packet中包含了发送端的IP 地址和端口号以及接收端的IP地址和端口号
-  + UDP协议中每个数据报都给出了完整的地址信息，因此无须建立发送方和 接收方的连接.如同发快递包裹一样. 比TCP的接收过程要简单许多
++ UDP数据报通过 `DatagramSocket` 为载体进行发送和接收，系统不保证 UDP数据报一定能够安全送到目的地，也不能确定什么时候可以抵达
++ `DatagramPacket` 对象封装了UDP数据包，在datagram packet中包含了发送端的IP 地址和端口号以及接收端的IP地址和端口号
+  + UDP协议中每个数据报都给出了完整的地址信息，因此无须建立发送方和 接收方的连接. 如同发快递包裹一样. 比TCP的接收过程要简单许多
 
 
+
+### UDP 总结
 
 Sender --- Receiver
 
-:bangbang: 相比TCP, UDP 接收与发送 不需要I/O Stream, 数据以DataPacket为载体,   因此关闭资源时只需要关闭 DatagramSocket
+:bangbang: 相比TCP, 采用UDP时 进行通讯时 接收与发送 不需要I/O Stream, 数据以DataPacket为载体,   因此关闭资源时只需要关闭 DatagramSocket. 不过当然你可以在程序内使用stream进行用户输入,
+
+虽然在和外界的处在internet上的program进行通讯时不需要使用到I/O stream, 这里我们还是分为3步 (把大象放进冰箱也分3步):
+
+1. Step1: 启动通讯所需要的资源
+2. Step2: 进行通讯
+3. Step3: 关闭通讯所启动的资源
 
 ```java
 sender{
@@ -346,6 +402,10 @@ receiver{
 ```
 
 
+
+UDP 通讯模型
+
+![UDPCommunicationModel](./Src_md/UDPCommunicationModel.jpg)
 
 
 
@@ -424,8 +484,6 @@ public class udpServer {
 
 
 UDPClient
-
-:bangbang: 等等, 这里怎么需要I/O stream
 
 ```java
 import java.io.BufferedReader;

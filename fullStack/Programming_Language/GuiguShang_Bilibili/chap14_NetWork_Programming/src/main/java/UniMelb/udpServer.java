@@ -7,6 +7,9 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.io.IOException;
 
+/**
+ * wk3 tut, 主要讲TCP, 自己研究UDP
+ */
 public class udpServer {
 	
 	public static void main(String args[]) 
@@ -21,11 +24,10 @@ public class udpServer {
           byte[] sendData = new byte[1024];
 
         //Listen for incoming connections forever
-          while(true)
-             {
-    		  System.out.println("This is  UDP server- Waiting for data to recieve");
+          while(true) {
+    		   System.out.println("This is  UDP server- Waiting for data to recieve");
     		    
-    		  // Receive: Create a receive Datagram packet and receive through socket
+    		   // Receive: Create a receive Datagram packet and receive through socket
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);
                 

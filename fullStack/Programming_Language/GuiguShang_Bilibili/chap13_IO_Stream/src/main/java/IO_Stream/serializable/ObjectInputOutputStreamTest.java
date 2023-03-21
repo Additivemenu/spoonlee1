@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.*;
 
 /**
+ * 609 - 613
  * 对象流的使用
  * 1. ObjectInputStream,  ObjectOutputStream
  * 2. 作用: 与数据流相对应, 将基本数据类型data和对象data从程序export到file, 或读取file中的基本数据类型data和对象data
