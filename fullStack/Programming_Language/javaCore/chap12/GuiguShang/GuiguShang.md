@@ -158,7 +158,7 @@ class MyThread extends Thread{
 
 + t1, t2, main thread谁先获得cpu的执行权是不确定的, 因为: :bangbang: 注意调用start()之后, 线程只是进入就绪状态, 而不是运行状态
 + t1, t2, main thread对于cpu的使用是交替的
-+ :star: 注意在调用t1线程的start()方法时(`t1.start()`), main thread会继续往下走运行下面的代码,而不会去等t1执行完毕. 这也就是多线程的本意
++ :star: 注意在调用t1线程的start()方法时(`t1.start()`), main thread会继续往下走运行下面的代码, 而不会去等t1执行完毕. 这也就是多线程的本意. 当运行`t1.start()`方法时, 就相当于从当前线程又分出来一个线程
 
 ```bash
 main (main): 1
