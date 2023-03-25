@@ -32,13 +32,17 @@ This page also contains [a tutorial video](https://canvas.lms.unimelb.edu.au/cou
 
 
 
+信息的含量上: Association < aggregation < composition, 下图其实没必要去画上 表示association的箭头, 所以
+
+
+
 下图基于workshop2 的 domain model
 
 ![designClassDiagram1](/Users/lixueshuo/spoonlee/GitHub_Repo/spoonlee1/fullStack/Software_Design/SMD_UniMelb/CaseStudy/Wk3/Src_md/designClassDiagram1.png)
 
 
 
-*Figure 1: A partial design class diagram for Tony’s pizza ordering system. This model focuses on classes required for adding a pizza to an order and customising its toppings. Note that delivery functionality and ordering additional items has been omitted from scope for now.* 
+*Figure 1: A partial **design class diagram** for Tony’s pizza ordering system. This model focuses on classes required for adding a pizza to an order and customising its toppings. Note that delivery functionality and ordering additional items has been omitted from scope for now.*  
 
 :question: why store addedToppings and removedToppings in `Pizza ` seperately?
 
@@ -143,6 +147,8 @@ Notation:
 :gem: order.getTotal() 这个found message是如何得到tota返回l的? 数据流向的过程？ 
 
 
+
+:bangbang: system sequence diagram中的actor不要出现在design sequence diagram中
 
 # 4. Case study 3.4 - Implementation
 

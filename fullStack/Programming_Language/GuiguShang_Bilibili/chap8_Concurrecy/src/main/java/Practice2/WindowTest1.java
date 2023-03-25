@@ -14,7 +14,6 @@ public class WindowTest1 {
     public static void main(String[] args) {
         Window1 w1 = new Window1();
 
-
         Thread t1 = new Thread(w1);
         t1.setName("Window1");
         Thread t2 = new Thread(w1);
@@ -34,7 +33,7 @@ public class WindowTest1 {
 
 class Window1 implements Runnable{
 
-    private int ticket = 100;       // 不写static
+    private int ticket = 100;       // 不用写static
 
     @Override
     public void run(){

@@ -1,55 +1,57 @@
 /**
+ * 416, 417
  *
- * 422
- * 创建多线程的方式2: 实现Runnable接口
- * 1. 创建实现了Runnable接口的类
- * 2. 实现类去实现Runnable中的抽象方法 run()
- * 3. 创建实现类的对象
- * 4. 将此对象作为参数传递到Thread类的构造器, 创建Thread类的对象
- * 5. 通过Thread类的对象, 调用start()
- *
- * 424
- * 比较创建线程的两种方式
- *  开发中优先选择: 方式二 实现了Runnable接口的方式来创建线程
- *  原因: 1. 实现的方式没有类的单继承性的局限性
- *       2. 实现的方式更适合来处理多个线程有共享数据的情况
- *
- *  联系: public class Thread implements Runnable, Thread类其实也实现了Runnable接口
- *
- *  相同点: 两种方式其实本质都需要重写Runnable接口中的run(), 将线程要执行的逻辑声明在run()中
- *
+ * 多线程的创建:
+ *      方式1： 继承于thread类
+ *             1. 创建一个继承于Thread类的子类
+ *             2. 重写Thread类中的run() ---> 此线程要执行的操作声明在run()中
+ *             3. 创建Thread类的子类对象, 通过此对象调用start()： 启动当前线程, 同时调用当前线程的run()
  *
  * @author xueshuo
- * @create 2023-02-07 4:50 pm
+ * @create 2023-01-31 5:05 pm
  */
 public class ThreadTest1 {
+
     public static void main(String[] args) {
-        // step3 创建实现类的对象
-        MThread mThread = new MThread();
-        // step4 将此对象作为参数传递到Thread类的构造器, 创建Thread类的对象
-        Thread t1= new Thread(mThread);
-        t1.setName("thread 1");
-        // step5 通过Thread类的对象, 调用start()
-        t1.start();     // 启动线程, 调用当前线程的run() ---> 当前线程的run()调用了Runnable类型的target的run()
+        // 3. create instance of MyThread in main() thread
+        MyThread t1 =  new MyThread();
+        t1.start(); // 使得另一个线程t1开始执行, 同时调用t1的run()
 
-        // 再启动一个线程, 遍历100以内的偶数
-        Thread t2 = new Thread(mThread);
-        t2.setName("thread 2");
+//        // ❌问题一 不能通过直接调用run()的方式启动线程
+//        // 不要单独使用run(), 因为那样子它还是在main thread中运行
+//        t1.run();
+
+        // ❌问题二: 再启动一个thread, 遍历100以内的偶数 --> ❌, 不能让已经start()的thread去再次执行start()
+        // 否则会throw IllegalThreadStateException
+        // 有点像stream API的运作方式, 我们此时需要重新创建新的线程对象再调用start()
+        MyThread t2 = new MyThread();
         t2.start();
-    }
 
+
+        // 到这里, 此时有三个线程同时执行 (不考虑垃圾回收和异常): t1, t2, 主线程
+        // 到这里, 到底谁先执行不确定,
+
+        // 以下操作仍然在main thread中进行
+        for(int i = 0; i < 100; i++){
+            if(i % 2 != 0) {
+                System.out.println(Thread.currentThread().getName() + " (main): "+ i);
+            }
+        }
+    }
 
 }
 
-// step 1, 2
-class MThread implements Runnable{
+// 1. create a subclass of Thread
+class MyThread extends Thread{
+    // 2. Override run()
     @Override
     public void run(){
-        for (int i = 0; i < 100; i++) {
-            if(i % 2 == 0){
-                System.out.println(Thread.currentThread().getName()+ ": "+ i);
+        // 遍历打印100以内的偶数
+        for(int i = 0; i < 100; i++){
+            if(i % 2 == 0) {
+                System.out.println(Thread.currentThread().getName() + ": "+ i);
             }
-
         }
     }
+
 }
