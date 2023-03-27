@@ -1002,18 +1002,20 @@ e.g. 将计算结果的data输出到file, 下次可以再从file中读取data到
 
 ## 5.4 :full_moon: 对象流: 序列化机制
 
-609-613
-
 :computer: [尚硅谷： IO流 part2 609-617](https://www.bilibili.com/video/BV1Kb411W75N?p=611&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
+609-613
 
 
-与数据流相对应, 将基本数据类型data和对象data从程序export到file, 或读取file中的基本数据类型data和对象data
+
+与数据流相对应, 将基本数据类型data和对象data从程序export到file (网络编程下的socket), 或读取file (网络编程下的socket)中的基本数据类型data和对象data
 
 + **序列化**: 用`ObjectOutputStream`类保存基本类型data或对象data的机制
 + **反序列化**: 用`ObjectInputStream`类读取基本类型data或对象data的机制
 
 注意: `ObjectOutputStream`和`ObjectInputStream`不能序列化`static`和`transient`修饰的成员变量
+
+
 
 ### 5.4.1 序列化机制
 

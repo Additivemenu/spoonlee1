@@ -1,8 +1,8 @@
-+ [wk1](./Wk1/README.md)
-+ [wk2](./Wk2/README.md)
-+ [wk3](./Wk3/README.md)
++ [workshop1: use case ](./Wk1/README.md)
++ [workshop2: domain class diagram, system sequence diagram](./Wk2/README.md)
++ [workshop3: static & dynamic design model ](./Wk3/README.md)
 
-
++ [workshop4: creator, info expert, controller](./Wk4/README.md)
 
 
 

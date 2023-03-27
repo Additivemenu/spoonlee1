@@ -463,6 +463,10 @@ Map中存储的key-value的特点 547
 
 原理描述 548-549
 
+`HashMap` 和 `ConcurrentHashMap`之间的区别 ---> GPT
+
+
+
 **HashMap底层实现原理, 以jdk7为例 (P548,549)**
 
 ```java

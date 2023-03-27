@@ -6,6 +6,8 @@
 # 1. :full_moon: 单例模式 (Singleton)
 28-38
 
+UniMelb week9
+
 所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统中，对某个类只能存在一个对象实例，并且该类只提供一个取得其对象实例的方法(静态方法)。
 
 > 比如Hibernate的SessionFactory，它充当数据存储源的代理，并负责创建Session 对象。SessionFactory并不是轻量级的，一般情况下，一个项目通常只需要一个 SessionFactory就够，这是就会使用到单例模式。
@@ -478,6 +480,10 @@ Java.lang.Runtime 使用饿汉式实现单例模式
 
 
 # 2. :moon: 工厂方法模式 (Factory Method)
+UniMelb week9
+
+
+
 看一个具体的需求
 
 看一个披萨的项目:要便于披萨种类的扩展，要便于维护 
@@ -653,3 +659,6 @@ public class PizzaStore {
 
 # 5. :moon: 建造者模式 (Builder)
 55-59
+
+UniMelb week8
+
