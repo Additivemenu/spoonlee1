@@ -150,7 +150,7 @@ TCP/IP 协议簇: 实用角度 physical layer  -->  data link layer --> Network 
 
    + 一般, 后创建的resources先关闭
 
-   + 要确保step1, step2即使出现了Exceptions, resources也可以被关闭掉, 避免资源浪费. 因此常常需要try-catch-finally block
+   + 要确保step1, step2即使出现了Exceptions, resources也可以被关闭掉, 避免资源浪费. 因此常常需要try-catch-finally block, 将close的操作放在finally block中
 
    + 用来register server的ServerSocket一般不需要关闭, 但是ServerSocket接听到Client request转接Client到的socket需要关闭
 
@@ -255,15 +255,14 @@ import java.net.*;
 import java.io.*;
 public class SimpleClient {
   public static void main(String args[]) throws IOException {
-    // step1: Open your connection to a server, at port 1234
+    // step1.1: Open your connection to a server, at port 1234
     Socket s1 = new Socket(“clouds.cis.unimelb.edu.au",1234);
                            
-    // step2:
-    // step2.1 Get an input file handle from the socket and read the input
+    // step1.2 Get an input file handle from the socket and read the input
     InputStream s1In = s1.getInputStream();
     DataInputStream dis = new DataInputStream(s1In);
     
-    // step2.2 communicate                 
+    // step2 communicate                 
     String st = new String (dis.readUTF());
     System.out.println(st);
                            

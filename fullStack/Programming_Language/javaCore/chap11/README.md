@@ -504,7 +504,7 @@ class MyActionListener2 implements ActionListener{
 
 
 
-### :moon: 简易计算器, 组合 + 内部类 回顾复习
+#### :moon: 简易计算器, 组合 + 内部类 回顾复习
 
 P9
 
@@ -536,14 +536,16 @@ class B {
 
 
 
-#### :gem: 基础写法
+##### :gem: 基础写法
 
 有点面向过程了, 不够面向对象
+
++ 不过还是遵循标准写法， 在entry 的main()方法中只写启动
 
 ```java
 public class CalculatorTest {
     public static void main(String[] args) {
-        new Calculator();
+        new Calculator();		// new 一个 Calculator窗口组件的对象 (就像React组件化那样)
     }
 }
 
@@ -612,7 +614,7 @@ class MyCalculatorListener implements ActionListener{
 
 
 
-#### :gem: 面向对象写法
+##### :gem: 面向对象写法
 
 + 把Calculator聚合到监听器类内部, 以使得监听器类可以访问和使用Calculator内部的属性和方法
 
@@ -692,7 +694,7 @@ class MyCalculatorListener implements ActionListener{
 
 
 
-#### :gem: 内部类写法
+##### :gem: 内部类写法
 
 + 更好地包装, 内部类可以畅通无阻去获取外部类的属性和方法
 
@@ -765,7 +767,11 @@ class Calculator extends Frame {
 
 
 
-## 2.5 画笔
+
+
+
+
+## 画笔
 
 P10
 
@@ -810,29 +816,223 @@ class MyPaint extends Frame {
 
 
 
+## 继续监听
+
+为Frame对象增添鼠标, 窗口或键盘监听器， 当触发事件时，执行某些自定义操作
 
 
 
-
-## 鼠标监听事件
+### 鼠标监听事件
 
 P11
 
+目的: 接上面的画板, 点击鼠标, 画板上留下来一个小点, 
+
+```java
+public class TestMouse {
+
+    public static void main(String[] args) {
+        new MyFrame("paint");
+    }
+
+}
+
+class MyFrame extends Frame {
+    // 画画需要画笔, 需要监听鼠标当前位置, 需要集合来存储这些点
+    ArrayList points;
+
+    public MyFrame(String title){
+        // step1 初始化 Frame内的成员与组件
+        super(title);
+        setBounds(200, 200, 400, 300);
+        points = new ArrayList();  // 存鼠标点击产生的点
+        setVisible(true);
+
+        // step2  绑定监听器
+        // 鼠标监听器, 正对这个窗口
+        this.addMouseListener(new MyMouseListener());
+
+        // step3 布局
+
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        // 画画, 监听鼠标的事件
+        Iterator iterator = points.iterator();
+
+        while(iterator.hasNext()){
+            Point point = (Point) iterator.next();
+            g.setColor(Color.blue);
+            g.fillOval(point.x, point.y, 10, 10);
+        }
+    }
+
+    // 添加一个点到界面上
+    public void addPoint(Point point){
+        points.add(point);
+    }
+
+    // 适配器模式
+    private class MyMouseListener extends MouseAdapter {
+        // 鼠标 按下, 弹起, 按住不放
+
+        // 点击mouse后, 触发的事件:
+        @Override
+        public void mousePressed(MouseEvent e) {
+            MyFrame myFrame = (MyFrame) e.getSource();      // return object on which event initially occurred
+
+            // 这里我们点击时, 在界面上就会产生一个点
+            myFrame.addPoint(new Point(e.getX(), e.getY()));    // 监听, 得到鼠标点击时, 在屏幕中的位置, 并得到的位置信息转化为一个Point 对象, 加入ArrayList
+
+            myFrame.repaint();     // 每次点击鼠标, 需要重新渲染一遍
+        }
+    }
+
+}
+```
+
+
+
+### 窗口监听事件
+
+P12
+
+基础写法: 接TextField 监听中的demo, 使用内部类为Frame添加监听器
+
+```java
+public class TestWindow {
+
+    public static void main(String[] args) {
+        new WindowFrame();
+    }
+
+}
+
+class WindowFrame extends Frame {
+
+    public WindowFrame(){
+      	// step1 定义Frame内容
+        setVisible(true);
+        setBounds(100, 100, 200, 200);
+        setBackground(Color.blue);
+
+        // step2 添加监听器
+        addWindowListener(new MyWindowListner());
+
+    }
+
+
+    // 适配器模式
+    class MyWindowListner extends WindowAdapter{
+        @Override
+        public void windowClosing(WindowEvent e) {
+            setVisible(false);      // 隐藏窗口, 通过按钮,隐藏窗口
+            System.exit(0);         // 正常退出
+        }
+    }
+
+}
+```
+
+
+
+使用匿名内部类来给Frame添加监听器
+
+```java
+public class TestWindow {
+
+    public static void main(String[] args) {
+        new WindowFrame();
+    }
+}
+
+class WindowFrame extends Frame {
+
+    public WindowFrame(){
+        // step1 定义内容
+        setVisible(true);
+        setBounds(100, 100, 200, 200);
+        setBackground(Color.blue);
+
+        // step2 添加监听器
+        addWindowListener(
+                // 匿名内部类
+                new WindowAdapter() {
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        System.out.println("window closing");
+                        System.exit(0);
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        System.out.println("window closed");
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+                        WindowFrame windowFrame = (WindowFrame) e.getSource();
+                        windowFrame.setTitle("activated");
+
+                        System.out.println("window activated");
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+                        System.out.println("window deactivated");
+                    }
+
+                }
+        );
+        
+        // step3 布局
+    }
+
+
+}
+```
 
 
 
 
 
+### 键盘监听事件
 
-## 窗口监听事件
+P13
 
+```java
+public class TestKeyListener {
 
+    public static void main(String[] args) {
+        new KeyFrame();
+    }
+}
 
+class KeyFrame extends Frame {
+    public KeyFrame(){
+        setBounds(100, 200, 300, 400);
+        setVisible(true);
 
+        this.addKeyListener(new KeyAdapter() {
+            // 键盘按下, 触发事件:
+            @Override
+            public void keyPressed(KeyEvent e) {
 
-## 键盘监听事件
+                int keyCode = e.getKeyCode();  // 得到键盘按下的键是哪一个键的key code.  不需要记忆数值， 直接用静态属性 VK_XXX
 
+                System.out.println(keyCode);
 
+                if(keyCode == KeyEvent.VK_UP){
+                    System.out.println("you just pressed up");
+                }
+            }
+        });
+    }
+    
+}
+```
 
 
 
@@ -840,11 +1040,89 @@ P11
 
 # 3. Swing
 
-## JFrame窗体
+## 3.1 JFrame窗体, 面板
 
 14
 
+JFrame需要`getContentPane` 再设置其background来显示颜色, 直接定义JFrame对象的background不显示定义的颜色
 
+```java
+public class JFrameDemo2 {
+    public static void main(String[] args) {
+        new MyJFrame().init();
+    }
+}
+
+class MyJFrame extends JFrame{
+
+    public void init(){
+
+        this.setVisible(true);
+        this.setBounds(100, 100, 200, 200);
+
+        // 设置文字标签 (label)
+        JLabel label = new JLabel("欢迎来到狂人说Java");
+        this.add(label);
+
+        // 让文本标签剧中
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // 获得容器
+        Container container = this.getContentPane();
+        container.setBackground(Color.yellow);      // 容器的背景颜色才能显示
+
+    }
+}
+```
+
+
+
+## JDialog 弹窗
+
+P15
+
+
+
+## Icon, ImageIcon 标签
+
+P16
+
+
+
+
+
+## :moon: TextArea, Jscroll 面板
+
+P17
+
+看下这个
+
+
+## 图片按钮, 单选框, 多选框
+
+P18
+
+
+
+## 下拉框, 列表框
+
+P19
+
+
+
+## :moon: 文本框, 密码框, 文本域
+
+P20
+
+
+
+
+
+# ChatGPT Demo
+
+使用Swing 写前端GUI, 通过对象序列化来和后端通讯
+
+:gem: 见 chatGPT_demo package
 
 
 

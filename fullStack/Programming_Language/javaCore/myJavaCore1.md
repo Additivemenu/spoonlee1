@@ -22,7 +22,7 @@ API学习
 Java用户界面
 + [chap10 GUI]()
 + [chap11 Swing]()
-
++ [b站狂神说Java: GUI](./chap11/README.md)
 
 Stream, I/O stream API见JavaCore2
 
