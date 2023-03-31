@@ -218,16 +218,20 @@ import java.net.*;
 import java.io.*;
 public class SimpleServerLoop {
   public static void main(String args[]) throws IOException {
-    // step1: Register service on port 1234
+    // step1.1: Register service on port 1234
     ServerSocket s = new ServerSocket(1234);
     
     while(true)
     {
-      // step2 
+      // step1.1 
    	 Socket s1=s.accept(); // Wait and accept a connection
+      
+      // step1.2
     	// Get a communication stream associated with the socket
     	OutputStream s1out = s1.getOutputStream();
     	DataOutputStream dos = new DataOutputStream (s1out);
+      
+      // step2
     	// Send a string!
     	dos.writeUTF("Hi there");
     	// Close the connection, but not the server socket

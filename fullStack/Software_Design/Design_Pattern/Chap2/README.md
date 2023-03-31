@@ -274,6 +274,32 @@ public class Head{}
 
 
 
+#### :moon: Aggregation vs. Composition
+
+In Unified Modeling Language (UML), aggregation and composition are two types of associations that represent relationships between classes, specifically "whole-part" relationships. They help in understanding the structure and organization of a system, by showing how objects or classes are composed or related to one another. Here are the main differences between aggregation and composition:
+
+`Aggregation`:
+
+- Aggregation is a weaker form of association, which represents a `"has-a"` relationship between classes or objects.
+- In an aggregation relationship, the whole (parent) object can exist independently of its parts (child objects).
+- :star: **The child objects can be shared between different parent objects.**
+- :star: **If the parent object is destroyed or removed, the child objects can continue to exist independently.**
+- In a UML diagram, aggregation is represented by a hollow diamond at the end of the association line connected to the whole (parent) class.
+
+
+
+`Composition`:
+
+- Composition is a stronger form of association, which represents a `"part-of"` relationship between classes or objects.
+- In a composition relationship, the whole (parent) object has ownership and responsibility for the life cycle of its parts (child objects).
+- :star: **The child objects are exclusive to the parent object and cannot be shared between different parent objects.**
+- :star: **If the parent object is destroyed or removed, the child objects are also destroyed or removed.**
+- In a UML diagram, composition is represented by a solid (filled) diamond at the end of the association line connected to the whole (parent) class.
+
+In summary, the main difference between aggregation and composition lies in <u>the strength of the relationship</u> and <u>the life cycle of the related objects</u>. Aggregation implies a weaker, more flexible relationship, while composition implies a stronger, more dependent relationship between the whole and its parts.
+
+
+
 
 
 

@@ -142,3 +142,21 @@ public class  OrderHandler{
 
 *Figure 4: A Design Sequence Diagram showing system operations being handled by the OrderHandler controller class.* 
 
+
+
+
+
+# :gem: Tony's Pizza case study: optimization
+
+At last, there is a video using creator, info expert and controller to optimize the design diagram we created last week
+
+https://canvas.lms.unimelb.edu.au/courses/153221/pages/case-study-4-dot-6-tutorial-video?module_item_id=4589478
+
+
+
+my notes
+
+based on last weeks's producing of design static and dynamic diagram
+
+
+

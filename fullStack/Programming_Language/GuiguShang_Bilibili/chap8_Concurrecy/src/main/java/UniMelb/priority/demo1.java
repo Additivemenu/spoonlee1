@@ -1,4 +1,4 @@
-package priority.UniMelb;
+package UniMelb.priority;
 
 /**
  * @author xueshuo

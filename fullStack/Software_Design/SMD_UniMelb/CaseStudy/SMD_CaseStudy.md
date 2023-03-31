@@ -1,6 +1,10 @@
+Basics
+
 + [workshop1: use case ](./Wk1/README.md)
 + [workshop2: domain class diagram, system sequence diagram](./Wk2/README.md)
 + [workshop3: static & dynamic design model ](./Wk3/README.md)
+
+GRASP
 
 + [workshop4: creator, info expert, controller](./Wk4/README.md)
 

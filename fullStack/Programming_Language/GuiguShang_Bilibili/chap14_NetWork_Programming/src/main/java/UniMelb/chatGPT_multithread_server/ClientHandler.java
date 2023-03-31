@@ -21,15 +21,19 @@ public class ClientHandler implements Runnable {
         this.sharedData = sharedData;
     }
 
+
+    // 一次网络通讯中, 不同线程执行的部分放到run()里, 其他的放到application的entry: main()里
     @Override
     public void run() {
         try {
+            // step1.3
             InputStream input = clientSocket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             OutputStream output = clientSocket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 
+            // step2: 通讯 (业务代码所在)
             String request;
             while ((request = reader.readLine()) != null) {
                 System.out.println("Received message: " + request);
@@ -49,6 +53,7 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         } finally {
             try {
+                // step3: close resources
                 clientSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();

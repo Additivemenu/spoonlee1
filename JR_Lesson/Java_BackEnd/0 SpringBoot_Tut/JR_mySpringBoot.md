@@ -27,10 +27,6 @@
 
 
 
-
-
-
-
 ```java
 package com.avengers.gamera.service;
 

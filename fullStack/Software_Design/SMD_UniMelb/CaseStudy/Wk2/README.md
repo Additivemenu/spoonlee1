@@ -75,6 +75,8 @@ Below is the Domain Class Diagram based on the business requirements that we out
 
 
 
+针对tutorial video, 我的笔记:
+
 
 
 # 4. :gem: System Sequence Diagram & Tutorial Video
@@ -192,3 +194,7 @@ This scenario involves the customer interacting with the system in order to add 
 > Ref: reference- 指像一个sub diagram
 >
 > loop: 指代loop, :bangbang: 注意需要加上for()通过的条件
+
+
+
+针对tutorial video, 我的笔记:

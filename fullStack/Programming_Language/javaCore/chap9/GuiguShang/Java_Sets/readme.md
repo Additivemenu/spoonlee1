@@ -702,6 +702,103 @@ public static void main(String[] args) {
 
 
 
+## 3.4 多线程环境下的线程安全Map
+
+我自己加的, 更加全面的JUC(java.util.concurrect)并发编程, 见尚硅谷2022年教程
+
+```java
+public class ConcurrentHashMapTest {
+    public static void main(String[] args) {
+        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        AtomicInteger sharedId = new AtomicInteger(0);       // JUC 原子类
+
+        // Create two threads that will access the same ConcurrentHashMap object
+        Thread t1 = new Thread(() -> {
+            for (int i = 1; i <= 100; i++) {
+                map.put("t1: Key" + i, i);
+                sharedId.getAndIncrement();
+                System.out.println(Thread.currentThread().getName()+" just put its "+i+" th key, sharedId:"+ sharedId.get());
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            for (int i = 1; i <= 100; i++) {
+                map.put("t2: Key" + i, i);
+                sharedId.getAndIncrement();
+                System.out.println(Thread.currentThread().getName()+" just put its "+i+" th key, sharedId:"+ sharedId.get());
+            }
+        });
+
+        // set name
+        t1.setName("t1");
+        t2.setName("t2");
+
+        // Start both threads
+        t1.start();
+        t2.start();
+
+        // Wait for both threads to finish
+        try {
+            t1.join();      // wait for t1 to finish, then proceed with main thread
+            System.out.println("t1 finished ------------------------");
+            t2.join();      // wait for t2 to finish, then proceed with main thread
+            System.out.println("t2 finished ------------------------");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Check the size of the map
+        System.out.println("Size of ConcurrentHashMap: " + map.size());
+    }
+```
+
+可能的Result:   t2先执行完了
+
+```java
+t2 just put its 1 th key, sharedId:2			// t2 后进行 sharedId.getAndIncrement(), 然后先拿这个更新后的值打印
+t1 just put its 1 th key, sharedId:1			// t1 先进行 sharedId.getAndIncrement(), 然后后拿这个更新后的值打印
+t2 just put its 2 th key, sharedId:3
+t1 just put its 2 th key, sharedId:4
+t2 just put its 3 th key, sharedId:5
+t1 just put its 3 th key, sharedId:6
+...
+t1 just put its 97 th key, sharedId:197
+t1 just put its 98 th key, sharedId:198
+t1 just put its 99 th key, sharedId:199
+t1 just put its 100 th key, sharedId:200
+t1 finished ------------------------
+t2 finished ------------------------
+Size of ConcurrentHashMap: 200  
+```
+
+可能的Result:  t1执行完毕后, proceed with main thread
+
+````java
+t1 just put its 1 th key, sharedId:2
+t2 just put its 1 th key, sharedId:1
+t1 just put its 2 th key, sharedId:3
+t2 just put its 2 th key, sharedId:4
+...
+t1 just put its 100 th key, sharedId:191
+t2 just put its 91 th key, sharedId:189
+t1 finished ------------------------
+t2 just put its 92 th key, sharedId:192
+t2 just put its 93 th key, sharedId:193
+t2 just put its 94 th key, sharedId:194
+t2 just put its 95 th key, sharedId:195
+t2 just put its 96 th key, sharedId:196
+t2 just put its 97 th key, sharedId:197
+t2 just put its 98 th key, sharedId:198
+t2 just put its 99 th key, sharedId:199
+t2 just put its 100 th key, sharedId:200
+t2 finished ------------------------
+Size of ConcurrentHashMap: 200
+````
+
+
+
+
+
 # 4. `Collections` 容器工具类
 
 557

@@ -32,7 +32,7 @@ This page also contains [a tutorial video](https://canvas.lms.unimelb.edu.au/cou
 
 
 
-信息的含量上: Association < aggregation < composition, 下图其实没必要去画上 表示association的箭头, 所以
+:bangbang: 信息的含量上: Association < aggregation < composition, 下图其实没必要去画上 表示association的箭头, 所以
 
 
 

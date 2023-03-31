@@ -151,6 +151,8 @@ I/O stream最基础的流
 
 
 
+## I/O stream总结
+
 :star: 精华: I/O stream的使用一般都分成3步:
 
 1. step 1. establish the connection between program and file (or socket in web programming)(想象成 连接管道 (I/O stream)和物料池 (File))
