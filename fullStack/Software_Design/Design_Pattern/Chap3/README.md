@@ -495,9 +495,11 @@ UniMelb week9
 
 
 
-## 简单工厂模式
+## 2.1 简单工厂模式
 
 39-42
+
+
 
 ### 披萨订购 传统方式
 
@@ -554,7 +556,9 @@ public class GreekPizza extends Pizza{
 }
 ```
 
-OrderPizza
+OrderPizza 
+
++ 根据GRASP: creator.   OrderPizza使用Pizza, 所以在OrderPizza内创建Pizza object
 
 ```java
 public class OrderPizza {
@@ -562,6 +566,8 @@ public class OrderPizza {
     public OrderPizza(){
         Pizza pizza = null;
         String orderTypes; // 订购Pizza的类型
+      
+      	// 根据orderType来用if-else创建对应的Pizza object
         do{
             orderTypes = getType();
             if(orderTypes.equals("greek")){
@@ -625,19 +631,214 @@ public class PizzaStore {
 
 
 
-### 改进: 简单工厂模式
+### 改进: 简单工厂模式 (静态工厂模式)
 
-41
+41-42
+
+简单工厂模式是属于创建型模式，是工厂模式的一种。简单工厂模式是由一 个工厂对象决定创建出哪一种产品类的实例。简单工厂模式是工厂模式家族 中最简单实用的模式
+
+<u>简单工厂模式: 定义了一个创建对象的类，由这个类来**封装实例化对象的行 为**(代码).</u> 在软件开发中，当我们会用到大量的创建某种、某类或者某批对象时，就会 使用到工厂模式.
+
+:star: 下图可见, 简单工厂模式体现了GRASP: Indirection, OrderPizza只和SimpleFactory产生依赖, 实现lower couping, higher cohesion.  OrderPizza不必去concern和各种Pizza couple, 它把创建不同种类的Pizza的responsibility 转交给了SimpleFactory
+
+![simple_factory1](./Src_md/simple_factory1.png)
+
+
+
+简单工厂模式有两种实现方式: 
+
++ 普通的简单工厂模式: 依赖Factory对象的非静态方法来创建 object of interest, 需要依赖注入
++ 静态工厂模式: 依赖Factory的静态方法来创建 object of interest 
+
+具体使用哪个看具体需求, 一般静态工厂模式会好写一些
+
+
+
+PizzaStore
+
+```java
+// 类似客户端的角色
+public class PizzaStore {
+
+    public static void main(String[] args) {
+//        OrderPizza orderPizza = new OrderPizza();
+
+        // 方式一: 使用简单工厂模式
+//        new OrderPizza(new SimpleFactory());
+//        System.out.println("exit application");
+
+        // 方式二: 使用静态工厂模式
+        new OrderPizza2();
+
+    }
+
+}
+```
+
+
+
+方式一: OrderPizza: aggregate 简单工厂
+
+```java
+public class OrderPizza {
+
+    // 定义简单工厂对象
+    SimpleFactory simpleFactory;
+    Pizza pizza = null;
+
+    // constructor
+    public OrderPizza(SimpleFactory simpleFactory){     // 采用aggregation, simpleFactory是从外部传入的
+        setSimpleFactory(simpleFactory);
+    }
+
+    public void setSimpleFactory(SimpleFactory simpleFactory){
+        String orderType = "";      // 用户输入
+
+        this.simpleFactory = simpleFactory;     // 设置简单工厂对象
+
+        do{
+           orderType = getType();   // for user input
+
+           pizza = this.simpleFactory.createPizza(orderType);
+
+           // 输出pizza
+            if(pizza != null) {     // 订购成功
+                pizza.prepare();
+                pizza.bake();;
+                pizza.cut();
+                pizza.box();
+            } else {
+                System.out.println("fail to order a pizza!");
+                break;
+            }
+        }while(true);
+
+    }
+
+
+    // 可以动态获取客户希望的披萨种类
+    private String getType() {
+        try {
+            BufferedReader strin = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("input pizza type:");
+            String str = strin.readLine();
+            return str;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+}
+```
+
+
+
+方式二: OrderPizza2: 使用静态工厂
+
+```java
+public class OrderPizza2 {
+
+    Pizza pizza = null;
+    String orderType = "";
+
+    public OrderPizza2(){
+        do{
+            orderType = getType();   // for user input
+
+            pizza = SimpleFactory.createPizza2(orderType);
+
+            // 输出pizza
+            if(pizza != null) {     // 订购成功
+                pizza.prepare();
+                pizza.bake();;
+                pizza.cut();
+                pizza.box();
+            } else {
+                System.out.println("fail to order a pizza!");
+                break;
+            }
+        }while(true);
+    }
+
+
+    // 可以动态获取客户希望的披萨种类
+    private String getType() {
+        try {
+            BufferedReader strin = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("input pizza type:");
+            String str = strin.readLine();
+            return str;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+}
+```
+
+
+
+
+
+SimpleFactory
+
+```java
+public class SimpleFactory {
+
+    // 方式一: 简单工厂模式 根据orderType, 返回对应的Pizza对象
+    public Pizza createPizza(String orderType){
+
+        Pizza pizza = null;
+        System.out.println("use simple factory to create Pizza object");
+
+        if(orderType.equals("greek")){
+            pizza = new GreekPizza();
+            pizza.setName("greek pizza");
+        }else if(orderType.equals("cheese")){
+            pizza = new CheesePizza();
+            pizza.setName("cheese pizza");
+        }
+
+        return pizza;
+    }
+
+
+
+    // 方式二: 静态工厂模式
+    public static Pizza createPizza2(String orderType){
+
+        Pizza pizza = null;
+        System.out.println("use simple factory to create Pizza object");
+
+        if(orderType.equals("greek")){
+            pizza = new GreekPizza();
+            pizza.setName("greek pizza");
+        }else if(orderType.equals("cheese")){
+            pizza = new CheesePizza();
+            pizza.setName("cheese pizza");
+        }
+
+        return pizza;
+    }
+
+}
+```
+
+
+
+
+
+## 2.2 工厂方法模式
+
+43-44
 
 看到这里
 
 
 
 
-
-## 工厂方法模式
-
-43-44
 
 
 

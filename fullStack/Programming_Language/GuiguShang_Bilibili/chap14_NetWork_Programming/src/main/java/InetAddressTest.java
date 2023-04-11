@@ -46,8 +46,6 @@ public class InetAddressTest {
             System.out.println(inet2.getHostName());
             // getHostAddress()
             System.out.println(inet2.getHostAddress());
-
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

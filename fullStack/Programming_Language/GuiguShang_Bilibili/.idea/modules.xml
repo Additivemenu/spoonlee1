@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/chap13_IO_Stream/chap13_IO_Stream.iml" filepath="$PROJECT_DIR$/chap13_IO_Stream/chap13_IO_Stream.iml" />
       <module fileurl="file://$PROJECT_DIR$/chap16_Java8_Features/chap16_Java8_Features.iml" filepath="$PROJECT_DIR$/chap16_Java8_Features/chap16_Java8_Features.iml" />
       <module fileurl="file://$PROJECT_DIR$/chap9_CommonClass/chap9_CommonClass.iml" filepath="$PROJECT_DIR$/chap9_CommonClass/chap9_CommonClass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chapterX_Distributed_System/chapterX_Distributed_System.iml" filepath="$PROJECT_DIR$/chapterX_Distributed_System/chapterX_Distributed_System.iml" />
     </modules>
   </component>
 </project>

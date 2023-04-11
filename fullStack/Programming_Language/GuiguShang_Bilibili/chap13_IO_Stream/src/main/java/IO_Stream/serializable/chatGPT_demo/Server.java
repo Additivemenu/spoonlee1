@@ -22,17 +22,19 @@ public class Server {
 
             // loop server
             while (true) {
-                // step1.2
+                // step1.1
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
-                // step1.3
+                // step1.2
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
                 // step2
+                // read message from client
                 Message receivedMessage = (Message) objectInputStream.readObject();
                 System.out.println("Received: " + receivedMessage);
 
+                // write message to client
                 Message responseMessage = new Message("Message received.", "Server", receivedMessage.getSender());
                 objectOutputStream.writeObject(responseMessage);
 

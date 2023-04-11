@@ -164,7 +164,111 @@ TCP/IP 协议簇: 实用角度 physical layer  -->  data link layer --> Network 
 
 
 
-Program的通讯模型:
+#### 误区:
+
+‼️ 在Client 端, 在socket对象创建时就发送connection request了, 而不是当真的利用I/O stream发送消息时才发送connection request. 先铺路再运货
+
+In the context of a client-server application, a client sends a connection request to the server when it wants to establish a connection and communicate with the server. This typically occurs when the client wants to send a request, retrieve some data, or perform some action that requires communication with the server.
+
+To establish a connection, the client creates a `Socket` object with the server's IP address (or hostname) and the port number the server is listening on. **<u>When the `Socket` object is created, it automatically attempts to connect to the server, which in turn triggers the `serverSocket.accept()` method on the server-side.</u>**
+
+```java
+import java.io.IOException;
+import java.net.Socket;
+
+public class Client {
+    public static void main(String[] args) {
+        String serverAddress = "localhost";
+        int port = 1234;
+
+        try (Socket socket = new Socket(serverAddress, port)) {
+            System.out.println("Connected to the server");
+
+            // Communicate with the server (e.g., send and receive data)
+            // ...
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+In this example, the client creates a `Socket` object with the server's address and port number. When the `Socket` object is instantiated, it automatically sends a connection request to the server. If the server accepts the connection, the client can then use the `Socket` object to communicate with the server (e.g., send and receive data).
+
+
+
+:bangbang: if a server socket is closed by calling close(), can I immediately re-create a new server socket based on the same port?
+
+In most cases, when you close a server socket by calling `close()`, the operating system marks the socket as closed, but it may not release the port immediately. This is due to the TCP TIME_WAIT state, which is a safety mechanism to ensure that any lingering data packets are properly handled. As a result, you may encounter the "Address already in use" error if you try to create a new server socket on the same port immediately after closing the previous one.
+
+
+
+似乎得将serversocket 装在AtomicReference里, 这需要JUC的知识了
+
+```java
+public static void main(String[] args) throws IOException, InterruptedException {
+//        DictionaryServer.getServerInstance(5050, "unitTestOfServer.json").initServer(new AtomicBoolean(true));
+
+        //AtomicReference<ServerSocket> serverSocket1 = new AtomicReference<>(new ServerSocket(5050));
+        AtomicReference<ServerSocket> serverSocket1 = new AtomicReference<>(new ServerSocket(5050));
+
+        // thread 1
+        new Thread(() -> {
+
+            try {
+                System.out.println("server socket1 is accepting new requests...");
+                serverSocket1.get().accept();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }).start();
+
+        // thread 2
+        new Thread(() -> {
+
+            try {
+                Thread.sleep(3000);
+                serverSocket1.get().close();
+                System.out.println("server socekt1 has closed.");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
+        // thread 3
+        new Thread(() -> {
+
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                System.out.println("after 5s ");
+//                ServerSocket serverSocket2 = new ServerSocket(5050);
+//                System.out.println("server socket2 has been created");
+//                serverSocket2.accept();
+                serverSocket1.set(new ServerSocket(5050));
+                System.out.println("server socket2 has been created");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }).start();
+
+
+    }
+```
+
+
+
+#### Program的通讯模型:
 
 + 一个Program上可以有多个socket, 用来和其他在internet上的program进行end-to-end communication
 + 除了socket, 一个Program上还可以有别的Stream来接入, 用来进行在本地的输入输出 e.g. 键盘的输入指令， 将程序内的数据输出到本地的文件里去

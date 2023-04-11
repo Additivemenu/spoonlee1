@@ -31,6 +31,7 @@ public class TCPClientGUIObjectSerialization {
 
         // Set up the panel and add components
         JPanel panel = new JPanel();
+        panel.add(new JLabel("add a new word"));
         panel.add(inputField);
         panel.add(sendButton);
         panel.add(responseArea);
