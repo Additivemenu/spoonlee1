@@ -25,20 +25,20 @@ function App() {
     },
   ];
 
-  // return (
-  //   <div className="App">
-  //     <h2>Let's get started!</h2>
-  //     <Expenses expenses = {expenses}></Expenses>
-  //   </div>
-  // );
-
-  // closer look at jsx
-  return React.createElement(
-    "div",
-    {},
-    React.createElement("h2", {}, "let's get started"),
-    React.createElement(Expenses, { expenses: expenses })
+  return (
+    <div className="App">
+      <h2>Let's get started!</h2>
+      <Expenses expenses = {expenses}></Expenses>
+    </div>
   );
+
+  // // closer look at jsx
+  // return React.createElement(
+  //   "div",
+  //   {},
+  //   React.createElement("h2", {}, "let's get started"),
+  //   React.createElement(Expenses, { expenses: expenses })
+  // );
 }
 
 export default App;

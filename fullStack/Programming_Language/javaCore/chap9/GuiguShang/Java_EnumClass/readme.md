@@ -1,38 +1,280 @@
+References:
+
 :computer:[Bilibili 尚硅谷: Enum & comments 496-510](https://www.bilibili.com/video/BV1Kb411W75N?p=498)
 
----
-- [Part1: Enum](#part1-enum)
-- [Part2: Annotation (注解)](#part2-annotation-注解)
-  - [1. Annotation introduction](#1-annotation-introduction)
-  - [2. 常见的Annotation示例](#2-常见的annotation示例)
-  - [3. 自定义Annotation](#3-自定义annotation)
-  - [4. JDK中的元注解](#4-jdk中的元注解)
-  - [5. 利用反射获取注解信息](#5-利用反射获取注解信息)
-  - [6. JDK8中注解的新特性](#6-jdk8中注解的新特性)
 
 
----
 # Part1: Enum 枚举类
 
 496-501
 
-## 1. 自定义枚举类
++ `Enum`(enumerate): 类的对象只有<u>有限个</u>，<u>确定的</u>。举例如下:
+
+  - 星期:Monday(星期一)、......、Sunday(星期天)
+
+  - 性别:Man(男)、Woman(女)
+
+  - 季节:Spring(春节)......Winter(冬天)
+
+  - 支付方式:Cash(现金)、WeChatPay(微信)、Alipay(支付宝)、BankCard(银
+
+    行卡)、CreditCard(信用卡)
+
+  - 就职状态:Busy、Free、Vocation、Dimission
+
+  - 订单状态:Nonpayment(未付款)、Paid(已付款)、Delivered(已发货)、
+
+    Return(退货)、Checked(已确认)Fulfilled(已配货)、
+
+  - 线程状态:创建、就绪、运行、阻塞、死亡
+
++ 当需要定义一组<u>常量</u>时 (往往用来表示某种状态或选项)，强烈建议使用Enum
 
 
 
-## 2. 使用enum
++ 枚举类的属性
+
+  + 枚举类对象的属性不应允许被改动, 所以应该使用 private final 修饰
+
+  + 枚举类的使用 private final 修饰的属性应该在构造器中为其赋值
+
+  + 若枚举类显式的定义了带参数的构造器, 则在列出枚举值时也必须对应的 传入参数
+
+
+
+:bangbang: 枚举类本质上还是类, 只是其对象只有有限个, 且是确定的, 而且是写在类内部的
+
+
+
+## 1. 枚举类的创建
+
+### 1.1 自定义枚举类
+
+497
+
+JDK5.0 之前, 自己手动自定义"枚举类"
+
+```java
+public class SeasonTest {
+    public static void main(String[] args) {
+        Season spring = Season.SPRING;
+        System.out.println(spring);
+    }
+}
+
+// 自定义枚举类
+class Season{
+    // 1. 声明Season对象的属性: private final修饰
+    private final String seasonName;
+    private final String seasonDesc;
+
+    // 2. 私有化构造器, 并给对象属性赋值
+    private Season(String seasonName, String seasonDesc){
+        this.seasonName = seasonName;
+        this.seasonDesc = seasonDesc;
+    }
+
+    // 3. 提供当前枚举类的多个对象: public static final的
+    // 一个类里存自己的对象, 太秀了
+    public static final Season SPRING = new Season("spring", "spring is warm!");
+    public static final Season SUMMER = new Season("summer", "summer is hot!");
+    public static final Season FALL = new Season("fall", "fall is cool!");
+    public static final Season WINTER = new Season("winter", "winter is cold!");
+
+    // 4. 其他诉求: 获取枚举类对象的属性
+    public String getSeasonName() {
+        return seasonName;
+    }
+
+    public String getSeasonDesc() {
+        return seasonDesc;
+    }
+
+    @Override
+    public String toString() {
+        return "Season{" +
+                "seasonName='" + seasonName + '\'' +
+                ", seasonDesc='" + seasonDesc + '\'' +
+                '}';
+    }
+}
+```
+
+
+
+### 1.2 使用enum 关键字
+
+498
+
+JDK5.0 新特性: enum关键字
+
+
+
+```java
+public class SeasonTest1 {
+    public static void main(String[] args) {
+        Season1 summer = Season1.SUMMER;
+        System.out.println(summer);
+        System.out.println(Season1.class.getSuperclass());
+
+    }
+
+}
+
+// enum
+enum Season1 {
+
+    // 1. 提供当前枚举类的对象, 多个对象之间用 ", "隔开， 末尾对象";"结束
+    SPRING ("spring", "spring is warm!"),
+    SUMMER("summer", "summer is hot!"),
+    FALL("fall", "fall is cool!"),
+    WINTER("winter", "winter is cold!");
+
+
+    private final String seasonName;
+    private final String seasonDesc;
+
+
+    private Season1(String seasonName, String seasonDesc) {
+        this.seasonName = seasonName;
+        this.seasonDesc = seasonDesc;
+    }
+
+    // 4. 其他诉求: 获取枚举类对象的属性
+    public String getSeasonName() {
+        return seasonName;
+    }
+
+    public String getSeasonDesc() {
+        return seasonDesc;
+    }
+
+  
+		// 你也可以选择重写toString()  
+//    @Override
+//    public String toString() {
+//        return "Season{" +
+//                "seasonName='" + seasonName + '\'' +
+//                ", seasonDesc='" + seasonDesc + '\'' +
+//                '}';
+//    }
+}
+```
 
 
 
 ## 3. Emun类的主要方法
 
+499
 
+使用enum关键字定义的类, 默认继承 Java.lang.Enum
+
+
+
+```java
+public class SeasonTest1 {
+    public static void main(String[] args) {
+        Season1 summer = Season1.SUMMER;
+
+        // toString()
+        System.out.println(summer);
+        System.out.println(Season1.class.getSuperclass());
+
+        // values(): 返回枚举类型的对象数组。该方法可以很方便地遍历所有的 枚举值。
+        Season1[] values = Season1.values();
+        for (int i = 0; i < values.length; i++){
+            System.out.println(values[i]);
+        }
+
+        // valueOf(String objName): 根据提供的objName, 返回枚举类中对象名是objName的对象.
+        // 如果没有objName的枚举类内的对象, 则throw  IllegalArgumentException
+        Season1 winter = Season1.valueOf("WINTER");
+        System.out.println(winter);
+
+    }
+}
+```
+
+And more methods of Enum ... check Java doc
 
 
 
 ## 4. 实现接口的枚举类
 
+500
 
+使用enum关键字定义的枚举类实现接口的情况.
+*  情况一: 实现接口， 在enum类中去实现抽象方法
+*  情况二: 让枚举类的对象, 分别去实现接口中的抽象方法
+
+```java
+interface Info{
+    void show();
+}
+
+// enum
+enum Season1 implements  Info{
+
+    // 1. 提供当前枚举类的对象, 多个对象之间用 ", "隔开， 末尾对象";"结束
+    SPRING ("spring", "spring is warm!"){
+        @Override
+        public void show() {
+            System.out.println("spring hahahaha");
+        }
+    },
+    SUMMER("summer", "summer is hot!"){
+        @Override
+        public void show() {
+            System.out.println("summer hahahah");
+        }
+    },
+    FALL("fall", "fall is cool!"){
+        @Override
+        public void show() {
+            System.out.println("fall hahahaha");
+        }
+    },
+    WINTER("winter", "winter is cold!"){
+        @Override
+        public void show() {
+            System.out.println("winter hahahaha");
+        }
+    };
+
+  
+    private final String seasonName;
+    private final String seasonDesc;
+
+
+    private Season1(String seasonName, String seasonDesc) {
+        this.seasonName = seasonName;
+        this.seasonDesc = seasonDesc;
+    }
+
+    // 4. 其他诉求: 获取枚举类对象的属性
+    public String getSeasonName() {
+        return seasonName;
+    }
+
+    public String getSeasonDesc() {
+        return seasonDesc;
+    }
+
+    @Override
+    public void show() {
+        System.out.println("this is a season!");
+    }
+
+}
+```
+
+
+
+
+
+
+
+501 项目3改enum, 不用看了
 
 
 
