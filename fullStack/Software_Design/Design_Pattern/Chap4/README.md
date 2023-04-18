@@ -19,6 +19,24 @@ UniMelb week8
 
 
 
+## 核心
+
++ 四要素
+  + Component
+  + ConcreteComponent
+  + Decorator
+  + ConcreteDecorator
++ 组合 + 继承
+  + Decorator和被装饰者实现(继承)相同的接口(抽象类), 这个祖先接口(类)我们称之为Component
+  + Decorator内组合一个Component
++ 套娃
+  + 新功能可以定义到一个新的ConcreteDecorator上, 然后套娃, 套在现有的功能外面, 这样就实现了动态地添加新功能
+  + 由于套娃, 所以往往用到递归求某个属性的值
+
+
+
+
+
 ## 星巴克咖啡案例
 
 星巴克咖啡订单项目 星巴克咖啡订单项目(咖啡馆):
@@ -115,15 +133,240 @@ Here's a basic structure of the decorator pattern:
 
 + 在如图的Component与ConcreteComponent之间，如果 ConcreteComponent类很多,还可以设计一个缓冲层，将共有的部分提取出来， 抽象层一个类
 
-+ Decorator类中聚合了Component类型的对象, 利用多态, Obj可以是ConcreteComponent的对象
++ Decorator和被装饰者实现(继承)相同的接口(抽象类), 这是为了利用多态来实现套娃
+  + Decorator类中聚合了Component类型的对象, 利用多态, Obj可以是Component的实现类的对象, 后面会看到, Decorator里不仅可以包ConcreteComponent还可以包另一个Decorator对象
+  + 就像俄罗斯套娃, 外面的娃相当于decorator, 每套一层 decorator, 对外就像原来的娃增添了decorator的某些特征; 用现实世界的人穿衣服来做比喻可能不太恰当, 因为decorator和被装饰者的具有共同祖先类 (接口), 不过你想在software domain来model人穿衣服则也可以, 让人和衣服继承相同的父类(接口), 最里面的是被装饰者--人, 然后给人套衣服, 每穿一层衣服对外就像人有了衣服添加的特征(比如保暖, 美观...)
 
 
 
-## 代码
+
+## 案例1: 星巴克咖啡
 
 74
 
 看到这里
+
+![](./Src_md/coffee1.png)
+
+说明
+
+1. Drink 类就是前面说的抽象类， Component
+2. ShortBlack 就单品咖啡
+3. Decorator 是一个装饰类，含有一个被装饰的对象(Drink obj)
+4. Decorator 的cost 方法 进行一个费用的叠加计算，递归的计算价格 下面会看到
+
+
+
+新需求: 2份巧克力+一份牛奶的LongBlack, 装饰者模式下:
+
+<img src="./Src_md/coffee2.png" style="zoom:50%;" />
+
+说明
+
+1) Milk包含了LongBlack
+2) 一份Chocolate包含了(Milk+LongBlack)
+3) 一份Chocolate包含了(Chocolate+Milk+LongBlack)
+4) 这样不管是什么形式的单品咖啡+调料组合，通过递归方式可以方便的组合和维护。
+
+
+
+
+
+```java
+// 要素1: Component
+public abstract class Drink {
+    private String description;
+    private float price = 0.0f;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    // 让子类去实现
+    public abstract float cost();
+}
+```
+
+
+
+```java
+// 要素2: Concrete Component
+public class Coffee extends Drink{
+    @Override
+    public float cost() {
+        return super.getPrice();
+    }
+}
+
+public class Espresso extends Coffee{
+
+    public Espresso() {
+        setDescription("this is an Espresso coffee");
+        setPrice(6.0f);
+    }
+}
+
+public class LongBlack extends Coffee{
+    public LongBlack() {
+        setDescription("this is a LongBlack coffee");
+        setPrice(7.0f);
+    }
+}
+
+public class ShortBlack extends Coffee{
+    public ShortBlack() {
+        setDescription("this is a ShortBlack coffee");
+        setPrice(5.0f);
+
+    }
+}
+```
+
+
+
+```java
+// 要素3: Decorator
+public class Decorator extends Drink{
+    private Drink obj;      // 被装饰者
+
+    public Decorator(Drink obj) {           // 组合关系
+        this.obj = obj;
+    }
+
+    @Override
+    public float cost() {
+        // 自己的价格 + 被装饰者的总体价格
+        return super.getPrice() + obj.cost();		// 递归求价格
+    }
+
+    @Override
+    public String getDescription(){
+
+        return super.getDescription() +" "+ super.getPrice() + " && " + obj.getDescription();
+    }
+}
+```
+
+
+
+```java
+// 要素4: ConcreteDecorator
+public class Milk extends Decorator{
+    public Milk(Drink obj) {
+        super(obj);
+        setDescription("Milk");
+        setPrice(2.0f);
+    }
+}
+
+public class Soy extends  Decorator{
+    public Soy(Drink obj) {
+        super(obj);
+        setDescription("Soy");
+        setPrice(1.5f);
+    }
+}
+
+public class Chocolate extends Decorator{
+
+    public Chocolate(Drink obj) {
+        super(obj);
+        setDescription("Chocolate");
+        setPrice(3.0f);
+    }
+}
+```
+
+
+
+```java
+// main
+// 可见此时搞各种coffee和调味品的组合非常灵活, 也不用大改代码, 只需要套娃
+public class CoffeeBar {
+    // 装饰者模式下的订单:2份巧克力+一份牛奶的LongBlack
+    public static void main(String[] args) {
+        // 1. 被装饰者
+        Drink order = new LongBlack();
+        System.out.println(order.cost());
+        System.out.println(order.getDescription());
+
+        // 2. 加入1份牛奶
+        order = new Milk(order);
+        System.out.println(order.cost());
+        System.out.println(order.getDescription());
+
+        // 3. 加入1份巧克力
+        order = new Chocolate(order);
+        System.out.println(order.cost());
+        System.out.println(order.getDescription());
+
+        // 4. 再加入1份巧克力
+        order = new Chocolate(order);
+        System.out.println(order.cost());
+        System.out.println(order.getDescription());
+
+        // order 2 ==========================
+        System.out.println("order2: ");
+
+        Drink order2 = new Espresso();
+        System.out.println(order2.cost());
+        System.out.println(order2.getDescription());
+
+        order2 = new Milk(order2);
+        System.out.println(order2.cost());
+        System.out.println(order2.getDescription());
+    }
+}
+```
+
+
+
+
+
+## 案例2: JDK I/O stream
+
+![](./Src_md/iostream1.png)
+
+
+
+```java
+public abstract class InputStream implements Closeable{} //是一个抽象类，即Component public class 
+
+class FileInputStream{	// 被装饰者
+  
+}
+
+class FilterInputStream extends InputStream { //是一个装饰者类Decorator
+	protected volatile InputStream in //被装饰的对象 
+}
+  
+  
+class DataInputStream extends FilterInputStream implements DataInput { 
+  //FilterInputStream 子类，相当于ConcreteDecorator
+}
+```
+
+
+
+## 案例3: chatGPT例子
+
+见Intellij代码
+
+
+
+<img src="./Src_md/chatGPT_demo1.png" style="zoom:50%;" />
 
 
 
