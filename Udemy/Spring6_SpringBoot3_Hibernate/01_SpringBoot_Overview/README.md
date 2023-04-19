@@ -156,9 +156,11 @@ https://start.spring.io
 
 
 
-## Spring Boot - create a REST controller
+## Spring Boot "Hello World" 
 
 8
+
+create a REST controller
 
 新建package: rest,  然后创建如下class
 
@@ -213,6 +215,8 @@ Container 内包含:
 
 
 
+
+
 `Infrastructure`
 
 AOP: Aspect Oriented Programming, Add functionality to objects declaratively.
@@ -221,13 +225,382 @@ AOP: Aspect Oriented Programming, Add functionality to objects declaratively.
 
 
 
-该看10了
+
 
 `Data Access Layer`: communicating with database
 
-+  JDBC: Spring JDBC Helper Clsses, reduces your JDBC code by 50%
-+ ORM: Object to Relational Mapping, Integration with Hibernate and JPA
-+ Transactions: 
-+ RXM
-+ JMS
++  **JDBC**: Spring JDBC Helper Clsses, reduces your JDBC code by 50%
++ **ORM**: Object to Relational Mapping, Integration with `Hibernate` and `JPA`
++ **Transactions**: Add transaction support. Make heavy use of AOP behind the scenes
++ **OXM**
++  **JMS**: Java Message Service. 
+   +  for sending async messages to a Message Broker. Spring provides helper classes for JMS
 
+
+
+
+`Web Layer`: All web related classes, home of the Spring MVC framework
+
++ **Servlet:** 
++ **WebSocket:**
++ **Web:**
+
+
+
+`Infrastructure`: Java agents to remotely monitor your app with JMX (Java Management Extension) 
+
++ AOP
++ Aspects
++ Instrumentation
++ Messaging
+
+
+
+`Test`: Spring supports Test-Driven-Development (TDD). Mock objects and out-of-container testing
+
++ **Unit test:**
++ **Integration test:**
++ **Mock objects:**
+
+
+
+# Spring Projects
+
+11-
+
+**What Are Spring “Projects”**
+
+Additional <u>Spring **modules**</u> built-on top of the core Spring Framework 
+
+Only use what you need ...
+
++ Spring Cloud, Spring Data
+
++ Spring Batch, Spring Security 
++ Spring Web Services, Spring LDAP *others ...*
+
+
+
+spring.io > project, you will see all these modules.  每个module都能单独出个课
+
+
+
+## Maven
+
+**What is Maven?**
+
++ Maven is a Project Management tool
++ Most popular use of Maven is for build management and dependencies 
+
+
+
+**What Problems Does Maven Solve?**
+
++ When building your Java project, you may need additional JAR files For example: Spring, Hibernate, Commons Logging, JSON etc...
+
++ One approach is to download the JAR files from each project web site 
++ Manually add the JAR files to your build path / classpath
+
+
+
+**Maven Solution**
+
++ Tell Maven the projects you are working with (dependencies) Spring, Hibernate etc ....
+
++ Maven will go out and download the JAR files for those projects for you
+
++ And Maven will make those JAR files available during compile/run
+
++ Think of Maven as your friendly helper / personal shopper :-)
+
+
+
+![](./Src_md/Maven1.png)
+
+
+
+**Handling JAR Dependencies**
+
+When Maven retrieves a project dependency. It will also download supporting dependencies. For example: Spring depends on commo ns-logging ... Maven will handle this for us automagically
+
+
+
+**Building and Running**
+
+When you build and run your app ... Maven will handle class / build path for you. Based on config file, Maven will add JAR files accordingly
+
+
+
+**Standard Directory Structure**
+
+13-
+
++ Normally when you join a new project
+  + Each development team dreams up their own directory structure 
+  + Not ideal f or new comers and not standardized
+
++ Maven solves this problem by providing a standard directory structure
+
+
+
+![](./Src_md/maven_structure.png)
+
++ pom.xml: maven configuration file
+
+
+
+**Standard Directory Structure Benefits**
+
++ Most major IDEs have built-in support for Maven
+  +  Eclipse, IntelliJ, NetBeans etc
+  + IDEs can easily read/import Maven projects
+
++ Maven projects are portable
+
+  + Developers can easily share projects between IDEs
+
+  + No need to fight about which IDE is the best LOL!
+
+
+
+**Advantages of Maven**
+
++ Dependency Management
+  + Maven will find JAR files for you 	
+  + No more missing JARs
++ Building and Running your Project
+  + No more build path / classpath issues 
+
++ Standard directory structure
+
+
+
+Once you learn Maven, you can join a new project and be productive You can build and run a project with minimal local configuration
+
+
+
+### Maven key concepts
+
+14
+
+pom.xml: Project Object Model file, the Configuration file for your project
+
+
+
+pom.xml 一般结构:
+
+```xml
+project meta data: project name, version etc. Output file type: JAR, WAR,...
+
+
+dependencies: List of projects we depend on: SPring, Hibernate, etc ...
+
+
+plug-ins: Additional custom tasks to run: generate JUnit test reports etc...
+```
+
+e.g.
+
+```xml
+<project ...> 
+  
+  <modelVersion>4.0.0</modelVersion>
+	<groupId>com.luv2code</groupId> 
+  <artifactId>mycoolapp</artifactId> 
+  <version>1.0.FINAL</version> 
+  <packaging>jar</packaging>
+	<name>mycoolapp</name>
+  
+<dependencies> 
+  <dependency>
+		<groupId>org.junit.jupiter</groupId> 
+    <artifactId>junit-jupiter</artifactId> 
+    <version>5.9.1</version> 		
+    <scope>test</scope>
+	</dependency> 
+</dependencies>
+  
+<!-- add plugins for customization -->
+  
+  
+</project>
+```
+
+
+
+Project Coordinates uniquely identify a project
+
+Project Coordinates - Elements
+
+| Name Description** | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| Group ID           | Name of company, group, or organization.  Convention is to use reverse domain name: **com.luv2code** |
+| Artifact ID        | Name for this project: **mycoolapp**                         |
+| Version            | A specific release version like: **1.0, 1.6, 2.0 ** If project is under active development then: **1.0-SNAPSHOT** |
+
+e.g. of project coordinates
+
+```xml
+<groupId>com.luv2code</groupId> 
+<artifactId>mycoolapp</artifactId> 
+<version>1.0.FINAL</version>
+```
+
+```xml
+<groupId>org.springframework</groupId> 
+<artifactId>spring-context</artifactId> 
+<version>6.0.0</version>
+```
+
+```xml
+<groupId>org.hibernate.orm</groupId> 
+<artifactId>hibernate-core</artifactId> 
+<version>6.1.4.Final</version>
+```
+
+Adding dependencies
+
+```xml
+<project ...> 
+  ...
+	<dependencies>
+		<dependency> 
+      <groupId>org.springframework</groupId> 
+      <artifactId>spring-context</artifactId> 
+      <version>6.0.0</version>
+		</dependency>
+    
+		<dependency> 
+    	<groupId>org.hibernate.orm</groupId> 
+    	<artifactId>hibernate-core</artifactId> 
+      <version>6.1.4.Final</version>
+  	</dependency> 
+    ...
+
+	</dependencies> 
+</project>
+```
+
+
+
+Dependency coordination
+
+To add given dependency project, we need
+
++ **Group ID**, **Artifact ID**
+
++ **Version** is optional ...
+
++ Best practice for DevOps is to include the version (repeatable builds) 
+
+May see this referred to as: **GAV:  G**roup ID, **A**rtifact ID and **V**ersion
+
+
+
+**How to Find Dependency Coordinates**
+
++ Option 1: Visit the project page (spring.io, hibernate.org etc) 
++ Option 2: Visit http://search.maven.org (<u>easiest approach</u>) 
+
+
+
+## SpringBoot project files
+
+15-16
+
+Spring Initializr created a Maven project for us
+
+
+
+### mvnw
+
+**mvnw** allows you to run a Maven project
+
++ No need to have Maven installed or present on your path
+
++ If correct version of Maven is NOT found on your computer 
+  + **Automatically downloads** correct versionand runs Maven Two files are provided
+
+<img src="./Src_md/mvnw.png" style="zoom:50%;" />
+
++ **mvnw.cmd** for MS Windows 
+
++ **mvnw.sh** for Linux/Mac
+
+If you already have Maven installed on your computer previously, then you can ignore/delete the **mvnw** filesJust use Maven as you normally would
+
+
+
+### Spring Boot Maven plugin
+
+```xml
+<!-->To package executable jar or war archive, Can also easily run the app<-->	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+```
+
+
+
+
+
+### Application Properties
+
+By default, Spring Boot will load properties from: **application.properties**
+
+It is created by Spring Initializr. Empty at the beginning
+
+```properties
+# configure server port
+server.port=8484
+
+# configure my customizing props
+coach.name=Mickey Mouse
+team.name=The Mouse Crew
+```
+
+read data from properties file
+
+```java
+@RestController
+public class FunRestController {
+  @Value("${coach.name}")
+  private String coachName;
+  @Value("${team.name}")
+  private String teamName;
+  ...
+}
+```
+
+
+
+Static
+
+<img src="./Src_md/static_content.png" style="zoom:50%;" />
+
+
+
+:bangbang: WARNING:
+
+Do not use the **src/main/webapp** directory if your application is packaged as a JAR.
+
+Although this is a standard Maven directory, it works only with WAR packaging. It is silently ignored by most build tools if you generate a JAR.
+
+
+
+Template
+
+<img src="./Src_md/template.png" style="zoom:50%;" />
+
+
+
+# SpringBoot starters
+
+17-
+
+看到这里!
