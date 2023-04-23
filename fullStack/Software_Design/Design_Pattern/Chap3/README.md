@@ -879,5 +879,9 @@ public class SimpleFactory {
 # 5. :moon: 建造者模式 (Builder)
 55-59
 
-UniMelb week8
+UniMelb week8: 参考case: https://refactoring.guru/design-patterns/builder very helpful and informative
+
+The Builder pattern suggests that you extract the object construction code out of its own class and move it to separate objects called *builders*. The pattern organizes object construction into a set of steps (`buildWalls`, `buildDoor`, etc.). To create an object, you execute a series of these steps on a builder object. The important part is that you don’t need to call all of the steps. You can call only those steps that are necessary for producing a particular configuration of an object.
+
+:gem: Demo: 见refactoring_guru package. 关于build 复杂object的 (e.g. Car)
 

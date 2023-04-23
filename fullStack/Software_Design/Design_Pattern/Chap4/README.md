@@ -15,7 +15,7 @@ UniMelb week9
 # 3. :moon: 装饰器模式 (Decorator)
 71-76
 
-UniMelb week8
+UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative
 
 
 
@@ -382,7 +382,11 @@ UniMelb week9
 # 5. :moon: 外观模式 (Facade)
 81-85
 
-UniMelb week 8
+UniMelb week 8, 参考case:  https://refactoring.guru/design-patterns/facade very helpful and informative
+
+Having a facade is handy when you need to integrate your app with a sophisticated library that has dozens of features, but you just need a tiny bit of its functionality. 即把一个复杂的lib, 简化凝聚到最小满足需求的水平放到一个Facade类, 以降低耦合
+
+:gem: 代码见refactoring_guru package
 
 
 

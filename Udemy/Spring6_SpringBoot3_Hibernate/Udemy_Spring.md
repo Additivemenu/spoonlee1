@@ -21,4 +21,6 @@ don't have to watch LEGACY videos
 
 ---
 
-[springboot intro](./01_SpringBoot_Overview/README.md)
++ [Class1: springboot intro](./01_SpringBoot_Overview/README.md)
+
++ [Class2: Inversion of Control & Dependency Injection](./02_InversionControl_DependencyInjection/README.md)

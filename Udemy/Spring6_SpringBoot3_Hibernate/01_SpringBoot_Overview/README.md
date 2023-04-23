@@ -514,7 +514,7 @@ Spring Initializr created a Maven project for us
 
 ### mvnw
 
-**mvnw** allows you to run a Maven project
+**mvnw** allows you to run a Maven project (后面的commandline 启动springboot application用到)
 
 + No need to have Maven installed or present on your path
 
@@ -599,8 +599,559 @@ Template
 
 
 
-# SpringBoot starters
+
+
+# Get Start with SpringBoot application
+
+## SpringBoot starters
 
 17-
 
-看到这里!
+Building a Spring application is really HARD!!! It's tricky to figure out the correct dependencies of correct version with Spring.
+
+
+
+**The Solution - Spring Boot Starters**
+
++ A curated list of Maven dependencies
++ A collection of dependencies grouped together
++ Tested and verified by the  Spring Development team
++ Makes it much easier for the developer to get started with Spring 
++ Reduces the amount of Maven configuration
+
+
+
+Spring Boot provides: **spring-boot-starter-web**
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.6.2</version>
+</dependency>
+
+<!-->CONTAINS 
+  spring-web 
+  spring-webmvc 
+  hibernate-validator 
+  json
+  tomcat
+<-->
+```
+
+
+
+In Spring Initializr, simply select `Web` dependency. You automatically get **spring-boot-starter-web** in **pom.xml**
+
+
+
+There are 30+ Spring Boot Starters from the Spring Development team
+
+| Name                         | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| spring-boot-starter-web      | **Building web apps, includes validation, REST. Uses Tomcat as default embedded server** |
+| spring-boot-starter-security | **Adding Spring Security support**                           |
+| spring-boot-starter-data-jpa | **Spring database support with JPA and Hibernate**           |
+
+
+
+check full list of spring starters:
+
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.build-systems.starters
+
+
+
+### **Spring Boot Starter Parent**
+
+
+
++ Spring Boot provides a "Starter Parent". This is a special starter that provides Maven defaults
+
+
+
+For the **spring-boot-starter-\*** dependencies, no need to list version
+
+![](./Src_md/spring_boot_starter_parent.png)
+
+
+
+
+
+**Benefits of the Spring Boot Starter Parent**
+
++ Default Maven configuration: Java version, UTF-encoding etc Dependency management
+
++ Use version on parent only
+  + **spring-boot-starter-\*** dependencies inherit version from parent 
+
++ Default configuration of Spring Boot plugin
+
+
+
+## SpringBoot Dev tools
+
+19,20
+
+**spring-boot-devtools** to the rescue!  Automatically restarts your application when code is updated
+
+
+
+```xml
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+```
+
+
+
+IntelliJ Community Edition does not support DevTools by default
+
+Select: **Preferences > Build, Execution, Deployment > Compiler**, Check box: **Build project automatically**
+
+Select: **Preferences > Advanced Settings**, Check box: **Allow auto-make to ...**
+
+
+
+Then add new endpoint to your controller class
+
+```java
+@RestController
+public class FunRestController {
+
+    // expose '/' that return "hello world"
+    @GetMapping("/")
+    public String sayHello(){
+        return "hello world!";
+    }
+
+    // expose a new endpoint for "workout"
+    @GetMapping("/workout")
+    public String getDailyWorkout(){
+        return "Run a hard 5k!";
+    }
+
+    // expose a new endpoint for "fortune"
+    @GetMapping("/fortune")
+    public String getDailyFortune(){
+        return "Today is your lucky day.";
+    }
+
+}
+```
+
+save the file, you will see automatically reloading of your application 
+
+
+
+## :moon: SpringBoot Actuator 
+
+21-25
+
+
+
+**Problem**
+
+How can I monitor and manage my application?  How can I check the application health? How can I access application metrics?
+
+
+
+**Solution: Spring Boot Actuator**
+
+Exposes endpoints to monitor and manage your application. 
+
++ You easily get DevOps functionality out-of-the-box
++ Simply add the dependency to your POM file. 
+
++ REST endpoints are automatically added to your application
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+```
+
+
+
+Automatically exposes endpoints for metrics out-of-the-box. Endpoints are prefixed with: **/actuator**
+
+| Name        | Description                                   |
+| ----------- | --------------------------------------------- |
+| **/health** | **Health information about your application** |
+
+**/health** checks the status of your application
+ Normally used by monitoring apps to see if your app is up or down
+
+![](./Src_md/actuator1.png)
+
+
+
+By default, only **/health** is exposed. The **/info** endpoint can provide information about your application
+
+To expose **/info**
+
+**File: src/main/resources/application.properties**:
+
+```properties
+management.endpoints.web.exposure.include=health,info
+management.info.env.enabled=true
+```
+
+**/info** gives information about your application
+
+
+
+Update **application.properties** with your app info
+
+**File: src/main/resources/application.properties**:
+
+```properties
+info.app.name=My Super Cool App
+info.app.description=A crazy and fun app, yoohoo!
+info.app.version=1.0.0
+```
+
+<img src="./Src_md/actuator2.png" style="zoom:50%;" />
+
+
+
+There are 10+ Spring Boot Actuator endpoints
+
+
+
+| Name          | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| /auditevents  | **Audit events for your application**                        |
+| **/beans**    | **List of all beans registered in the Spring application context** |
+| **/mappings** | **List of all @RequestMapping paths**                        |
+| ...           | ...                                                          |
+
+
+
+Full list of actuator endpoints
+
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#actuator.endpoints
+
+
+
+By default, only **/health** is exposed
+
+To expose all actuator endpoints over HTTP:
+
+**File: src/main/resources/application.properties**
+
+```properties
+# Use wildcard "*" to expose all endpoints
+# Can also expose individual endpoints with a comma-delimited list
+#
+management.endpoints.web.exposure.include=*
+```
+
+Then, for example, access all the beans's information of your application:  **http://localhost:8080/actuator/beans**
+
+
+
+### hands-on with actuator
+
+22-23
+
+添加dependency, 并在application.properties file中写入
+
+```properties
+management.endpoints.web.exposure.include=health,info
+management.info.env.enabled=true
+```
+
+run application, 会发现 log中出现如下
+
+```bash
+2023-04-22T07:29:46.945+10:00  INFO 14751 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+```
+
+
+
+继续为info提供自定义信息:
+
+```properties
+management.endpoints.web.exposure.include=health,info
+management.info.env.enabled=true
+
+info.app.name=My Super Cool App
+info.app.description=A Crazy Fun App, yoohoo!
+info.app.version=1.0.0
+```
+
+Re-run application, check out at localhost:8080/actuator/info
+
+```json
+{
+  "app": {
+    "name": "My Super Cool App",
+    "description": "A Crazy Fun App, yoohoo!",
+    "version": "1.0.0"
+  }
+}
+```
+
+
+
+添加所有的actuator endpoint
+
+```properties
+management.endpoints.web.exposure.include=*
+management.info.env.enabled=true
+
+info.app.name=My Super Cool App
+info.app.description=A Crazy Fun App, yoohoo!
+info.app.version=1.0.0
+```
+
+Re-run application, now we have 13 endpoints in total
+
+```bash
+2023-04-22T07:37:19.169+10:00  INFO 14751 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 13 endpoint(s) beneath base path '/actuator'
+```
+
+```json
+// check out with these URL, see info on different checkpoints
+http://localhost:8080/actuator/beans
+http://localhost:8080/actuator/threaddump
+http://localhost:8080/actuator/mappings
+```
+
+
+
+### Endpoint security
+
+24-25
+
+You may **NOT** want to expose all of this information. Add Spring Security to project and endpoints are secured :-)
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+
+
+Spring actuator full documentations:
+
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#actuator
+
+
+
+Hands-on
+
+加入spring security dependency,  re-run application, you will see below in terminal log:
+
+```bash
+2023-04-22T07:51:46.432+10:00  WARN 14893 --- [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 2b5ef672-434c-4b33-8903-a8eef0dcad20
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+```
+
+Check out at localhost:8080/actuator/mappings, now spring security will force you to login using the password  then you can see mappings info
+
+
+
+then, we exclude some endpoints from application:
+
+```properties
+management.endpoints.web.exposure.include=*
+management.info.env.enabled=true
+
+# Exclude individual endpoints with a comma-delimted list
+management.endpoints.web.exposure.exclude=health,info
+
+info.app.name=My Super Cool App
+info.app.description=A Crazy Fun App, yoohoo!
+info.app.version=1.0.0
+```
+
+
+
+## Run SpringBoot Application from command line
+
+26-27
+
++ Since we using Spring Boot, the server is embedded in our JAR file. No need to have separate server installed/running
+
++ Spring Boot apps are self-contained
+  
+
+<img src="./Src_md/self_contained1.png" style="zoom: 50%;" />
+
+
+
+Option 1: Use **java -jar**
+
+Option 2: Use Spring Boot Maven plugin
+
+```bash
+   mvnw spring-boot:run
+```
+
+
+
+先不看这部分, 有需求再看: 什么情况下需要commandline 启动springboot application
+
+
+
+
+
+# :moon:  SpringBoot properties
+
+## Injecting Custom Application Properties
+
+28-29
+
+You need for your app to be configurable ... no hard-coding of values  ---->  You need to read app configuration from a properties file
+
+
+
+By default, Spring Boot reads information from a standard properties file 
+
++ Located at: **src/main/resources/application.properties**
+
++ You can define ANY custom properties in this file
++ Your Spring Boot app can access properties using **@Value**
+
+
+
+Hands-on:
+
+Application.properties
+
+```properties
+# Define my own properties
+coach.name=Mickey Mouse
+team.name=The Mouse Club
+```
+
+
+
+Controller class:
+
+```java
+@RestController
+public class FunRestController {
+
+    // inject custom properties from properties file
+    @Value("${coach.name}")
+    private String coachName;
+    @Value("${team.name}")
+    private String teamName;
+
+    // expose new endpoint for "teaminfo"
+    @GetMapping("/teaminfo")
+    public String getTeamInfo(){
+        return "Coach: " + coachName + ", Team name: " + teamName;
+    }
+
+}
+```
+
+re-run application, 可见读取properties file的信息成功了
+
+
+
+## Configure SpringBoot Server
+
+30-31
+
+**Spring Boot Properties**
+
++ Spring Boot can be configured in the **application.properties** file 
+  + Server port, context path, actuator, security etc ...
+
+
+
+Spring Boot has 1,000+ properties ... wowzers! Full list of SpringBoot properties:
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
+
+check the link, you will see 16 categories of these 1000+ properties
+
+
+
+Some examples of common properties:
+
++ Core properties:
+
+```properties
+# Log levels severity mapping
+logging.level.org.springframework=DEBUG
+logging.level.org.hibernate=TRACE
+logging.level.com.luv2code=INFO
+# Log file name
+logging.file=my-crazy-stuff.log
+```
+
+see more details of springboot logging:
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging
+
++ Web properties:
+
+```properties
+ # HTTP server port
+ server.port=7070
+ # Context path of the application
+ server.servlet.context-path=/my-silly-app
+ # Default HTTP session time out
+ server.servlet.session.timeout=15m
+```
+
++ Actuator properties
+
+```properties
+# Endpoints to include by name or wildcard
+management.endpoints.web.exposure.include=*
+# Endpoints to exclude by name or wildcard
+management.endpoints.web.exposure.exclude=beans,mapping
+# Base path for actuator endpoints
+management.endpoints.web.base-path=/actuator
+```
+
++ security properties
+
+```properties
+# Default user name
+spring.security.user.name=admin
+# Password for default user
+spring.security.user.password=topsecret
+```
+
++ Data properties
+
+```properties
+# JDBC URL of the database
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
+# Login username of the database
+spring.datasource.username=scott
+# Login password of the database
+spring.datasource.password=tiger
+...
+```
+
+
+
+Hands-on
+
+```properties
+# Web properties ------------------------------
+server.port = 7070
+
+# set the context path of the application
+# all request should be prefixed with /mycoolapp
+server.servlet.context-path=/mycoolapp
+```
+
+re-run the app, check out at http://localhost:7070/mycoolapp/teaminfo, instead of http://localhost:7070/teaminfo
+

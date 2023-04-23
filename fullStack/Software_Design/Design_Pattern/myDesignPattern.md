@@ -1,6 +1,8 @@
 :computer: [尚硅谷: 图解Java设计模式](https://www.bilibili.com/video/BV1G4411c7N4/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 同时参考尚硅谷的设计模式笔记pdf (近400页, 还有一个60页的简短版本)
 
+:book: [refactoring guru webpage](https://refactoring.guru/design-patterns): 很有意思的网站, 讲design pattern很生动， 并有完整的code example
+
 
 ---
 
