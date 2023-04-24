@@ -66,10 +66,8 @@ enum Season1 implements  Info{
         }
     };
 
-
     private final String seasonName;
     private final String seasonDesc;
-
 
     private Season1(String seasonName, String seasonDesc) {
         this.seasonName = seasonName;
