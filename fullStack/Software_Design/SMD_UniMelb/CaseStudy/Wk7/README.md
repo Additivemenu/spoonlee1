@@ -59,10 +59,6 @@ Figure 4: A partial design class diagram showing how the Decorator pattern is us
 
 
 
-
-
-
-
 ### Discussion
 
 *Why can’t we use the strategy pattern here?* 

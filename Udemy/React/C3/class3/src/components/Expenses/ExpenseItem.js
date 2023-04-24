@@ -8,6 +8,7 @@ function ExpenseItem(props) {
 
   // react state
   const  [title, setTitle] = useState(props.title);
+  console.log("Expense item's state is evaluated");
 
   const clickHandler = () => {
     setTitle("Update!");    // not just set value for title, also triggers re-render when title is changed
