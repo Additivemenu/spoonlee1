@@ -28,7 +28,10 @@ import java.util.Scanner;
 public class DictionaryClient {
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 5050);        // 方式1: 在server code中createRegistry
+
+//            Registry registry = LocateRegistry.getRegistry("127.0.0.1");  // 方式2: 在commandline里启动registry, 然后server再getRegistry()
+
             Dictionary dictionary = (Dictionary) registry.lookup("Dictionary");
 
             Scanner scanner = new Scanner(System.in);

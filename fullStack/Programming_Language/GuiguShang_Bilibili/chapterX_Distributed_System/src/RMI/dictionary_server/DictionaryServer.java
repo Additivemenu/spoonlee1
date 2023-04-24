@@ -11,7 +11,10 @@ public class DictionaryServer {
     public static void main(String[] args) {
         try {
             DictionaryImpl dictionary = new DictionaryImpl();
-            Registry registry = LocateRegistry.createRegistry(1099);
+
+            Registry registry = LocateRegistry.createRegistry(5050);      // 方式1: 在server code里createRegistry
+//            Registry registry = LocateRegistry.getRegistry();     // 方式2: 在commandline里先启动registry, 然后server getRegistry()
+
             registry.rebind("Dictionary", dictionary);
 
             System.out.println("DictionaryServer is ready.");

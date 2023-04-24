@@ -7,7 +7,24 @@ just refactoring of A1 using RMI, 代码变得简介了很多.
 
 
 
+:bangbang: Start the RMI registry: Before running the server and client, you need to start the RMI registry. You can do this using either
 
++ using the rmiregistry command  or
++ programmatically by calling `LocateRegistry.createRegistry()` in your server code.
+
+
+
+:bangbang: Relationship between server and Registry
+
+In an RMI (Remote Method Invocation) application, the server's address and port number are determined by the RMI registry to which the server binds its remote objects. The RMI registry is responsible for managing remote object references and enabling clients to look up remote objects by their names.
+
+You can customize the address and port number when creating the registry or connecting to an existing one.
+
+
+
+
+
+## Q & A
 
 :bangbang: Q1: all the details of thread handling are hidden when Using RMI, is that right?
 
