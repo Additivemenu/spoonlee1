@@ -9,7 +9,7 @@ UniMelb week9
 
 
 
-:bangbang: **适配器往往意味着indirection和转化, 将不可用, 不兼容的东西转化为可以用, 可兼容的东西**
+:bangbang: **适配器往往意味着indirection和转化, 将不想要的 (e.g. 不可用, 不兼容)的东西转化为想要的 (e.g. 可以用, 可兼容) 的东西**
 
 
 
@@ -192,13 +192,127 @@ public class Client {
 
 63
 
-看到这里
+接口适配器模式介绍. 一些书籍称为:适配器模式(Default Adapter Pattern)或缺省适配器模式。
+
+1) 当不需要全部实现接口提供的方法时，可先设计一个抽象类实现接口，并为该接 口中每个方法提供一个默认实现(空方法)，那么该抽象类的子类可有选择地覆盖父类的某些方法来实现需求
+
+2. 适用于一个接口不想使用其所有的方法的情况。
+
+
+
+:gem: e.g.1
+
+Android中的属性动画ValueAnimator类可以 通过addListener(AnimatorListener listener)方 法添加监听器， 那么常规写法如下
+
+```JAVA
+ValueAnimator valueAnimator = ValueAnimator.ofInt(0,100)
+valueAnimator.addListener(new Animator.AnimatorListener(){
+  @Override
+  public void onAnimationStart(Animator animation) {
+
+  }
+  @Override
+  public void onAnimationEnd(Animator animation) {
+
+  }
+  @Override
+  public void onAnimationCancel(Animator animation){
+
+  }
+  @Override
+  public void onAnimationRepeat(Animator animation){
+
+  } 
+});
+
+valueAnimator.start();
+```
+
+有时候我们不想实现 Animator.AnimatorListener接口的全部方法， 我们只想监听onAnimationStart，我们会如 下写:
+
+```java
+ValueAnimator valueAnimator = ValueAnimator.ofInt(0,100);
+
+valueAnimator.addListener(new AnimatorListenerAdapter() {
+  @Override
+  public void onAnimationStart(Animator animation) {
+  //xxxx具体实现 
+  }
+}); 
+
+  valueAnimator.start();
+```
+
+这其中:
+
+```java
+public static interface AnimatorListener {
+  void onAnimationStart(Animator animation);
+  void onAnimationEnd(Animator animation);
+  void onAnimationCancel(Animator animation);
+  void onAnimationRepeat(Animator animation);
+}
+
+public abstract class AnimatorListenerAdapter implements AnimatorPauseListener {
+  @Override //默认实现
+  public void onAnimationCancel(Animator animation) { }
+  @Override
+  public void onAnimationEnd(Animator animation) { }
+  @Override
+  public void onAnimationRepeat(Animator animation) { }
+  @Override
+  public void onAnimationStart(Animator animation) { }
+  @Override
+  public void onAnimationPause(Animator animation) { }
+  @Override
+  public void onAnimationResume(Animator animation) { }
+}
+```
+
+
+
+:gem: e.g.2
+
+```java
+public interface Interface4 {
+    public void m1();
+    public void m2();
+    public void m3();
+    public void m4();
+}
+
+// 在AbsAdapter里, 将Interface4中的方法进行默认实现
+public abstract class AbsAdapter implements Interface4{
+    public void m1(){}
+    public void m2(){}
+    public void m3(){}
+    public void m4(){}
+}
+
+
+public class Client {
+    public static void main(String[] args) {
+        AbsAdapter m1Adapter = new AbsAdapter() {
+            // 只需要override我们关心的接口方法
+            @Override
+            public void m1() {
+                System.out.println("use m1 method");
+            }
+        };
+        m1Adapter.m1();
+    }
+}
+```
+
+
 
 
 
 ## Dispatcher 源码
 
 64
+
+看到这里
 
 
 
@@ -214,11 +328,19 @@ public class Client {
 # 3. :moon: 装饰器模式 (Decorator)
 71-76
 
-UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative
+UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative, along with intuitive UML diagram 
+
+:gem: demo 自定义读写器, 可为读写器添加encryption, decryption, compression, decompression等功能而不改变基础的读写器的代码
+
+
 
 
 
 ## 核心
+
+:bangbang: Decorator意味着recursive composition以及套娃, 在不改变基本的被装饰类的代码的情况下, 为其增添新的功能.
+
+
 
 + 四要素
   + Component
@@ -574,7 +696,13 @@ class DataInputStream extends FilterInputStream implements DataInput {
 # 4. :moon: 组合模式 (Composite)
 77-80
 
-UniMelb week9
+UniMelb week9 https://refactoring.guru/design-patterns/composite
+
+
+
+
+
+
 
 
 
@@ -586,6 +714,12 @@ UniMelb week 8, 参考case:  https://refactoring.guru/design-patterns/facade ver
 Having a facade is handy when you need to integrate your app with a sophisticated library that has dozens of features, but you just need a tiny bit of its functionality. 即把一个复杂的lib, 简化凝聚到最小满足需求的水平放到一个Facade类, 以降低我们自己的的类与第三方lib之间的耦合
 
 :gem: 代码见refactoring_guru package
+
+
+
+:bangbang: Facade的核心思想在于, mask the system and hide the details behind, 往往作为indirection 用于system之间的
+
+通信
 
 
 
