@@ -6,11 +6,20 @@ continue with class3 react  project
 
 
 
-## Summary
+# Summary
 
-+ handling event
-+ update the UI & working with 'state'
-+ closer loo at components & state
++ Handling event
+  + add event listener to an element
+
++ Update the UI & working with 'state'
+  + why using 'state' instead of JS variable
+
+  + State management
+
+  + component communication
+    + state lifting
+      + types of components: stateless vs. stateful
+
 
 
 
@@ -18,7 +27,7 @@ continue with class3 react  project
 
 
 
-## Intro 
+# 1. Intro 
 
 ### :moon: Lisening to Events & working with Evenet Handler
 
@@ -190,7 +199,7 @@ function Expenses(props) {
 
 
 
-# more hands-on
+# 2. more hands-on
 
 ## Adding form inputs
 
@@ -314,7 +323,7 @@ const ExpenseForm = () => {
 
 
 
-# State management
+# 3. State management
 
 ## Working with multiple states
 
@@ -652,19 +661,19 @@ const ExpenseForm = () => {
 
 
 
-# :bangbang: Component communication
+# 4. :bangbang: Component communication
 
 :bangbang: 难点和重点!
 
 
 
-## Child-to-parent Component communication
+## :full_moon: Child-to-parent Component communication
 
 58
 
 前面我们学了, 通过props可以在parent component中, 将信息传递到其child components中, 
 
-now we want to pass the data we collected in ExpenseForm to its parent component NewExpense,  核心的做法是, 在parent component中定义一个以child component的某个信息为argument的 function, 然后将这个function通过props传递给child component, 在child component里调用这个function
+now we want to pass the data we collected in ExpenseForm to its parent component NewExpense,  核心的做法是, 在parent component中定义一个以child component的某个state信息为argument的 function, 然后将这个function通过props传递给child component, 然后在child component里调用这个function
 
 ```js
 App.js
@@ -754,14 +763,152 @@ const ExpenseForm = (props) => {
 
 
 
-## Lifting the state up
+## :full_moon: Lifting the state up
 
 59
 
-看到这里
+```js
+// 当前我们的component hierarchy
+App 
+ |
+  - NewExpense:  Data / State is generated here (provider)
+ |
+  - Expenses: Data / State is needed here (consumer)
+
+// problems is: how to move the data generated from the provider to the consumer? 
+// solution: data sharing between brothers via state lifting to the closest anscester component of provider and consumer component
+```
 
 
+
+
+
+### :gem: 作业练习
+
+Adding ExpensesFilter Component under Expenses component
+
+```js
+App 
+ |
+  - NewExpense:  Data / State is generated here (provider)
+ |
+  - Expenses: Data / State is needed here (consumer)
+       | 
+        - ExpensesFilter
+			 |
+        - ExpenseItem
+```
+
+Practice: 
+
++ add event listener to capture data in ExpensesFilter (provider component)
++ passing state from child to parent (state lifting)
++ two way binding: value property 
+
+
+
+ExpensesFilter.js
+
++ 为<select/> add envent listener, 并在envent handler里调用parent传来的function以使得parent知晓自己的信息
+
+```react
+const ExpensesFilter = (props) => {
+
+  const dropdownChangeHandler = (event) => {
+    event.preventDefault();
+    props.onChangeFilter(event.target.value);
+  }
+
+  return (
+    <div className='expenses-filter'>
+      <div className='expenses-filter__control'>
+        <label>Filter by year</label>
+
+        <select value={props.selectedYear} onChange={dropdownChangeHandler}>
+          <option value='2022'>2022</option>
+          <option value='2021'>2021</option>
+          <option value='2020'>2020</option>
+          <option value='2019'>2019</option>
+        </select>
+      </div>
+    </div>
+  );
+};
+```
+
+
+
+Expenses.js
+
++ 定义好filterChangeHandler这个function并将其传递给child , 以向child component索取信息
++ two way binding: 将filteredYear这个state传递给child, 好让其能显示这个state的值
+  + 总体来看, filteredYear这个state是在Expenses中被修改值, 但是调用是在ExpensesFilter里
+  + ExpensesFilter里并没有filteredYear这个状态, 为了让其能够显示这个状态的值， 需要再将这个state传递给ExpensesFilter, 在它里面用value 这个property来display
+
+>  :question: 为啥不直接把filteredYear和setFilteredYear都作为props传递给<ExpensesFilter/>呢？ 龙哥是这么讲的, 而且上面说的也是实现相同的功能啊
+>
+> 答: 这和下面的stateless component vs. stateful component 有关, 这样做可以将component的responsibility划分的更为清楚
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState('2020');
+
+  const expenses = props.expenses;
+
+  const filterChangeHandler = selectedYear => {
+    setFilteredYear(selectedYear)
+  }
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter selectedYear = {filteredYear} onChangeFilter = {filterChangeHandler}/>
+
+      <ExpenseItem
+        title={expenses[0].title}
+        amount={expenses[0].amount}
+        date={expenses[0].date}
+      />
+      <ExpenseItem
+        title={expenses[1].title}
+        amount={expenses[1].amount}
+        date={expenses[1].date}
+      />
+      <ExpenseItem
+        title={expenses[2].title}
+        amount={expenses[2].amount}
+        date={expenses[2].date}
+      />
+      <ExpenseItem
+        title={expenses[3].title}
+        amount={expenses[3].amount}
+        date={expenses[3].date}
+      />
+    </Card>
+  );
+}
+```
+
+
+
+
+
+### :full_moon: Types of components 
 
 Controlled vs Uncontrolled components & stateless vs stateful components
 
 60
+
+上面的<Expenses/> 相当于是在controll <ExpensesFilter/>, 因为前者定义了state和如何setState, 后者只是展示前者的state以及利用前者传来的function收集信息
+
+就好比, 前后端的关系, 作为parent的<Expenses/>相当于后端, 其内部定义了state和如何setState, 往往比较复杂, 作为child的<ExpenseFilter/>相当于前端, 只是负责展示后端传来的数据, 以及收集用户的输入数据给后端让后端处理和管理数据 (two way binding)
+
+
+
+Terminology: 
+
++ `stateless component`: also call presentational component or dumb component, 因为它自己内没有定义state和其如何改变, 只是接受别的component传来的state, 然后展示; 或者是接收调用别的component传来的收集信息的function
++ `stateful component`: 与stateless component相对应, 一般stateful component会是stateless component的parent
+
+
+
+check chatGPT for more info and e.g.
