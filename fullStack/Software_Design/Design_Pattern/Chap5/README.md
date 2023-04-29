@@ -46,6 +46,12 @@ UniMelb week10 https://refactoring.guru/design-patterns/strategy
 
 
 
+:bangbang:  策略模式的思想是, 将主体类的多变的行为抽象为策略接口, 然后通过策略接口提供不同的策略实现, 并将策略接口聚合到主体类中来达到主体类的可变行为.  策略接口通常是functional interface, 所以常和lambda表达式连用
+
+<img src="./Src_md/strategy4.png" style="zoom:50%;" />
+
+
+
 
 
 鸭子问题
@@ -94,7 +100,101 @@ UniMelb week10 https://refactoring.guru/design-patterns/strategy
 
 142
 
-该看这个了
+思路分析(类图) 策略模式:分别封装行为接口，实现算法族，超类里放行为接口对象，在子类里具体设定行为对象. 原则就是:分离变化部分，封装接口，基于接口编程各种功能。此模式让行为的变化独立于算法的使用者. 
+
++ 下图中, 还可以添加关于鸭子叫的策略接口, 类似FlyBehaviour
+
+<img src="./Src_md/strategy3.png" style="zoom:50%;" />
+
+
+
+策略接口及其实现类:
+
+```java
+public interface FlyBehaviour {
+    void fly();
+}
+
+public class BadFlyBehaviour implements FlyBehaviour{
+
+    @Override
+    public void fly() {
+        System.out.println("bad fly behaviour");
+    }
+}
+
+public class GoodFlyBehaviour implements  FlyBehaviour{
+
+    @Override
+    public void fly() {
+        System.out.println("good fly skills");
+    }
+}
+
+public class NoFlyBehaviour implements FlyBehaviour{
+    @Override
+    public void fly() {
+        System.out.println("cannot fly");
+    }
+}
+```
+
+执行策略的主体:
+
+```java
+public abstract class Duck {
+
+    // 属性, 策略接口
+    FlyBehaviour flyBehaviour;
+
+    public void setFlyBehaviour(FlyBehaviour flyBehaviour) {
+        this.flyBehaviour = flyBehaviour;
+    }
+
+    public Duck(){
+    }
+
+    public abstract void display();     // 显示鸭子信息
+    public void fly(){
+        if(flyBehaviour != null) {
+            flyBehaviour.fly();
+        }
+    }
+}
+
+public class WildDuck extends Duck {
+    public WildDuck() {
+        this.flyBehaviour = new GoodFlyBehaviour();
+    }
+    @Override
+    public void display() {
+        System.out.println("this is wild duck");
+    }
+}
+
+public class PekingDuck extends Duck {
+    public PekingDuck() {
+        flyBehaviour = new BadFlyBehaviour();
+    }
+
+    @Override
+    public void display() {
+        System.out.println("this is a peking duck");
+    }
+}
+
+public class ToyDuck extends Duck {
+
+    public ToyDuck() {
+        flyBehaviour = new NoFlyBehaviour();
+    }
+
+    @Override
+    public void display() {
+        System.out.println("this is toy duck");
+    }
+}
+```
 
 
 
@@ -102,9 +202,66 @@ UniMelb week10 https://refactoring.guru/design-patterns/strategy
 
 ## ArrayList 源码
 
+JDK的Arrays的Comparator就使用了策略模式, 一般策略接口是functional interface
+
+```java
+public class Strategy {
+    public static void main(String[] args) {
+        Integer[] data = { 9,1,2,8,4,3 };
+
+        // 实现升序排序，返回-1放左边，1放右边，0保持不变
+
+        // 说明
+        // + 实现了Comparator接口(策略接口), 匿名类的对象 new Comparator<Integer>(){} 是实现了策略接口的策略对象
+        // + 对象new Comparator<Integer>(){..} 就是实现了策略接口的对象, 包含具体的策略
+        //    + public int compare(Integer o1, Integer o2){...} 指定具体的处理方式
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+                if(o1 > o2) {
+                    return 1;
+                }else{
+                    return -1;
+                }
+            };
+        };
+
+        // 说明：
+        /**
+         * public static <T> void sort(T[] a, Comparator<? super T> c) {
+         *         if (c == null) {
+         *             sort(a);         // 默认策略
+         *         } else {
+         *             if (LegacyMergeSort.userRequested)
+         *                 legacyMergeSort(a, c);       // 使用策略对象c
+         *             else
+         *                 TimSort.sort(a, 0, a.length, c, null, 0, 0);
+         *         }
+         *     }
+         */
+
+        // 方式1 提供具体的策略对象
+        Arrays.sort(data, comparator);      // (操作对象, 操作策略)
+        System.out.println(Arrays.toString(data)); //
+
+        // 方式2 采用lambda表达式, 提供functional interface内唯一的方法的实现
+        Integer[] data2 = {19,11,12,18,14,13};
+        Arrays.sort(data2, (var1, var2) -> {
+            if(var1.compareTo(var2) > 0){
+                return 1;
+            }else {
+                return -1;
+            }
+        });
+        System.out.println( "data2: " + Arrays.toString(data2));
+    }
+}
+```
 
 
 
+:question: 在`Comparator`内有不止一个方法, 为什么它是functional interface?
+
+Since Java 8, interfaces can also be used as functional interfaces, which have exactly one abstract method (<u>excluding methods inherited from `Object`)</u>, allowing them to be used with lambda expressions and method references. ----> 所以Comparator是functional interface
 
 
 

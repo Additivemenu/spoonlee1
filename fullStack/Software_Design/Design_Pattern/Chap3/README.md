@@ -805,7 +805,6 @@ public class SimpleFactory {
     }
 
 
-
     // 方式二: 静态工厂模式
     public static Pizza createPizza2(String orderType){
 
@@ -819,10 +818,8 @@ public class SimpleFactory {
             pizza = new CheesePizza();
             pizza.setName("cheese pizza");
         }
-
         return pizza;
     }
-
 }
 ```
 
@@ -849,14 +846,25 @@ public class SimpleFactory {
 
 工厂方法模式介绍
 
-工厂方法模式设计方案:将披萨项目的实例化功能抽象成抽象方法，在不同的口味点
-餐子类中具体实现。
+工厂方法模式设计方案: 将披萨项目的实例化功能抽象成抽象方法，在不同的口味点餐子类中具体实现。
 
-工厂方法模式:定义了一个创建对象的抽象方法，由子类决定要实例化的类。工厂方法模式<u>*将对象的实例化推迟到子类。*</u>
+工厂方法模式:定义了一个创建对象的抽象方法，由子类决定要实例化的类。工厂方法模式<u>*将对象的实例化推迟到子类。*</u> 即面向抽象编程， 
 
 
 
 看到44
+
+
+
+
+
+
+
+## JDK 源码分析
+
+47
+
+
 
 
 
