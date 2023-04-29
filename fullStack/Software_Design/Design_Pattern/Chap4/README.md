@@ -312,7 +312,7 @@ public class Client {
 
 64
 
-看到这里
+待看
 
 
 
@@ -698,9 +698,277 @@ class DataInputStream extends FilterInputStream implements DataInput {
 
 UniMelb week9 https://refactoring.guru/design-patterns/composite
 
+:bangbang: **Composite** is a structural design pattern that lets you <u>compose objects into tree structures</u> and then work with these structures as if they were individual objects.
+
+:bangbang:  Relation with Decorator pattern:
+
+[Composite](https://refactoring.guru/design-patterns/composite) and [Decorator](https://refactoring.guru/design-patterns/decorator) have similar structure diagrams since both rely on recursive composition to organize an open-ended number of objects.
+
++ A *Decorator* is like a *Composite* but only has one child component. 
+
++ There’s another significant difference: *Decorator* adds additional responsibilities to the wrapped object, while *Composite* just “sums up” its children’s results.
+
+However, the patterns can also cooperate: you can use *Decorator* to extend the behavior of a specific object in the *Composite* tree.
 
 
 
+
+
+看一个学校院系展示: 需求编写程序展示一个学校院系结构:需求是这样，要在一个页面中展示出学校的院系组成，一个学校有多个学院，一个学院有多个系。如图:
+
+```java
+清华大学
+  |-- 计算机学院
+  			|-- 计算机科学与技术
+  		  |-- 软件工程
+  			|-- 网络工程
+  |-- 信息工程学院
+  			|-- 通信工程
+  			|-- 信息工程
+```
+
+
+
+传统方案解决学校院系展示存在的问题分析
+
+1) 将学院看做是学校的子类，系是学院的子类，这样实际上是站在组织大小来进行分层次的
+2) 实际上我们的要求是: 在一个页面中展示出学校的院系组成，一个学校有多个学院，一个学院有多个系， 因此这种方案，不能很好实现的管理的操作，比如 对学院、系的添加，删除，遍历等
+3) 解决方案: 把学校、院、系都看做是组织结构，<u>他们之间没有继承的关系，而是 一个树形结构</u>，可以更好的实现管理操作。 => `组合模式`
+
+
+
+## 基本介绍
+
+1. 组合模式(Composite Pattern)，又叫部分整体模式，<u>它创建了对象组的树形结构</u>，将对象组合成树状结构以表示“整体-部分”的层次关系
+2. 这种类型的设计模式属于结构型模式
+3. 组合模式使得用户对单个对象和组合对象的访问具有一致性，即:组合能让客户以一致的方式处理个别对象以及组合对象
+
+
+
+<img src="./Src_md/composite1.png" style="zoom: 50%;" />
+
++ The **Client** works with all elements through the component interface. As a result, the client can work in the same way with both simple or complex elements of the tree.
++ The **Component** interface describes operations that are common to both simple and complex elements of the tree.
+  + Component可以是Abstract class or interface
++ The **Leaf** is a basic element of a tree that <u>*doesn’t have sub-elements*</u>. Leaf充当最底层的劳动力
+  + Usually, leaf components end up doing most of the real work, since they don’t have anyone to delegate the work to.
++ The **Container** (aka ***composite***) is <u>*an element that has sub-elements: leaves or other containers*</u>.  Container充当管理层
+  + A container doesn’t know the concrete classes of its children. It works with all sub-elements only via the component interface. 
+  + *Upon receiving a request, a <u>container delegates the work to its sub-elements</u>*, processes intermediate results and then returns the final result to the client. 
+
+> :bangbang: 组合模式解决这样的问题，当我们的要处理的对象可以生成一颗树形结构，而我们要对树上的节点和叶子进行操作时，它能够提供一致的方式，而不用考虑 它是节点还是叶子. 一个典型的例子就是二叉树求节点上的数值的总和
+
+
+
+
+
+
+
+## :gem: demo
+
+上代码 78
+
+<img src="./Src_md/composite2.png" style="zoom: 50%;" />
+
+
+
+OrganizationComponent
+
+```java
+public abstract class OrganizationComponent {
+    private String name;
+    private String des;
+
+    public OrganizationComponent(String name, String des) {
+        this.name = name;
+        this.des = des;
+    }
+
+    protected  void add(OrganizationComponent organizationComponent){
+        // 默认实现, 不强制让实现类实现这个方法
+        throw new UnsupportedOperationException();
+    }
+
+    protected  void remove(OrganizationComponent organizationComponent){
+        // 默认实现, 不强制让实现类实现这个方法 (leaf node 不需要实现这个方法)
+        throw new UnsupportedOperationException();
+    }
+
+    public abstract void print();
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDes() {
+        return des;
+    }
+}
+```
+
+University.java
+
+```java
+public class University extends OrganizationComponent{
+
+    // List里存的是college
+    List<OrganizationComponent> organizationComponentLists = new ArrayList<>();
+
+    public University(String name, String des) {
+        super(name, des);
+
+    }
+
+    @Override
+    protected void add(OrganizationComponent organizationComponent){
+        organizationComponentLists.add(organizationComponent);
+    }
+
+    @Override
+    protected void remove(OrganizationComponent organizationComponent){
+        organizationComponentLists.remove(organizationComponent);
+    }
+
+
+    @Override
+    public String getName(){
+        return super.getName();
+    }
+
+    @Override
+    public String getDes(){
+        return super.getDes();
+    }
+
+    // 输出University里包含的学院
+    @Override
+    public void print() {
+        System.out.println("-----------" + getName()+ "----------");
+        // loop over list
+        for (OrganizationComponent ele : organizationComponentLists){
+            ele.print();
+        }
+    }
+}
+```
+
+College.java
+
+```java
+public class College extends OrganizationComponent{
+
+    // List 中存的是department
+    List<OrganizationComponent> organizationComponentLists = new ArrayList<>();
+
+    public College(String name, String des) {
+        super(name, des);
+
+    }
+
+    @Override
+    protected void add(OrganizationComponent organizationComponent){
+        // 实际业务中, college.add() 和university.add() 的逻辑可能不会完全相同
+        organizationComponentLists.add(organizationComponent);
+    }
+
+    @Override
+    protected void remove(OrganizationComponent organizationComponent){
+        organizationComponentLists.remove(organizationComponent);
+    }
+
+    @Override
+    public String getName(){
+        return super.getName();
+    }
+
+    @Override
+    public String getDes(){
+        return super.getDes();
+    }
+
+    // 输出University里包含的学院
+    @Override
+    public void print() {
+        System.out.println("-----------" + getName()+ "----------");
+        // loop over list
+        for (OrganizationComponent ele : organizationComponentLists){
+            ele.print();
+        }
+    }
+}
+```
+
+Department.java: 作为leaf node
+
+```java
+public class Department extends OrganizationComponent{
+
+    public Department(String name, String des) {
+        super(name, des);
+
+    }
+
+    @Override
+    public String getName(){
+        return super.getName();
+    }
+
+    @Override
+    public String getDes(){
+        return super.getDes();
+    }
+
+
+    @Override
+    public void print() {
+        System.out.println("-----------" + getName()+ "----------");
+    }
+}
+```
+
+Client.java
+
++ 使用时, 不管是container还是leaf, 都使用`print()`方法就可, 不必去关心到底是leaf还是container, 这是composite pattern带来的好处
++ 调用`university.print()`时有点DFS的意思
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 从大到小创建对象
+        // 创建university
+        University university = new University("清华大学", "666");
+
+        // 创建college
+        College college1 = new College("计算机学院", "计算机学院");
+        College college2 = new College("信息工程学院", "信息工程学院");
+
+        // 创建专业
+        college1.add(new Department("software engineering","love java"));
+        college1.add(new Department("cyber engineering", "aa"));
+        college1.add(new Department("computer science", "CS"));
+
+        college2.add(new Department("communication engineering", "通信不好学"));
+        college2.add(new Department("information engineering", "信工好学"));
+
+        university.add(college1);
+        university.add(college2);
+
+        //
+        university.print();
+
+        System.out.println("\n");
+        college1.print();
+    }
+}
+```
+
+
+
+## HashMap 源码
+
+79 
+
+有空回来看
 
 
 
@@ -719,7 +987,7 @@ Having a facade is handy when you need to integrate your app with a sophisticate
 
 :bangbang: Facade的核心思想在于, mask the system and hide the details behind, 往往作为indirection 用于system之间的
 
-通信
+通信. 这样可以减少当前系统和其他系统之间的耦合, 如果其他系统发生变动, 只需要修改Facade就行了, 不需要去大量修改当前系统的代码.
 
 
 

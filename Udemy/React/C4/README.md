@@ -849,6 +849,8 @@ Expenses.js
 >
 > 答: 这和下面的stateless component vs. stateful component 有关, 这样做可以将component的responsibility划分的更为清楚
 
+
+
 ```react
 function Expenses(props) {
   const [filteredYear, setFilteredYear] = useState('2020');
@@ -887,8 +889,6 @@ function Expenses(props) {
   );
 }
 ```
-
-
 
 
 
