@@ -27,6 +27,337 @@ UniMelb week 10 https://refactoring.guru/design-patterns/observer
 
 
 
+
+
+天气预报项目需求,具体要求如下:
+
+1) 气象站可以将每天测量到的温度，湿度，气压等等以公告的形式发布出去(比如 发布到自己的网站或第三方)。
+2) 需要设计开放型API，便于其他第三方也能接入气象站获取数据。
+3) 提供温度、气压和湿度的接口
+4) 测量数据更新时，*<u>要能实时的通知给第三方</u>*
+   + 这个和DS A2 的实时更新画板上别人的画岂不是很吻合?
+
+
+
+普通方案
+
+通过对气象站项目的分析，我们可以初步设计出一个WeatherData类
+
+```java
+class Weather{
+  getTemp()
+  getHumidity()
+  getPressure()
+  dataChange()
+}
+```
+
+说明:
+
+1) 通过getXxx方法，可以让第三方接入，并得到相关信息.
+2) 当数据有更新时，气象站通过调用dataChange() 去更新数据，当第三方再次获取时，就能得到最新数据，当然也可以推送。
+
+
+
+```java
+//  想象这个类为气象站自己的网站
+public class CurrentConditions {
+    private float temperature;
+    private float pressure;
+    private float humidity;
+
+    // update()是由WeatherData来调用的, 我们这里使用的是推送模式
+    public void update(float temperature,float pressure,float humidity){
+        this.temperature=temperature;
+        this.pressure=pressure;
+        this.humidity=humidity;
+        display();
+    }
+
+
+    public void display(){
+        System.out.println("***Today mTemperature: "+temperature+"***");
+        System.out.println("***Today mPressure: "+pressure+"***");
+        System.out.println("***Today mHumidity: "+humidity+"***");
+    }
+}
+
+// ------------------------
+// 核心类,
+// * 1. 包含最新的天气信息
+// * 2. 含有CurrentConditions对象作为成员变量
+// * 3. 当数据有更新时, 就主动调用currentConditions对象的update方法 (含display) 相当于向currentConditions对象推送更新的天气信息
+public class WeatherData {
+    private float temperatrue;
+    private float pressure;
+    private float humidity;
+    private CurrentConditions currentConditions;        //
+
+    public WeatherData(CurrentConditions currentConditions) { this.currentConditions = currentConditions; }
+    public float getTemperature() { return temperatrue; }
+    public float getPressure() { return pressure; }
+    public float getHumidity() {
+        return humidity;
+    }
+    public void dataChange() {
+        currentConditions.update(getTemperature(), getPressure(), getHumidity());
+    }
+
+    //当数据有更新的时候, 就调用setData
+    public void setData(float temperature, float pressure, float humidity) {
+        this.temperatrue = temperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+
+        // 将刚刚更新好的天气信息推送给接入方
+        dataChange();
+    }
+}
+
+// --------------------------
+public class Client {
+    public static void main(String[] args) {
+        // 创建接入方
+        CurrentConditions currentConditions = new CurrentConditions();
+
+        // 创建WeatherData, 并将接入方currentCondtions传递到WeatherData中
+        WeatherData weatherData = new WeatherData(currentConditions);
+
+        // 更新天气信息
+        weatherData.setData(30,150,40);
+
+        // 天气情况变了
+        System.out.println("weather changed: ");
+        weatherData.setData(40,160,20);
+    }
+}
+```
+
+
+
+
+
+普通方案的分析:
+
+1) 其他第三方接入气象站获取数据的问题
+
+2) 无法在运行时动态的添加第三方 (新浪网站) 
+
+   ```java
+   public class WeatherData {
+       private float temperatrue;
+       private float pressure;
+       private float humidity;
+       private CurrentConditions currentConditions;        //
+       private SinLangWeb sinLangWeb;  // 需要hard code来加入第三方, 违反OCP原则
+     	
+     	public dataChange(){
+         currentConditions.update(getTemperature(), getPressure(), getHumidity());
+         sinLangWeb.update(getTemperature(), getPressure(), getHumidity());  // 还得手动添加
+       }
+     ...
+   }
+   ```
+
+   + 违反ocp原则=>观察者模式
+
+
+
+## 观察者模式原理
+
+
+
+观察者模式类似订牛奶业务 
+
+1. 奶站/气象局:Subject
+
+2) 用户/第三方网站:Observer
+
+
+
+Subject:登记注册、移除和通知
+
+1. registerObserver 注册
+2. removeObserver 移除
+3. notifyObservers() 通知所有的注册的用户，根据不同需求，可以是更新数据，让用户来取，也可能是实施推送，看具体需求定
+
+观察者模式: 对象之间多对一依赖的一种设计方案，被依赖的对象为`Subject`， 依赖的对象为`Observer`，Subject通知Observer变化,比如这里的奶站是 Subject，是1的一方。用户时Observer，是多的一方
+
+
+
+## 代码实现
+
+
+
+![](./Src_md/observer1.png)
+
+
+
+观察者模式的好处
+
+1) 观察者模式设计后，会以集合的方式来管理用户(Observer)，包括注册，移除 和通知。
+2) 这样，我们增加观察者(这里可以理解成一个新的公告板)，就不需要去修改核 心类WeatherData不会修改代码，遵守了ocp原则。
+
+
+
+:gem: code
+
+Subject接口及其实现类
+
+```java
+public interface Subject {
+    void registerObserver(Observer o);
+    void removeObserver(Observer o);
+
+    void notifyAllObserver();
+
+}
+
+
+public class WeatherData implements Subject{
+    private float temperature;
+    private float pressure;
+    private float humidity;
+    private ArrayList<Observer> observerList;
+
+    public WeatherData() {
+        observerList = new ArrayList<Observer>();
+    }
+    public float getTemperature() { return temperature; }
+    public float getPressure() { return pressure; }
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public void dataChange() {
+        notifyAllObserver();
+    }
+
+    //当数据有更新的时候, 就调用setData
+    public void setData(float temperature, float pressure, float humidity) {
+        this.temperature = temperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+
+        // 将刚刚更新好的天气信息推送给接入方
+        dataChange();
+    }
+
+    @Override
+    public void registerObserver(Observer o) {
+        observerList.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        if(observerList.contains(o)){
+            observerList.remove(o);
+        }
+    }
+
+    // 遍历所有的观察者, 并通知
+    @Override
+    public void notifyAllObserver() {
+        for(int i = 0; i < observerList.size(); i++){
+            observerList.get(i).update(temperature, pressure, humidity );       // 包含observer的display()
+        }
+    }
+}
+```
+
+
+
+Observer接口及其实现类
+
+```java
+public interface Observer {
+    void update(float temperature, float pressure, float humidity);
+}
+
+public class CurrentCondition implements Observer{
+    private float temperature;
+    private float pressure;
+    private float humidity;
+
+    @Override
+    // update()是由WeatherData来调用的, 我们这里使用的是推送模式
+    public void update(float temperature,float pressure,float humidity){
+        this.temperature=temperature;
+        this.pressure=pressure;
+        this.humidity=humidity;
+        display();
+    }
+
+    public void display(){
+        System.out.println("***Today mTemperature: "+temperature+"***");
+        System.out.println("***Today mPressure: "+pressure+"***");
+        System.out.println("***Today mHumidity: "+humidity+"***");
+    }
+}
+
+public class Baidu implements Observer{
+    private float temperature;
+    private float pressure;
+    private float humidity;
+
+    @Override
+    // update()是由WeatherData来调用的, 我们这里使用的是推送模式
+    public void update(float temperature,float pressure,float humidity){
+        this.temperature=temperature;
+        this.pressure=pressure;
+        this.humidity=humidity;
+        display();
+    }
+
+    public void display(){
+        System.out.println("***百度气温: "+temperature+"***");
+        System.out.println("***百度气压: "+pressure+"***");
+        System.out.println("***百度湿度: "+humidity+"***");
+    }
+}
+```
+
+Client
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 创建一个WeatherData
+        WeatherData weatherData = new WeatherData();
+
+        // 观察者
+        CurrentCondition currentCondition = new CurrentCondition();
+
+        // 注册观察者到weatherData
+        weatherData.registerObserver(currentCondition);
+        weatherData.registerObserver(new Baidu());
+
+        // test1
+        System.out.println("notify all observes: ");
+        weatherData.setData(10, 100, 30.3f);
+
+        // test2
+        System.out.println("notify all observes: ");
+        weatherData.removeObserver(currentCondition);
+        weatherData.setData(20,150, 33.3f);
+
+    }
+
+}
+```
+
+
+
+
+
+## Observable 源码
+
+
+
+
+
+
+
 # 6. 中介者模式 (Mediator)
 123-126 
 

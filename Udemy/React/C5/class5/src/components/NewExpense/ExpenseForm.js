@@ -50,7 +50,7 @@ const ExpenseForm = (props) => {
     const expenseData = {
       title: enteredTitle,
       amount: enteredAmount,
-      data: new Date(enteredDate), // convert string to a Date object
+      date: new Date(enteredDate), // convert string to a Date object
     };
 
     props.onSaveExpenseData(expenseData);  // 从parent component那里传来的function

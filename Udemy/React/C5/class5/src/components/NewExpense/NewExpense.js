@@ -4,6 +4,7 @@ import "./NewExpense.css";
 import ExpenseForm from "./ExpenseForm";
 
 const NewExpense = (props) => {
+  
   // we will pass this function to child component
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
