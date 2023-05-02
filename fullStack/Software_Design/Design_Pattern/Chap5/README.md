@@ -10,6 +10,219 @@ UniMelb week 10 https://refactoring.guru/design-patterns/template-method
 
 
 
+:bangbang: 大体的流程骨架固定, 但是具体某个步骤要求有不同的实现 
+
++ e.g. binary tree的递归套路
+
+
+
+编写制作豆浆的程序，说明如下:
+
+1) 制作豆浆的流程 选材--->添加配料--->浸泡--->放到豆浆机打碎
+2) 通过添加不同的配料，可以制作出不同口味的豆浆
+3) 选材、浸泡和放到豆浆机打碎这几个步骤对于制作每种口味的豆浆都是一样的
+4) 请使用 模板方法模式 完成 (说明:  因为模板方法模式，比较简单，很容易就 想到这个方案，因此就直接使用，不再使用传统的方案来引出模板方法模式 )
+
+
+
+基本介绍
+
+1. 模板方法模式(Template Method Pattern)，又叫模板模式(Template Pattern)，在一个抽象类公开定义了执行它的方法的模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。 这种类型的设计模式属于行为型模式。
+2. 简单说，**<u>模板方法模式 定义一个操作中的算法的骨架，而将一些步骤延迟到子类中，使得子类可以不改变一个算法的结构，就可以重定义该算法的某些特定步骤</u>**
+
+
+
+<img src="./Src_md/template1.png" style="zoom:50%;" />
+
+对原理类图的说明-即(模板方法模式的角色及职责)
+
+1) AbstractClass 抽象类， 类中实现了模板方法(template)，**规定了算法的骨架**，具体子类需要去实现 其它的抽象方法operation 2,3,4
+   + 再次体现面向接口, 面向抽象编程
+
+2) ConcreteClass 实现抽象方法operationr2,3,4, 以完成算法中特点子类的步骤
+
+
+
+## 代码实现
+
+制作豆浆的流程 选材--->添加配料--->浸泡--->放到豆浆机打碎
+
++ 通过添加不同的配料，可以制作出不同口味的豆浆
++ 选材、浸泡和放到豆浆机打碎这几个步骤对于制作每种口味的豆浆都是一样的(红豆、花生豆浆...)
+
+
+
+
+
+```java
+public abstract class SoyaMilk {
+
+    // 模板方法, 一般做成final, 不让子类去override
+    final void make(){
+        select();
+        addCondiments();		// 行为可变
+        soak();
+        beat();
+    }
+
+    // select materials
+    void select(){
+        System.out.println("step1: select freshing soy");
+    }
+
+    // 添加配料
+    abstract void addCondiments();
+
+    // 浸泡
+    void soak(){
+        System.out.println("第三部, 黄豆和配料开始浸泡, needing 3 hours");
+    }
+
+    //
+    void beat(){
+        System.out.println("第四步, 黄豆和配料放到豆浆机去打碎");
+    }
+}
+
+```
+
+```java
+public class RedBeanSoyMilk extends SoyaMilk{
+    @Override
+    void addCondiments() {
+        System.out.println("加入上好的红豆");
+    }
+}
+
+public class PeanutSoyMilk extends  SoyaMilk{
+    @Override
+    void addCondiments() {
+        System.out.println("加入上好的花生");
+    }
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 制作红豆豆浆
+        System.out.println("制作红豆豆浆");
+        SoyaMilk redBeanSoyMilk = new RedBeanSoyMilk();
+        redBeanSoyMilk.make();
+
+        System.out.println("制作花生豆浆");
+        SoyaMilk peanutSoyMilk = new PeanutSoyMilk();
+        peanutSoyMilk.make();
+    }
+}
+```
+
+
+
+
+
+
+
+## 模板方法模式的钩子方法
+
+98
+
+1) 在模板方法模式的父类中，我们可以定义一个方法，它默认不做任何事，子类可以 视情况要不要覆盖它，该方法称为“钩子”。
+2) 还是用上面做豆浆的例子来讲解，比如，我们还希望制作纯豆浆，不添加任何的配 料，请使用钩子方法对前面的模板方法进行改造
+
+
+
+Template
+
++ 定义一个钩子方法, 决定模版中某个方法是否被执行
+
+````java
+public abstract class SoyaMilk {
+
+    // 模板方法, 一般做成final, 不让子类去override
+    final void make(){
+        select();
+        if (customerWantCondiments()) {
+            addCondiments();
+        }
+        soak();
+        beat();
+    }
+
+    // select materials
+    void select(){
+        System.out.println("step1: select freshing soy");
+    }
+
+    // 添加配料
+    abstract void addCondiments();
+
+    // 浸泡
+    void soak(){
+        System.out.println("第三部, 黄豆和配料开始浸泡, needing 3 hours");
+    }
+
+    //
+    void beat(){
+        System.out.println("第四步, 黄豆和配料放到豆浆机去打碎");
+    }
+
+    // 钩子方法: 决定是否需要添加配料
+    boolean customerWantCondiments(){
+        return true;
+    };
+}
+
+````
+
+```java
+public class PureSoyMilk extends SoyaMilk {
+
+    @Override
+    void addCondiments() {
+
+    }
+
+    @Override
+    boolean customerWantCondiments() {
+        return false;
+    }
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 制作红豆豆浆
+        System.out.println("制作红豆豆浆");
+        SoyaMilk redBeanSoyMilk = new RedBeanSoyMilk();
+        redBeanSoyMilk.make();
+
+        System.out.println("制作花生豆浆");
+        SoyaMilk peanutSoyMilk = new PeanutSoyMilk();
+        peanutSoyMilk.make();
+
+        System.out.println("制作纯豆浆");
+        SoyaMilk pureSoyMilk = new PureSoyMilk();
+        pureSoyMilk.make();
+    }
+}
+```
+
+
+
+
+
+## IOC 源码
+
+99
+
+有时间再看
+
+
+
+
+
 # 2. 命令模式 (Command)
 101-105
 
