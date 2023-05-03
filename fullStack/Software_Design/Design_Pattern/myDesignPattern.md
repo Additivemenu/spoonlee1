@@ -13,6 +13,7 @@
 [chap3: 设计模式大类一: 创建型模式 28-59](./Chap3/README.md)
 [chap4: 设计模式大类二: 结构型模式 60-95](./Chap4/README.md)
 [chap5: 设计模式大类三: 行为型模式 96-149](./Chap5/README.md)
+[chap6: 混合设计模式](./Chap6/README.md)
 
 
 

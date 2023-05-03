@@ -13,9 +13,19 @@ Class5: Rendering List & Conditional content
 
 
 
+:question: 可以把一个state(比如parent传来的props.title)通过useState()初始化另一个state吗
+
+```js
+[title, setTitle] = useState(props.title)  // props.title来源于一个state
+```
+
+
+
+
+
 # Rendering Lists
 
-## Rendering Lists of data
+## :full_moon: Rendering Lists of data
 
 63- 65
 
@@ -106,11 +116,25 @@ function App() {
 
 
 
-:bangbang: 这里我的代码还有bug, 需要debug一下再往下看! 另外整理下这里stateful 和 stateless component对应谁, 总结下当点击submit button后信息的流向, 
+:bangbang: 一定要搞清楚谁是data provider, 谁是data consumer, 以及数据的流向
+
+```react
+App.js: expenses, addExpenseHandler(expense:object)
+ 	
+	|-- NewExpense (addExpensesHandler): saveExpenseDataHandler(enteredExpenseData:Object) 	// stateful component
+					|-- ExpenseForm (saveExpenseDataHandler): enteredTitle, enteredAmount, enteredDate:string
+																										submitHandler(event)把输入的string转化为expense obj
+                                                    
+	|-- Expenses (expenses)
+					|-- ExpenseFilter
+					|-- expenses.map (expense => ExpenseItem )			// stateless component 
+```
 
 
 
-Understand "key"
+
+
+## Understand "key"
 
 65
 
