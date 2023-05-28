@@ -629,6 +629,35 @@ put()既可以增也可改
 
 
 
+:bangbang: 如何遍历hashmap: 算法题里常用到
+
+```java
+HashMap<String, Integer> hashMap = new HashMap<>();
+hashMap.put("A", 1);
+hashMap.put("B", 2);
+hashMap.put("C", 3);
+
+// 方式一: iterator
+Iterator<Map.Entry<String, Integer>> iterator = hashMap.entrySet().iterator();
+while (iterator.hasNext()) {
+    Map.Entry<String, Integer> entry = iterator.next();
+    String key = entry.getKey();
+    Integer value = entry.getValue();
+    System.out.println(key + " : " + value);
+}
+
+// 方式二: reinforced for loop
+for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+    String key = entry.getKey();
+    Integer value = entry.getValue();
+    System.out.println(key + " : " + value);
+}
+```
+
+
+
+
+
 ---
 
 **总结**

@@ -1,27 +1,6 @@
+Resources:
+
 :computer:[Bilibili: 常用类 448-495](https://www.bilibili.com/video/BV1Kb411W75N?p=450&vd_source=c6866d088ad067762877e4b6b23ab9df)
-
----
-- [1. :full\_moon: String](#1-full_moon-string)
-  - [1.1 `String`](#11-string)
-    - [1.1.1 :full\_moon: Instantiate `String`](#111-full_moon-instantiate-string)
-    - [1.1.2 String拼接](#112-string拼接)
-    - [1.1.3 String class 常用方法](#113-string-class-常用方法)
-  - [1.2 `StringBuffer`](#12-stringbuffer)
-  - [1.3 `StringBuilder`](#13-stringbuilder)
-- [2. JDK8之前的日期和时间API](#2-jdk8之前的日期和时间api)
-- [3. JDK8中新的日期和时间API](#3-jdk8中新的日期和时间api)
-  - [`LocalDate`, `LocalTime`, `LocalDateTime`](#localdate-localtime-localdatetime)
-  - [`Instant`](#instant)
-  - [`DateTimeFormatter`](#datetimeformatter)
-- [4. Java `Comparator`](#4-java-comparator)
-  - [`Comparable` interface](#comparable-interface)
-  - [`Comparator` interface](#comparator-interface)
-- [5. `System` class](#5-system-class)
-- [6. `Math` class](#6-math-class)
-- [7.  `BigInteger` \& `BigDecimal`](#7--biginteger--bigdecimal)
-
-
----
 
 # 1. :full_moon: String 
 ## 1.1 `String` 
@@ -48,7 +27,7 @@ CharSequence, Constable, ConstantDesc {
   + 当调用String的replace()修改指定字符串片段时
 
 
-### 1.1.1 :full_moon: Instantiate `String`
+### 1.1.1  Instantiate `String`
 首先明确一点: String变量名实际上只是栈中的一个指针, 保存地址值, 它要么保存方法区StringTable(字符串常量池)中的地址, 要么保存堆中的地址.
 
 + 通过字面量的形式: **一步指向**
@@ -162,16 +141,19 @@ Heap(堆): 一个JVM实例只存在一个堆内存, 堆内存的大小是可以�
 
 之后康师傅讲JVM调优中也会讲到
 
-
 ### 1.1.3 String class 常用方法
 
+455-457
 
-+ `length`
-+ `chatAt`
-+ `isEmpty`
-+ `toUpperCase`
-+ `toLowerCase`
-+ `trim`
+
+
+
++ `length()`
++ `chatAt()`
++ `isEmpty()`
++ `toUpperCase()`
++ `toLowerCase()`
++ `trim()`
 
 ---
 
@@ -217,15 +199,85 @@ String 常见算法题
 
 473-476讲这几个题
 
-## 1.2 `StringBuffer`
-
-463
 
 
+## 1.2 `StringBuffer` & ` StringBuilder`
+
+463-465
+
+String, StringBuffer, StringBuilder的异同
+
+ * String:   不可变的字符序列; 底层使用char[]存储, jdk1.7之后改为用byte[]
+ * StringBuffer:  可变的字符序列; 线程安全的, 但效率偏低.  底层使用char[]存储, jdk1.7之后改为用byte[]
+ * StringBuilder:  可变的字符序列; jdk5.0新增, 线程不安全, 效率高. 底层使用char[]存储, jdk1.7之后改为用byte[]
+
+源码分析:
+
+```java
+String str = new String();           // char[] value = new char[0]
+
+String str1 = new String("abc");     // char[] value = new char[]{'a','b','c'}
+
+
+StringBuffer sb1 =  new StringBuffer();      // char[] value = new char[16]; 底层创建了一个长度为16的数组
+
+System.out.println(sb1.length());        // 0
+
+sb1.append('a');     // value[0] = 'a';
+
+sb2.append('b');     // value[1] = 'b';
 
 
 
-## 1.3 `StringBuilder`
+StringBuffer sb2 = new StringBuffer("abc");      // char[] value = new char["abc".length() + 16]
+
+System.out.println(sb2.length());        // 3
+```
+
+
+
+:bangbang: StringBuffer, StringBuilder的扩容问题: 如果要添加的数据使得底层数组盛不下了, 那么就需要扩容底层的数组.
+
+默认情况下, 扩容为原来容量的2倍+2, 同时将原有数组中的元素复制到新的数组中
+
+指导意义： 开发中建议使用 StringBuffer(int capacity) 构造器 或 StringBuilder(int capacity) 构造器提前指定容量来尽量避免频繁扩容
+ 
+
+### 常用方法
+
+```java
+    /**
+     * 465 StringBuffer, StringBuilder常用方法: 以StringBuffer为例:
+     *
+     * StringBuffer append(xxx):提供了很多的append()方法，用于进行字符串拼接
+     * StringBuffer delete(int start,int end):删除指定位置的内容
+     * StringBuffer replace(int start, int end, String str):把[start,end)位置替换为str StringBuffer insert(int offset, xxx):在指定位置插入xxx
+     * StringBuffer reverse() :把当前字符序列逆转
+     * public int indexOf(String str)
+     * public String substring(int start,int end): 返回从start开始, 到end索引结束的左闭右开的子区间内的sub-string
+     * public int length()
+     * public char charAt(int n )
+     * public void setCharAt(int n ,char ch)
+     *
+     * 总结:
+     * 增: append(xxx) 可以链式调用
+     * 删: delete(int start, int end)
+     * 改: setCharAt(int n, char ch)   /  replace(int start, int end, String str)
+     * 查: charAt(int n)
+     * 插: insert(int offset, xxx)
+     * 长度: length()
+     * 遍历: for + chatAt()   /  toString()
+     */
+```
+
+
+
+466
+
+```java
+// String, StringBuffer, StringBuilder效率测试
+// 从高到低： StringBuilder > StringBuffer > String
+```
 
 
 
@@ -236,7 +288,23 @@ String 常见算法题
 
 # 2. JDK8之前的日期和时间API
 
-478
+467 -481
+
+
+
+
+
+
+
+469-476: 复习
+
+
+
+
+
+### IDEA debug
+
+477
 
 
 
@@ -246,11 +314,19 @@ String 常见算法题
 
 482
 
-
-
 ## `LocalDate`, `LocalTime`, `LocalDateTime`
 
+
+
+
+
 ## `Instant`
+
+
+
+
+
+
 
 ## `DateTimeFormatter`
 
@@ -261,6 +337,10 @@ String 常见算法题
 488
 
 ## `Comparable` interface
+
+
+
+
 
 ## `Comparator` interface
 

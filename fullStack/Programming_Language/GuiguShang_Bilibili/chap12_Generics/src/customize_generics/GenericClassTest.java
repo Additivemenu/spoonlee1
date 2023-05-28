@@ -3,6 +3,7 @@ package customize_generics;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 566
@@ -49,6 +50,18 @@ public class GenericClassTest {
 
         // 泛型不同的引用不能相互赋值
 //        list1 = list2;  // 编译报错
+    }
+
+    // 测试泛型方法
+    @Test
+    public void test4(){
+        Order<String> order = new Order<>();
+
+        Integer[] arr = new Integer[]{1,2,3,4};
+        // 泛型方法在调用时, 指明泛型参数的类型
+        List<Integer> integers = order.copyFromArrayToList(arr);
+
+        System.out.println(integers);
     }
 
 }

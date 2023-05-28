@@ -19,7 +19,7 @@ API学习
 多线程
 + [chap12 并发](./chap12/readme.md) 
 
-Java用户界面
+Java GUI
 + [chap10 GUI]()
 + [chap11 Swing]()
 + [b站狂神说Java: GUI](./chap11/README.md)

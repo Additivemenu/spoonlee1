@@ -25,7 +25,7 @@ React基础篇
 | [1](./C1/README.md) | Intro                                                        |             |
 | [2](./C2/README.md) | JS Refersh                                                   |             |
 | [3](./C3/README.md) | React basics, working with component                         |             |
-| [4](./C4/README.md) | :star: React state, working with event                       |             |
+| [4](./C4/README.md) | :star: React state, working with event,  :bangbang: component communication |             |
 | [5](./C5/README.md)                   | Rendering List, Conditional Content                          |             |
 | 6                   | Styling React Component                                      |             |
 | 7                   | Debugging react apps                                         |             |

@@ -240,6 +240,16 @@ UniMelb week 10 https://refactoring.guru/design-patterns/observer
 
 
 
+:bangbang: 分为两个要素: 
+
++ subject (publisher):
+  + 登记一系列observers  
+  + 当自己的状态改变时, notifyAllObservers(type: String), 
+    + type 是为了传入是什么事件(状态变化)
+    + 里面遍历所有的registered observers, 并调用他们对应的response方法 update()
++ observer(subscriber): 
+  + update(type: String) 必须定义如何response来自于subject的状态变化的行为 (e.g. 发送email, 写下log... )
+
 
 
 天气预报项目需求,具体要求如下:
@@ -426,7 +436,7 @@ public interface Subject {
 
 }
 
-
+// 被观察者
 public class WeatherData implements Subject{
     private float temperature;
     private float pressure;
@@ -452,7 +462,7 @@ public class WeatherData implements Subject{
         this.pressure = pressure;
         this.humidity = humidity;
 
-        // 将刚刚更新好的天气信息推送给接入方
+        // 将刚刚更新好的天气信息推送给registered observer
         dataChange();
     }
 

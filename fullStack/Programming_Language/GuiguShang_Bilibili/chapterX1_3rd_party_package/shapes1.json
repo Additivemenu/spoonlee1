@@ -1,0 +1,16 @@
+{
+  "shapeList" : [ {
+    "type" : "rectangle",
+    "color" : "red",
+    "width" : 5.0,
+    "height" : 10.0
+  }, {
+    "type" : "circle",
+    "color" : "blue",
+    "radius" : 3.0
+  }, {
+    "type" : "line",
+    "color" : "green",
+    "length" : 7.0
+  } ]
+}

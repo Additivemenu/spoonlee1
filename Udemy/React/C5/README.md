@@ -134,15 +134,251 @@ App.js: expenses, addExpenseHandler(expense:object)
 
 
 
-## Understand "key"
+## :bangbang: Understand "key"
 
 65
 
 
 
+if no "key" specified for item mapped to jsx, 
+
++ performance issues: 数组里所有expense都被re-render, 因为react无法认识到底是哪个expense被加了进来
+  + :bangbang: 再研究研究深入的原因
+
++ leads to potential bugs
+
+
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const expenses = props.expenses;
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+
+      {expenses.map((expense) => {
+        return (
+          <ExpenseItem
+            key = {expense.id}			// unique id key for each expense
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        );
+      })}
+    </Card>
+  );
+}
+```
+
+
+
+## Assignment: working with lists
+
+添加根据filteredYear 来筛选 expenses的功能
+
++ 直接为props.expenses加个filter即可
++ 只是注意, `Expenses`是stateful component, 而`ExpenseFilter`和`ExpenseItem`则是stateless component
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  const filteredExpenses = props.expenses.filter(expense => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  })
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+			
+     <!--Only display filtered expenses-->
+      {filteredExpenses.map((expense) => {
+        return (
+          <ExpenseItem
+            key = {expense.id}
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        );
+      })}
+    </Card>
+  );
+}
+```
+
+
+
+
+
 # Conditional content
 
-## Outputing Conditional content
+## :full_moon: Outputing Conditional content
+
+66
+
+现在我们想让filter结果之后, 如果对应年份没有expense item, 就显示no expense item, 如果有再显示exense item
+
+
+
+3种方式来生成conditional content for react to render. 具体看公司用哪种写法
+
+
+
++ 方式一:  `? :`
+  + 比较难读
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+  
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+
+      {/* ============= approach 1 ================= */}
+      {filteredExpenses.length === 0 ? (
+        <p>No expenses found.</p>
+      ) : (
+        filteredExpenses.map((expense) => {
+          return (
+            <ExpenseItem
+              key={expense.id}
+              title={expense.title}
+              amount={expense.amount}
+              date={expense.date}
+            />
+          );
+        })
+      )} 
+
+    </Card>
+  );
+}
+```
+
++ 方式二 `&&`
+  + 相对第一种好读了一些
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+
+
+
+      {/* apporach 2 */}
+      {filteredExpenses.length === 0 && <p>No expenses found.</p>}
+      {filteredExpenses.length > 0 && 
+        filteredExpenses.map((expense) => {
+            return (
+              <ExpenseItem
+                key={expense.id}
+                title={expense.title}
+                amount={expense.amount}
+                date={expense.date}
+              />
+            );
+          })
+      } 
+
+
+    </Card>
+  );
+}
+```
+
++ 方式三 提取JXS statement并赋值到JS变量里
+  + 最readable
+
+```react
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+
+  let expensesContent = <p>No expenses found.</p>;
+  if(filteredExpenses.length > 0){
+    expensesContent = filteredExpenses.map((expense) => {
+            return (
+              <ExpenseItem
+                key={expense.id}
+                title={expense.title}
+                amount={expense.amount}
+                date={expense.date}
+              />
+            );
+          })
+  }
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+      
+      {/* ================ approach 3 ================ */}
+      {expensesContent}
+
+    </Card>
+  );
+}
+```
 
 
 
@@ -150,19 +386,33 @@ App.js: expenses, addExpenseHandler(expense:object)
 
 ## Adding conditional return statements
 
+67
+
+看到这
+
 
 
 ## Demo App: Adding a Chart
+
+68
+
+
+
+
 
 
 
 ## Adding dynamic styles
 
+69
+
+
+
 
 
 ## Wrap up & next steps
 
-
+70
 
 
 
