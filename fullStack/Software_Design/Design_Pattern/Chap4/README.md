@@ -325,7 +325,7 @@ public class Client {
 # 2. 桥接模式 (Bridge)
 66-70
 
-# 3. :moon: 装饰器模式 (Decorator)
+# 3. :full_moon: 装饰器模式 (Decorator)
 71-76
 
 UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative, along with intuitive UML diagram 
@@ -458,10 +458,12 @@ Here's a basic structure of the decorator pattern:
   + Decorator类中聚合了Component类型的对象, 利用多态, Obj可以是Component的实现类的对象, 后面会看到, Decorator里不仅可以包ConcreteComponent还可以包另一个Decorator对象
   + 就像俄罗斯套娃, 外面的娃相当于decorator, 每套一层 decorator, 对外就像原来的娃增添了decorator的某些特征; 用现实世界的人穿衣服来做比喻可能不太恰当, 因为decorator和被装饰者的具有共同祖先类 (接口), 不过你想在software domain来model人穿衣服则也可以, 让人和衣服继承相同的父类(接口), 最里面的是被装饰者--人, 然后给人套衣服, 每穿一层衣服对外就像人有了衣服添加的特征(比如保暖, 美观...)
 
+## :gem: Demo case
 
 
 
-## 案例1: 星巴克咖啡
+
+### 案例1: 星巴克咖啡
 
 74
 
@@ -656,7 +658,7 @@ public class CoffeeBar {
 
 
 
-## 案例2: JDK I/O stream
+### 案例2: JDK I/O stream
 
 ![](./Src_md/iostream1.png)
 
@@ -681,7 +683,7 @@ class DataInputStream extends FilterInputStream implements DataInput {
 
 
 
-## 案例3: chatGPT例子
+### 案例3: chatGPT例子
 
 见Intellij代码
 
@@ -693,7 +695,7 @@ class DataInputStream extends FilterInputStream implements DataInput {
 
 
 
-# 4. :moon: 组合模式 (Composite)
+# 4. :full_moon: 组合模式 (Composite)
 77-80
 
 UniMelb week9 https://refactoring.guru/design-patterns/composite
@@ -710,7 +712,14 @@ UniMelb week9 https://refactoring.guru/design-patterns/composite
 
 However, the patterns can also cooperate: you can use *Decorator* to extend the behavior of a specific object in the *Composite* tree.
 
+:bangbang: 凡是object在逻辑上存在一种recursive关系的, 就可以使用composite pattern, 将某种响应从composite tree传递给每一层的node (SMD考试最爱考这个pattern)
 
++ e.g. 游戏模拟效果, 楼房爆炸, 要求楼房里面的人, 人身上的衣服, 手里的物品, 都会随着爆炸做出响应
++ e.g. 1个大包裹里面可能还有4个小包裹和1个物品,
+
+
+
+---
 
 
 

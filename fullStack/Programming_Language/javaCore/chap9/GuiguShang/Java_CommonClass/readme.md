@@ -241,7 +241,7 @@ System.out.println(sb2.length());        // 3
 默认情况下, 扩容为原来容量的2倍+2, 同时将原有数组中的元素复制到新的数组中
 
 指导意义： 开发中建议使用 StringBuffer(int capacity) 构造器 或 StringBuilder(int capacity) 构造器提前指定容量来尽量避免频繁扩容
- 
+
 
 ### 常用方法
 
@@ -274,10 +274,8 @@ System.out.println(sb2.length());        // 3
 
 466
 
-```java
-// String, StringBuffer, StringBuilder效率测试
-// 从高到低： StringBuilder > StringBuffer > String
-```
+String, StringBuffer, StringBuilder效率测试
+从高到低： StringBuilder (since it is not thread-safe) > StringBuffer > String
 
 
 
@@ -332,17 +330,25 @@ System.out.println(sb2.length());        // 3
 
 
 
-# 4. Java `Comparator`
+# 4. :moon: Java `Comparator`
 
-488
+488-491
+
+用于比较object的大小, 比如在商城的sorting功能用到
+
+
 
 ## `Comparable` interface
 
+natural sorting
 
 
 
+看到490
 
 ## `Comparator` interface
+
+customized sorting
 
 
 
