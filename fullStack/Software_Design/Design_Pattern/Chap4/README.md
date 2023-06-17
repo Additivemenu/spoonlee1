@@ -326,7 +326,7 @@ public class Client {
 66-70
 
 # 3. :full_moon: 装饰器模式 (Decorator)
-71-76
+71-76 GRASP: polymorphism
 
 UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative, along with intuitive UML diagram 
 
@@ -696,7 +696,7 @@ class DataInputStream extends FilterInputStream implements DataInput {
 
 
 # 4. :full_moon: 组合模式 (Composite)
-77-80
+77-80 GRASP: polymorphism
 
 UniMelb week9 https://refactoring.guru/design-patterns/composite
 
@@ -712,7 +712,11 @@ UniMelb week9 https://refactoring.guru/design-patterns/composite
 
 However, the patterns can also cooperate: you can use *Decorator* to extend the behavior of a specific object in the *Composite* tree.
 
-:bangbang: 凡是object在逻辑上存在一种recursive关系的, 就可以使用composite pattern, 将某种响应从composite tree传递给每一层的node (SMD考试最爱考这个pattern)
+
+
+使用场景:
+
+:bangbang: 凡是object在逻辑上存在一种recursive关系的, 就可以使用composite pattern, 将某种响应从composite tree传递给每一层的node (SMD考试最爱考这个pattern). composite pattern也可有多种变种， 如同一个component interface 下有多个leaf class, 多个container class
 
 + e.g. 游戏模拟效果, 楼房爆炸, 要求楼房里面的人, 人身上的衣服, 手里的物品, 都会随着爆炸做出响应
 + e.g. 1个大包裹里面可能还有4个小包裹和1个物品,
@@ -994,27 +998,366 @@ Having a facade is handy when you need to integrate your app with a sophisticate
 
 
 
-:bangbang: Facade的核心思想在于, mask the system and hide the details behind, 往往作为indirection 用于system之间的
-
-通信. 这样可以减少当前系统和其他系统之间的耦合, 如果其他系统发生变动, 只需要修改Facade就行了, 不需要去大量修改当前系统的代码.
+:bangbang: Facade的核心思想在于, mask the system complexity and hide the details behind, 往往作为indirection 用于连接system之间的通信. 这样可以减少当前系统和其他系统之间的耦合, 如果其他系统发生变动, 只需要修改Facade就行了, 不需要去大量修改当前系统的代码. 像Java RMI, socket都属于Facade思想, 将complex system的detail mask掉, 对外只提供single interface
 
 
 
 # 6. 享元模式 (Flyweight)
 86-90
 
+
+
+
+
+
+
+
+
 # 7. :moon: 代理模式 (Proxy)
-91-95
+91-95 GRASP: indirection + aggregation (通过套接来添加额外的behaviour)
+
+Refactoring guru: https://refactoring.guru/design-patterns/proxy
+
+![](./Src_md/proxy1.png)
 
 
 
 
 
+1) 代理模式:为一个对象提供一个替身，以控制对这个对象的访问。即通过代理 对象访问目标对象.
+
+   + **这样做的好处是: 可以在目标对象实现的基础上, 增强额外的功能操作, 即扩展目标对象的功能。** 
+   + :gem: e.g. 网易在中国代理暴雪游戏, 除去正常的运营暴雪游戏的业务外, 网易作为代理者还需要额外增加适应中国法律的业务条款与服务. 有一点像decorator, 将target obj aggregate into a proxy obj, 然后定义个同名方法, 里面除了调用target method外还加上一些额外的操作.
+
+2) 被代理的对象可以是
+
+   + 远程对象(remote object): 参见Java RMI
+
+   + 创建开销大的对象
+
+   + 需要安全控制的对象
+
+3) :bangbang: 代理模式有不同的形式, 主要有三种 
+
+   + 静态代理
+
+   + 动态代理 (aka. JDK代理, 接口代理).  
+     + 目标对象需要实现接口使用这个
+
+   + Cglib代理 (aka. 子类代理) (可以在内存动态的创建对象，而不需要实现接口， 他是属于动态代理的范畴) 
+     + 目标对象不需要实现接口时使用这个
+
+
+
+## 7.1 static proxy
+
+92
+
+静态代理在使用时,需要定义接口或者父类,被代理对象(即目标对象)与代理对象一起实现相同的接口或者是继承相同父类
+
+
+
+```java
+public interface ITeacherDao {
+    void teach();
+}
+
+public class TeacherDao implements ITeacherDao{
+    @Override
+    public void teach() {
+        System.out.println("Teacher is teaching...");
+    }
+}
+
+public class TeacherDaoProxy implements ITeacherDao{
+    private ITeacherDao targetTeacherDao;   // 真正的目标对象, 通过接口来聚合
+
+    public TeacherDaoProxy(ITeacherDao targetTeacherDao) {      // dependency injection
+        super();
+        this.targetTeacherDao = targetTeacherDao;
+    }
+
+    @Override
+    public void teach() {
+        // 1. TODO: work to do before proxy business logic
+        System.out.println("proxy starts... do some operation");
+
+        // 2. business logic
+        targetTeacherDao.teach();
+
+        // 3. TODO: work to do after proxy business logic
+        System.out.println("proxy ends... do some operation");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        // step1. instantiate target object
+        TeacherDao teacherDao = new TeacherDao();
+
+        // step2. instantiate proxy object and inject target into proxy object
+        TeacherDaoProxy teacherDaoProxy = new TeacherDaoProxy(teacherDao);
+
+        // step3: 通过代理对象, 间接调用target object的方法.
+        teacherDaoProxy.teach();
+    }
+}
+```
 
 
 
 
 
+Pros & cons:
+
++ Pros: 在不修改目标对象的功能前提下,能通过代理对象对目标功能扩展
++ Cons: 因为代理对象需要与目标对象实现共同的接口,所以会有很多代理类 ; 一旦接口增加方法,目标对象与代理对象都要维护 (e.g. in DS A2, adding new methods in Remote interface could cost a lot efforts)
 
 
+
+
+
+## 7.2 dynamic proxy
+
+93
+
+1) 代理对象不需要实现接口，但是目标对象要实现接口，否则不能用动态代理 
+2) 代理对象的生成，其实是利用JDK的API (利用反射机制)，动态的在内存中构建代理对象
+3) 动态代理也叫做: JDK代理、接口代理
+
+
+
+JDK中生成代理对象的API
+
+1. 代理类所在包: java.lang.reflect.Proxy
+
+2. JDK实现代理只需要使用`newProxyInstance`方法,但是该方法需要接收三个参数,完整的写法是:
+
+   ```java
+   java static Object newProxyInstance(ClassLoader loader, 
+                                       Class<?>[] interfaces,
+                                       InvocationHandler h )
+   
+   // InvocationHandler interface is a functional interface with only 1 method:
+   public interface InvocationHandler {
+       public Object invoke(Object proxy, Method method, Object[] args)
+           throws Throwable;
+   }
+   ```
+
+
+
+![](./Src_md/dynamicProxy1.png)
+
+
+
+:gem: demo
+
+```java
+public interface ITeacherDao {
+    void teach();
+    void sayHello(String name);
+}
+
+public class TeacherDao implements ITeacherDao{
+    @Override
+    public void teach() {
+        System.out.println("teacher is teaching ...");
+    }
+    @Override
+    public void sayHello(String name) {
+        System.out.println("hello, " + name);
+    }
+    
+}
+
+public class ProxyFactory {
+
+    private Object target;   // 维护target object
+
+    public ProxyFactory(Object target) {    // inject dependency
+        this.target = target;
+    }
+
+    // 给target object生成proxy object
+    public Object getProxyInstance(){
+
+        /**
+         * java static Object newProxyInstance(ClassLoader loader,
+         *                                     Class<?>[] interfaces,
+         *                                     InvocationHandler h )
+         *   1. Classloader loader: 指定当前target object的类加载器, 获取加载器的方法固定
+         *   2. Class<?>[] interfaces: target object实现的接口类型, 使用泛型方法确认类型
+         *   3. InvocationHandler h: 事件处理, 执行目标对象的方法, 会去触发事件处理器的方法, 会把当前执行的target object的方法作为
+         *      参数传入
+         */
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+                System.out.println("JDK proxy starts... do some operation");
+
+                // 调用target object's method
+                Object returnVal = method.invoke(target, args);
+
+                System.out.println("JDK proxy ends... do some operation");
+
+                return returnVal;
+            }
+        });
+    }
+    
+}
+
+public class Client {
+    public static void main(String[] args) {
+        // 创建target obj
+        ITeacherDao teacherDao = new TeacherDao();
+
+        // 给target obj创建proxy obj
+        ITeacherDao proxyInstance = (ITeacherDao) new ProxyFactory(teacherDao).getProxyInstance();
+
+        // proxyInstnace = class jdk.proxy1.$Proxy0
+        // 内存中动态地生成了proxy object
+        System.out.println("proxyInstnace = " + proxyInstance.getClass());
+
+        // 通过proxy obj, 调用目标对象的方法
+        proxyInstance.teach();		// break point here
+
+        proxyInstance.sayHello("tom");		// break point here
+
+    }
+}
+```
+
+
+
+采用debug mode, 可以看到在调用 
+
+```java
+proxyInstance.teach();		// break point here
+proxyInstance.sayHello("tom");		// break point here
+```
+
+时, 其实是在调用newProxyInstance()中InvocationHandler的 invoke() 方法
+
+
+
+Pros: 采用动态代理，只需要定义好 proxyFactory专注产生proxy object,  如果interface添加新的method, 只需要维护target object
+
+Cons: target obj has to implements an interface
+
+
+
+## 7.3 Cglib proxy
+
+94
+
+`静态代理`和`JDK代理`模式都要求目标对象是实现一个接口. 但是有时候目标对象只是一个单独的对象, 并没有实现任何的接口, 这个时候可使用目标对象子类来实现 代理-这就是`Cglib代理`
+
+1. Cglib代理也叫作`子类代理`, 它是在内存中构建一个子类对象从而实现对目标对象功 能扩展, 有些书也将Cglib代理归属到动态代理。:bangbang: Cglib似乎不支持Java9及以后版本了, 2019年就停更了...
+
+2. Cglib是一个强大的高性能的代码生成包,它可以在运行期扩展java类与实现java接口. 它广泛的被许多AOP的框架使用,例如Spring AOP，实现方法拦截
+
+   + 在AOP编程中如何选择代理模式:
+
+     + 目标对象需要实现接口，用JDK代理
+
+     + 目标对象不需要实现接口，用Cglib代理 
+
+3. Cglib包的底层是通过使用字节码处理框架ASM来转换字节码并生成新的类
+
+
+
+实现步骤
+
+```java
+1) 需要引入cglib的jar文件 (问GPT): asm.jar, asm-commons.jar, asm-tree.jar, cglib-2.2.jar
+2) 在内存中动态构建子类，注意代理的类不能为final，否则报错 java.lang.IllegalArgumentException:
+3) 目标对象的方法如果为final/static,那么就不会被拦截, 即不会执行目标对象额外的业务方法.
+```
+
+
+
+![](./Src_md/cglibproxy1.png)
+
+
+
+```java
+public class TeacherDao {
+    public void teach(){
+        System.out.println("teacher is teaching... I am proxyed by cglib, no need to implement any interface");
+    }
+}
+
+public class ProxyFactory implements MethodInterceptor {
+    private Object target;  // maintain a target object
+
+    public ProxyFactory(Object target) {        // dependency injection
+        this.target = target;
+    }
+
+    public Object getProxyInstance(){       // return a proxy object for target object
+        // 1. 创建一个工具类
+        Enhancer enhancer = new Enhancer();
+
+        // 2. 设置一个父类
+        enhancer.setSuperclass(target.getClass());
+
+        // 3. 设置callback function
+        enhancer.setCallback(this);
+
+        // 4. 创建子类对象, 即代理对象
+        return enhancer.create();
+    }
+
+
+    /**
+     * 重写intercept方法， 会调用目标对象的方法
+     * @param obj "this", the enhanced object
+     * @param method intercepted Method
+     * @param args argument array; primitive types are wrapped
+     * @param proxy used to invoke super (non-intercepted method); may be called
+     * as many times as needed
+     * @return
+     * @throws Throwable
+     */
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("Cglib proxy starts... do some operations");
+
+        Object returnVal = method.invoke(target, args);
+
+        System.out.println("Cglib proxy ends... do some operations");
+        return returnVal;
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        // 创建目标对象
+        TeacherDao teacherDao = new TeacherDao();
+        // 创建代理工厂, inject target obj to proxy obj
+        TeacherDao proxyInstance = (TeacherDao) new ProxyFactory(teacherDao).getProxyInstance();
+        // 执行proxy obj的方法 ---> trigger intercept() method, 从而实现对target obj的方法调用
+        proxyInstance.teach();
+
+    }
+}
+```
+
+类似JDK的动态代理, 只是不需要target obj implements any interface了
+
+
+
+## 7.4 几种变体
+
+几种常见的代理模式介绍— 几种变体 
+
++ 防火墙代理: 内网通过代理穿透防火墙，实现对公网的访问。
+
++ 缓存代理: 比如: 当请求图片文件等资源时，先到缓存代理取，如果取到资源则ok; 如果取不到资源， 再到公网或者数据库取，然后缓存。
+
++ 远程代理: 远程对象的本地代表，通过它可以把远程对象当本地对象来调用。远程代理通过网络和 真正的远程对象沟通信息。e.g. RPC, Java RMI 
++ 同步代理: 主要使用在多线程编程中，完成多线程间同步工作
 

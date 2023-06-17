@@ -4,7 +4,7 @@
 
 
 # 1. :moon: 模版方法模式 (Template Method)
-96-100
+96-100 GRASP: polymorphism
 
 UniMelb week 10 https://refactoring.guru/design-patterns/template-method
 
@@ -227,16 +227,36 @@ public class Client {
 101-105
 
 
+
+
+
+
+
+
 # 3. 访问者模式 (Visitor)
 106-110
 
+
+
+
+
+
+
 # 4. :moon: 迭代器模式 (Iterator)
 111-116
+
+
+
+
+
+
 
 # 5. :moon: 观察者模式 (Observer)
 117-122
 
 UniMelb week 10 https://refactoring.guru/design-patterns/observer
+
+:gem: UniMelb distributed system A2: distributed whiteboard 
 
 
 
@@ -754,9 +774,9 @@ public class ToyDuck extends Duck {
 
 
 
-## ArrayList 源码
+## Arrays源码
 
-JDK的Arrays的Comparator就使用了策略模式, 一般策略接口是functional interface
+JDK的Arrays的Comparator就使用了策略模式, 一般strategy interface就是functional interface
 
 ```java
 public class Strategy {
@@ -815,7 +835,13 @@ public class Strategy {
 
 :question: 在`Comparator`内有不止一个方法, 为什么它是functional interface?
 
-Since Java 8, interfaces can also be used as functional interfaces, which have exactly one abstract method (<u>excluding methods inherited from `Object`)</u>, allowing them to be used with lambda expressions and method references. ----> 所以Comparator是functional interface
+Since Java 8, interfaces can also be used as functional interfaces, which have exactly one abstract method (<u>excluding methods inherited from `Object`)</u>, allowing them to be used with lambda expressions and method references. ----> 所以Comparator是functional interface, 它唯一的abstract method 是 
+
+```java
+int compare(T o1, T o2);
+```
+
+
 
 
 

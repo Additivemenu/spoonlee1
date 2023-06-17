@@ -891,7 +891,7 @@ public class SimpleFactory {
 
 
 # 5. :moon: 建造者模式 (Builder)
-55-59
+55-59 GRASP: polymorphism
 
 UniMelb week8: 参考case: https://refactoring.guru/design-patterns/builder very helpful and informative
 
@@ -902,6 +902,7 @@ The Builder pattern suggests that you extract the object construction code out o
 + 主要是利用polymorphism: Builder interface里规定好create a complex object需要的步骤(assemble part), 然后定义concrete builder来实现它, complex object的part的实现方式可以不同
   + e.g. Builder: JuiceMaker, Concrete Builder: OrangeJuiceMaker, AppleJuiceMaker
 + 次要利用indirection, 使用Director class来负责切换, 创建Builder 
++ e.g. JuiceMaker 作为interface, 但是取决于Juice种类, 制作步骤有一些需要不同的实现, 因此出现AppleJuiceMaker, OrangeJuiceMaker
 
 
 

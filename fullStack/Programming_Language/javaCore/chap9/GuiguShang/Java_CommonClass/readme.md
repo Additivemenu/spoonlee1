@@ -336,11 +336,104 @@ String, StringBuffer, StringBuilder效率测试
 
 用于比较object的大小, 比如在商城的sorting功能用到
 
++ Java 中的对象，正常情况下, 只能进行比较操作: == OR !=. 是不能进行 > 或 < 的操作的
+  但是在开发中确实有对object排序的需求, 用到Comparable / Comparator
++ Comparable interface, 与Comparator interface的使用比较
+  + Comparable: 一旦指定, 保证Comparable interface的实现类在任何位置都可以比较大小
+  + Comparator: strategy pattern, 可以更换sort strategy at runtime
+
 
 
 ## `Comparable` interface
 
 natural sorting
+
+```java
+/**
+     * 489
+     * 1. 像String, wrapper class等实现了Comparable interface, 重写了compareTo()方法, 给出了比较两个对象大小的方法 (默认是从小到大排列)
+     * 2. 重写compareTo(obj)的规则:
+     *  如果当前对象this大 于形参对象obj，则返回正整数;
+     *  如果当前对象this小于形参对象obj，则返回负整数;
+     *  如果当前对象this等于形参对象obj，则返回零。
+     * 3. 对于自定义类, 如果要对其实现排序功能, 则需要让其implements Comparable, 在compareTo(obj)中定义如何排序
+     */
+@Test
+public void test1(){
+    String[] arr = new String[]{"AA", "CC", "MM", "GG", "JJ", "DD", "KK", "BB"};
+    Arrays.sort(arr);
+    System.out.println(Arrays.toString(arr));
+
+}
+
+
+/**
+ * 490 自定义类实现Comparable interface
+ */
+@Test
+public void test2(){
+    Goods[] goodsList = new Goods[5];
+    goodsList[0] = new Goods("Leneno PC", 35);
+    goodsList[1] = new Goods("Microsoft PC", 65);
+    goodsList[2] = new Goods("Nvidia PC", 55);
+    goodsList[3] = new Goods("Huawei PC", 45);
+    goodsList[4] = new Goods("Apple PC", 65);
+
+    Arrays.sort(goodsList);
+    System.out.println(Arrays.toString(goodsList));
+}
+```
+
+```java
+public class Goods implements Comparable{
+    private String name;
+    private double price;
+
+    public Goods() {
+    }
+
+    public Goods(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+		// getters and setters
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    // sort by price ascending, then sort by name ascending
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Goods){
+            Goods goods = (Goods) o;
+
+//            // 方式1
+//            if(this.price > goods.price){
+//                return 1;
+//            } else if (this.price < goods.price) {
+//                return -1;
+//            }else {
+//                return this.name.compareTo(goods.name);
+//            }
+
+            // 方式2:
+            int compare = Double.compare(this.price, goods.price);
+            if(compare == 0){
+                compare = this.name.compareTo(goods.name);
+            }
+            return compare;
+        }
+
+        throw new RuntimeException("the argument input is not an instance of Goods!");
+    }
+}
+```
 
 
 
@@ -349,6 +442,56 @@ natural sorting
 ## `Comparator` interface
 
 customized sorting
+
+当元素的类型没有实现java.lang.Comparable接口而又不方便修改代码， 或者实现了java.lang.Comparable接口的排序规则不适合当前的操作，那 么可以考虑使用 Comparator 的对象来排序，强行对多个对象进行整体排 序的比较
+
+```java
+ /**
+     * 491 Comparator实现定制排序
+     * - 重写compare(Object o1,Object o2)方法，比较o1和o2的大小:
+     *      如果方法返 回正整数，则表示o1大于o2;
+     *      如果返回0，表示相等;
+     *      返回负整数，表示 o1小于o2。
+     *  可以将 Comparator 传递给 sort 方法(如 Collections.sort 或 Arrays.sort)， 从而允许在排序顺序上实现精确控制。
+     *  还可以使用 Comparator 来控制某些数据结构(如有序 set或有序映射)的 顺序，或者为那些没有自然顺序的对象 collection 提供排序
+     */
+    @Test
+    public void test3(){
+        String[] arr = new String[]{"AA", "CC", "MM", "GG", "JJ", "DD", "KK", "BB"};
+        Arrays.sort(arr, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return -o1.compareTo(o2);       // 按照字符串从大到小顺序排序
+            }
+        });
+        System.out.println(Arrays.toString(arr));
+    }
+
+
+    @Test
+    public void test4(){
+        Goods[] goodsList = new Goods[6];
+        goodsList[0] = new Goods("Leneno PC", 35);
+        goodsList[1] = new Goods("Microsoft PC", 65);
+        goodsList[2] = new Goods("Nvidia PC", 55);
+        goodsList[3] = new Goods("Huawei PC", 45);
+        goodsList[4] = new Goods("Apple PC", 65);
+        goodsList[5] = new Goods("Apple PC", 75);
+
+        Arrays.sort(goodsList, new Comparator<Goods>() {
+            @Override
+            public int compare(Goods o1, Goods o2) {    // 按name ascending, 再按price descending
+                int compare = o1.getName().compareTo(o2.getName());
+                if(compare == 0){
+                    return -Double.compare(o1.getPrice(), o2.getPrice());
+                }
+                return compare;
+            }
+        });
+
+        System.out.println(Arrays.toString(goodsList));
+    }
+```
 
 
 
@@ -362,17 +505,51 @@ customized sorting
 
 ## System
 
+System类代表系统，系统级的很多属性和控制方法都放置在该类的内部。 该类位于java.lang包。
 
+- 由于该类的构造器是private的，所以无法创建该类的对象，也就是无法实 例化该类。其内部的成员变量和成员方法都是static的，所以也可以很方便 的进行调用。
+- 成员变量: System类内部包含in、out和err三个成员变量，分别代表标准输入流 (键盘输入)，标准输出流(显示器)和标准错误输出流(显示器)。
+- 成员方法
+  - native long currentTimeMillis(): 该方法的作用是返回当前的计算机时间，时间的表达格式为当前计算机时 间和GMT时间(格林威治时间)1970年1月1号0时0分0秒所差的毫秒数。
+  - void exit(int status): 该方法的作用是退出程序。其中status的值为0代表正常退出，非零代表 异常退出。使用该方法可以在图形界面编程中实现程序的退出功能等
+  - void gc(): 该方法的作用是请求系统进行垃圾回收。至于系统是否立刻回收，则 取决于系统中垃圾回收算法的实现以及系统执行时的情况。
+  - String getProperty(String key): 该方法的作用是获得系统中属性名为key的属性对应的值。系统中常见 的属性名以及属性的作用如: java.verion, java.home, os.name, os.version, user.name...
 
 
 
 ## Math
 
+java.lang.Math提供了一系列静态方法用于科学计算。其方法的参数和返回值类型一般为double型。
 
+```java
+abs 绝对值 acos,asin,atan,cos,sin,tan 三角函数
+sqrt 平方根
+pow(double a,doble b)
+log 自然对数
+exp e为底指数
+max(double a,double b)
+min(double a,double b)
+random() 返回0.0到1.0的随机数
+long round(double a) double型数据a转换为long型(四舍五入) toDegrees(double angrad) 弧度—>角度
+toRadians(double angdeg) 角度—>弧度
+```
 
 
 
 ## BigInteger & BigDecimal
 
+主要用来处理高于普通的数据精度问题
 
 
+
++ BigInteger
+
+Integer类作为int的包装类，能存储的最大整型值为231-1，Long类也是有限的， 最大为263-1。如果要表示再大的整数，不管是基本数据类型还是他们的包装类 都无能为力，更不用说进行运算了。
+
+java.math包的BigInteger可以表示<u>不可变的任意精度</u>的整数。BigInteger 提供 所有 Java 的基本整数操作符的对应物，并提供 java.lang.Math 的所有相关方法。 另外，BigInteger 还提供以下运算:模算术、GCD 计算、质数测试、素数生成、 位操作以及一些其他操作
+
++ BigDecimal
+
+一般的Float类和Double类可以用来做科学计算或工程计算，但在商业计算中， 要求数字精度比较高，故用到java.math.BigDecimal类。
+
+BigDecimal类支持<u>不可变的、任意精度的有符号十进制</u>定点数
