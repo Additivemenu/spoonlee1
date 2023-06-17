@@ -10,6 +10,8 @@ Class5: Rendering List & Conditional content
 
 + output dynamic list of content
 + rendering content under certain conditions
+  + State dependency, 由主动变化的state derive出来的"state"
+
 
 
 
@@ -244,8 +246,9 @@ function Expenses(props) {
 
 
 
-+ 方式一:  `? :`
-  + 比较难读
+### 方式一:  `? :`
+
++ 比较难读
 
 ```react
 function Expenses(props) {
@@ -288,8 +291,9 @@ function Expenses(props) {
 }
 ```
 
-+ 方式二 `&&`
-  + 相对第一种好读了一些
+### 方式二 `&&`
+
++ 相对第一种好读了一些
 
 ```react
 function Expenses(props) {
@@ -310,7 +314,6 @@ function Expenses(props) {
         selectedYear={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-
 
 
       {/* apporach 2 */}
@@ -334,8 +337,9 @@ function Expenses(props) {
 }
 ```
 
-+ 方式三 提取JXS statement并赋值到JS变量里
-  + 最readable
+### 方式三 提取JXS statement并赋值到JS变量里
+
++ most readable
 
 ```react
 function Expenses(props) {
@@ -350,7 +354,8 @@ function Expenses(props) {
     return expense.date.getFullYear().toString() === filteredYear;
   });
 
-
+	
+  // list ---> jsx statement, then assing to js variable
   let expensesContent = <p>No expenses found.</p>;
   if(filteredExpenses.length > 0){
     expensesContent = filteredExpenses.map((expense) => {
@@ -386,17 +391,118 @@ function Expenses(props) {
 
 ## Adding conditional return statements
 
-67
+90
 
-看到这
+no new content, just extract the logics of managing filtering of cards into a standalone component: ExpenseList.js, to make the code cleaner. 体现一个design上的high cohesion
+
+
+
+### recap on component tree 
+
+```js
+// 目前的component tree:
+--app
+	 |-- new-expenses  (page top half)
+	 |-- Expenses	(page bottom half) // 定义了state以及如何改变state (due to state lift up)
+					|-- expense-filter  // (state change trigger (provider) )
+				  |-- expense-list		// (state change responser (consumer) )
+									|-- expense-item
+													|-- expense-date
+```
+
+
+
+Expense.js
+
++ :bangbang: state dependency: filteredExpenses相当于是filteredYear的derived "state", 由其变化而变化. Derived state最好还是和元state放置在同一个component里
+
+```js
+// the component stands at the bottom of page: a filter + expense list
+function Expenses(props) {
+  const [filteredYear, setFilteredYear] = useState("2020");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  // filteredExpenses相当于一个derived "state" based on filteredYear
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+
+
+  return (
+    <Card className="expenses">
+    
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+			
+      <ExpenseList items = {filteredExpenses}/>
+
+    </Card>
+  );
+}
+```
+
+
+
+ExpenseList.js
+
++ add conditional return statement here. 
+
+```js
+const ExpenseList = (props) =>{
+
+    let expensesContent = <p>No expenses found.</p>;
+	
+  	// conditional return statement
+    if(props.items.length === 0){
+        return <h2 className="expenses-list__fallback">Found no expenses</h2>
+    }
+
+    return <ul className="expenses-list" >
+        {props.items.map((expense) => {
+              return (
+                <ExpenseItem
+                  key={expense.id}
+                  title={expense.title}
+                  amount={expense.amount}
+                  date={expense.date}
+                />
+              );
+            })}
+        </ul>
+
+};
+```
+
+ExpenseList.css
+
+```css
+.expenses-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .expenses-list__fallback {
+    color: white;
+    text-align: center;
+  }
+```
+
+
 
 
 
 ## Demo App: Adding a Chart
 
-68
+91
 
-
+该看这个
 
 
 
@@ -412,7 +518,13 @@ function Expenses(props) {
 
 ## Wrap up & next steps
 
-70
+93
+
+
+
+Fix a small bug
+
+94
 
 
 
