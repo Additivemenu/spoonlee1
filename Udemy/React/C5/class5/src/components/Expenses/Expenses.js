@@ -3,8 +3,9 @@ import Card from "../UI/Card";
 import "./Expenses.css";
 import ExpensesFilter from "./ExpensesFilter";
 import ExpenseList from "./ExpenseList";
+import ExpensesChart from "./ExpensesChart";
 
-// the component stands at the bottom of page: a filter + expense list
+// the component stands at the bottom of page: a filter + bar chart + expense list
 function Expenses(props) {
 
   const [filteredYear, setFilteredYear] = useState("2020");   // due to state lift up
@@ -18,14 +19,14 @@ function Expenses(props) {
     return expense.date.getFullYear().toString() === filteredYear;
   });
 
-
-
   return (
     <Card className="expenses">
       <ExpensesFilter
         selectedYear={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
+
+      <ExpensesChart expenses={filteredExpenses}/>
 
       <ExpenseList items = {filteredExpenses}/>
 

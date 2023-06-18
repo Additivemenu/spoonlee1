@@ -245,9 +245,45 @@ public class Client {
 # 4. :moon: 迭代器模式 (Iterator)
 111-116
 
+https://refactoring.guru/design-patterns/iterator
+
+**Iterator** is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). The main idea of the Iterator pattern is to extract the traversal behavior of a collection into a separate object called an *iterator*, 从而实现数据和遍历方式的解耦, 主要用来解决统一遍历的不方便问题
+
+![](./Src_md/iterator1.png)
 
 
 
+基本介绍
+
++ 迭代器模式(Iterator Pattern)是常用的设计模式，属于行为型模式
+
++ 如果我们的集合元素是用不同的方式实现的，有数组，还有java的集合类，或者还有其他方式，当客户端要遍历这些集合元素的时候就要使用多种遍历 方式，而且还会暴露元素的内部结构，可以考虑使用迭代器模式解决。
+
++ 迭代器模式，<u>提供一种遍历集合元素的统一接口</u>，用<u>一致的方法遍历集合元素</u>， 不需要知道集合对象的底层表示，即:不暴露其内部的结构。
+
+
+
+![](./Src_md/iterator2.png)
+
+
+
+
+
+## 代码demo
+
+114
+
+up here
+
+## JDK源码ArrayList赏析
+
+115
+
+
+
+
+
+使用细节 116
 
 
 
@@ -613,7 +649,7 @@ public class Client {
 # 9. 状态模式 (State)
 136-139
 
-# 10. :moon: 策略模式 (Strategy)
+# 10. :full_moon: 策略模式 (Strategy)
 140-144
 
 UniMelb week10 https://refactoring.guru/design-patterns/strategy

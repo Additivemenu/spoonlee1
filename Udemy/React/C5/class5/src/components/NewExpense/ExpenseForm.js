@@ -55,11 +55,18 @@ const ExpenseForm = (props) => {
 
     props.onSaveExpenseData(expenseData);  // 从parent component那里传来的function
     
+    // set state: clickNewItem 
+    clickCancelHandler(event);
+
     // reset the input field to empty after submit
     setEnteredTitle("");
     setEnteredAmount("");
     setEnteredDate("");
   };
+
+  const clickCancelHandler = (event) =>{
+    props.onClickCancel(false);
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -97,6 +104,9 @@ const ExpenseForm = (props) => {
       </div>
 
       <div className="new-expense__actions">
+        {/* type = "submit" means if this button is clicked, it will also trigger submit of the form
+            type = "button" means this button is just a normal button, click on it will not trigger submit of the form */}
+        <button type="button" onClick={clickCancelHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NewExpense.css";
 
 import ExpenseForm from "./ExpenseForm";
 
+// stateful component
 const NewExpense = (props) => {
-  
+  const [isEditing, setIsEditing] = useState(false);
+
+  const startEditingHandler = (event) => {
+    setIsEditing(true);
+    console.log(isEditing);
+  };
+
   // we will pass this function to child component
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
@@ -18,7 +25,8 @@ const NewExpense = (props) => {
 
   return (
     <div className="new-expense">
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+      {!isEditing && <button onClick={startEditingHandler}>Create new expense card</button>}
+      {isEditing &&  <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} onClickCancel={setIsEditing} />}
     </div>
   );
 };

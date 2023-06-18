@@ -25,7 +25,7 @@ Class5: Rendering List & Conditional content
 
 
 
-# Rendering Lists
+# 1. Rendering Lists
 
 ## :full_moon: Rendering Lists of data
 
@@ -185,7 +185,7 @@ function Expenses(props) {
 
 
 
-## Assignment: working with lists
+## :gem: Assignment: working with lists
 
 添加根据filteredYear 来筛选 expenses的功能
 
@@ -232,7 +232,7 @@ function Expenses(props) {
 
 
 
-# Conditional content
+# 2. Conditional content
 
 ## :full_moon: Outputing Conditional content
 
@@ -397,13 +397,13 @@ no new content, just extract the logics of managing filtering of cards into a st
 
 
 
-### recap on component tree 
+### :bangbang: recap on component tree 
 
 ```js
 // 目前的component tree:
 --app
 	 |-- new-expenses  (page top half)
-	 |-- Expenses	(page bottom half) // 定义了state以及如何改变state (due to state lift up)
+	 |-- Expenses	(page bottom half) // 定义了state以及如何改变state (due to state lift up), 及其"derived states"
 					|-- expense-filter  // (state change trigger (provider) )
 				  |-- expense-list		// (state change responser (consumer) )
 									|-- expense-item
@@ -411,6 +411,8 @@ no new content, just extract the logics of managing filtering of cards into a st
 ```
 
 
+
+:gem: code change:
 
 Expense.js
 
@@ -496,35 +498,174 @@ ExpenseList.css
 
 
 
+### :gem: Assignment: conditional UI
 
+display new expense form (top half of the application) by clicking on a button, 
 
-## Demo App: Adding a Chart
+只需要在New-expense component中添加1个boolean state (给它取一个语义化的名字很重要!)来监视是否clicked on create new item, 然后将这个state的setter交给底部的component(Expense form)来控制, 在new-expense中的JSX 用conditioanlly content statement来指明boolean state与被渲染组件之间的关系
 
-91
+:bangbang: 注意 <form>中button type的影响:
 
-该看这个
-
-
-
-
-
-## Adding dynamic styles
-
-69
-
-
-
-
-
-## Wrap up & next steps
-
-93
+```js
+    <form onSubmit={submitHandler}>
+      
+      <div className="new-expense__actions">
+        {/* type = "submit" means if this button is clicked, it will also trigger submit of the form
+            type = "button" means this button is just a normal button, click on it will not trigger submit of the form */}
+        <button type="button" onClick={clickCancelHandler}>Cancel</button>
+        <button type="submit">Add Expense</button>
+      </div>
+    </form>
+```
 
 
 
-Fix a small bug
 
-94
+
+# 3. Demo App: add a bar chart for data visualization
+
+91-94
+
+将expense list中的数据做可视化处理, 呈现为一个bar chart:
+
+![](./Src_md/finalEffect1.png)
+
+Recap on component tree
+
+```js
+--app
+	 |-- new-expenses  (page top half)
+	 |-- Expenses	(page bottom half) // 定义了state以及如何改变state (due to state lift up), 及其"derived states"
+					|-- ExpensesFilter  // (state change trigger (provider) )
+					|-- ExpensesChart
+										|-- Chart
+													|-- ChartBar
+				  |-- ExpensesList		// (state change responser (consumer) )
+									|-- expense-item
+													|-- expense-date
+```
+
+
+
+
+
+新建directory: Chart
+
+Expense.js
+
++ pass derived "state" filteredYear to ExpenseChart for data visualization
+
+```js
+function Expenses(props) {
+
+  const [filteredYear, setFilteredYear] = useState("2020");   // due to state lift up
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  // whenever state filteredYear is changed, the whole component function will be re-executed
+  // filteredExpenses相当于一个derived state based on filteredYear
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selectedYear={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+
+      <ExpensesChart expenses={filteredExpenses}/>
+
+      <ExpenseList items = {filteredExpenses}/>
+
+    </Card>
+  );
+}
+```
+
+
+
+ExpensesChart.js
+
++ 负责load expense list data给Chart component用来render bar chart
+
+```js
+const ExpensesChart = props =>{
+    const chartDatapoints = [
+        {label: 'Jan', value: 0},
+        {label: 'Feb', value: 0},
+        {label: 'Mar', value: 0},
+        {label: 'Apr', value: 0},
+        {label: 'May', value: 0},
+        {label: 'Jun', value: 0},
+        {label: 'Jul', value: 0},
+        {label: 'Aug', value: 0},
+        {label: 'Sep', value: 0},
+        {label: 'Oct', value: 0},
+        {label: 'Nov', value: 0},
+        {label: 'Dec', value: 0}
+    ];
+
+    // fill up the chartDataPoints
+    for (const expense of props.expenses){
+        const expenseMonth = expense.date.getMonth();   // starting at 0 => january
+        chartDatapoints[expenseMonth].value += expense.amount;
+    }
+
+    // render the chart with loaded data
+    return <Chart dataPoints = {chartDatapoints}/>
+}
+```
+
+Chart.js
+
+```js
+const Chart = (props) => {
+  // obj => number
+  const dataPointValues = props.dataPoints.map(dataPoint => dataPoint.value);
+  const totalMaximum = Math.max(...dataPointValues);
+
+  return (
+    <div className="chart">
+      {props.dataPoints.map((dataPoint) => (
+        <ChartBar
+          key={dataPoint.label}
+          value={dataPoint.value}
+          maxValue={totalMaximum}
+          label={dataPoint.label}
+        />
+      ))}
+    </div>
+  );
+};
+```
+
+ChartBar.js
+
++ 由HTML向CSS传递dynamic parameters, 控制bar的fill height
+
+```js
+const CharBar = (props) => {
+  let barFillHeight = "0%";
+  if (props.maxValue > 0) {
+    barFillHeight = Math.round((props.value / props.maxValue) * 100) + "%";
+  }
+
+  return (
+    <div className="chart-bar">
+      <div className="chart-bar__inner">
+        <div
+          className="chart-bar__fill"
+          style={{ height: barFillHeight }}
+        ></div>
+      </div>
+      <div className="chart-bar__label">{props.label}</div>
+    </div>
+  );
+};
+```
 
 
 
