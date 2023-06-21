@@ -6,13 +6,29 @@ Class5: Rendering List & Conditional content
 
 代码在C5 > class5
 
-两个内容:
+核心内容:
 
-+ output dynamic list of content
++ output dynamic list of content by mapping js list to JSX statement
+
 + rendering content under certain conditions
   + State dependency, 由主动变化的state derive出来的"state"
 
++ 其实写到这里, 一个react component里的结构基本就是
 
+  ```js
+  const myReactComponent = () =>{
+    // 1. states
+    
+    // 2. function
+    // 2.1 event handler function
+    // 2.2  other functions
+    
+    // 3. jsx statement
+    // where you would apply conditional component & conditional styling
+  }
+  ```
+
+  
 
 
 :question: 可以把一个state(比如parent传来的props.title)通过useState()初始化另一个state吗

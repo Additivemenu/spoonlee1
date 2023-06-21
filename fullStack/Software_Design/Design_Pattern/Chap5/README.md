@@ -243,11 +243,13 @@ public class Client {
 
 
 # 4. :moon: 迭代器模式 (Iterator)
-111-116
+111-116 GRASP: polymorphism + indirection
 
 https://refactoring.guru/design-patterns/iterator
 
-**Iterator** is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). The main idea of the Iterator pattern is to extract the traversal behavior of a collection into a separate object called an *iterator*, 从而实现数据和遍历方式的解耦, 主要用来解决统一遍历的不方便问题
+**Iterator** is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). The main idea of the Iterator pattern is to extract the traversal behavior of a collection into a separate object called an *iterator*,  <u>so that the **data** and **traverse strategy** can be decoupled</u>, providing a simple and single interface for traversing various forms of data structure.
+
++ 结构特点: 双重polymorphism, one for data, one for iterator that is used to traverse data
 
 ![](./Src_md/iterator1.png)
 
@@ -257,10 +259,14 @@ https://refactoring.guru/design-patterns/iterator
 
 + 迭代器模式(Iterator Pattern)是常用的设计模式，属于行为型模式
 
-+ 如果我们的集合元素是用不同的方式实现的，有数组，还有java的集合类，或者还有其他方式，当客户端要遍历这些集合元素的时候就要使用多种遍历 方式，而且还会暴露元素的内部结构，可以考虑使用迭代器模式解决。
++ 如果我们的集合元素是用不同的方式实现的，有数组，还有java的集合类，或者还有其他方式，当客户端要遍历这些集合元素的时候就要使用多种遍历方式，而且还会暴露元素的内部结构，可以考虑使用迭代器模式解决。
 
 + 迭代器模式，<u>提供一种遍历集合元素的统一接口</u>，用<u>一致的方法遍历集合元素</u>， 不需要知道集合对象的底层表示，即:不暴露其内部的结构。
+  + Java 原生的collection的有内部类实现了Iterator interface, 可以通过itetator来统一遍历.
 
+  + 主要实现两个方法:
+    + `hasNext()`: 判断下个位置是否valid
+    + `next()`: get the element sitting on current index
 
 
 ![](./Src_md/iterator2.png)
@@ -273,17 +279,277 @@ https://refactoring.guru/design-patterns/iterator
 
 114
 
-up here
+Data:
+
++ College (学院)
++ Department (学院下属的系)
+
+```java
+public interface College {
+    String getName();
+
+    // 增加系的方法
+    void addDepartment(String name, String desc);
+
+    Iterator createIterator();
+}
+
+public class ComputerCollege implements College{
+
+    Department[] departments;
+    int numOfDepartment = 0; // 保存当前数组的对象个数
+
+    public ComputerCollege() {
+        this.departments = new Department[5];
+        addDepartment("Java", "Java prof");
+        addDepartment("Php", "Php prof");
+        addDepartment("Javascript", "Js prof");
+        addDepartment("Python", "Python prof");
+    }
+
+    @Override
+    public String getName() {
+        return "computer college";
+    }
+
+    @Override
+    public void addDepartment(String name, String desc) {
+        Department department = new Department(name, desc);
+        departments[numOfDepartment] = department;
+        numOfDepartment++;
+    }
+
+    @Override
+    public Iterator createIterator() {
+        return new ComputerCollegeIterator(departments);
+    }
+}
+
+public class InfoCollege implements College{
+
+    List<Department> departmentList;
+
+    public InfoCollege(){
+        departmentList = new ArrayList<>();
+        addDepartment("info security", "info security prof");
+        addDepartment("web security", "web security prof");
+        addDepartment("server security", "server security prof");
+    }
+
+    @Override
+    public String getName() {
+        return "Info college";
+    }
+
+    @Override
+    public void addDepartment(String name, String desc) {
+        Department department = new Department(name, desc);
+        departmentList.add(department);
+    }
+
+    @Override
+    public Iterator createIterator() {
+        return new InfoCollegeIterator(departmentList);
+    }
+}
+```
+
+
+
+```java
+public class Department {
+
+    private String name;
+    private String desc;
+
+    public Department(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+}
+```
+
+
+
++ Iterator used to traverse data
+
+```java
+public class ComputerCollegeIterator implements Iterator {
+    // 这里我们需要department是以怎样的方式存放
+
+    Department[] departments;
+    int position = 0;   // 遍历的位置
+
+    public ComputerCollegeIterator(Department[] departments) {
+        this.departments = departments;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (position >= departments.length || departments[position] == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public Object next() {
+        Department department = departments[position];
+        position += 1;
+        return department;
+    }
+
+    // 暂时不需要, 空实现
+    @Override
+    public void remove() {
+
+    }
+
+    @Override
+    public void forEachRemaining(Consumer action) {
+        Iterator.super.forEachRemaining(action);
+    }
+}
+
+public class InfoCollegeIterator implements Iterator {
+
+    List<Department> departmentList;        // 信工学院以List方式存放department
+    int index = -1;
+
+    public InfoCollegeIterator(List<Department> departmentList) {
+        this.departmentList = departmentList;
+    }
+
+    @Override
+    public boolean hasNext() {
+
+        if (index >= departmentList.size() -1 ){
+            return false;
+        } else {
+            index += 1;
+            return true;
+        }
+    }
+
+    @Override
+    public Object next() {
+        return departmentList.get(index);
+    }
+
+    // 暂时不需要remove(), 空实现
+    @Override
+    public void remove(){
+
+    }
+}
+```
+
+Indirection
+
+```java
+public class OutputImp {
+    // 学院的集合
+    List<College> collegeList;
+
+    public OutputImp(List<College> collegeList) {
+        this.collegeList = collegeList;
+    }
+
+    // 遍历所有的学院, 然后输出各个学院的系
+    public void printCollege(){
+        Iterator<College> iterator = collegeList.iterator();
+        while(iterator.hasNext()){
+            College college = iterator.next();
+            System.out.println("===" + college.getName() + "===");
+            printDepartment(college.createIterator());
+        }
+    }
+
+    // 输出学院的系
+    public void printDepartment(Iterator iterator){
+        while(iterator.hasNext()){
+            Department d = (Department) iterator.next();
+            System.out.println(d.getName());
+        }
+    }
+}
+```
+
+
+
+Client
+
++ use indirection to traverse over various forms of data structure via a single interface
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        List<College> collegeList = new ArrayList<>();
+
+        ComputerCollege computerCollege = new ComputerCollege();
+        InfoCollege infoCollege = new InfoCollege();
+
+        collegeList.add(computerCollege);
+        collegeList.add(infoCollege);
+
+        OutputImp outputImp = new OutputImp(collegeList);
+        outputImp.printCollege();
+
+    }
+}
+```
+
+
+
+
 
 ## JDK源码ArrayList赏析
 
 115
 
+![](./Src_md/JDK_iterator1.png)
 
+- 内部类Itr 充当具体实现迭代器Iterator 的类， 作为ArrayList 内部类
+- List 就是充当了聚合接口，含有一个iterator() 方法，返回一个迭代器对象
+- ArrayList 是实现聚合接口List 的子类，实现了iterator()
+- Iterator 接口系统提供
+- 迭代器模式解决了 不同集合(ArrayList ,LinkedList) 统一遍历问题
 
 
 
 使用细节 116
+
+优点
+
++ 提供一个统一的方法遍历对象，客户不用再考虑集合的类型，使用一种方法就可以遍历对象了。
+
++ 隐藏了集合的内部结构，客户端要遍历集合的时候只能取到迭代器，而不会知道集合的具体组成。
+
++ 体现单一责任原则/GRASP: high cohesion. 在集合类中，我们把迭代器分开，就是要把管理对象集合和遍历对象集 合的责任分开，这样一来集合改变的话，只影响到集合对象。而如果遍历方式改变 的话，只影响到了迭代器。
+
++ 当要展示一组相似对象，或者遍历一组相同对象时使用, 适合使用迭代器模式
+
+Cons:
+
++ 每个聚合对象都要一个迭代器，会生成多个迭代器不好管理类
 
 
 

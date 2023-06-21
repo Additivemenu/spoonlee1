@@ -18,18 +18,26 @@ References:
 
 
 
+:bangbang: npm install 下载node modules
+
+推荐插件
+
++ react component tree
+
+
+
 React基础篇
 
 | Episode             | Title                                                        | Description |
 | ------------------- | ------------------------------------------------------------ | ----------- |
 | [1](./C1/README.md) | Intro                                                        |             |
 | [2](./C2/README.md) | JS Refersh                                                   |             |
-| [3](./C3/README.md) | React basics, working with component                         |             |
-| [4](./C4/README.md) | :star: React state, working with event,  :bangbang: component communication |             |
-| [5](./C5/README.md)                   | Rendering List, Conditional Content                          |             |
-| 6                   | Styling React Component                                      |             |
-| 7                   | Debugging react apps                                         |             |
-| 8                   | :gem: Practice: a complete Practice Project                  |             |
+| [3](./C3/README.md) | React basics, working with component                         | React component <br> props |
+| [4](./C4/README.md) | :star: React state, working with event,  :bangbang: component communication | State <br>Event |
+| [5](./C5/README.md)                   | Rendering List, Conditional Content                          | Map list to JSX; <br>conditional react component |
+| [6](./C6/README.md) | Styling React Component                                      | conditional styling; <br>styled component + css modules |
+| [7](./C7/README.md) | :bangbang: Debugging react apps                              | breaking points <br>React developer tools |
+| [8](./C8/README.md) | :gem: Practice: a complete Practice Project                  | :bangbang: react re-render mechanism |
 | 9                   | Working with Fragments, portals and "Ref"                    |             |
 | 10                  | :star: Handing side effect, use Reducers & Context   ----> Redux later |             |
 | 11                  | :gem: Practice: Building a food order App                    |             |
