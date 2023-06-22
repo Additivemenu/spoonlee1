@@ -332,3 +332,13 @@ const circle2 = {
 circle2.draw();
 
 ```
+
+
+
+# 4.闭包
+
+https://www.bilibili.com/video/BV1mG411h7aD?p=106&vd_source=c6866d088ad067762877e4b6b23ab9df
+
+通过利用函数作用域, 限定一个变量的全局access
+
+[Demo: closed package](./closePackage.html)

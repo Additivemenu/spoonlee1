@@ -13,9 +13,10 @@ continue with class3 react  project
 
 + Update the UI & working with 'state'
   + why using 'state' instead of JS variable
-
+    + React state updates (e.g.invoke setState()) are <u>*asynchronous*</u>, meaning they do not happen immediately but are scheduled to happen at the next render cycle. 
+  
   + State management
-
+  
   + component communication
     + state lifting
       + types of components: stateless vs. stateful

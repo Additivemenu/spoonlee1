@@ -1,6 +1,10 @@
+主要是DOM相关API
+
+:pencil: [李立超: JS DOM](./lilichao/README.md)
 
 
-# 1. JS耦合HTML
+
+# 1. JS操纵HTML
 
 ## 1.1 JS抓取node
 
@@ -127,7 +131,7 @@ domBody.appendChild(div)
 
 > div可以加载h1, span不能加载h1
 
-# 2. JS耦合CSS
+# 2. JS操纵CSS
 
 ## 2.1 利用JS联动CSS
 

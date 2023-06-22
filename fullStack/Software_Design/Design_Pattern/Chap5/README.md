@@ -915,8 +915,14 @@ public class Client {
 # 9. 状态模式 (State)
 136-139
 
+https://refactoring.guru/design-patterns/state
+
+
+
+
+
 # 10. :full_moon: 策略模式 (Strategy)
-140-144
+140-144 GRASP: polymorphism
 
 UniMelb week10 https://refactoring.guru/design-patterns/strategy
 

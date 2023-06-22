@@ -5,15 +5,16 @@
 
 ---
 
-Chapter | 
------- | 
-[C1: JS Basics](./C1_JS_Basics/README.md)   |   
-[C2: JS Object](./C2_Object/JS_object.md) |
-[C3: JS Function](./C3_Function/README.md) |
-[C4: JS Couping with HTML & CSS](./C4_CoupingWithHTMLCSS/README.md) |
-[C5: JS Debug & Exception](./C5_Debug/README.md) |
+|Chapter |Description |
+|------ |------ |
+|[C1: JS Basics](./C1_JS_Basics/README.md)   | |
+|[C2: JS Object](./C2_Object/JS_object.md) | |
+|[C3: JS Function](./C3_Function/README.md) |闭包 |
+|[C4: use JS to manipulate web page](./C4_CoupingWithHTMLCSS/README.md) |DOM <br>event |
+|[C5: JS Debug & Exception](./C5_Debug/README.md) | |
+|[ES6: Promose](./Promise/myPromise.md) | |
 
-[ES6: Promose](./Promise/myPromise.md)
+
 
 ---
 学习资源

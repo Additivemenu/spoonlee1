@@ -1,53 +1,81 @@
 import React from "react";
-import {useState} from "react";
+import { useState, useEffect } from "react";
 
-
-const userInput_init = {
-  "current-savings": 0,
-  "yearly-contribution": 0,
-  "expected-return": 0,
-  "duration": 0
-}
+const USERINPUT_INIT = {
+  "current-savings": "",
+  "yearly-contribution": "",
+  "expected-return": "",
+  duration: "",
+};
 
 const CalculateForm = (props) => {
+  const [userInput, setUserInput] = useState(USERINPUT_INIT);
 
-  const [userInput, setUserInput]= useState(userInput_init);
+  useEffect(() => {
+    console.log("userInput is changed to: ", userInput);
+  }, [userInput]);
 
-  const handleInputChange = (event) => {  // to capture user input value
-    setUserInput({...userInput, [event.target.name]:event.target.value});
-    console.log(userInput);
-  }
+  const handleInputChange = (event) => {
+    // to capture user input value
+    setUserInput({ ...userInput, [event.target.name]: event.target.value });  
+  };
 
   const submitHandler = (event) => {
     event.preventDefault(); // prevent page refresh
-  
-    if(!checkUserInput()){
-      props.setIsInputValid(false);
+
+    console.log("start to handle sumbit");
+
+    if (!checkUserInput()) {
+      // props.setIsInputValid(false);
+      console.log("invalid user input!");
       return;
     }
+
+    console.log("passed input check!");
+    // props.setIsInputValid(true);
     props.onCalculate(userInput);
-  
-  }
+  };
 
   const checkUserInput = () => {
-    const anyInputEmpty = Object.values(userInput).some(value => value === 0);
-    if(anyInputEmpty){
+    console.log("");
+    const anyInputEmpty = Object.values(userInput).some(
+      (value) => value === ""
+    );
+    if (anyInputEmpty) {
+      props.setIsInputValid(false);
       return false;
-    } else{
+    } else {
+      props.setIsInputValid(true);
       return true;
     }
-  }
+  };
+
+  const resetHandler = () => {
+    setUserInput({ ...userInput, ...USERINPUT_INIT });
+    console.log("reset form")
+    props.setIsInputValid(false);
+  };
 
   return (
-    <form className="form" onSubmit={submitHandler}>
+    <form className="form" onSubmit={submitHandler} onReset={resetHandler}>
       <div className="input-group">
         <p>
           <label htmlFor="current-savings">Current Savings ($)</label>
-          <input name="current-savings" type="number" onChange={handleInputChange} id="current-savings" />
+          <input
+            name="current-savings"
+            type="number"
+            onChange={handleInputChange}
+            id="current-savings"
+          />
         </p>
         <p>
           <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
-          <input name="yearly-contribution" type="number" onChange={handleInputChange} id="yearly-contribution" />
+          <input
+            name="yearly-contribution"
+            type="number"
+            onChange={handleInputChange}
+            id="yearly-contribution"
+          />
         </p>
       </div>
 
@@ -56,11 +84,21 @@ const CalculateForm = (props) => {
           <label htmlFor="expected-return">
             Expected Interest (%, per year)
           </label>
-          <input name="expected-return" type="number" onChange={handleInputChange} id="expected-return" />
+          <input
+            name="expected-return"
+            type="number"
+            onChange={handleInputChange}
+            id="expected-return"
+          />
         </p>
         <p>
           <label htmlFor="duration">Investment Duration (years)</label>
-          <input name="duration" type="number" onChange={handleInputChange} id="duration" />
+          <input
+            name="duration"
+            type="number"
+            onChange={handleInputChange}
+            id="duration"
+          />
         </p>
       </div>
 

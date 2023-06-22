@@ -4,8 +4,6 @@ References
 
 
 
-跳转:
-
 Java
 + [JavaCore1](./javaCore/myJavaCore1.md)
   + chap6: lambda表达式, 函数式接口, 方法/构造器引用  
@@ -16,7 +14,15 @@ Java
 + [Java projects](./javaProjects/javaProjects.md)
 + [Java刷题](./%E5%88%B7%E9%A2%98/newCoder.md)
 
+Java高级内容
+
++ [JVM](./Java_JVM/myJVM.md)
++ [JUC 并发编程 高级篇](./Java_JUC/myJavaJUC.md)
+
+---
+
 Python
+
 + [Python](./Python/readme.md)
 ---
 roadmap

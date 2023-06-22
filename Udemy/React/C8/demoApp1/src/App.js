@@ -10,6 +10,7 @@ function App() {
   const [calculationResults, setCalculationResults]= useState([]);
   const [isInputValid, setIsInputValid] = useState(false);
 
+
   const calculateHandler = (userInput) => {
     // Should be triggered when form is submitted
     // You might not directly want to bind it to the submit event on the form though...
@@ -43,7 +44,6 @@ function App() {
 
 
 
-
   return (
     <div>
       <header className="header">
@@ -53,7 +53,9 @@ function App() {
 
       <CalculateForm onCalculate={calculateHandler} setIsInputValid = {setIsInputValid} />
 
-      <ResultTable results={calculationResults} isInputValid = {isInputValid}/>
+
+      {!isInputValid && <p style={{ color: "white" }}>invalid input!</p>}
+      {isInputValid && <ResultTable results={calculationResults}/>}
     </div>
   );
 }
