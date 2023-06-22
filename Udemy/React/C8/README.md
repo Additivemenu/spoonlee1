@@ -112,6 +112,24 @@ Hint:
 
   + `<form>`的sumbit event会刷新页面, 需要event.preventDefault()
 
+
+
+
+
 # Demo2
 
 121-132
+
+还是二元组件: 
+
++ one for collecting user input; 
++ one for displaying result in response to  user request
+
+稍微的难点在于, user input empty or invalid时， 弹窗提示错误信息 => wrapper component
+
+
+
+
+
+
+

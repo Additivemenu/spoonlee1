@@ -1,3 +1,27 @@
+import styled from "styled-components";
+
+const Result = styled.table`
+  max-width: 50rem;
+  margin: 2rem auto;
+  padding: 1rem;
+  table-layout: fixed;
+  border-spacing: 1rem;
+  text-align: right;
+
+  & thead {
+    font-size: 0.7rem;
+    color: #83e6c0;
+  }
+
+  & tbody {
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 0.85rem;
+    color: #c2e9e0;
+  }
+`;
+
+// ------------------------------------------------------------
+
 // formatter used to format output table
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -12,10 +36,13 @@ const ResultTable = (props) => {
 
   let totalInterestGain = 0;
   let firstYear = props.results[0];
-  let totalInvestmentCapital = firstYear.savingsEndOfYear - firstYear.yearlyContribution - firstYear.yearlyInterest;
+  let totalInvestmentCapital =
+    firstYear.savingsEndOfYear -
+    firstYear.yearlyContribution -
+    firstYear.yearlyInterest;
 
   return (
-    <table className="result">
+    <Result>
       <thead>
         <tr>
           <th>Year</th>
@@ -41,7 +68,7 @@ const ResultTable = (props) => {
           );
         })}
       </tbody>
-    </table>
+    </Result>
   );
 };
 

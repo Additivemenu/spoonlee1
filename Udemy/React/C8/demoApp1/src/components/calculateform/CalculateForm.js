@@ -1,5 +1,74 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import styled from "styled-components";
+
+const Form = styled.form`
+  padding: 1rem;
+  max-width: 30rem;
+  margin: 2rem auto;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #307e6c, #2b996d);
+
+  .input-group {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1.5rem;
+  }
+
+  & label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  & input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #76c0ae;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: #c2e9e0;
+    font-size: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background: linear-gradient(180deg, #1f584b, #17493d);
+    color: #c2e9e0;
+    font-family: "Roboto Condensed", sans-serif;
+    cursor: pointer;
+
+    &:hover {
+      background: linear-gradient(180deg, #1b5346, #113c32);
+    }
+  }
+
+  .buttonAlt {
+    font-family: "Roboto Condensed", sans-serif;
+    border: none;
+    background: transparent;
+    color: #c2e9e0;
+    cursor: pointer;
+
+    &:hover {
+      background: transparent;
+      color: #91e1d0;
+    }
+  }
+`;
+
+// ------------------------------------------------------------------
 
 const USERINPUT_INIT = {
   "current-savings": "",
@@ -16,8 +85,10 @@ const CalculateForm = (props) => {
   }, [userInput]);
 
   const handleInputChange = (event) => {
-    // to capture user input value
-    setUserInput({ ...userInput, [event.target.name]: event.target.value });  
+    // to capture user input value based on previous state
+    setUserInput((prevState) => {
+      return { ...prevState, [event.target.name]: event.target.value };
+    });
   };
 
   const submitHandler = (event) => {
@@ -52,12 +123,12 @@ const CalculateForm = (props) => {
 
   const resetHandler = () => {
     setUserInput({ ...userInput, ...USERINPUT_INIT });
-    console.log("reset form")
+    console.log("reset form");
     props.setIsInputValid(false);
   };
 
   return (
-    <form className="form" onSubmit={submitHandler} onReset={resetHandler}>
+    <Form onSubmit={submitHandler} onReset={resetHandler}>
       <div className="input-group">
         <p>
           <label htmlFor="current-savings">Current Savings ($)</label>
@@ -110,7 +181,7 @@ const CalculateForm = (props) => {
           Calculate
         </button>
       </p>
-    </form>
+    </Form>
   );
 };
 

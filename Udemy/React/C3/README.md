@@ -185,7 +185,7 @@ function ExpenseItem() {
 
 
 
-### :full_moon: message passing via "props"
+### :full_moon: message passing through components via "props"
 
 36-
 

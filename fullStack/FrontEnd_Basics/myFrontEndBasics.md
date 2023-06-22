@@ -1,7 +1,7 @@
 跳转:
 + [HTML](./HTML/myHTMLNotes.md)  
 + [CSS](./CSS/myCSSNotes.md) 
-+ [JS](./JS/myJSNotes.md) 
++ :star: [JS](./JS/myJSNotes.md) 
 
 前后端连接
 + [前后端连接](./Connection_FrontEndBackEnd/myConnectionFrontBackEnd.md)
@@ -21,7 +21,6 @@
 https://www.wolai.com/topcoderdoc/qxVBEVDrfSzif4djdw4hGm
 
 :gem: [50天50个前端小项目](https://github.com/didiaohu/50projects50days)
-
 
 
 

@@ -1,6 +1,6 @@
 主要是DOM相关API
 
-:pencil: [李立超: JS DOM](./lilichao/README.md)
+:pencil: [李立超: JS DOM](./lilichao/lilichao.md)
 
 
 

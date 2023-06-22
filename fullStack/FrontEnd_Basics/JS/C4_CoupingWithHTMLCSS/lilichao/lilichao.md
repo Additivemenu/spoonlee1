@@ -6,6 +6,12 @@ Resources
 
 
 
+# 1. DOM
+
+134- 154
+
+
+
 ## 什么是DOM
 
 DOM，全称Document Object Model，中文翻译为文档对象模型。DOM属于Web API的一部分。Web API中定义了非常多的对象，通过这些对象可以完成对网页的各种操作（添加删除元素、发送请求、操作浏览器等), DOM打通了JS和web
@@ -56,3 +62,129 @@ DOM中的
 - 父 —— 直接包含子元素的元素是父元素
 - 子 —— 直接被父元素包含的元素是子元素
 - 兄弟 —— 拥有相同父元素的元素是兄弟元素
+
+
+
+## DOM: Hello World
+
+135
+
+[01 hello world](./01_helloWold.html)
+
+
+
+
+
+
+## Document node
+
+136
+
+
+
+## Get element node
+
+137
+
+
+
+## Elements' method and attributes
+
+
+
+## Text node
+
+139
+
+## attribute node
+
+140
+
+## event
+
+141
+
+
+
+
+
+
+
+## node的复制
+
+150
+
+
+
+
+
+# 2. Event
+
+155-160
+
+
+
+## Event Object intro
+
+155
+
+
+
+
+
+
+
+# 3. BOM
+
+161
+
+[Demo: BOM intro](./28_BOM.html)
+
+## 常用的BOM 对象
+
+### Navigator obj
+
+
+
+### Location obj
+
+
+
+### History obj
+
+
+
+## brower tools
+
+### Timer
+
+
+
+### 调用栈
+
+
+
+### Message queue
+
+
+
+
+
+### Timer
+
+
+
+
+
+## Practice 
+
+
+
+
+
+
+
+### 贪吃蛇
+
+
+

@@ -326,7 +326,7 @@ const ExpenseForm = () => {
 
 # 3. State management
 
-## Working with multiple states
+## 3.1 Working with multiple states
 
 53
 
@@ -382,7 +382,7 @@ const ExpenseForm = () => {
 
 
 
-## Using One state instead (Better)
+## 3.2 Using One state instead (Better)
 
 54
 
@@ -454,7 +454,7 @@ const ExpenseForm = () => {
 
 
 
-## Update state that depends on the previous state
+## 3.3 :bangbang: Update state that depends on the previous state
 
 55
 
@@ -561,7 +561,7 @@ In this version, React guarantees that the `prevCounter` value will be the most 
 
 
 
-## Handling form submission
+## 3.4 :bangbang: Handling form submission
 
 56, 57
 
@@ -569,9 +569,9 @@ In this version, React guarantees that the `prevCounter` value will be the most 
 
 实现点击submit button, 就提交form里的内容的功能
 
-+ 注意此时的event listener是加在Form上
-+ submitHandler(event){}中, 需要先disable browser对 event default behaviour
-+ 注意input field里直接接收到的都是String类型
++ 注意此时的event listener是加在<Form/>上
++ submitHandler(event){}中, 需要先disable browser对 event default behaviour: sumbit 时会刷新页面
++ :bangbang: 注意input field里直接接收到的都是String类型
 
 同时, 点击submit button之后, reset the input field to empty ---> two way binding
 
