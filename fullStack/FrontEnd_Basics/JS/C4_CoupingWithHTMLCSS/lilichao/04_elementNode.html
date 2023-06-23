@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="box1">
+      I am box1
+      <span class="s1">I am s1</span>
+      <span class="s1">I am s1</span>
+    </div>
+
+    <span class="s1">I am s1</span>
+
+    <script>
+      /*
+            div元素的原型链: HTMLDivElement -> HTMLElement -> Element -> Node -> EventTarget (用__proto__查)
+
+            通过元素节点对象获取其他节点的方法, 有两套:
+                - 基于node
+                    - element.childNodes 获取当前元素的子节点. 所谓节点, 即所有的节点(会包含空白的子节点, 文本节点...)
+                    - element.firstChild
+                    - element.lastChild
+                    - element.nextSibling
+                    - element.previousSibling
+                    - element.parentNode: Node可以是element, 也可以是docuemnt
+                - 基于element
+                    - element.children 获取当前元素的子元素. 所谓子元素, 只指元素 (节点概念的subset )
+                    - element.firstElementChild: 获取当前元素的第一个子element
+                    - element.lastElementChild
+                    - element.nextElementSibling: 相当于按层遍历, 返回当前元素的下一个element
+                    - element.previousElementSibling
+                    - element.parentElement: 只能是element
+
+            element.tagName 获取当前元素的tag name
+
+      */
+
+      const box1 = document.getElementById("box1");
+      console.log(box1);
+      console.log(box1.__proto__); // HTMLDivElement {Symbol(Symbol.toStringTag): 'HTMLDivElement', onmouseenter: undefined, onmouseleave: undefined, constructor: ƒ}
+
+      const spans = box1.getElementsByTagName("span"); // 返回box1下的, 和document的同名方法一样
+      console.log(spans);
+
+      const cns = box1.childNodes;
+      console.log(cns); // length is 5, 文本节点也算上了
+
+      const children = box1.children;
+      console.log(children);        // length is 2
+    </script>
+  </body>
+</html>

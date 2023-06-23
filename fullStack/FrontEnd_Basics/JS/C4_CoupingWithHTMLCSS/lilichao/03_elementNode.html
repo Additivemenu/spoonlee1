@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn">click me</button>
+
+    <span class="s1">I am span</span>
+    <span class="s1">I am span</span>
+    <span class="s1">I am span</span>
+    <span class="s1">I am span</span>
+
+    <div>I am div</div>
+    <div>I am div</div>
+    <div>I am div</div>
+    <div>I am div</div>
+
+    <form>
+      <input type="text" name="username" />
+      <input type="radio" name="gender" value="male" />
+      <input type="radio" name="gender" value="female" />
+    </form>
+
+    <script>
+      /*
+            元素节点(element)
+                - 在网页中, 每一个标签都是一个元素节点
+                - 如何获取元素节点?
+                    1. 通过document obj来获取元素节点: 
+                        + document.getElementById(): 根据id获取1个元素节点
+                        + document.getElementsByClassName(): 根据className来获取一组元素节点
+                            - 该方法返回的结果是一个实时更新的集合: 当网页中添加新元素时， 集合也会实时更新, 很方便
+                        + document.getElementsByTagName(): 根据tag name得到一组节点元素
+                            - 同样, 该方法返回的结果是一个实时更新的集合
+                            - document.getElementsByTagName("*"): 获取document上所有元素
+                        + document.getElementsByName(): 根据name属性获得一组元素节点对象
+                            - 返回一个实时更新的集合
+                            - 一般多用于<form>
+                        + document.querySelectorAll(): 根据css selector去页面查询all matching元素
+                            - 注意返回的数组结果不会实时更新
+                        + document.querySelector(): 根据css selector去页面查询1st matching元素. 相当于document.querySelectorAll()[0]
+
+                    2. 通过document obj来创建元素节点: createElement
+                        + document.createElement(): 根据标签名创建一个元素节点对象
+                
+        */
+      console.log(document.body);
+
+      const btn = document.getElementById("btn");
+      console.log(btn);
+
+      const spans = document.getElementsByClassName("s1"); // 返回包含元素节点obj的HTMLColelction类型 (类似一个数组， 但没有数组的方法)
+      console.log(spans);
+      for (let i = 0; i < spans.length; i++) {
+        // alert(spans[i]);
+        spans[i].innerText = "h" + i;
+      }
+
+      const divs = document.getElementsByTagName("div");
+      console.log(divs);
+      const all = document.getElementsByTagName("*");
+      console.log(all);
+
+      const genderInput = document.getElementsByName("gender"); // return NodeList
+      console.log(genderInput);
+
+      const divs2 = document.querySelectorAll("div");
+      console.log(divs2);
+
+      const div = document.querySelector("div");
+      console.log(div);
+
+      // =============create element====================
+      const h2 = document.createElement("h2");      // 只是create new element, 并没有加入document
+    </script>
+  </body>
+</html>

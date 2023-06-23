@@ -55,6 +55,10 @@ DOM中的
 
 每一个节点都有其不同的作用，文档节点表示整个网页，元素节点表示某个标签，文本节点表示网页中的文本内容，属性节点表示标签中的各种属性。如果从对象的结构上来讲，这些对象都有一个共同的父类Node。总的来说，都是属于节点，但是具体类型不同。
 
+Node类是所有网页节点对象的根父类 https://developer.mozilla.org/en-US/docs/Web/API/Node
+
+
+
 ### 关系
 
 - 祖先 —— 包含后代元素的元素是祖先元素
@@ -73,34 +77,119 @@ DOM中的
 
 
 
+## DOM node
 
 
-
-## Document node
+### Document node
 
 136
+[Demo: document obj](./02_documentObj.html)
+
+document 对象. document object 表示的是整个网页
 
 
 
-## Get element node
+document obejct 的prototype链 (通过console: document.__proto__ 可以查看)
+
+- HTMLDocuemnt -> Docuemnt -> Node -> EventTarget -> Object.prototype -> null
+- prototype chain上的类的的属性和方法, 我们都可通过document来调用
+    - 部分属性
+        - document.documentElement -> html 根元素
+        - docuemnt.head -> head element
+        - document.title -> title element
+        - document.body -> body element
+        - document.links -> 获取页面中所有hyper link
+        ...
+
+
+
+### Element Node
+
+#### Get element node
 
 137
+[Demo: get element](./03_elementNode.html)
 
 
 
-## Elements' method and attributes
+元素节点(element)
+
+在网页中, 每一个标签都是一个元素节点
+
+1. 通过document obj来获取元素节点: 
+    + document.getElementById(): 根据id获取1个元素节点
+    + document.getElementsByClassName(): 根据className来获取一组元素节点
+        - 该方法返回的结果是一个实时更新的集合: 当网页中添加新元素时， 集合也会实时更新, 很方便
+    + document.getElementsByTagName(): 根据tag name得到一组节点元素
+        - 同样, 该方法返回的结果是一个实时更新的集合
+        - document.getElementsByTagName("*"): 获取document上所有元素
+    + document.getElementsByName(): 根据name属性获得一组元素节点对象
+        - 返回一个实时更新的集合
+        - 一般多用于<form>
+    + document.querySelectorAll(): 根据css selector去页面查询all matching元素
+        - 注意返回的数组结果不会实时更新
+    + document.querySelector(): 根据css selector去页面查询1st matching元素. 相当于document.querySelectorAll()[0]
+
+2. 通过document obj来创建元素节点: createElement
+    + document.createElement(): 根据标签名创建一个元素节点对象
 
 
 
-## Text node
+
+
+
+#### Elements' method and attributes
+
+138
+
+[Demo: element's method and attributes](./04_elementNode.html)
+
+div元素的原型链: HTMLDivElement -> HTMLElement -> Element -> Node -> EventTarget (用__proto__查)
+
+  
+
+element methods: 
+
++ 通过元素节点对象获取其他节点的方法, 有两套:
+  - 基于node: 空白的节点(换行符), text node, attribute node, document node都算
+       - element.childNodes 获取当前元素的子节点. 所谓节点, 即所有的节点(会包含空白的子节点, 文本节点...)
+       - element.firstChild
+       - element.lastChild
+       - element.nextSibling
+       - element.previousSibling
+       - element.parentNode: Node可以是element, 也可以是docuemnt
+  - 基于element: 只算element node
+       - element.children 获取当前元素的子元素. 所谓子元素, 只指元素 (节点概念的subset )
+       - element.firstElementChild: 获取当前元素的第一个子element
+       - element.lastElementChild
+       - element.nextElementSibling: 相当于按层遍历, 返回当前元素的下一个element
+       - element.previousElementSibling
+       - element.parentElement: 只能是element
+
+
++ element.tagName 获取当前元素的tag name
+
+
+
+### Text node
 
 139
 
-## attribute node
+看这到这里
+
+
+
+
+
+### Attribute node
 
 140
 
-## event
+
+
+
+
+### event
 
 141
 
@@ -110,7 +199,7 @@ DOM中的
 
 
 
-## node的复制
+### Node的复制
 
 150
 

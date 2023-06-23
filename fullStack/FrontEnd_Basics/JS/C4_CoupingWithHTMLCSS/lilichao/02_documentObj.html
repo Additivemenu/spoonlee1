@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+            document 对象
+                - document object 表示的是整个网页
+                - document obejct 的prototype链 (通过console: document.__proto__ 可以查看)
+                    - HTMLDocuemnt -> Docuemnt -> Node -> EventTarget -> Object.prototype -> null
+                    - prototype chain上的类的的属性和方法, 我们都可通过document来调用
+                        - 部分属性
+                            - document.documentElement -> html 根元素
+                            - docuemnt.head -> head element
+                            - document.title -> title element
+                            - document.body -> body element
+                            - document.links -> 获取页面中所有hyper link
+                            ...
+        */
+
+      console.log(document.body);
+      console.log(document.documentElement);
+      console.log(document.title);
+      console.log(document.links);
+
+    </script>
+  </body>
+</html>
