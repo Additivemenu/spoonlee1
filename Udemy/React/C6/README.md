@@ -217,6 +217,10 @@ install styled component 参见gpt
 
 
 
+styled component工作原理其实是往原来的tag element或exisitng component往外又套了一层tag element, 因此它会使你的component tree变得臃肿 if use React DevTool
+
+
+
 Button.js
 
 + 利用styled component 直接 apply css style to this specific react component 
@@ -249,6 +253,27 @@ const Button = styled.button`
 
 export default Button;
 ```
+
+
+
+:bangbang: 补充: 除去上面的用styled component创建一个styled component, 还可以利用styled component对已有的component进行styling
+
++ 只是注意, 此时需要让exisitng component的最外层可以被传入className, 这和styled component的工作原理有关; otherwise specified styling won't be applied 
+  + 工作原理: MyStyledCard / styled component generate a unique className for specified styling => Card / pass that className to div=> div with that className been assigned specified styling
+
+```js
+const Card = ({ className, children }) => {		// a wrapper component
+  return <div className={className}>{children}</div>; 
+};
+
+const MyStyledCard = stlyed(Card)`
+...specified styling
+` 
+```
+
+
+
+
 
 
 

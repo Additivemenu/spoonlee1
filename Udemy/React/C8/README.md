@@ -125,7 +125,7 @@ Hint:
 + one for collecting user input; 
 + one for displaying result in response to  user request
 
-稍微的难点在于, user input empty or invalid时， 弹窗提示错误信息 => wrapper component
+稍微的难点在于, user input empty or invalid时， 弹窗提示错误信息 => wrapper component + conditional content
 
 
 
@@ -133,3 +133,85 @@ Hint:
 
 
 
+注意还是按照龙哥讲的步骤来写:
+
++ Step1: 设计component tree, 搭骨架
++ Step2: 写css, 构成静态网页
++ Step3: 最低state
++ Step4: state lift up, 实现component communication
++ Step5: 调整, 最终构成动态网页
+
+
+
+直接听lecturer讲, 但我用的是styled component. 几个关键点:
+
++ wrapper component for reusable component e.g. Card, Button, ErrorModal
+
+  + reusable: 组件props接收外界input, 并将该信息动态展示在自己身上; 
+
++ :bangbang: manage error state to conditional show ErrorModal -> P131 秒!
+
+  + Overlay, 弹窗的产生与关闭
+
+  + 一个react pattern我感觉， 在哪个component定义state, 就在哪个component定义如何handle that state change, 其他component用到再传给他们这个handler
+
++ use two-way binding to display <input> value in real time
+
++ `event.target.value` returns a String, even if you specify type of an <input> to be number. You would need to manually convert it to the data type you like.
+
++ styled component的使用
+
+  + ``````js
+    // 方式1. 创建新的styled component
+    const MyStyledComponent = styled.div`
+    ...
+    `
+    
+    // 方式2. 基于已有的component, 加装style
+    const MyStyledCard = styled(Card)`
+    ...specified styles
+    `
+    
+     
+    ``````
+
+:bangbang: 其中方式2需要为Card传递className作为apply specified style的conduit, 这和styled component的工作原理有关, 具体原因如下:
+
+In React, `className` is a prop that can be used to specify a CSS class for a DOM element. When you use styled-components to style an existing component, <u>**under the hood, styled-components generates a unique CSS class with the styles you specify**</u> and **<u>then applies that class to the component by passing it via the `className` prop.</u>** 
+
+The `className` prop in your `Card` component acts as a conduit for the styles from the styled-component to be applied to the correct DOM node. 
+
+```jsx
+// Card.js
+import React from 'react';
+
+const Card = ({ className, children }) => {
+  return <div className={className}>{children}</div>; 
+};
+```
+
+In the example above, the `className` prop is being passed down to the `div` element. This means that when you create a styled component from `Card`, the styles will be applied to the `div`:
+
+```jsx
+// MyStyledCard.js
+import styled from 'styled-components';
+import Card from './Card';
+
+const MyStyledCard = styled(Card)`
+  background-color: lightgray;
+  padding: 16px;
+  border-radius: 8px;
+`;
+```
+
+工作原理:  MyStyledCard / styled component generate a unique className for specified style => Card / pass that className to div=> div with that className been assigned specified style
+
+1. In the `MyStyledCard` declaration, styled-components will generate a unique className, and the styles you've specified will be associated with that className. 
+
+2. When `MyStyledCard` is used, it internally renders the `Card` component and passes the generated className as a prop. `Card` in turn attaches this className to the `div`, resulting in the `div` being styled according to your specifications.
+
+:bangbang: If `Card` did not accept and use a `className` prop, the styles from `MyStyledCard` would not be able to be applied. However, not all components will pass along the `className` prop by default. Many built-in components in libraries such as Material-UI do not pass along the `className` prop. In these cases, you would need to either wrap the component in a styled component, or use a different method to style the component, depending on the library's recommendations.
+
+
+
+该看125了
