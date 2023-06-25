@@ -151,7 +151,7 @@ Hint:
 
 + :bangbang: manage error state to conditional show ErrorModal -> P131 秒!
 
-  + Overlay, 弹窗的产生与关闭
+  + Overlay, 弹窗的产生与关闭: 其实还是state-controlled conditional content
 
   + 一个react pattern我感觉， 在哪个component定义state, 就在哪个component定义如何handle that state change, 其他component用到再传给他们这个handler
 

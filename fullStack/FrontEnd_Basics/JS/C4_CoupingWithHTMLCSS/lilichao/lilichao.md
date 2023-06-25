@@ -175,9 +175,63 @@ element methods:
 
 139
 
-看这到这里
 
 
+在DOM中, 网页中所有的文本内容都是文本节点对象. 因此可以通过元素来获取其中的文本节点对象, 但通常不会这么做, 因为我们可以直接通过元素去修改其中的文本.
+修改文本的三个属性
+
++ `element.textContent` 获取或修改元素中的文本内容
+      - 获取的是标签中的内容, <u>不会考虑css样式</u>
+
+
++ `element.innerText`   获取或修改元素中的文本内容
+      - innerText获取内容时, <u>会考虑css样式</u>
+          - 通过innerText去读区css style, 会触发网页的重排(计算css style), 因而性能比textContent稍慢
+          - 当string中有<>时, 会自动对标签进行转移
+          - <li> => &lt;li&gt;
+
+
++ `element.innerHTML`   获取或修改**元素中的html代码** (权限给的比较大, 会有风险)
+      - 可以直接向元素中添加html代码
+          - innerHTML插入内容时, 有被xss注入(被恶意插入html代码)的风险
+
+
+
+```js
+  <body>
+    
+    <div id="box1">
+      <span>I am box1</span>
+    </div>
+
+    <script>
+      /*
+            在DOM中, 网页中所有的文本内容都是文本节点对象
+                - 因此可以通过元素来获取其中的文本节点对象, 但通常不会这么做
+                - 因为我们可以直接通过元素去修改其中的文本
+                    - 修改文本的三个属性
+                        element.textContent 获取或修改元素中的文本内容
+                        element.innerText   获取或修改元素中的文本内容
+                        element.innerHTML   获取或修改元素中的html代码
+      */
+      const box1 = document.getElementById("box1");
+      
+    </script>
+  </body>
+```
+
+Console结果:
+
+```js
+> box1.innerText
+'I am box1'
+> box1.textContent
+'\n      I am box1\n    '
+> box1.innerHTML
+'\n      <span>I am box1</span>\n    '
+> box1.innerHTML = "<li>innerText</li>"		// 真正去修改box1的innerHTML代码, innerText和textContent可做不到
+'<li>innerText</li>'		
+```
 
 
 
@@ -189,7 +243,11 @@ element methods:
 
 
 
-### event
+
+
+
+
+### Event
 
 141
 

@@ -29,8 +29,26 @@ References:
 本课涉及到的react design pattern
 
 + state-controlled: conditional component, conditional styling
+
 + stateful & stateless component
   + 在哪个component定义的state, 就在哪个component定义stateChangeHandler
+
++ Wrapper: to combat "div soup" problem
+
+  + ```js
+    const Wrapper = (props) => {
+      return props.children;
+    };
+    export default Wrapper;
+    ```
+
+
+  + React acutally has built-in Wrapper component => use `<React.Fragment>` to combat 'div soup' problem
+
++ `<ReactDOM.createPortal()>` to make overlay, backdrop component semantically better
+
+
+
 
 
 
@@ -45,8 +63,8 @@ React基础篇
 | [5](./C5/README.md)                   | Rendering List, Conditional Content                          | Map list to JSX; <br>conditional react component |
 | [6](./C6/README.md) | Styling React Component                                      | conditional styling; <br>styled component + css modules |
 | [7](./C7/README.md) | :bangbang: Debugging react apps                              | breaking points <br>React developer tools |
-| [8](./C8/README.md) | :gem: Practice: a complete Practice Project                  | :bangbang: react re-render mechanism <br> :question: demo1:  还有关于react diffing的小bug. 先不管， 先往下学 <br> demo2 : error state management; 弹窗的产生与关闭<br> |
-| 9                   | Working with Fragments, portals and "Ref"                    |  |
+| [8](./C8/README.md) | :gem: Practice: a complete Practice Project         | :bangbang: react re-render mechanism <br> :question: demo1:  还有关于react diffing的小bug. 先不管， 先往下学 <br> demo2 : error state management; 弹窗的产生与关闭<br> |
+| [9](./C9/README.md) | Working with Fragments, portals and "Ref"                    | Wrapper to combat "div soup" problem |
 | 10                  | :star: Handing side effect, use Reducers & Context   ----> Redux later |             |
 | 11                  | :gem: Practice: Building a food order App                    |             |
 | 12                  | Scene behind react & Optimization                            |             |
