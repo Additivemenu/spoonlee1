@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn" ondblClick="alert('you just clicked me!')">
+      click me twice
+    </button>
+
+    <button id="btn2" onmouseover="alert('you just move over me!')">
+      move over me
+    </button>
+
+    <button id="btn3">I am button 3</button>
+
+    <button id="btn4">I am button 4</button>
+
+    <script>
+      /*
+            event
+                - event就是用户和页面之间发生的交互行为
+                    比如；click button; mouse move, mouse double click, mouse drag; release key, type key
+                - bound event listener / 响应函数 (其实就是callback function) to element, 来完成和用户的交互 
+                    - 方式1: 直接在元素的属性中设置 
+                    - 方式2: 可以通过为元素的指定属性设置callback function的形式来绑定事件 (但1个元素上的1个事件同时只能绑定1个响应函数)
+                        - 多人开发中可能因此出现conflict
+                    - 方式3： 可以通过element.addEventListener() 来绑定响应函数 (1个元素上的1个事件同时可以绑定多个响应函数)
+                        - 因而多人开发时更prefer
+        */
+      // 方式2:
+      const btn3 = document.getElementById("btn3");
+      btn3.ondblclick = () => {
+        alert("i am button 3");
+      };
+
+      // 方式3:
+      const btn4 = document.getElementById("btn4");
+      btn4.addEventListener("mouseover", () => {
+        alert("I am button4");
+      });
+      btn4.addEventListener("mouseover", () => {
+        alert("greetings from button4!");
+      });
+    </script>
+  </body>
+</html>

@@ -4,6 +4,9 @@
 
 跳转:
 
+clean code:
++ [clean code](./CleanCode/clean_code.md)
+
 Version control:
 + [Git](./Git/readme.md)
 
@@ -26,6 +29,7 @@ Career
 ---
 
 Table of Contents: 
+- [Typora theme](#typora-theme)
 - [Ubantu](#ubantu)
 - [快捷键](#快捷键)
 - [代码模板](#代码模板)

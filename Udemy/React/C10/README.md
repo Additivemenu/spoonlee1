@@ -1,0 +1,1 @@
+Handling side effects, using Reducers & Using the context API

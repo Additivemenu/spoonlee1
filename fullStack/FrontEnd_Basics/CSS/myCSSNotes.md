@@ -102,6 +102,9 @@ block__element--modifier
 
 用来修饰HTML元素的格式, 但首先你得选择特定的HTML标签来施加修饰, 这就需要选择器. 选择器作为对HTML element施加样式的基础, 如果写错了, 后面不容易debug
 
+:gem: [ chatGPT: css selector e.g.](./chatGPT/cssSelector.md)
+
+
 
 :gem: [选择器demo](CSS_Sample/Selector/CSS_Selector.html)   
 
@@ -120,12 +123,12 @@ selector| 代码模板| e.g.| description|
 ## 1.1. 基本选择器
 
 + 标签选择器 
-固有标签不需要加.前缀
+  固有标签不需要加.前缀
   ```css
   p, div{...}
   ```
 + 类选择器 
-className前需要.来作为前缀
+  className前需要.来作为前缀
   + 在同一页面可以多次使用(最常用) 
   ```css
   .imageContainer{...}  /*选中所有class="imageContainer"的元素*/
@@ -321,9 +324,9 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 如果是权重相同的选择器, 越具体的选择器优先级越高, 这也符合直觉常理
   ```css
   ul li{...}  /*优先级高于li{...}*/
-
+  
   li{...}
-  ``` 
+  ```
 + 权重可以被`!important`来被忽略掉
   + 一般情况下, `!important`的使用非常谨慎, 用的很少 
   +  :question: `!important`被忽略掉到底啥意思, 是指权重为0吗? 还是指-1? 实例告诉我们忽略掉权重也大于0
@@ -396,7 +399,7 @@ margin相当于邻居间的间隔, border相当于栅栏宽度, padding相当于
 如图, 一个box涉及到的dimension由外而内依次是:
 + top, left...等位移属性, 是相对于位移属性参照物而言, 见[2.2.4 位移属性参照物](#224-star-位移属性参照物)
 + margin (邻居间的间隔), 外边距
-Margin属性，表示该block与其他block之间的最小距离. e.g.如果block1(margin:30px)与block2(margin:50px), 那么他们俩之间实际间距是50px;
+  Margin属性，表示该block与其他block之间的最小距离. e.g.如果block1(margin:30px)与block2(margin:50px), 那么他们俩之间实际间距是50px;
   + margin的'重载'
     ```css
     margin: 上下 左右;      /*2个argument*/
@@ -409,7 +412,7 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
     + box左右外边距都为auto
     ```css
     Margin: 0 auto;   /*上下外边距为0, 左右外边距auto*/
-    ``` 
+    ```
     :gem: [用margin实现box水平居中](./CSS_Sample/Block_Dimension/33-margin%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD.html)
     除此之外, 当定义`height`, `line-height`的数值一样时, 也可实现在垂直方向山居中
   + [mozilla: margin collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) :question: 没太懂
@@ -470,7 +473,7 @@ Margin属性，表示该block与其他block之间的最小距离. e.g.如果bloc
 + 嵌套的box结构
   + 里面的box占据外面的box的content 
     + 不管有没有定义`box-sizing: border-box;` 里面的box都是用外面的box的**content部分**作为边框进行嵌套 
-  :gem: [nested boxes](./CSS_Sample/Block_Dimension/nestedBox.html) 
+    :gem: [nested boxes](./CSS_Sample/Block_Dimension/nestedBox.html) 
   + 如果不为box写width, height, 则默认box的宽高就是包络其所有sub-element的最小矩形 
   + 如果对内部的box声明: width:100%, 则内部box将继承外部box的content那部分的width (而不是外部box的全部width).
   + 实际代码中, 多层div的嵌套运用很常用, 不同的层次的div可能有不同的作用 (见JR_Ally_Wk1tut.flexCard)
@@ -735,7 +738,7 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
       margin: 0;
       padding: 0;
   }
-
+  
   .block1{
       height: 500px;
       width: 500px;
@@ -743,20 +746,20 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
       border: 5px black solid; 
       /* box-sizing: border-box; */
       /* overflow:hidden; */
-
+  
       position: relative;
-
+  
       display: flex;         
-
+  
   }
-
+  
   .sub_block1{
       height: 100px;
       width:100px;
       background-color: lightgreen;
       border: 2px white solid;
       /* box-sizing: border-box;  */
-
+  
       position: relative;
   }
   ```
@@ -778,13 +781,13 @@ HTML中后面生成的block会优先显示（压在之前的block上）; 但z-in
       height: 100vh;
       width: 100vw;
   }
-
+  
   .block1{
       height: 50%;
       width: 50%;
       ...
   }
-
+  
   ```
 
 
@@ -921,13 +924,13 @@ body,html{
     .block1{
         ...
         position: relative;
-
+    
         display: flex;    
         flex-direction: row;  
         flex-wrap: wrap;   
-
+    
         justify-content: center;    /*this works*/
-
+    
     }
     ```
 
@@ -948,11 +951,11 @@ body,html{
     .block1{
         ...
         position: relative;
-
+    
         display: flex;    
         flex-direction: row;  
         flex-wrap: wrap;   
-
+    
         align-content: center;
     }
     ```
@@ -973,14 +976,14 @@ body,html{
     .block1{
         ...
         position: relative;
-
+    
         display: flex;    
         flex-direction: row;  
         flex-wrap: wrap;   
-
+    
         align-content: center;
         justify-content: center;
-
+    
     }
     ```
 
@@ -1000,11 +1003,11 @@ body,html{
     .block1{
         ...
         position: relative;
-
+    
         display: flex;    
         flex-direction: row;  
         flex-wrap: wrap;   
-
+    
         align-items: center;  /*每行在竖直方向上居中于其所被分配的空间*/
     }
     ```
@@ -1015,19 +1018,20 @@ body,html{
     + Stretch, baseline为一组
 
   2. justify-content + align-items
+
     同时定义justify-content: center;(每行水平居中) 和 align-items: center; （每行在竖直方向上居中于其所被分配的空间）会发现水平和竖直方向上sub block在mother block 内部也居中了，但是由于是align-items这个相对较弱的竖直居中条件，sub block们在竖直方向上还是有gap
-
+    
     <img src="Src/justify-content-align-items1.png" width=50%><img src="Src/justify-content-align-items2.png" width=40%>
-
+    
       ```css
       .block1{
         ...
         position: relative;
-
+    
         display: flex;    
         flex-direction: row;  
         flex-wrap: wrap;   
-
+    
         justify-content: center;  /*content水平居中*/
         align-items: center;      /*每行在竖直方向上居中于其所被分配的空间*/
       }
@@ -1120,9 +1124,9 @@ step2:
   +  定义grid items的span范围
       ```css
       grid-column: 1 / 3;   /*grid item starts from column1 till column 3 (column1 to column2 actually). */
-
+      
       grid-column: 1 / span 2; /*grid item starts from 1 and span 2 columns (column 1 to column 2 actually).*/
-      ```  
+      ```
 
   :gem: [MDN: grid demo](./CSS_Sample/Grid/gridDemoMDN.html)
   
@@ -1234,7 +1238,7 @@ radical-gradient(...)
 + `background-image`
 可以通过URL指定值来设定绝对或相对路径指定网页的背景图像，例如，background-image：url（图片路径）
 + `background-repeat`
-默认情况下, background image会repeat来占据`<div>`声明的区域
+  默认情况下, background image会repeat来占据`<div>`声明的区域
   + repeat-x:图像横向平铺
   + repeat-y:图像纵向平铺
   + no-repeat：不平铺
@@ -1242,7 +1246,7 @@ radical-gradient(...)
   + scroll：背景图像是随内容滚动的(默认);
   + fixed：背景图像固定，即内容滚动而图像不动
 + `background-position`
-背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
+  背景位置，确定背景在`<div>`声明的区域中的水平和垂直位置
   + 该属性可取Xpos和Ypos, 单位是px，分别表示水平位置和垂直位置。还可以使用百分比表示背景的位置, 即X%和Y% 
   + 可以用X、Y方向关键词来表示
     + 水平方向的关键词有左对齐(left), 右对齐（right)和水平居中(center),
@@ -1252,13 +1256,13 @@ radical-gradient(...)
     background-position: left center;   /*水平左对齐, 竖直居中*/  
     ```
 + `background-size`
-定义背景图片的大小和block element的关系
+  定义背景图片的大小和block element的关系
   + auto(默认值，使用背景图片保持图片的原样)
   + percentage(当使用百分值时，不是相对于背景的尺寸大小来计算的，而是相对于元素宽度来计算的)
   + cover(整个背景图片放大填充了整个元素)
   + contain(让背景图片保持本身的宽高比例，将背景图片缩放到宽度或者高度正好适应所定义背景的区域)
 + `background`
-该属性实际上对应上面几个具体属性的取值
+  该属性实际上对应上面几个具体属性的取值
   + 如background：url（xxx.jpg）就等价于background-image：url（xxx.jpg）
 
 

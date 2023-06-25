@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      disabled="disabled"
+      class="input"
+      type="text"
+      name="username"
+      value="admin"
+    />
+
+    <script>
+      /*
+            attribute node 
+                - 在DOM中也是对象, 但通常不需要获取对象而是直接通过元素来完成对其的操作
+                - 如何操作属性节点
+                    方式1: direct access
+                        读: element.attributeName (注意class属性需要用className来读, 因为class是js保留字)
+                            读取boolean attribute时, 会返回true or false
+                        改: element.attributeName = attributeValue
+                    方式2: getter setter
+                        读: element.getAttribute(attributeName)
+                        改: element.setAttribute(attributeName, attributeValue)
+                        删: element.removeAttribute(attributeName)
+        */
+
+      //   const input = document.getElementsByName("username")[0];
+      const input = document.querySelector("[name = username]"); // css attribute selector
+      console.log(input.type);
+      console.log(input.value);
+      console.log(input.className);
+      console.log(input.disabled); // boolean attribute
+
+      input.value = "hello world!";
+
+      console.log(input.getAttribute("class"));
+    </script>
+  </body>
+</html>

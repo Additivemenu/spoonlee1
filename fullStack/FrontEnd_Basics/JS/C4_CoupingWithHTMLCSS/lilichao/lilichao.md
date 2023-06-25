@@ -12,7 +12,9 @@ Resources
 
 
 
-## 什么是DOM
+## 1.1 Intro
+
+**什么是DOM**
 
 DOM，全称Document Object Model，中文翻译为文档对象模型。DOM属于Web API的一部分。Web API中定义了非常多的对象，通过这些对象可以完成对网页的各种操作（添加删除元素、发送请求、操作浏览器等), DOM打通了JS和web
 
@@ -41,16 +43,14 @@ DOM中的
 
 
 
-## 概念
-
-### 节点（Node）
+节点（Node）
 
 在DOM标准下，网页中的每一个部分都会转换为对象。这些对象有一个共同的称呼 -- 节点(Node), 即来自于hierachy tree中的Node都是对象. 一个页面将会由多个节点构成，虽然都称为节点，但是它们却有着不同的类型：
 
 1. 文档节点
 2. 元素节点
-3. 文本节点
-4. 属性节点
+3. 文本节点 (一般在element node内,  可以通过element node来调用)
+4. 属性节点 (一般在element node内, 可以通过element node来调用)
 5. …
 
 每一个节点都有其不同的作用，文档节点表示整个网页，元素节点表示某个标签，文本节点表示网页中的文本内容，属性节点表示标签中的各种属性。如果从对象的结构上来讲，这些对象都有一个共同的父类Node。总的来说，都是属于节点，但是具体类型不同。
@@ -59,7 +59,7 @@ Node类是所有网页节点对象的根父类 https://developer.mozilla.org/en-
 
 
 
-### 关系
+关系
 
 - 祖先 —— 包含后代元素的元素是祖先元素
 - 后代 —— 被祖先元素包含的元素是后代元素
@@ -69,7 +69,7 @@ Node类是所有网页节点对象的根父类 https://developer.mozilla.org/en-
 
 
 
-## DOM: Hello World
+## 1.2 DOM: Hello World
 
 135
 
@@ -77,10 +77,10 @@ Node类是所有网页节点对象的根父类 https://developer.mozilla.org/en-
 
 
 
-## DOM node
+## 1.3 :moon: DOM node
 
 
-### Document node
+### 1.3.1 Document node
 
 136
 [Demo: document obj](./02_documentObj.html)
@@ -103,7 +103,7 @@ document obejct 的prototype链 (通过console: document.__proto__ 可以查看)
 
 
 
-### Element Node
+### 1.3.2 Element Node
 
 #### Get element node
 
@@ -171,11 +171,10 @@ element methods:
 
 
 
-### Text node
+### 1.3.3 Text node
 
 139
-
-
+[Demo](./05_textNode.html)
 
 在DOM中, 网页中所有的文本内容都是文本节点对象. 因此可以通过元素来获取其中的文本节点对象, 但通常不会这么做, 因为我们可以直接通过元素去修改其中的文本.
 修改文本的三个属性
@@ -235,10 +234,28 @@ Console结果:
 
 
 
-### Attribute node
+### 1.3.4 Attribute node
 
 140
 
+[Demo](./06_attributeNote.html)
+
+attribute node 
+
+​    \- 在DOM中也是对象, 但通常不需要获取对象而是直接通过元素来完成对其的操作
+
+
+
+如何操作属性节点
+
++ 方式1: direct access
+  + 读: element.attributeName (注意class属性需要用className来读, 因为class是js保留字); 读取boolean attribute时, 会返回true or fals
+  + 改: element.attributeName = attributeValue
+
++ 方式2: getter setter
+  + 读: element.getAttribute(attributeName)
+  + 改: element.setAttribute(attributeName, attributeValue)
+  + 删: element.removeAttribute(attributeName)
 
 
 
@@ -246,18 +263,74 @@ Console结果:
 
 
 
-
-### Event
+#### Event
 
 141
 
+[Demo: 07 event](./07_event.html)
+
+
+<u>元素上以属性的形式绑定事件， 而事件绑定对应的响应函数 (可以同时绑定多个响应函数)</u>
+
+
+
+event就是用户和页面之间发生的交互行为; e.g. click button; mouse move, mouse double click, mouse drag; release key, type key
+
+bound event listener / 响应函数 (其实就是callback function) to element, 来完成和用户的交互 
+
+- 方式1: 直接在元素的属性中设置 
+- 方式2: 可以通过为元素的指定属性设置callback function的形式来绑定事件 (但1个元素上的1个事件同时只能绑定1个响应函数)
+    - 多人开发中可能因此出现conflict
+- 方式3： 可以通过element.addEventListener() 来绑定响应函数 (1个元素上的1个事件同时可以绑定多个响应函数)
+    - 因而多人开发时更prefer
 
 
 
 
 
+```html
+  <body>
+    // 方式1: 
+    <button id="btn" ondblClick="alert('you just clicked me!')">
+      click me twice
+    </button>
 
-### Node的复制
+    <button id="btn2" onmouseover="alert('you just move over me!')">
+      move over me
+    </button>
+
+    <button id="btn3">I am button 3</button>
+
+    <button id="btn4">I am button 4</button>
+
+    <script>
+      // 方式2:
+      const btn3 = document.getElementById("btn3");
+      btn3.ondblclick = () => {
+        alert("i am button 3");
+      };
+
+      // 方式3:
+      const btn4 = document.getElementById("btn4");
+      btn4.addEventListener("mouseover", () => {
+        alert("I am button4");
+      });
+      btn4.addEventListener("mouseover", () => {
+        alert("greetings from button4!");
+      });
+    </script>
+  </body>
+```
+
+
+
+## 1.4 Practice
+
+142-149
+
+看到这里
+
+## 1.5 Node的复制
 
 150
 
@@ -323,7 +396,7 @@ Console结果:
 
 
 
-## Practice 
+# Practice 
 
 
 
