@@ -48,19 +48,20 @@ e.g.
 useEffect(()=>{...}, [dependencies]);
 ```
 
-+ arg1: a function that should be executed <u>**AFTER every component evaluation**</u> IF the specified dependencies changed. 
++ arg1: a callback function (the effect + return(()=>{})) that should be executed <u>**AFTER every component evaluation**</u> IF the specified dependencies changed. 
   
   + ```js
     React rendering component tree to UI
     
     after rendering
     	if (any of dependencies changed)
-        do callback 
+        do ()=>{} in return(()=>{}) in callback
+        do effect in callback
     
     React rendering component tree to UI
     ...
     ```
-  
+    
   + Your side effect code goes into this function. 可以认为这里设置了一个callback function, 执行ReactJs component function时(即re-render时)会直接跳过useEffect()的代码块, 等时机合适callback function才会被执行
   
 + arg2: dependencies of this effect - the function only runs if the dependencies changed
@@ -76,7 +77,7 @@ The `useEffect` Hook is executed after every render, including the first one. By
 
 
 
-+ case : no dependency
++ Case 1: no dependency
 
 ```javascript
 import React, { useState, useEffect } from 'react';
@@ -137,11 +138,38 @@ In this example, the `useEffect` callback will only run when the `count` value c
 
 
 
+Case 2.1
+
+```js
+import React, { useState, useEffect } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You clicked ${count} times`;
+  }, []);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+if you specify an empty dependency, the effect is only executed once at the initial rendering
+
 
 
 + Case 3: cleanup
 
-Another key feature of `useEffect` is cleanup. Some effects might require cleanup (e.g., subscriptions or timers), and you can return a function from `useEffect` to handle this cleanup. This returned function will be called by React before it runs the effect the next time and also before the component unmounting.
+Another key feature of `useEffect` is cleanup. Some effects might require cleanup (e.g., subscriptions or timers), and you can return a function from `useEffect` to handle this cleanup. This returned function will be called by React before it runs the effect the next time and also before the component unmounting from real DOM.
 
 ```javascript
 import React, { useState, useEffect } from 'react';
@@ -354,19 +382,128 @@ export default Login;
 
 
 
-### What to add & not to add as Dependencies
+### :moon: What to add & not to add as Dependencies
 
 146
 
-该看这了
+总结一句话, dependency只加"会随着component re-render变化的", 因为useEffect()的设计初衷就是让callback在render cycle的间歇执行.
+
+
+
+In the previous lecture, we explored `useEffect()` dependencies.
+
+You learned, that you should add **"everything"** you use in the effect function as a dependency - **<u>i.e. all state variables and functions you use in there.</u>**
+
+That is correct, but there are a **few exceptions** you should be aware of:
+
+- You **DON'T need to add state updating functions** (as we did in the last lecture with `setFormIsValid`): React guarantees that those functions never change, hence you don't need to add them as dependencies (you could though)
+- You also **DON'T need to add "built-in" APIs or functions** like `fetch()`, `localStorage` etc (functions and features built-into the browser and hence available globally): These browser APIs / global functions are not related to the React component render cycle and they also never change
+- You also **DON'T need to add variables or functions** you might've **defined OUTSIDE of your components** (e.g. if you create a new helper function in a separate file): Such functions or variables also are not created inside of a component function and hence changing them won't affect your components (components won't be re-evaluated if such variables or functions change and vice-versa)
+
+So long story short: <u>You must add all "things" you use in your effect function **if those "things" *could change* because your component (or some parent component) re-rendered.**</u> That's why 
+
++ *variables or state defined in component functions*,
++ *props or functions defined in component functions*
+
+have to be added as dependencies!
+
+
+
+:gem: Here's a made-up dummy example to further clarify the above-mentioned scenarios:
+
+```js
+import { useEffect, useState } from 'react'; 
+
+let myTimer; 
+
+const MyComponent = (props) => {  
+  const [timerIsActive, setTimerIsActive] = useState(false);   
+  const { timerDuration } = props; // using destructuring to pull out specific props values   
+  useEffect(() => {    
+    if (!timerIsActive) {      
+    	setTimerIsActive(true);      
+    	myTimer = setTimeout(() => {        
+     	 setTimerIsActive(false);     
+   		 }, timerDuration);    
+    }  
+  }, [timerIsActive, timerDuration]);};
+```
+
+In this example:
+
+- `timerIsActive` is **added as a dependency** because it's component state that may change when the component changes (e.g. because the state was updated)
+- `timerDuration` is **added as a dependency** because it's a prop value of that component - so it may change if a parent component changes that value (causing this MyComponent component to re-render as well)
+- `setTimerIsActive` is **NOT added as a dependency** because it's that **exception**: State updating functions could be added but don't have to be added since React guarantees that the functions themselves never change
+- `myTimer` is **NOT added as a dependency** because it's **not a component-internal variable** (i.e. not some state or a prop value) - it's defined outside of the component and changing it (no matter where) **wouldn't cause the component to be re-evaluated**
+- `setTimeout` is **NOT added as a dependency** because it's **a built-in API** (built-into the browser) - it's independent from React and your components, it doesn't change
+
+
 
 
 
 ### Using the useEffect Cleanup Function
 
+147
+
+
+
+Login.js
+
++ 之前写的: useEffect中 whenever dependency enteredEmail or enteredPassword changes, the side effect function (args1 callback in useEffect) will be executed, this would leads to unnecessary overhead (imagine what if it involves HTTP request in the side effect function). Instead of checking user input on every key stroke, we want to check user input after user type in a chunck of characters  => timer + useEffect cleanup
+
+  + Some effects might require cleanup (e.g., subscriptions or timers), and you can return a function from `useEffect` to handle this cleanup. This returned function will be called by React <u>before it runs the effect the next time</u> and also <u>before the component unmounting</u>  except the initial rendering. 
+
+    + So in e.g. below effect code, the timer is reset before running the effect 
+
+    
+
+```js
+const Login = (props) => {
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [emailIsValid, setEmailIsValid] = useState();
+  const [enteredPassword, setEnteredPassword] = useState("");
+  const [passwordIsValid, setPasswordIsValid] = useState();
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  // dependency between states;  enteredEmail. enteredPassword => formIsValid
+  // whenever base state changes, check validity of user input => also a side effect of user input
+  useEffect(() => {
+    // the effect -------------------------------
+    const identifier = setTimeout(() => {
+      console.log("checking input validity...");
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500); // browser built-in
+		// ------------------------------------------
+    
+    // below code will be called by react before it runs the effect next time
+    return () => {
+      console.log("clean up");
+      clearTimeout(identifier); // brower built-in, clear the old timer before we set a new one
+    }; // clean up
+
+  }, [enteredEmail, enteredPassword]);
+
+	// event handlers...
+
+  return (
+		// jsx...
+  );
+};
+```
+
+
+
 
 
 ### useEffect Summary
+
+148
+
+复习上面的
+
+
 
 
 
@@ -374,9 +511,9 @@ export default Login;
 
 # 2. Introducing useReducers & Reducers 
 
+149-153
 
-
-
+看到这里
 
 
 

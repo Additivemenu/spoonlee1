@@ -11,12 +11,24 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  useEffect(() => {
+    console.log("EFFECT RUNNINg");
+  }, []);
+
   // dependency between states;  enteredEmail. enteredPassword => formIsValid
   // whenever base state changes, check validity of user input => also a side effect of user input
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
+    const identifier = setTimeout(() => {
+      console.log("checking input validity...");
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500); // browser built-in
+
+    return () => {
+      console.log("clean up");
+      clearTimeout(identifier); // brower built-in, clear the old timer before we set a new one
+    }; // clean up
   }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
