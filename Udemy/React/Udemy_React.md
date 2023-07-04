@@ -47,6 +47,8 @@ References:
 
 + `<ReactDOM.createPortal()>` to make overlay, backdrop component semantically better
 
++ `useReducer` on top of `useState` for managing complex state: to gain high cohesion and low coupling 
+
 
 
 
@@ -64,11 +66,16 @@ React基础篇
 | [6](./C6/README.md) | Styling React Component                                      | conditional styling; <br>styled component + css modules |
 | [7](./C7/README.md) | :bangbang: Debugging react apps                              | breaking points <br>React developer tools |
 | [8](./C8/README.md) | :gem: Practice: a complete Practice Project         | :bangbang: react re-render mechanism <br> :question: demo1:  还有关于react diffing的小bug. 先不管， 先往下学 <br> demo2 : error state management; 弹窗的产生与关闭<br> |
-| [9](./C9/README.md) | Working with Fragments, portals and "Ref"                    |  |
-| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later |             |
-| 11                  | :gem: Practice: Building a food order App                    |             |
-| 12                  | Scene behind react & Optimization                            |             |
-| 13                  | Alternative way: class component                             |             |
+
+进阶篇
+
+| Episode               | Title                                                        | Description                             |
+| --------------------- | ------------------------------------------------------------ | --------------------------------------- |
+| [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                         |
+| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext |
+| 11                    | :gem: Practice: Building a food order App                    |                                         |
+| 12                    | Scene behind react & Optimization                            |                                         |
+| 13                    | Alternative way: class component                             |                                         |
 
 中级篇
 
