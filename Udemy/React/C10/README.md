@@ -544,26 +544,10 @@ const Login = (props) => {
     console.log("EFFECT RUNNINg");
   }, []);
 
-  // dependency between states;  enteredEmail. enteredPassword => formIsValid
-  // whenever base state changes, check validity of user input => also a side effect of user input
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log("checking input validity...");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500); // browser built-in
-
-  //   return () => {
-  //     console.log("clean up");
-  //     clearTimeout(identifier); // brower built-in, clear the old timer before we set a new one
-  //   }; // clean up
-  // }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
 
-    // move below to useEffect args1
     setFormIsValid(
       event.target.value.includes("@") && enteredPassword.trim().length > 6
     );
@@ -572,12 +556,13 @@ const Login = (props) => {
   const passwordChangeHandler = (event) => {
     setEnteredPassword(event.target.value);
 
-    // move below to useEffect args1
     setFormIsValid(
       event.target.value.trim().length > 6 && enteredEmail.includes("@")    // setEnteredPassword is set value at the end of this render-cycle
     );
   };
-
+	
+  // --------------------------------------------
+  // handlers
   const validateEmailHandler = () => {
     setEmailIsValid(enteredEmail.includes("@"));
   };
@@ -979,4 +964,161 @@ when to use `useReducer`:
 
 154 -
 
-看到这里...
+可以认为React Context 是基于 state lifting 和 component communication的一种设计模式, 由ancestor作为provider直接为consumer提供需要的state与state change handler,  尤其在component tree很复杂时， 可以大大减少state 被props pass的路径长度
+
+
+
+previous: only use state lifting by passing state as props via component one by one
+
+![](./Src_md/context1.png)
+
+Now: use Context to pass state and state change handler to the component that really needs them!
+
+![](./Src_md/context2.png)
+
+
+
+## Using the Recat Context API
+
+155
+
+:gem: useContext_demo
+
+根据用户的登录状态 => conditional content of ui
+
+```js
+Component tree:
+
+App
+	|-- MainHeader
+				|-- Navigation
+							|-- isLoggedIn && <a/>
+	|-- <main/>
+				|-- !isLoggedIn && Login
+				|-- isLoggedIn && Home
+```
+
+
+
+利用context API:
+
+```js
+Component tree:
+
+App (- AuthConxt.Provider)
+	|-- MainHeader
+				|-- Navigation	(- AuthContext.Consumer)
+							|-- isLoggedIn && <a/>
+	|-- <main/>
+				|-- !isLoggedIn && Login
+				|-- isLoggedIn && Home
+```
+
+
+
+
+
+auth-context.js
+
++ 注意Context内一般是一个object (当然也可以是一个primitive variable)
+
+```js
+import React from "react";
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+});
+
+export default AuthContext;
+```
+
+
+
+App.js
+
++ 使用AuthContext.Provider 包住App的jsx code
+
+```js
+import AuthContext from "./context/auth-context";
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedUserLoggedIn = localStorage.getItem("isLoggedIn"); // when re-render, check if user logged in
+    if (storedUserLoggedIn === "1") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const loginHandler = (email, password) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+    localStorage.setItem("isLoggedIn", "1"); // global variable provided by browser. Item is like a java entry: a key-value pair
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("isLoggedIn"); // remove that loggin item on log out
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn}}>
+      <MainHeader onLogout={logoutHandler} />
+      <main>
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <Home onLogout={logoutHandler} />}
+      </main>
+    </AuthContext.Provider>
+  );
+}
+```
+
+Navigation.js (MainHeader下的一个child)
+
++ 使用AuthContext.Consumer来解包
+
+```js
+import AuthContext from "../../context/auth-context";
+
+const Navigation = (props) => {
+  return (
+    <AuthContext.Consumer>
+      {(ctx) => {
+        return (
+          <nav className={classes.nav}>
+            <ul>
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Users</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Admin</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <button onClick={ctx.onLogout}>Logout</button>
+                </li>
+              )}
+            </ul>
+          </nav>
+        );
+      }}
+    </AuthContext.Consumer>
+  );
+};
+
+export default Navigation;
+```
+
+
+
+## useContext hook
+
+156
+
+以上可以更加elegant: 使用useContext hook
