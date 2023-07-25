@@ -964,7 +964,9 @@ when to use `useReducer`:
 
 154 -
 
-可以认为React Context 是基于 state lifting 和 component communication的一种设计模式, 由ancestor作为provider直接为consumer提供需要的state与state change handler,  尤其在component tree很复杂时， 可以大大减少state 被props pass的路径长度
+可以认为React Context 是基于 state lifting 和 component communication的一种设计模式, 由ancestor作为provider直接为consumer提供需要的state与state change handler,  尤其在component tree很复杂时， 可以大大减少state 被props pass的路径长度. 
+
+这里先介绍基本的React context API, 再进一步深入引出useContext 与 自定义 Context Provider component 实现high cohesion
 
 
 
@@ -1122,3 +1124,253 @@ export default Navigation;
 156
 
 以上可以更加elegant: 使用useContext hook
+
+
+
+Navigation.js
+
+```js
+import React, { useContext } from "react";
+import AuthContext from "../../context/auth-context";
+import classes from "./Navigation.module.css";
+
+const Navigation = () => {
+  
+  const ctx = useContext(AuthContext);		// use this 
+
+  return (
+    <nav className={classes.nav}>
+      <ul>
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Users</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Admin</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <button onClick={ctx.onLogout}>Logout</button>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
+
+export default Navigation;
+```
+
+
+
+## Making context dynamic
+
+157
+
+说明了context里不仅可以传递变量, 还可以传递函数 (e.g. Handler)
+
+
+
+App.js
+
++ 采用Provider向Navigator.js传递logoutHandler
+
+```js
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  useEffect(() => {
+    const storedUserLoggedIn = localStorage.getItem("isLoggedIn"); // when re-render, check if user logged in
+    if (storedUserLoggedIn === "1") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const loginHandler = (email, password) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+    localStorage.setItem("isLoggedIn", "1"); // global variable provided by browser. Item is like a java entry: a key-value pair
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("isLoggedIn"); // remove that loggin item on log out
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, onLogout: logoutHandler }}
+    >
+      <MainHeader onLogout={logoutHandler} />
+      <main>
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <Home onLogout={logoutHandler} />}
+      </main>
+    </AuthContext.Provider>
+  );
+}
+```
+
+
+
+同时在Context 中声明onLogout
+
+```js
+import React from "react";
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+  onLogout: () => {},
+});
+
+export default AuthContext;
+```
+
+
+
+
+
+## :moon: Building & Using a custom Context Provider Component
+
+158
+
+总之是想实现一个high cohesion的pattern, 统一管理authentication相关状态
+
+
+
+这次将authentication相关的state management全写到一个`Context Provider component `里面, 追求high cohesion
+
++ 优雅!
+
+```js
+import React, { useState, useEffect } from "react";
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+  onLogout: () => {},
+  onLogin: (email, password) => {},
+});
+
+export const AuthContextProvider = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // note we don't want to run args1 code inside a component function as they are side effects which might disrupt component rendering
+  // by putting them in useEfect, we ensure that these code logics are only executed AFTER every component evaluation
+  // IF any of the dependencies changed
+  // below code only run once with no dependency is specified
+  useEffect(() => {
+    const storedUserLoggedIn = localStorage.getItem("isLoggedIn"); // when re-render, check if user logged in
+    if (storedUserLoggedIn === "1") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const logoutHandler = () => {
+    localStorage.removeItem("isLoggedIn"); // remove that loggin item on log out
+    setIsLoggedIn(false);
+  };
+
+  const loginHandler = () => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+    localStorage.setItem("isLoggedIn", "1"); // global variable provided by browser. Item is like a java entry: a key-value pair
+    setIsLoggedIn(true);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+        onLogout: logoutHandler,
+        onLogin: loginHandler,
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;
+```
+
+在index.js中, 
+
+使用刚刚自定义的Context Provider Component, 
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+import "./index.css";
+import App from "./App";
+import { AuthContextProvider } from "./context/auth-context";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <AuthContextProvider>
+    <App />
+  </AuthContextProvider>
+);
+```
+
+
+
+其他组件如果要用到Context中相关的state或handler, 直接useContext
+
+如 App.js
+
+```js
+function App() {
+  
+  const ctx = useContext(AuthContext);
+
+  return (
+    <React.Fragment>
+      <MainHeader onLogout={ctx.onLogout} />
+      <main>
+        {!ctx.isLoggedIn && <Login />}
+        {ctx.isLoggedIn && <Home />}
+      </main>
+    </React.Fragment>
+  );
+}
+```
+
+其他组件, 如Home.js, Login.js 也用到, 这里就不展示了, 自己看代码
+
+
+
+
+
+## :bangbang: React Context Limitations 
+
+159
+
+注意Context也不能完全替代通过props来传递state和state handler, 比如一些通用的组件如自定义的Button, Card... 因为你不想把负责具体事务的Context用给这些通用组件, 否则他们就不通用了.
+
+Also, React Context is NOT optimized for high frequency changes - React  developer 说的!   Redux might address this
+
+
+
+## Learning the "Rule of Hooks"
+
+
+
+
+
+## Refactoring an Input Component
+
+
+
+
+
+## Diving into "Forward Refs"
+
+
+
+
+

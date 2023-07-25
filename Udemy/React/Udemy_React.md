@@ -7,6 +7,8 @@ References:
   + [Community & Discussion board](https://academind.com/community/)
     + 有很多其他tutorial
 
+似乎还得学next.js, tailwind...
+
 
 
 
@@ -48,6 +50,8 @@ References:
 + `<ReactDOM.createPortal()>` to make overlay, backdrop component semantically better
 
 + `useReducer` on top of `useState` for managing complex state: to gain high cohesion and low coupling 
+
++ `useContext` 与 Context Provider component, 实现集中管理某种相关的一系列状态 (e.g. login, logout authentication)
 
 
 
