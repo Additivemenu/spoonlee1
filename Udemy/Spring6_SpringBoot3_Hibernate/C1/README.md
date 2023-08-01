@@ -1,4 +1,4 @@
-# intro 
+# 1. Intro 
 
 6
 
@@ -110,7 +110,7 @@ No. Behind the scenes, Spring Boot uses same code of Spring Framework Remember, 
 
 
 
-# Hands-on
+# 2. Hands-on
 
 ## Spring Boot initialzer
 
@@ -181,7 +181,7 @@ public class FunRestController {
 
 
 
-# Spring Framework overview
+# 3. Spring Framework overview
 
 9, 10
 
@@ -264,7 +264,7 @@ AOP: Aspect Oriented Programming, Add functionality to objects declaratively.
 
 
 
-# Spring Projects
+# 4. Spring Projects
 
 11-
 
@@ -601,7 +601,7 @@ Template
 
 
 
-# Get Start with SpringBoot application
+# 5. Get Start with SpringBoot application
 
 ## SpringBoot starters
 
@@ -1005,7 +1005,7 @@ Option 2: Use Spring Boot Maven plugin
 
 
 
-# :moon:  SpringBoot properties
+# 6. :moon:  SpringBoot properties
 
 ## Injecting Custom Application Properties
 
