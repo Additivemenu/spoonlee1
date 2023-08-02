@@ -15,7 +15,7 @@ don't have to watch LEGACY videos
 
 :book: [本课程 github: code materials](https://github.com/darbyluv2code/spring-boot-3-spring-6-hibernate-for-beginners)
 
-:bangbang: 本课程似乎并不包含unit test, API management tool, database migration ...
+:bangbang: 本课程似乎并不包含unit test, API management tool, database migration, 分页查找, 分布式, docker .. 只是作为SpringBoot的入门课程.
 
 
 

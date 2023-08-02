@@ -5,7 +5,8 @@
     + Spring Bean
       + @Component
       + @Autowired
-
+        + @Qualifier
+  
 + Dependency Injection
   + a
 
@@ -56,13 +57,13 @@ The dependency inversion principle:  The client delegates the responsibility of 
 
 
 
-We will cover the two recommended types of injection :
+:bangbang: We will cover the two recommended types of injection :
 
 + `Constructor Injection`
-  + Use this when you have required dependencies
+  + Use this when you have <u>required dependencies</u>
   + Generally recommended by the spring.io development team as first choice
 + `Setter Injection`
-  + Use this when you have optional dependencies
+  + Use this when you have <u>optional dependencies</u>
   + If dependency is not provided, your app can provide reasonable default logic
 
 
@@ -132,6 +133,8 @@ public class CricketCoach implements Coach{
 Create a constructor in your class for injections 
 
 + here we use `@Autowired` to tell Spring to inject a dependency
+  + 注意`@Autowired` is used to decorate method or constructor
+
 
 ```java
 import org.springframework.beans.factory.annotation.Autowired;
@@ -279,7 +282,9 @@ code: component scanning
 
 39-40
 
-看到这里
+Just demonstrate `@SpringBootApplication`的默认component scanning 与指定路径的component scanning
+
+
 
 
 
@@ -287,37 +292,155 @@ code: component scanning
 
 42,43
 
+Inject dependencies by calling setter method on your class
 
 
 
+Spring do the work behind the scene:
 
-## Field injection
+```java
+Coach theCoach = new CricketCoach();
+DemoController demoController = new DemoController();
+demoController.setCoach(theCoach);
+```
 
-44
+
+
+Just put a setter method to inject coach using `@Autowired` in the DemoController
+
+```java
+@RestController
+public class DemoController {
+    // define a private field for dependency
+    private Coach myCoach;
+
+    @Autowired
+    public void setMyCoach(Coach theCoach){     // note method name here is not important
+        myCoach = theCoach;
+    }
+    
+    @GetMapping("/dailyworkout")
+    public String getDailyWorkout(){
+        return myCoach.getDailyWorkOut();
+    }
+
+}
+```
+
+and everything runs just like in constructor injection demo
 
 
 
+## 2.4 Field injection
+
+43
+
+note **field injection** is not recommendated by spring.io development team
+
++ in early days, field injection was popular on spring projects. But in recent years, it has fallen out of favor
+
++ In general, it makes the code harder to unit test. Some old project might use it
 
 
-## Qualifiers
+
+```java
+@RestController
+public class DemoController {
+    // field injection, use @Autowired directly on the field
+  	@Autowired
+    private Coach myCoach;
+    
+    @GetMapping("/dailyworkout")
+    public String getDailyWorkout(){
+        return myCoach.getDailyWorkOut();
+    }
+
+}
+```
+
+
+
+## 2.5 Others 
+
+
+
+### Qualifiers
 
 45-47
 
+Anotation autowiring and qualifiers
 
 
 
+:bangbang: if we have multiple implementations of interface Coach, how does `@Autowired` know which one should be instantiateed and injected?
 
-## Primary 
++ Intellij 甚至会提醒你需不需要加`@Qualifier`
 
-48-49
+```java
+public interface Coach {
+  ...
+}
+
+public class CricketCoach implements Coach{
+  ...
+}
+public class BaseballCoach implements Coach{
+  ...
+}
+public class TrackCoach implements Coach{
+  ...
+}
+public class TennisCoach implements Coach{
+  ...
+}
+```
+
+:star: Solution: be specific using `@Qualifier`
+
++ specify the bean id: cricketCoach
+  + same name as the class name, except the first character in lower-case
+
+```java
+@RestController
+public class DemoController {
+    // define a private field for dependency
+    private Coach myCoach;
+  
+    // define a constructor for dependency injection
+    @Autowired  // @Autowired annotation tells Spring to inject a dependency (create a Coach Obj and inject into this constructor)
+    public DemoController(@Qualifier("cricketCoach") Coach theCoach){
+        myCoach = theCoach;
+    }
+
+    @GetMapping("/dailyworkout")		// API 
+    public String getDailyWorkout(){
+        return myCoach.getDailyWorkOut();
+    }
+
+}
+```
 
 
 
+:gem: 04-qualifiers
 
 
-## Lazy initialization
 
-50-52
+:bangbang: 用了@Qualifier, polymorphism 不就成了摆设了吗?
+
+
+
+### Primary 
+
+47-48
+
+看到这里
+
+
+
+### Lazy initialization
+
+49-51
 
 
 
