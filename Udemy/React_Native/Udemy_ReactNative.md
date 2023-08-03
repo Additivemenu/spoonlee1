@@ -6,13 +6,13 @@ https://reactnative.dev/
 
 
 
-what is React Native?
+:bangbang: what is React Native?
 
 :pencil: [React.js vs. React Native](./C0/README.md)
 
 
 
-Firt RN app
+## Firt RN app
 
 follow environment setup in RN document
 
