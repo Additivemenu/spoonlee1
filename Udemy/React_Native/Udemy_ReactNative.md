@@ -12,7 +12,7 @@ https://reactnative.dev/
 
 
 
-## Firt RN app
+## Firt RN app on real device
 
 follow environment setup in RN document
 
@@ -35,6 +35,37 @@ package.json中dependency和react app 中类似
 
 + 也可在local device上运行emulator => P9, 有需求再看
 
+Commands: 
+
+> › Press a │ open Android
+> › shift+a │ select a device or emulator
+> › Press i │ open iOS simulator
+> › shift+i │ select a simulator
+> › Press w │ open web
+>
+> › Press r │ reload app
+> › Press j │ open debugger
+> › Press m │ toggle menu
+> › shift+m │ more tools
+> › Press o │ open project code in your editor
+> › Press c │ show project QR
+
+
+
+
+
+## Set up local environment using emulator
+
+Android emulator
+
++ Andriod Studio => virual device manager => choose and run a device with 'play store' icon, press 'a'
+
+IOS emulator
+
++ Xcode => show content package => developer > application => simulator, press 'i'
+
+
+
 
 
 
@@ -45,13 +76,13 @@ package.json中dependency和react app 中类似
 
 Essentials of React Native (2 weeks to learn)
 
-| Class                      | Topic                                                        | Description |
-| -------------------------- | ------------------------------------------------------------ | ----------- |
-| :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 |             |
-| 3                          | Debug React Native Apps                                      |             |
-| :star: 4                   | Component, Layout, styling => :gem: build a Mini-Game app    |             |
-| :star: 5                   | Build Adaptive User Interface (Adapt to Platform & Device Size) |             |
-| :star: 6                   | React Native Navigation with React Navigation                |             |
+| Class                      | Topic                                                        | Description                                   |
+| -------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
+| :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list |
+| 3                          | Debug React Native Apps                                      |                                               |
+| :star: 4                   | Component, Layout, styling => :gem: build a Mini-Game app    |                                               |
+| :star: 5                   | Build Adaptive User Interface (Adapt to Platform & Device Size) |                                               |
+| :star: 6                   | React Native Navigation with React Navigation                |                                               |
 
 React & React Native (2 weeks to learn)
 
