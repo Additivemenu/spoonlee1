@@ -10,9 +10,17 @@ Adding interactivity & managing state
 
 
 
-a demo app
+:gem:A demo app: course goals (典中典的demo, 两个组件, 一个接收user input, 一个展示user input)
 
++ Core Component of React Native
+  + HTML tags cannot be used, but RN provides many similar counterparts - the core components
+  + <View>, <ScrollView>, <FlatList>, <Pressable>, <Image>...
++ React Native use StyleSheet to create css-alike styling to core component
+  + layout: flexbox 和 css语法一样
++ state management & props passing is the same as React.js
+  + 注意组件通信时, 如何向props传来的function reference提供参数
 
+一句话, RN基本上写起来需要逻辑和思维与写React.js一样, 只是它自己有HTML 和 CSS的平替, 以及一些特别的API
 
 
 
@@ -1412,13 +1420,59 @@ export default GoalItem;
 
 36
 
-看到这里
+React Native 也具有类似 <Img> 的 Core Component <Image>
+
++ import an image source using require() function
+
+```js
+// jsx in GoalInput component
+return ( 
+    <Modal visible={props.visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        // *********************************************
+        <Image
+          style={styles.image}
+          source={require("../assets/images/goal.png")}
+        />
+        // *********************************************
+        <TextInput
+          style={styles.textInput}
+          placeholder="Your course goal!"
+          onChangeText={goalInputHandler}
+          value={enteredGoalText} // two way binding!
+        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button title="Add Goal" onPress={addGoalHandler} />
+          </View>
+          <View style={styles.button}>
+            <Button title="cancel" onPress={props.onCancel} />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+```
+
+
 
 
 
 ## App finishing touches
 
 37
+
+just tuning the color to make app looks nicer
+
+
+
+<StatusBar> style statusbar of iOS 
+
+```js
+import { StatusBar } from "expo-status-bar";
+
+<StatusBar style="light" />
+```
 
 
 
