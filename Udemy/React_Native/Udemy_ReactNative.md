@@ -79,7 +79,7 @@ Essentials of React Native (2 weeks to learn)
 | Class                      | Topic                                                        | Description                                   |
 | -------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
 | :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list |
-| 3                          | Debug React Native Apps                                      |                                               |
+| [3](./C3/README.md)        | Debug React Native Apps                                      | React devtools                                |
 | :star: 4                   | Component, Layout, styling => :gem: build a Mini-Game app    |                                               |
 | :star: 5                   | Build Adaptive User Interface (Adapt to Platform & Device Size) |                                               |
 | :star: 6                   | React Native Navigation with React Navigation                |                                               |

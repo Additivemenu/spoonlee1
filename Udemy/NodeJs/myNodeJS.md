@@ -32,34 +32,34 @@ Security & Validations
 
 | Class | Title                    | Description |
 | ----- | ------------------------ | ----------- |
-|       | Sessions & cookies       |             |
-| C2    | Athentication            |             |
-| C3    | Sending E-Mails          |             |
-| C4    | Authentication Deep Dive |             |
-|       | User Input Validation    |             |
-|       | Error Handling           |             |
+| 14    | Sessions & cookies       |             |
+| 15    | Athentication            |             |
+| 16    | Sending E-Mails          |             |
+| 17    | Authentication Deep Dive |             |
+| 18    | User Input Validation    |             |
+| 19    | Error Handling           |             |
 
 Some common API
 
 | Class | Title                    | Description |
 | ----- | ------------------------ | ----------- |
-|       | File Uploads & Downloads |             |
-| C2    | Pagination               |             |
-| C3    | Async Requests           |             |
-| C4    | Handling Payments        |             |
+| 20    | File Uploads & Downloads |             |
+| 21    | Pagination               |             |
+| 22    | Async Requests           |             |
+| 23    | Handling Payments        |             |
 
 Modern Node.Js topic
 
 | Class | Title                      | Description |
 | ----- | -------------------------- | ----------- |
-|       | REST API basics            |             |
-| C2    | Advanced REST API Features |             |
-| C3    | Using async-await          |             |
-| C4    | Websocket & Socket.io      |             |
-|       | GraphQL                    |             |
-|       | Deployment                 |             |
-|       | beyound web servers        |             |
-|       | Node + TypeScript, Deno    |             |
+| 24    | REST API basics            |             |
+| 25    | Advanced REST API Features |             |
+| 26    | Using async-await          |             |
+| 27    | Websocket & Socket.io      |             |
+| 28    | GraphQL                    |             |
+| 29    | Deployment                 |             |
+| 30    | beyound web servers        |             |
+| 31    | Node + TypeScript, Deno    |             |
 |       |                            |             |
 
 
