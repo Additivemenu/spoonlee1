@@ -8,38 +8,43 @@ All lecture materials is in the last module of each class
 
 
 
+## Course outline
 
+Part1: node.js basics
 
-| Class | Title                                                    | Description |
-| ----- | -------------------------------------------------------- | ----------- |
-|       |                                                          |             |
-| C2    | Optional: JS refresher                                   |             |
-| C3    | Understanding the basics                                 |             |
-| C4    | Improved Development Workflow and debugging              |             |
-| C5    | Working with Express.js                                  |             |
-| C6    | Working with Dynamic Content & Adding Templating Engines |             |
+| Class               | Title                                                    | Description |
+| ------------------- | -------------------------------------------------------- | ----------- |
+| C1                  | Course introduction                                      |             |
+| C2                  | Optional: JS refresher                                   |             |
+| [3](./C3/README.md) | Understanding the basics                                 |             |
+| C4                  | Improved Development Workflow and debugging              |             |
+| :star: C5           | Working with Express.js                                  |             |
+| :star: C6           | Working with Dynamic Content & Adding Templating Engines |             |
+| 7                   | Modal View Controller (MVC)                              |             |
+| 8                   | Enchanting App                                           |             |
+| 9                   | Dynamic Routes &  Advanced Models                        |             |
 
-NodeJs with Database
+Part2: NodeJs with Database
 
 | Class | Title                  | Description |
 | ----- | ---------------------- | ----------- |
-|       | Node + SQL             |             |
-| C2    | Using Sequelize        |             |
-| C3    | Node + NoSQL (MongoDB) |             |
-| C4    | Using Mongoose         |             |
+| 10    | Node + SQL             |             |
+| 11    | Using Sequelize        |             |
+| 12    | Node + NoSQL (MongoDB) |             |
+| 13    | Using Mongoose         |             |
 
-Security & Validations
+Part3: Security & Validations
 
-| Class | Title                    | Description |
-| ----- | ------------------------ | ----------- |
-| 14    | Sessions & cookies       |             |
-| 15    | Athentication            |             |
-| 16    | Sending E-Mails          |             |
-| 17    | Authentication Deep Dive |             |
-| 18    | User Input Validation    |             |
-| 19    | Error Handling           |             |
+| Class     | Title                    | Description |
+| --------- | ------------------------ | ----------- |
+| 14        | Sessions & cookies       |             |
+| 15        | Athentication            |             |
+| 16        | Sending E-Mails          |             |
+| 17        | Authentication Deep Dive |             |
+| :star: 18 | User Input Validation    |             |
+| 19        | Error Handling           |             |
 
-Some common API
+Part4: Some common API
 
 | Class | Title                    | Description |
 | ----- | ------------------------ | ----------- |
@@ -48,19 +53,19 @@ Some common API
 | 22    | Async Requests           |             |
 | 23    | Handling Payments        |             |
 
-Modern Node.Js topic
+Part5: Modern Node.Js topic
 
-| Class | Title                      | Description |
-| ----- | -------------------------- | ----------- |
-| 24    | REST API basics            |             |
-| 25    | Advanced REST API Features |             |
-| 26    | Using async-await          |             |
-| 27    | Websocket & Socket.io      |             |
-| 28    | GraphQL                    |             |
-| 29    | Deployment                 |             |
-| 30    | beyound web servers        |             |
-| 31    | Node + TypeScript, Deno    |             |
-|       |                            |             |
+| Class | Title                             | Description |
+| ----- | --------------------------------- | ----------- |
+| 24    | REST API basics                   |             |
+| 25    | Advanced REST API Features        |             |
+| 26    | Using async-await                 |             |
+| 27    | Websocket & Socket.io             |             |
+| 28    | GraphQL (in parallel to REST API) |             |
+| 29    | Deployment                        |             |
+| 30    | Node.js beyond web servers        |             |
+| 31    | Node + TypeScript, Deno           |             |
+|       |                                   |             |
 
 
 
