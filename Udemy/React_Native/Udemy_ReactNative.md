@@ -66,7 +66,7 @@ IOS emulator
 
 
 
-
+:bangbang: 注意有时Expo 版本更新, 可能会出现dependency deprecated 的情况, 只需要按照terminal的指示进行更新dependency即可
 
 
 
@@ -80,7 +80,7 @@ Essentials of React Native (2 weeks to learn)
 | -------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
 | :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list |
 | [3](./C3/README.md)        | Debug React Native Apps                                      | React devtools                                |
-| :star: 4                   | Component, Layout, styling => :gem: build a Mini-Game app    |                                               |
+| :star: [4](./C4/README.md) | Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs |
 | :star: 5                   | Build Adaptive User Interface (Adapt to Platform & Device Size) |                                               |
 | :star: 6                   | React Native Navigation with React Navigation                |                                               |
 

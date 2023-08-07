@@ -566,7 +566,7 @@ Scope refers to the lifecycle of a bean
 
 
 
-e.g.1 by default all beans' scope is 'Singleton'
+:gem: e.g.1 by default all beans' scope is 'Singleton'
 
 ```java
 @RestController
@@ -616,7 +616,7 @@ Also, we can explicitly specify Bean Scope
 
 
 
-e.g.2 specify Scope of CricketCoach to 'prototype'
+:gem: e.g.2 specify Scope of CricketCoach to 'prototype'
 
 ```java
 @Component  // mark the class as a Spring bean, the class will become candidates for dependency injection
@@ -758,7 +758,63 @@ e.g. Our project want to use Amazon Web Services (AWS) to store documents. We wa
 
 
 
+:gem: demo
 
+Config class
 
++ 将bean id 和具体的bean bound together
 
+```java
+@Configuration
+public class SportConfig {
+    @Bean("aquatic")             // specify bean id
+    public Coach swimCoach(){    // the bean id defaults to the method name!
+        return new SwimCoach();
+    }
+
+}
+```
+
+SwimCoach class is used to simulate a 3rd party class 
+
++ note we didn't add any Spring Annotation to it
+
+```java
+// not using @Component
+public class SwimCoach implements Coach{
+
+    public SwimCoach() {
+        System.out.println("In constructor: " + getClass().getSimpleName());
+    }
+
+    @Override
+    public String getDailyWorkOut() {
+        return "SwimCoach: Swim 1000 meters as a warm up";
+    }
+}
+```
+
+DemoController 
+
++ 注入在Config class中指定的bean 
+
+```java
+@RestController
+public class DemoController {
+    // define a private field for dependency
+    private Coach myCoach;
+
+    @Autowired
+    public DemoController(@Qualifier("aquatic") Coach myCoach) {      // TrackCoach is marked with @Primary
+        System.out.println("In constructor: " + getClass().getSimpleName());
+        this.myCoach = myCoach;
+    }
+
+    @GetMapping("/dailyworkout")
+    public String getDailyWorkout(){
+        return myCoach.getDailyWorkOut();
+    }
+
+}
+```
 
