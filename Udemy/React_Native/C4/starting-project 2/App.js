@@ -4,11 +4,11 @@ import StartGameScreen from "./screens/StartGameScreen";
 export default function App() {
   return (
     // <View style={styles.rootScreen}>
-    // <View>
-    //   <StartGameScreen />;
-    // </View>
+    <View>
+      <StartGameScreen />;
+    </View>
 
-    <StartGameScreen />
+    // <StartGameScreen />
   );
 }
 

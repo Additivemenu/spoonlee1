@@ -320,10 +320,213 @@ public class Client {
 
 
 
-
-
 # 2. 桥接模式 (Bridge)
-66-70
+66-70 GRASP: indirection + polymorphism
+
+抽象类和接口同时使用, 主要是基于类的最小设计原则, 利用抽象类聚合接口 解决类爆炸的问题
+
+https://refactoring.guru/design-patterns/bridge
+
+
+
+手机操作问题
+
+现在对不同手机类型 (翻盖, 滑动, 旋转...)的 不同品牌实现操作编程(比如: 开机、关机、上网，打电话等)
+
+传统方案:
+
+![](./Src_md/bridge1.png)
+
+Cons: 
+
++ 扩展性问题(类爆炸)，如果我们再增加手机的样式(旋转式)，就需要增加各个品牌手机的类，同样如果我们增加一个手机品牌，也要在各个手机样式类下增加。
++ 违反了单一职责原则，当我们增加手机样式时，要同时增加所有品牌的手机，这样增加了代码维护成本.
+
+Solution: use Bridge pattern
+
+
+
+## 基本介绍
+
++ 桥接模式(Bridge模式)是指: <u>将实现与抽象放在两个不同的类层次中，使两个层次可以独立改变</u>
+
++ 是一种结构型设计模式
++ Bridge pattern基于<u>**类的最小设计原则**</u> (即通过定义尽量少数量的类来实现功能)，通过使用封装、聚合及继承等行为让不同的类承担不同的职责。它的主要特点是把抽象(Abstraction)与行为实现 (Implementation)分离开来，从而可以保持各部分的独立性以及应对他们的功能 扩展
+
+
+
+![](./Src_md/bridge2.png)
+
++ Client类: 桥接模式的调用者
++ Abstract class 'Abstraction': 维护了Implementor  / 即它的实现子类ConcreteImplementorA...
+  + 'Abstraction' 充当了桥接类, 它把抽象和实现桥接了起来
+  + RefinedAbstraction: 是桥接类的子类
++ Implementor: 行为实现类的借口, 
+  + ConcreteImplementorA/B: 行为的具体实现类
++ 从UML图中我们可以看出, 这里的抽象类和借口是聚合的关系, 其实就是调用者与被调用者的关系.
+
+
+
+## :gem: Demo Case
+
+<img src="./Src_md/bridge3.png" style="zoom: 50%;" />
+
+Client
+
++ 还是体现一个套娃, 调用phone1.open(), 其实是去通过Phone这个桥接类去调用Xiaomi(实现类)的open()
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 获取折叠式手机(样式 + 品牌)
+        Phone phone1= new FoldablePhone(new Xiaomi());
+        phone1.open();
+        phone1.call();
+        phone1.close();
+
+        System.out.println("======================");
+        Phone phone2= new FoldablePhone(new Vivo());
+        phone2.open();
+        phone2.call();
+        phone2.close();
+
+        System.out.println("=======================");
+        Phone phone3 = new UprightPhone(new Xiaomi());
+        phone3.open();
+        phone3.call();
+        phone3.close();
+    }
+}
+```
+
+Implementor
+
++ the interface
+
+```java
+public interface Brand {
+    void open();
+    void close();
+    void call();
+}
+
+public class Xiaomi implements Brand{
+    @Override
+    public void open() {
+        System.out.println("Xiaomi phone turn on");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Xiaomi phone turn off");
+    }
+
+    @Override
+    public void call() {
+        System.out.println("Xiaomi phone calling");
+    }
+}
+
+public class Vivo implements Brand{
+    @Override
+    public void open() {
+        System.out.println("Vivo phone turn on");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Vivo phone turn off");
+    }
+
+    @Override
+    public void call() {
+        System.out.println("Vivo phone calling");
+    }
+}
+```
+
+Phone
+
++ the abstract class
+
+```java
+public abstract class Phone {
+    private Brand brand;
+
+    public Phone(Brand brand) {
+        this.brand = brand;
+    }
+
+    protected void open(){
+        this.brand.open();
+    }
+
+    protected void close(){
+        this.brand.close();
+    }
+
+    protected void call(){
+        this.brand.call();
+    }
+}
+
+
+public class FoldablePhone extends Phone{
+    public FoldablePhone(Brand brand) {
+        super(brand);
+    }
+
+    public void open(){
+        super.open();
+        System.out.println("foldable phone:");
+    }
+
+    public void close(){
+        super.close();
+        System.out.println("foldable phone:");
+    }
+
+    public void call(){
+        super.call();
+        System.out.println("foldable phone:");
+    }
+
+}
+
+public class UprightPhone extends Phone{
+
+    public UprightPhone(Brand brand) {
+        super(brand);
+    }
+
+    public void open(){
+        super.open();
+        System.out.println("Upright phone:");
+    }
+
+    public void close(){
+        super.close();
+        System.out.println("Upright phone:");
+    }
+
+    public void call(){
+        super.call();
+        System.out.println("Upright phone:");
+    }
+}
+```
+
+
+
+
+
+## JDBC 源码赏析
+
+69
+
+先不看
+
+
 
 # 3. :full_moon: 装饰器模式 (Decorator)
 71-76 GRASP: polymorphism
@@ -331,8 +534,6 @@ public class Client {
 UniMelb week8: 参考case https://refactoring.guru/design-patterns/decorator very helpful and informative, along with intuitive UML diagram 
 
 :gem: demo 自定义读写器, 可为读写器添加encryption, decryption, compression, decompression等功能而不改变基础的读写器的代码
-
-
 
 
 

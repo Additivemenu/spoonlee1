@@ -66,7 +66,7 @@ IOS emulator
 
 
 
-:bangbang: 注意有时Expo 版本更新, 可能会出现dependency deprecated 的情况, 只需要按照terminal的指示进行更新dependency即可
+:bangbang: 注意有时expo 版本更新, 可能会出现dependency deprecated 的情况, 只需要按照terminal的指示进行更新dependency即可
 
 
 
