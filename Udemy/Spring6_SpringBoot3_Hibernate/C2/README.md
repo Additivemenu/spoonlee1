@@ -767,6 +767,7 @@ Config class
 ```java
 @Configuration
 public class SportConfig {
+  
     @Bean("aquatic")             // specify bean id
     public Coach swimCoach(){    // the bean id defaults to the method name!
         return new SwimCoach();

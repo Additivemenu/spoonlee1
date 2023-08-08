@@ -32,7 +32,7 @@ Basics
 | Class                      | Topic                                       | Description   |
 | -------------------------- | ------------------------------------------- | ------------- |
 | [1](./C1/README.md)        | SpringBoot3 quick start                     |               |
-| [2](./C2/README.md)        | Inversion of Control & dependency injection |               |
+| :star: [2](./C2/README.md) | Inversion of Control & dependency injection |               |
 | :star: [3](./C3/README.md) | Database Access with Hibernate / JPA CRUD   | CURD with JPA |
 
 REST 
