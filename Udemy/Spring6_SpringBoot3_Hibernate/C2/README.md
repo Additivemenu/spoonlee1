@@ -79,7 +79,7 @@ Spring will inject it automatically ... hence it is autowired
 
 
 
-## 2.1 Constructor Injection
+## 2.1 :moon: Constructor Injection
 
 33-36
 
@@ -134,6 +134,8 @@ Create a constructor in your class for injections
 
 + here we use `@Autowired` to tell Spring to inject a dependency
   + 注意`@Autowired` is used to decorate method or constructor, not a class or field (you should avoid using it on a field)
+
+  > more on [@Autowired](./sub_md/autowired.md)
 
 
 ```java
@@ -202,7 +204,7 @@ Spring is targeted for enterprise, real-time/real-world applications. It provide
 
 
 
-## 2.2 Component scanning
+## 2.2 :moon: Component scanning
 
 38-40
 
