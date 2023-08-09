@@ -412,6 +412,10 @@ Continuing our database and SpringBoot application setup above
 同理, 目的是在backend写API来让backend 去 访问 database server. backend 相当于是client 访问database 的Facade. 
 
 + 核心是调用entityManager的已经封装好的方法
+  + entityManger 可以createQuery, 使用JPQL
+  + entityManager的方法的输入, 一般是对应entity的obj, 而不是primitive type data
+    + DAOImpl是在做如此的转化， 让一个方法的输入可以是primitive type
+
 
 
 
@@ -461,7 +465,8 @@ Spring provides `@Repository` annotation (which is a sub-annotation of @Componen
 
 
 
-### :gem: demo
+
+:gem: demo
 
 Case1
 
@@ -600,7 +605,7 @@ public class CruddemoApplication {
 
 
 
-### :gem: demo
+:gem: demo
 
 DAO
 
@@ -699,7 +704,7 @@ Found the student: Student{id=5, firstName='Daffy', lastName='Duck', email='daff
 
 
 
-## :moon: Queryt obj with JPA
+## :moon: Queryt obj with JPA - JPQL
 
 **JPA Query Language (JPQL)**: query language for retrieving objects
 
@@ -711,7 +716,7 @@ Found the student: Student{id=5, firstName='Daffy', lastName='Duck', email='daff
 
 
 
-### :gem: demo1
+:gem: demo1
 
 retrive all students objects from the table
 
@@ -786,7 +791,7 @@ public class CruddemoApplication {
 
 
 
-### :gem: demo2
+:gem: demo2
 
 retrieve student obj by its lastName
 
@@ -872,17 +877,315 @@ public class CruddemoApplication {
 
 ## Update obj with JPA
 
-看到这里
+Update可以通过
+
++ 先find obj, 再用setter, 再entityManager.merge()
++ 也可用JPQL 一步到位
+
+
+
+
+
+:gem: demo
+
+以下demo两个update的API
+
+dao
+
+```java
+public interface StudentDAO {
+    void save(Student theStudent);
+    Student findById(Integer id);
+    List<Student> findAll();
+    List<Student> findByLastName(String theLastName);
+    void update(Student theStudent);
+    int updateAllStudentLastName(String newName);
+}
+
+@Repository
+public class StudentDAOImpl implements StudentDAO{
+    // define field for entity manager
+    private EntityManager entityManager;
+
+    // inject entity manager using constructor injection
+    @Autowired
+    public StudentDAOImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+		// other dao imlp methods ...
+
+    @Override
+    @Transactional
+    public void update(Student theStudent) {
+        entityManager.merge(theStudent);
+    }
+
+    @Override
+    @Transactional
+    public int updateAllStudentLastName(String newName) {
+       return entityManager.createQuery("UPDATE Student SET lastName='Tester'")
+               .executeUpdate();
+    }
+}
+```
+
+Application
+
+```java
+@SpringBootApplication
+public class CruddemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CruddemoApplication.class, args);
+	}
+
+	// this method is to simulate client's CRUD operations, it runs after SpringBoot has set up the context
+	@Bean
+	public CommandLineRunner commandLineRunner(StudentDAO studentDAO ){	
+		return runner -> {
+
+			updateStudent(studentDAO);
+
+			updateAllStudentLastName(studentDAO);
+
+		};
+	}
+
+	private void updateAllStudentLastName(StudentDAO studentDAO) {
+		studentDAO.updateAllStudentLastName("Tester");
+	}
+
+	private void updateStudent(StudentDAO studentDAO) {
+		// retrieve student based on Id
+		int studentId = 1;
+		System.out.println("Getting student with id: " + studentId);
+		Student myStudent = studentDAO.findById(studentId);
+
+		// change first name
+		System.out.println("Update student ...");
+		myStudent.setFirstName("Scooby");
+
+		// update student in database
+		studentDAO.update(myStudent);
+
+		// display update student
+		System.out.println("Update student" + myStudent);
+
+	}
+
+
+
+
+}
+```
+
+
 
 
 
 ## Delete obj with JPA
 
+和update 同理
+
+
+
+:gem: demo
+
+DAO
+
+```java
+public interface StudentDAO {
+    void save(Student theStudent);
+
+    Student findById(Integer id);
+    List<Student> findAll();
+    List<Student> findByLastName(String theLastName);
+
+    void update(Student theStudent);
+    int updateAllStudentLastName(String newName);
+
+    void delete(Integer id);
+    int deleteAll();
+
+}
+
+@Repository
+public class StudentDAOImpl implements StudentDAO{
+    // define field for entity manager
+    private EntityManager entityManager;
+
+    // inject entity manager using constructor injection
+    @Autowired
+    public StudentDAOImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+  	// other DAOImpl methods ...
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        // retrieve the student
+        Student theStudent = entityManager.find(Student.class, id);
+
+        // delete the student
+        entityManager.remove(theStudent);
+    }
+
+    @Override
+    @Transactional
+    public int deleteAll() {
+
+        return entityManager.createQuery("DELETE from Student").executeUpdate();
+    }
+}
+```
+
+application
+
+```java
+@SpringBootApplication
+public class CruddemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CruddemoApplication.class, args);
+	}
+
+	// this method is to simulate client's CRUD operations, it runs after SpringBoot has set up the context
+	@Bean
+	public CommandLineRunner commandLineRunner(StudentDAO studentDAO ){	
+		return runner -> {
+			deleteStudent(studentDAO);
+      
+			deleteAllStudent(studentDAO);
+		};
+	}
+
+	private void deleteAllStudent(StudentDAO studentDAO) {
+		System.out.println("Deleting all students ...");
+		int  numRowsDeleted = studentDAO.deleteAll();
+		System.out.println("Deleted rows count: " + numRowsDeleted);
+	}
+
+	private void deleteStudent(StudentDAO studentDAO) {
+		int studentId = 3;
+		System.out.println("Deleting student id: " + studentId);
+
+		studentDAO.delete(studentId);
+	}
+
+}
+```
 
 
 
 
-## Create Database table from Java code
+
+## :moon: Create Database table from Java code
 
 
+
+Previously, we created database tables by running a SQL script
+
+JPA/Hibernate provides an option to automagically create database tables
+
+Creates tables based on Java code with JPA/Hibernate annotations Useful for development and testing
+
+```properties
+spring.jpa.hibernate.ddl-auto=create
+# but don't do this on Production database!!
+# it is useful for
+# 		Database integration testing with in-memory databases
+#     Small hobby projects
+```
+
++ when you run your app, JPA/Hibernate will drop tables then create them based on the JPA/Hibernate annotations in your Java code
+
+![](./Src_md/jpa_create_table1.png)
+
+| Propert Value | Property Description                                         |
+| ------------- | ------------------------------------------------------------ |
+| None          | No action will be performed                                  |
+| Create-only   | Database tables are only created                             |
+| Drop          | Database tables are dropped                                  |
+| :star: create | Database tables are dropped followed by database tables creation |
+| Create-drop   | Database tables are dropped followed by database tables creation. On application shutdown, drop the database tables |
+| Validate      | Validate the database tables schema                          |
+| :star: Update | Update the database tables schema (old data in table will be kept everytime we run SpringBoot application) |
+
+
+
+> :bangbang: **Recommendation**
+>
+> In general, I don’t recommend auto generation for enterprise, real-time projects 
+>
+> + You can VERY easily drop PRODUCTION data if you are not careful
+>
+> I recommend SQL scripts
+>
+> + Corporate DBAs prefer SQL scripts for governance and code review
+>
+> + The SQL scripts can be customized and fine-tuned for complex database designs 
+> + The SQL scripts can be version-controlled
+> + Can also work with schema migration tools such as Liquibase and Flyway 
+
+
+
+:gem: demo
+
+
+
+Application.properties
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/student_tracker
+spring.datasource.username=springstudent
+spring.datasource.password=springstudent
+
+# Turn off the Spring Boot banner
+spring.main.banner-mode=off
+
+# Reduce logging level. Set logging level to warn
+logging.level.root=warn
+
+# Add logging configs to display SQL statements ------------------------
+# show SQL statement
+logging.level.org.hibernate.SQL=debug
+# show SQL statement values
+logging.level.org.hibernate.orm.jdbc.bind=trace
+
+# for database table: auto create table --------------------------------
+# the "update" config will keep existing data in the table
+spring.jpa.hibernate.ddl-auto=update
+```
+
+
+
+
+
+terminal output when 
+
+```properties
+spring.jpa.hibernate.ddl-auto=create
+```
+
+```terminal
+2023-08-09T20:49:32.717+10:00 DEBUG 77506 --- [           main] org.hibernate.SQL                        : drop table if exists student
+2023-08-09T20:49:32.724+10:00 DEBUG 77506 --- [           main] org.hibernate.SQL                        : create table student (id integer not null auto_increment, email varchar(255), first_name varchar(255), last_name varchar(255), primary key (id)) engine=InnoDB
+Creating new student object...
+saving the students ...
+2023-08-09T20:49:32.820+10:00 DEBUG 77506 --- [           main] org.hibernate.SQL                        : insert into student (email,first_name,last_name) values (?,?,?)
+2023-08-09T20:49:32.823+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [VARCHAR] - [john@luv2code.com]
+2023-08-09T20:49:32.823+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [2] as [VARCHAR] - [John]
+2023-08-09T20:49:32.823+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [3] as [VARCHAR] - [Doe]
+2023-08-09T20:49:32.836+10:00 DEBUG 77506 --- [           main] org.hibernate.SQL                        : insert into student (email,first_name,last_name) values (?,?,?)
+2023-08-09T20:49:32.836+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [VARCHAR] - [mary@luv2code.com]
+2023-08-09T20:49:32.836+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [2] as [VARCHAR] - [Mary]
+2023-08-09T20:49:32.836+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [3] as [VARCHAR] - [Public]
+2023-08-09T20:49:32.837+10:00 DEBUG 77506 --- [           main] org.hibernate.SQL                        : insert into student (email,first_name,last_name) values (?,?,?)
+2023-08-09T20:49:32.837+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [VARCHAR] - [bonita@luv2code.com]
+2023-08-09T20:49:32.837+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [2] as [VARCHAR] - [Bonita]
+2023-08-09T20:49:32.837+10:00 TRACE 77506 --- [           main] org.hibernate.orm.jdbc.bind              : binding parameter [3] as [VARCHAR] - [Applebum]
+```
 

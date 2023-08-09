@@ -39,7 +39,7 @@ Basics
 | -------------------------- | ------------------------------------------------------------ | ------------------------------------- |
 | [1](./C1/README.md)        | SpringBoot3 quick start                                      |                                       |
 | :star: [2](./C2/README.md) | Inversion of Control & dependency injection                  | @Component, <br/>@Bean                |
-| :star: [3](./C3/README.md) | Database Access with Hibernate / JPA CRUD <BR> :bangbang: 1个sql table 的CRUD | CURD with JPA <br/>DAO, EntityManager |
+| :star: [3](./C3/README.md) | Database Access with Hibernate / JPA CRUD <BR> :bangbang: 对1个sql table 的CRUD | CURD with JPA <br/>DAO, EntityManager |
 
 REST 
 
@@ -60,6 +60,6 @@ Advanced
 
 | Class                 | Topic                                                        | Description                                                  |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [9](./C9/README.md)   | JPA/Hibernate Advanced Mappings <br> :bangbang: 多个sql table的CRUD | @OneToOneMapping <br/>@OneToManyMapping <br/>@ManyToManyMapping |
+| [9](./C9/README.md)   | JPA/Hibernate Advanced Mappings <br> :bangbang: 对多个sql table的CRUD | @OneToOneMapping <br/>@OneToManyMapping <br/>@ManyToManyMapping |
 | [10](./C10/README.md) | AOP                                                          |                                                              |
 

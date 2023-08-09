@@ -17,24 +17,60 @@ public class CruddemoApplication {
 		SpringApplication.run(CruddemoApplication.class, args);
 	}
 
-
 	// this method is to simulate client's CRUD operations, it runs after SpringBoot has set up the context
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO ){	// executed after the Spring beans have been loaded
 		return runner -> {
 //			createStudent(studentDAO);
-
-//			createMultipleStudent(studentDAO);
+			createMultipleStudent(studentDAO);
 
 //			readStudent(studentDAO);
-
 //			queryForStudents(studentDAO);
+//			queryForStudentByLastName(studentDAO);
 
+//			updateStudent(studentDAO);
+//			updateAllStudentLastName(studentDAO);
 
-			queryForStudentByLastName(studentDAO);
-
+//			deleteStudent(studentDAO);
+//			deleteAllStudent(studentDAO);
 
 		};
+	}
+
+	private void deleteAllStudent(StudentDAO studentDAO) {
+		System.out.println("Deleting all students ...");
+		int  numRowsDeleted = studentDAO.deleteAll();
+		System.out.println("Deleted rows count: " + numRowsDeleted);
+	}
+
+	private void deleteStudent(StudentDAO studentDAO) {
+		int studentId = 3;
+		System.out.println("Deleting student id: " + studentId);
+
+		studentDAO.delete(studentId);
+	}
+
+	private void updateAllStudentLastName(StudentDAO studentDAO) {
+		int numRowsUpdated = studentDAO.updateAllStudentLastName("Tester");
+		System.out.println("number of rows updated: " + numRowsUpdated);
+	}
+
+	private void updateStudent(StudentDAO studentDAO) {
+		// retrieve student based on Id
+		int studentId = 1;
+		System.out.println("Getting student with id: " + studentId);
+		Student myStudent = studentDAO.findById(studentId);
+
+		// change first name
+		System.out.println("Update student ...");
+		myStudent.setFirstName("Scooby");
+
+		// update student in database
+		studentDAO.update(myStudent);
+
+		// display update student
+		System.out.println("Update student" + myStudent);
+
 	}
 
 	private void queryForStudentByLastName(StudentDAO studentDAO) {
