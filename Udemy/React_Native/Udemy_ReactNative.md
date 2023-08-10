@@ -66,9 +66,17 @@ IOS emulator
 
 
 
-:bangbang: 注意有时expo 版本更新, 可能会出现dependency deprecated 的情况, 只需要按照terminal的指示进行更新dependency即可
+:bangbang: 注意有时expo 版本更新, 可能会出现dependency deprecated 的情况, 由此可能引发compatibility的问题. 需要去调一下dependency的版本. 
 
++ 实在不行用脚手架自动生成的dependency
++  也可check Expo的documentation https://docs.expo.dev/versions/latest/ e.g.如下
 
+| Expo SDK version | React Native version | React Native Web version |
+| :--------------- | :------------------- | :----------------------- |
+| 49.0.0           | 0.72                 | 0.19.6                   |
+| 48.0.0           | 0.71                 | 0.18.10                  |
+| 47.0.0           | 0.70                 | 0.18.9                   |
+| 46.0.0           | 0.69                 | 0.18.7                   |
 
 
 

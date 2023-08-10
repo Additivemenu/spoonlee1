@@ -39,7 +39,9 @@ Screen Component breakdown, Screen folder >
 
 # Part1: Startup screen
 
-Add custom button, a bit styling
+:gem: 01-starting-project
+
+
 
 48-
 
@@ -53,6 +55,11 @@ Component:
 + TextInput: more configs
 + Background 
   + :bangbang: <View> by default only takes up space as much as it need. We can force it to use all space using `flex:1`
+  + Add gradient background
+    + <LinearGradient>: https://docs.expo.dev/versions/latest/sdk/linear-gradient/
+  + Add background image
+    + <ImageBackground>: its properties
+      + It can co-exist with gradient background also
 
 Styling:  
 
@@ -62,13 +69,30 @@ Styling:
 
 
 
-看到54
+problematic dependencies
+
+```js
+    "expo": "~46.0.0",
+    "expo-status-bar": "~1.4.0",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-native": "0.69.9",
+    "react-native-web": "0.18.7"
+```
 
 
 
 # Part2: Game srceen
 
+57-
 
+:gem: 02-starting-project
+
+
+
+game logic
+
+57
 
 
 
