@@ -10,13 +10,13 @@ Database Access with Hibernate / JPA CRUD
 
 
 
-# Abstract 
+# 0. Abstract 
 
 
 
 
 
-# Hibernate / JPA overview
+# 1. Hibernate / JPA overview
 
 
 
@@ -74,7 +74,7 @@ Hibernate / JPA uses JDBC  in the background for all database communications
 
 
 
-# Hands on
+# 2. Hands on
 
 ## Set up
 
@@ -403,7 +403,7 @@ public class Student {
 
 
 
-# CRUD using JPA
+# 3. CRUD using JPA
 
 Continuing our database and SpringBoot application setup above
 
@@ -419,7 +419,7 @@ Continuing our database and SpringBoot application setup above
 
 
 
-## :moon: Save a Java Object with JPA
+## 3.1 :moon: Save a Java Object with JPA
 
 + **Data access object (DAO)** acts as the Facade for our backend to communicate with Database.
   + DAO has the responsibility of handling data access requests received at backend and reaching them out to databse
@@ -599,7 +599,7 @@ public class CruddemoApplication {
 
 
 
-## Read obj with JPA
+## 3.2 Read obj with JPA
 
 还是民工三连: 写interface, 写impl, 写main
 
@@ -704,7 +704,7 @@ Found the student: Student{id=5, firstName='Daffy', lastName='Duck', email='daff
 
 
 
-## :moon: Queryt obj with JPA - JPQL
+## 3.3 :moon: Queryt obj with JPA - JPQL
 
 **JPA Query Language (JPQL)**: query language for retrieving objects
 
@@ -875,7 +875,7 @@ public class CruddemoApplication {
 
 
 
-## Update obj with JPA
+## 3.4 Update obj with JPA
 
 Update可以通过
 
@@ -984,7 +984,7 @@ public class CruddemoApplication {
 
 
 
-## Delete obj with JPA
+## 3.5 Delete obj with JPA
 
 和update 同理
 
@@ -1082,7 +1082,7 @@ public class CruddemoApplication {
 
 
 
-## :moon: Create Database table from Java code
+## 3.6 :moon: Create Database table from Java code
 
 
 
