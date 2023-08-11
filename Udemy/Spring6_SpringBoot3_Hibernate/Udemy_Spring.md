@@ -43,18 +43,20 @@ Basics
 
 REST 
 
-| Class                      | Topic             | Description |
-| -------------------------- | ----------------- | ----------- |
-| :star: [4](./C4/README.md) | REST CRUD APIs    |             |
-| [5](./C5/README.md)        | REST API Security |             |
++ 主要就是针对一个HTTP request 的 service. Request 只能由client 发起, 如果做服务器主动push给client的功能需要新的API e.g. Web Socket
+
+| Class                              | Topic             | Description |
+| ---------------------------------- | ----------------- | ----------- |
+| :star: [4](./C4/README.md)         | REST CRUD APIs    |             |
+| [5](./C5/README.md) 先跳过security | REST API Security |             |
 
 Spring MVC
 
-| Class               | Topic                                  | Description |
-| ------------------- | -------------------------------------- | ----------- |
-| [6](./C6/README.md) | Spring MVC Introduction with Thymeleaf |             |
-| [7](./C7/README.md) | Spring MVC CRUD                        |             |
-| [8](./C8/README.md) | Spring MVC Security                    |             |
+| Class                              | Topic                                  | Description |
+| ---------------------------------- | -------------------------------------- | ----------- |
+| [6](./C6/README.md)                | Spring MVC Introduction with Thymeleaf |             |
+| [7](./C7/README.md)                | Spring MVC CRUD                        |             |
+| [8](./C8/README.md) 先跳过security | Spring MVC Security                    |             |
 
 Advanced 
 
