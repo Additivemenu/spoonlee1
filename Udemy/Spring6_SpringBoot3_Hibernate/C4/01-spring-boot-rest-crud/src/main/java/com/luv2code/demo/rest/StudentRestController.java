@@ -47,34 +47,7 @@ public class StudentRestController {
         return theStudents.get(studentId);
     }
 
-    // Add an exception handler using @ExceptionHandler
-    // Spring will automatically put the exception thrown that matching with the argument of this method
-    @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc){
 
-        // create a studentErrorResponse
-        StudentErrorResponse error = new StudentErrorResponse();
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage(exc.getMessage());
-        error.setTimeStamp(System.currentTimeMillis());
-
-        // return a ResponseEntity
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);       // jackson will automatically convert this to JSON
-    }
-
-    // add another exception handler ... to catch any exception (catch all)
-    @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleException(Exception exc){
-
-        // create a studentErrorResponse
-        StudentErrorResponse error = new StudentErrorResponse();
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setMessage(exc.getMessage());
-        error.setTimeStamp(System.currentTimeMillis());
-
-        // return a ResponseEntity
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
 
 
 }

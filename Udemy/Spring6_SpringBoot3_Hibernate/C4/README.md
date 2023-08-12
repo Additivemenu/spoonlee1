@@ -432,7 +432,9 @@ public class StudentRestController {
 }
 ```
 
-after running, visit http://localhost:8080/api/students/adad or http://localhost:8080/api/students/1000 to chekc exception handling
+After running, visit http://localhost:8080/api/students/adad or http://localhost:8080/api/students/1000 to chekc exception handling
+
+:bangbang: But the problem is these exception handlers are REST controller-specific (they are coded inside a controller), and cannot be reused for other controllers	=> global exception handling
 
 
 
@@ -442,17 +444,74 @@ after running, visit http://localhost:8080/api/students/adad or http://localhost
 
 109-
 
+we need global exception handlers to promote reuse and centralizes exception handling
+
+`@ControllerAdvice`: similar to an interceptor/filter, real-time use of AOP
+
++ Pre-process requests to controllers
++ Post-process responses to handle exceptions
++ perfect for global exception handling
+
+![](./Src_md/controller_advice1.png)
+
+
+
+code refactoring 
+
++ move `@ExceptionHandler` methods to `@ControllerAdvice` class
+
+```java
+@ControllerAdvice
+public class StudentRstExceptionHandler {
+
+    // add exception handling code here
+    // Add an exception handler using @ExceptionHandler
+    // Spring will automatically put the exception thrown that matching with the argument of this method
+    @ExceptionHandler
+    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc){
+
+        // create a studentErrorResponse
+        StudentErrorResponse error = new StudentErrorResponse();
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        // return a ResponseEntity
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);       // jackson will automatically convert this to JSON
+    }
+
+    // add another exception handler ... to catch any exception (catch all)
+    @ExceptionHandler
+    public ResponseEntity<StudentErrorResponse> handleException(Exception exc){
+
+        // create a studentErrorResponse
+        StudentErrorResponse error = new StudentErrorResponse();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        // return a ResponseEntity
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+}
+```
+
+After running, visit http://localhost:8080/api/students/adad or http://localhost:8080/api/students/1000 to chekc exception handling
+
+
+
 
 
 ## REST API design
 
 111-112
 
+看到这里
 
 
 
-
-# Hands-on:  a demo
+# Hands-on:  a demo project
 
 113-136
 

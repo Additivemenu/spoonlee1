@@ -4,7 +4,9 @@ All lecture materials is in the last module of each class
 
 
 
+:book: [node offical doc guide](https://nodejs.org/en/docs/guides)
 
+:book: [node official api docs](https://nodejs.org/dist/latest/docs/api/)
 
 
 
@@ -12,17 +14,17 @@ All lecture materials is in the last module of each class
 
 Part1: node.js basics
 
-| Class               | Title                                                    | Description |
-| ------------------- | -------------------------------------------------------- | ----------- |
-| C1                  | Course introduction                                      |             |
-| C2                  | Optional: JS refresher                                   |             |
-| [3](./C3/README.md) | Understanding the basics                                 |             |
-| C4                  | Improved Development Workflow and debugging              |             |
-| :star: C5           | Working with Express.js                                  |             |
-| :star: C6           | Working with Dynamic Content & Adding Templating Engines |             |
-| 7                   | Modal View Controller (MVC)                              |             |
-| 8                   | Enchanting App                                           |             |
-| 9                   | Dynamic Routes &  Advanced Models                        |             |
+| Class                      | Title                                                    | Description                                                  |
+| -------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
+| C1                         | Course introduction                                      |                                                              |
+| C2                         | Optional: JS refresher                                   |                                                              |
+| [3](./C3/README.md)        | Understanding the basics                                 | important to understand what is behind the scenes of Express.js |
+| [4](./C4/README.md)        | Improved Development Workflow and debugging              |                                                              |
+| :star: [5](./C5/README.md) | Working with Express.js                                  |                                                              |
+| :star: 6                   | Working with Dynamic Content & Adding Templating Engines |                                                              |
+| 7                          | Modal View Controller (MVC)                              |                                                              |
+| 8                          | Enchanting App                                           |                                                              |
+| 9                          | Dynamic Routes &  Advanced Models                        |                                                              |
 
 Part2: NodeJs with Database
 
@@ -55,17 +57,17 @@ Part4: Some common API
 
 Part5: Modern Node.Js topic
 
-| Class | Title                             | Description |
-| ----- | --------------------------------- | ----------- |
-| 24    | REST API basics                   |             |
-| 25    | Advanced REST API Features        |             |
-| 26    | Using async-await                 |             |
-| 27    | Websocket & Socket.io             |             |
-| 28    | GraphQL (in parallel to REST API) |             |
-| 29    | Deployment                        |             |
-| 30    | Node.js beyond web servers        |             |
-| 31    | Node + TypeScript, Deno           |             |
-|       |                                   |             |
+| Class     | Title                             | Description |
+| --------- | --------------------------------- | ----------- |
+| 24        | REST API basics                   |             |
+| 25        | Advanced REST API Features        |             |
+| 26        | Using async-await                 |             |
+| :star: 27 | Websocket & Socket.io             |             |
+| 28        | GraphQL (in parallel to REST API) |             |
+| 29        | Deployment                        |             |
+| 30        | Node.js beyond web servers        |             |
+| 31        | Node + TypeScript, Deno           |             |
+|           |                                   |             |
 
 
 
