@@ -18,8 +18,8 @@ Part1: node.js basics
 | -------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
 | C1                         | Course introduction                                      |                                                              |
 | C2                         | Optional: JS refresher                                   |                                                              |
-| [3](./C3/README.md)        | Understanding the basics                                 | important to understand what is behind the scenes of Express.js |
-| [4](./C4/README.md)        | Improved Development Workflow and debugging              |                                                              |
+| [3](./C3/README.md)        | Understanding the basics                                 | vanilla node.js to build a simple server                     |
+| [4](./C4/README.md)        | Improved Development Workflow and debugging              | npm <br/>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
 | :star: [5](./C5/README.md) | Working with Express.js                                  |                                                              |
 | :star: 6                   | Working with Dynamic Content & Adding Templating Engines |                                                              |
 | 7                          | Modal View Controller (MVC)                              |                                                              |
