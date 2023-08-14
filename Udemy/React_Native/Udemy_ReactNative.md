@@ -6,6 +6,10 @@ https://reactnative.dev/
 
 
 
+:book: [GitHub. code](https://github.com/academind/react-native-practical-guide-code)
+
+
+
 :bangbang: what is React Native?
 
 :pencil: [React.js vs. React Native](./C0/README.md)
