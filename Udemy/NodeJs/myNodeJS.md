@@ -19,10 +19,10 @@ Part1: node.js basics
 | C1                         | Course introduction                                      |                                                              |
 | C2                         | Optional: JS refresher                                   |                                                              |
 | [3](./C3/README.md)        | Understanding the basics                                 | vanilla node.js to build a simple server                     |
-| [4](./C4/README.md)        | Improved Development Workflow and debugging              | npm <br/>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
+| [4](./C4/README.md)        | Improved Development Workflow and debugging              | npm <br/>nodemon <br>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
 | :star: [5](./C5/README.md) | Working with Express.js                                  |                                                              |
-| :star: 6                   | Working with Dynamic Content & Adding Templating Engines |                                                              |
-| 7                          | Modal View Controller (MVC)                              |                                                              |
+| :star: [6](./C6/README.md) | Working with Dynamic Content & Adding Templating Engines |                                                              |
+| :star: [7](./C7/README.md) | Modal View Controller (MVC)                              |                                                              |
 | 8                          | Enchanting App                                           |                                                              |
 | 9                          | Dynamic Routes &  Advanced Models                        |                                                              |
 
@@ -57,17 +57,17 @@ Part4: Some common API
 
 Part5: Modern Node.Js topic
 
-| Class     | Title                             | Description |
-| --------- | --------------------------------- | ----------- |
-| 24        | REST API basics                   |             |
-| 25        | Advanced REST API Features        |             |
-| 26        | Using async-await                 |             |
-| :star: 27 | Websocket & Socket.io             |             |
-| 28        | GraphQL (in parallel to REST API) |             |
-| 29        | Deployment                        |             |
-| 30        | Node.js beyond web servers        |             |
-| 31        | Node + TypeScript, Deno           |             |
-|           |                                   |             |
+| Class     | Title                                             | Description |
+| --------- | ------------------------------------------------- | ----------- |
+| :star: 24 | REST API basics                                   |             |
+| :star: 25 | Advanced REST API Features: :gem: a practical app |             |
+| 26        | Using async-await                                 |             |
+| :star: 27 | Websocket & Socket.io                             |             |
+| 28        | GraphQL (in parallel to REST API)                 |             |
+| 29        | Deployment                                        |             |
+| 30        | Node.js beyond web servers                        |             |
+| :star: 31 | Node + TypeScript, Deno                           |             |
+|           |                                                   |             |
 
 
 

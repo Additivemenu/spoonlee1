@@ -4,20 +4,32 @@ import { LinearGradient } from "expo-linear-gradient";
 import StartGameScreen from "./screens/StartGameScreen";
 import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/color";
+import GameOverScreen from "./screens/GameOverScreen";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(true);
 
   // callback
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
+    setGameIsOver(false);
   }
 
-  // conditioaal component
+  function gameOverHandler(){
+    setGameIsOver(true);
+  }
+
+  // conditioaal component (simple way for screen navigation)
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber}/>;
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}/>;
   }
+  if(gameIsOver && userNumber){
+    screen = <GameOverScreen/>
+  }
+
+
 
   return (
     <LinearGradient

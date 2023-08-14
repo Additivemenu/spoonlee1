@@ -326,17 +326,18 @@ const styles = StyleSheet.create({
 
 ---
 
-
+Summary of content 
 
 + create reusable <Title/> component
 + Manage color globally => create a js object to store color string in 'color.js'
 + create a custom component <NumberContainer/> to display userNumber from StartGameScreen 
 + game logic handler: phone iteratively guess userNumber with interaction with user
   + in nextGuessHandler()
-    + :bangbang: handler bind: not just only bind handler reference, but also input to the handler
+    + :bangbang: handler bind: not just only bind handler reference, but also bind an argument to the handler
 
 + check for "Game Over" 
-  + 看到这里!
+  + need a state to do conditional component (navigate to GameOverScreen) when game is over
+  + need to check  `currentGuess` with `userInput` => need useEffect()
 
 
 
@@ -348,6 +349,12 @@ updated component structure:
 
 + design what state you need
 + design what logic you need in callback handler
++ React is all about callbacks. Differenct callbacks run at different condition
+  + useState: run only on the initial rendering of the component
+  + useEffect: define callbacks run on dependency change (between render cycle)
+  + various handlers: run when component-associated event is triggered
+  + most interestingly, callbacks can be nested with each other!
+
 
 ```js
 const MyComponent = (props) => {
@@ -355,6 +362,7 @@ const MyComponent = (props) => {
   
   // hooks
   // might need calculate initial value for a state here
+  const [myState, setMyState] = useState('');		//note this only runs when component is first rendered
   
   // callback handlers (just register, not run immediately)
   
@@ -365,10 +373,6 @@ const MyComponent = (props) => {
   // jsx
 }
 ```
-
-
-
-
 
 
 

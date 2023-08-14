@@ -30,7 +30,7 @@ References:
 
 本课涉及到的react design pattern
 
-+ state-controlled: conditional component, conditional styling
++ state-controlled rendering:  conditional component, conditional styling
 
 + stateful & stateless component
   + 在哪个component定义的state, 就在哪个component定义stateChangeHandler
@@ -55,7 +55,7 @@ References:
 
 
 
-
+## Course Content
 
 
 React基础篇
@@ -78,7 +78,7 @@ React基础篇
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                         |
 | [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext |
 | 11                    | :gem: Practice: Building a food order App                    |                                         |
-| 12                    | Scene behind react & Optimization                            |                                         |
+| 12                    | :bangbang: Scene behind react & Optimization                 |                                         |
 | 13                    | Alternative way: class component                             |                                         |
 
 中级篇

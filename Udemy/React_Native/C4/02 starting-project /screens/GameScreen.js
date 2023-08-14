@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Alert } from "react-native";
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
@@ -19,18 +19,27 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 // component function
-function GameScreen({ userNumber }) {
+function GameScreen({ userNumber, onGameOver }) {
   // hooks ----------------------------------------------------------------------------
   // every time GameScreen is rendered, phone do a guess
   const initalGuess = generateRandomBetween(
-    minBoundary,
-    maxBoundary,
+    1,
+    100,
     userNumber
   );
   const [currentGuess, setCurrentGuess] = useState(initalGuess);
 
+  // runs after render cycle
+  useEffect(() => {
+    console.log(currentGuess);
+    if (currentGuess === userNumber) {
+      onGameOver();
+    }
+  }, [currentGuess, userNumber, onGameOver]); // normally, every variable appears in the callback should be in dependency
+
   // callback handlers ----------------------------------------------------------------
   function nextGuessHandler(direction) {
+    // stop malicious user from incorrect click purposely
     if (
       (direction === "lower" && currentGuess < userNumber) ||
       (direction === "greater" && currentGuess > userNumber)
@@ -49,6 +58,7 @@ function GameScreen({ userNumber }) {
       console.log("min updated: ", minBoundary);
     }
     console.log(minBoundary, maxBoundary);
+    
     // take new guess
     const newRndNumber = generateRandomBetween(
       minBoundary,
