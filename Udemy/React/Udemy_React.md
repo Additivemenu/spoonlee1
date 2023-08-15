@@ -1,8 +1,10 @@
 References:
 
++ [React official tut](https://react.dev/learn)
+
 + [Udemy react: complete guide](https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25595350#overview)
 
-  + [配套Github repo](https://github.com/academind/react-complete-guide-code/tree/01-getting-started)
+  + :book: [配套Github repo](https://github.com/academind/react-complete-guide-code/tree/01-getting-started)
 
   + [Community & Discussion board](https://academind.com/community/)
     + 有很多其他tutorial
@@ -77,7 +79,7 @@ React基础篇
 | --------------------- | ------------------------------------------------------------ | --------------------------------------- |
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                         |
 | [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext |
-| 11                    | :gem: Practice: Building a food order App                    |                                         |
+| [11](./C11/README.md) | :gem: Practice: Building a food order App                    |                                         |
 | 12                    | :bangbang: Scene behind react & Optimization                 |                                         |
 | 13                    | Alternative way: class component                             |                                         |
 
