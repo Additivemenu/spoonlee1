@@ -1,6 +1,6 @@
 References:
 
-+ [React official tut](https://react.dev/learn)
++ :book: [React official tut](https://react.dev/learn)
 
 + [Udemy react: complete guide](https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25595350#overview)
 
@@ -70,7 +70,7 @@ React基础篇
 | [4](./C4/README.md) | :star: React state, working with event,  :bangbang: component communication | State <br> :bangbang: update state based on previous state <br> :bangbang: `<input>`: two way binding <br>Event |
 | [5](./C5/README.md)                   | Rendering List, Conditional Content                          | Map list to JSX; <br>conditional react component |
 | [6](./C6/README.md) | Styling React Component                                      | conditional styling; <br>styled component + css modules |
-| [7](./C7/README.md) | :bangbang: Debugging react apps                              | breaking points <br>React developer tools |
+| [7](./C7/README.md) | :bangbang: Debugging react apps                              | break points <br>React dev-tools |
 | [8](./C8/README.md) | :gem: Practice: a complete Practice Project         | :bangbang: react re-render mechanism <br> :question: demo1:  还有关于react diffing的小bug. 先不管， 先往下学 <br> demo2 : error state management; 弹窗的产生与关闭<br> |
 
 进阶篇
@@ -79,7 +79,7 @@ React基础篇
 | --------------------- | ------------------------------------------------------------ | --------------------------------------- |
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                         |
 | [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext |
-| [11](./C11/README.md) | :gem: Practice: Building a food order App                    |                                         |
+| [11](./C11/README.md) | :gem: Practice: Building a food order App                    | review and apply what we learned so far |
 | 12                    | :bangbang: Scene behind react & Optimization                 |                                         |
 | 13                    | Alternative way: class component                             |                                         |
 

@@ -280,17 +280,50 @@ now start to manage state and build dynamic page
 
 174-
 
-看到这里!
+Implement: 
+
++ when click on the Cart button in header, the Cart component (弹窗) will show up
++ when click on the close button or the backdrop  in Cart component (弹窗),  the Cart will be hide
+
+=> use state to manage these
 
 
 
-### Cart context
+App.js
+
++ 到处传递handlers
+
+```js
+function App() {
+  const [cartIsShown, setCartIsShown] = useState(false);
+
+  const showCartHandler = () => {
+    setCartIsShown(true);
+  };
+
+  const hideCartHandler = () => {
+    setCartIsShown(false);
+  };
+
+  return (
+    <Fragment>
+      {cartIsShown && <Cart onClose={hideCartHandler}/>}
+      <Header onShowCart={showCartHandler}  />;
+      <main>
+        <Meals />
+      </main>
+    </Fragment>
+  );
+}
+```
 
 
 
 
 
-### Cart Reducer
+## Cart context
+
+175-176
 
 
 
@@ -298,7 +331,42 @@ now start to manage state and build dynamic page
 
 
 
+## Cart Reducer
+
+177
+
+
+
+## refs & forward refs
+
+178
 
 
 
 
+
+## Output Cart Items
+
+179
+
+
+
+
+
+## More complex Reducer logic
+
+180
+
+
+
+
+
+## Making Items removable
+
+181
+
+
+
+## useEffect hook
+
+182
