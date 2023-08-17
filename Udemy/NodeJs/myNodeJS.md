@@ -44,16 +44,16 @@ Part3: Security & Validations
 | 16        | Sending E-Mails          |             |
 | 17        | Authentication Deep Dive |             |
 | :star: 18 | User Input Validation    |             |
-| 19        | Error Handling           |             |
+| :star: 19 | Error Handling           |             |
 
 Part4: Some common API
 
-| Class | Title                    | Description |
-| ----- | ------------------------ | ----------- |
-| 20    | File Uploads & Downloads |             |
-| 21    | Pagination               |             |
-| 22    | Async Requests           |             |
-| 23    | Handling Payments        |             |
+| Class     | Title                    | Description |
+| --------- | ------------------------ | ----------- |
+| 20        | File Uploads & Downloads |             |
+| 21        | Pagination               |             |
+| :star: 22 | Async Requests           |             |
+| 23        | Handling Payments        |             |
 
 Part5: Modern Node.Js topic
 
@@ -61,7 +61,7 @@ Part5: Modern Node.Js topic
 | --------- | ------------------------------------------------- | ----------- |
 | :star: 24 | REST API basics                                   |             |
 | :star: 25 | Advanced REST API Features: :gem: a practical app |             |
-| 26        | Using async-await                                 |             |
+| :star: 26 | Using async-await                                 |             |
 | :star: 27 | Websocket & Socket.io                             |             |
 | 28        | GraphQL (in parallel to REST API)                 |             |
 | 29        | Deployment                                        |             |

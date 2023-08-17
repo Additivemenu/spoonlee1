@@ -133,7 +133,7 @@ Hint:
 
 
 
-注意还是按照龙哥讲的步骤来写:
+5 steps thinking in React:
 
 + Step1: 设计component tree, 搭骨架
 + Step2: 写css, 构成静态网页

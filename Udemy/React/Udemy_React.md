@@ -80,7 +80,7 @@ React基础篇
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                         |
 | [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext |
 | [11](./C11/README.md) | :gem: Practice: Building a food order App                    | review and apply what we learned so far |
-| 12                    | :bangbang: Scene behind react & Optimization                 |                                         |
+| [12](./C12/README.md) | :bangbang: Scene behind react & Optimization                 |                                         |
 | 13                    | Alternative way: class component                             |                                         |
 
 中级篇
