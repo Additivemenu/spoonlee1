@@ -288,15 +288,78 @@ html(lang="en")
 
 
 
+同理把404.html, add-product.html 转化为pug file, 并在对应的express.js的API代码中render它们. 不展示代码了
+
+
+
 more on pug [Getting Started – Pug (pugjs.org)](https://pugjs.org/api/getting-started.html)
 
 
 
-### Converting html file to pug file
+### Create Layout
 
 ---
 
-84-87
+Views > layouts > main-layout.pug
+
++ use `block` to decalre a placeholder
+
+```pug
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Page Not Found
+        link(rel="stylesheet", href="/css/main.css")
+        block styles 
+    body 
+        header.main-header
+                    nav.main-header__nav
+                        ul.main-header__item-list
+                            li.main-header__item
+                                a.active(href="/") Shop
+                            li.main-header__item
+                                a(href="/admin/add-product") Add Product
+        block content
+```
+
+
+
+In other pug file, we can resue the main layout by extending from it:
+
+404.pug
+
+```pug
+extends layouts/main-layout.pug
+
+block content 
+    h1 Page Not Found! 
+```
+
+add-product.pug
+
+```pug
+extends layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+block content   
+    main
+        form.product-form(action="/admin/add-product", method="POST")
+            .form-control
+                label(for="title") Title
+                input(type="text", name="title")#title
+            
+            button.btn(type="submit") Add Product
+```
+
+
+
+but how to set 'active' when navigating between pages?
+
+check 86
 
 
 
