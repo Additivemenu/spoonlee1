@@ -69,6 +69,14 @@ const MyComponent = (props) => {
 
 
 
+:bangbang: 关于React的declarative programming的经验, 不论是新写一个project还是在已有的基础上添加新的功能: 
+
++ 先写static page, 再引入state写dynamic page
++ 先思考需要什么state, 再考虑如何在各种callback(handler, useEffect ...)中manage state
++ 先考虑state所在的最低component是哪个, 再考虑component communication
+
+
+
 
 
 # Part1: Startup screen
@@ -531,24 +539,146 @@ const styles = StyleSheet.create({
 
 
 
+# Part3: Game End Screen
+
+
+
+## Add a (Foreground) Image
+
+at Game End Screen
+
+做出一个图片的圆形剪影效果
+
+```js
+ <View style={styles.imageContainer}>
+      <Image
+        style={styles.image}
+        source={require("../assets/images/success.png")}
+      />
+  </View>
+
+
+                  
+imageContainer: {
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    borderWidth: 3,
+    borderColor: Colors.primary800,
+    overflow: "hidden",
+    margin: 36,
+  },
+image: {
+    // percentage refer to its parent component
+    width: "100%",
+    height: "100%",
+},
+```
 
 
 
 
-Add a (Foreground) Image
+
+
+
+Nested Text
+---
+
++ 类似web中的 "<span>"
+
+```js
+<Text stlye={styles.stlye1}>
+  abc <Text style={styles.style2}>efg</Text> aaa
+</Text>
+
+//  not allowed!
+<Text>
+	<View></View>  
+</Text>
+```
+
+
+
+
+
+## Add restart game logic
+
+
+
+GameOverScreen.js
+
++ 先思考需要哪些state, handler, 然后再去app.js里manage它们
+  + state 在整个app是singleton的, 
+
+```js
+function GameOverScreen({roundsNumber, userNumber, onStartNewGame}) {
+  return (
+    <View style={styles.rootContainer}>
+      <Title>GAME OVER!</Title>
+
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={require("../assets/images/success.png")}
+        />
+      </View>
+
+      <View>
+        <Text style={styles.summaryText}>
+          Your phone needed <Text style={styles.highlight}>{roundsNumber}</Text> rounds to
+          guess the number <Text style={styles.highlight}>{userNumber}</Text>
+        </Text>
+      </View>
+      <PrimaryButton onPress={onStartNewGame}>Start New Game</PrimaryButton>
+    </View>
+  );
+}
+```
+
+
+
+
+
+
+
+## Logging game rounds
+
+in GameScreen, record and log the numbers that is guessed by phone (of course managed in a state)
+
+```js
+const [guessRounds, setGuessRounds] = useState([initalGuess]);
+
+// handle updates of guessRound in a handler
+
+
+// jsx
+<View>
+ {guessRounds.map((guessRound) => (
+    <Text key={guessRound}>{guessRound}</Text>
+  ))} 
+</View>
+```
+
+
+
+we can also use "<FlatList>" to log it 
 
 ---
 
+```js
+<View>
+  <FlatList
+    data={guessRounds}
+    renderItem={(itemData) => <Text>{itemData.item}</Text>}
+    keyExtractor={(item)=>item}
+  />
+</View>
+```
 
 
 
+styling game round logs
 
+---
 
-
-
-
-
-
-
-
-# Part3: Game End Screen
+76

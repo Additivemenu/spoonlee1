@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Alert } from "react-native";
-import {Ionicons} from '@expo/vector-icons'
+import { Text, View, StyleSheet, Alert, FlatList } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
@@ -28,6 +28,7 @@ function GameScreen({ userNumber, onGameOver }) {
   // every time GameScreen is rendered, phone do a guess
   const initalGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initalGuess);
+  const [guessRounds, setGuessRounds] = useState([initalGuess]);
 
   // runs after render cycle
   useEffect(() => {
@@ -36,6 +37,17 @@ function GameScreen({ userNumber, onGameOver }) {
       onGameOver();
     }
   }, [currentGuess, userNumber, onGameOver]); // normally, every variable appears in the callback should be in dependency
+
+  // reset min, max bound when initially evaluate this component
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
+
+  // for debugging
+  useEffect(() => {
+    console.log("guessRounds: ", guessRounds);
+  }, [guessRounds]);
 
   // callback handlers ----------------------------------------------------------------
   function nextGuessHandler(direction) {
@@ -66,6 +78,9 @@ function GameScreen({ userNumber, onGameOver }) {
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessRounds) => {
+      return [newRndNumber, ...prevGuessRounds];
+    });
   }
 
   // jsx --------------------------------------------------------------------------------
@@ -94,7 +109,15 @@ function GameScreen({ userNumber, onGameOver }) {
       </Card>
 
       <View>
-        <Text>LOG ROUNDS</Text>
+        {/* {guessRounds.map((guessRound) => (
+          <Text key={guessRound}>{guessRound}</Text>
+        ))} */}
+        
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => <Text>{itemData.item}</Text>}
+          keyExtractor={(item)=>item}
+        />
       </View>
     </View>
   );
