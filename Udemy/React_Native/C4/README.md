@@ -4,6 +4,8 @@ C4 Diving deeper into components, Layouts & styling-building a Mini-Game App
 
 
 
+# Abstract
+
 Contents (P45-78):
 
 + :gem: Build another complete demo app
@@ -12,8 +14,6 @@ Contents (P45-78):
 + More new core components
 + Complex layouts & styles
 + Adding reusable customized components & styling
-
-
 
 
 
@@ -27,13 +27,47 @@ Target App Description
 
 
 
-
-
 Screen Component breakdown, Screen folder > 
 
 + StartGameScreen.js
 + GameScreen.js
 + GameOverScreen.js
+
+
+
+:bangbang: updated component structure:
+
+---
+
+when developing app, firstly figure out logic then tune UI, reuse component...
+
++ design what state you need
++ design what logic you need in callback handler
++ React is all about callbacks. Differenct callbacks run at different condition
+  + useState: run only on the initial rendering of the component
+  + useEffect: define callbacks run on dependency change (between render cycle)
+  + various handlers: run when component-associated event is triggered
+  + most interestingly, callbacks can be nested with another callback!
+
+```js
+const MyComponent = (props) => {
+  // at any point, business logic can cut in 
+  
+  // hooks
+  // might need calculate initial value for a state here
+  const [myState, setMyState] = useState('');		//note this only runs when component is first rendered
+  
+  // callback handlers (just register, not run immediately)
+  
+  
+  // jsx variables (for conditional component in jsx)
+  
+ 
+  // jsx
+}
+```
+
+
 
 
 
@@ -326,7 +360,7 @@ const styles = StyleSheet.create({
 
 ---
 
-Summary of content 
+Summary of content: logic-related
 
 + create reusable <Title/> component
 + Manage color globally => create a js object to store color string in 'color.js'
@@ -343,36 +377,173 @@ Summary of content
 
 
 
+UI fine-tuning: 
+
+:bangbang: Imroving game screen visuals 
+
 ---
 
-updated component structure:
++ by reusing customized UI components. 一般就是wrapper component 封装了一些styling而已
 
-+ design what state you need
-+ design what logic you need in callback handler
-+ React is all about callbacks. Differenct callbacks run at different condition
-  + useState: run only on the initial rendering of the component
-  + useEffect: define callbacks run on dependency change (between render cycle)
-  + various handlers: run when component-associated event is triggered
-  + most interestingly, callbacks can be nested with each other!
+  + reuse customized UI component:  Title and InstructionText
 
+  + extract a styled container to a dedicated UI wrapper component: Card
+
+    
+
+use cascading style 68
+
+---
+
+components > ui > InstructionText.js
+
++ use props to pass a style into a component, which is merged with its own styles. <u>利用这点, 我们可以向一个component从外部传递style, 甚至改写其内部的styling</u>
+
++ when style clashed, later one will overwrite previous one. e.g. income styling will overwrite the default styles defined in InstructionText
 
 ```js
-const MyComponent = (props) => {
-  // at any point, business logic can cut in 
+import { Text, StyleSheet } from "react-native";
+
+import Colors from "../../constants/color";
+
+function InstructionText({children, style}) {
+    // pass a style props to inner component, which allows us to overwritten inner component
+    // 's styling from outside
+  	// as style写在styles.instructionText后面 => incoming style will overwrite default style of the component
+  return <Text style={[styles.instructionText, style]}>{children}</Text>;
+}
+
+export default InstructionText;
+
+const styles = StyleSheet.create({
+    instructionText: {
+        color: Colors.accent500,
+        fontSize: 24,
+      },
+})
+```
+
+GameScreen.js
+
+```js
+function GameScreen({ userNumber, onGameOver }) {  
+  //....
+  return ( 
+          <InstructionText style={styles.instructionText}>
+            Higher or lower?
+          </InstructionText>
+    ) 
+}
+const styles = StyleSheet.create({
+	// ...
+  instructionText: {
+    marginBottom: 12,
+  },
+	// ...
+});
+```
+
+
+
+
+
+Working with icons
+
+---
+
+69
+
+we can directly use Icon libary provided by Expo
+
+https://docs.expo.dev/guides/icons/
+
+
+
+e.g. an add icon
+
+```js
+import {Ionicons} from '@expo/vector-icons'
+
+// jsx
+<Ionicons name="md-add" size={24} color="white"></Ionicons>
+```
+
+
+
+add & use customize fonts
+
+---
+
+70
+
+```console
+expo install expo-fonts
+```
+
+```console
+expo install expo-app-loading
+```
+
+app.js
+
++ hook: useFonts to load font file
+
+```js
+import {useFonts} from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+
+export default function App() {
+	// hooks 
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')	// these are ttf files under assets
+  })
+
+  if(!fontsLoaded){
+    return <AppLoading/>;
+  }
   
-  // hooks
-  // might need calculate initial value for a state here
-  const [myState, setMyState] = useState('');		//note this only runs when component is first rendered
-  
-  // callback handlers (just register, not run immediately)
+  // callbacks
   
   
-  // jsx variables (for conditional component in jsx)
-  
- 
   // jsx
 }
 ```
+
+之后在其他app下的component就可使用loaded font了
+
+```js
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: 'open-sans-bold',		// **** 
+    fontSize: 24,
+    color: 'white',
+    textAlign: "center",
+    borderWidth: 2,
+    borderColor: 'white',
+    padding: 12,
+  },
+});
+```
+
+
+
+
+
+
+
+
+
+Add a (Foreground) Image
+
+---
+
+
+
+
+
+
 
 
 

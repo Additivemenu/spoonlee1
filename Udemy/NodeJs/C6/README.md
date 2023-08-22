@@ -6,15 +6,15 @@ C6 Working with dynamic content & template engine
 
 # Abstract 
 
-Manage data (without database)
++ Manage data (without database)
 
-Render dynamic content in our view
-
-+ using Template engine
-
++ Render dynamic content in our view
+  + using Template engine to dynamically manipulate html elements by intaking customized parameters from render() method. Quite similar to React, but in an imperative way
 
 
-# Hands-on
+
+
+# 1. Hands-on
 
 ## sharing data across requests & users
 
@@ -26,7 +26,7 @@ admin.js
 
 + 定义一个array来存储user提交的product
   + also export it from admin.js
-+ 这种方式会使得data is shared across requests & users, i.e. multiple users see the same data in the array (:question: 似乎通过express()得到的router是单例的? )
++ 这种方式会使得data is shared across requests & users, i.e. multiple users see the same data in the array (:question: 似乎通过express()得到的router是单例的? 确实是这样 :bangbang: [singleton exports in node.js](./sub_topics/singleton_exports.md)
   + we later will explore how to make data share only across requests (like access control?)
 
 ```js
@@ -103,7 +103,7 @@ app.listen(3000);
 
 
 
-# Template engine
+# 2. Template engine
 
 80-
 
@@ -125,7 +125,7 @@ npm install --save ejs pug express-handlebars
 
 
 
-## Pug
+## 2.1 Pug
 
 81-87
 
@@ -359,21 +359,93 @@ block content
 
 but how to set 'active' when navigating between pages?
 
-check 86
++ just pass a argument to render() method 
+
+admin.js
+
+```js
+// /admin/add-product => GET
+router.get("/add-product", (req, res, next) => {
+  res.render('add-product', {pageTitle: "Add Product", path:'admin/add-product'})
+});
+```
+
+shop.js
+
+```js
+// the root path
+router.get("/", (req, res, next) => {
+  const products = adminData.products;
+  res.render('shop', {prods: products, pageTitle: 'Shop', path: '/'}); // render template using configed template engine
+});
+```
+
+app.js
+
+```js
+// page not found middleware
+app.use((req, res, next) => {
+  res.status(404).render('404', {pageTitle: 'Page Not Found'});
+});
+
+```
 
 
 
-## Handlebars
+main-layout.pug
+
++ we make `pageTitle` and `path` as argument to render() method in express middlewares, now we use them directly in the pug template file
+
+```pug
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        link(rel="stylesheet", href="/css/main.css")
+        block styles 
+    body 
+        header.main-header
+                    nav.main-header__nav
+                        ul.main-header__item-list
+                            li.main-header__item
+                                a(href="/", class=(path==='/'?'active':'')) Shop
+                            li.main-header__item
+                                a(href="/admin/add-product", class=(path==='admin/add-product'?'active':'')) Add Product
+        block content
+```
+
+
+
+
+
+
+
+## 2.2 Handlebars
 
 88-90
 
+有需求再看
 
 
 
 
 
-
-## EJS
+## 2.3 EJS
 
 91-92
 
+有需求再看
+
+貌似比前两个template engine 的语法更加简洁
+
+
+
+
+
+
+
+# 3. :gem: Assignment 
+
+practice for template engine
