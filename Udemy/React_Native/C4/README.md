@@ -4,16 +4,38 @@ C4 Diving deeper into components, Layouts & styling-building a Mini-Game App
 
 
 
+4h course content
+
+
+
 # Abstract
 
 Contents (P45-78):
 
 + :gem: Build another complete demo app
   + it has multiple screens!
-
+    + here we just use simple  "useState" to control screen navigation
+  
 + More new core components
+  + <TextInput>
+  + <SafeAreaView>
+  + <Ionicons>
+  + fontFamily, reusable color variable
+  + nested <Text> (similar to <span> in web)
+  + gradient background
+
 + Complex layouts & styles
-+ Adding reusable customized components & styling
++ :bangbang: More complex game logic and state management logics
+  + screen navigation
+  + use input validation
+  + check if game end, restart game, iteratively guess user input
+  + ...
+
++ :bangbang: Adding <u>reusable</u> customized components with <u>default styling</u>
+  + UI: "<PrimaryButton>", "<Title>", "<Card>", "<InstructText>" ...
+  + Game: "<NumberContainer>", "<GuessLogItem>"
+  + `Cascading styling`: we can even pass style props to overwrite the default styling of these customized components
+
 
 
 
@@ -24,8 +46,6 @@ Target App Description
 + In a game UI, phone will iteratively guess a number and get feedback from user saying if the guess is lower or higher, the feedback will also be logged. 
 
 + At last, if the guess is right, switch to another screen saying game over! 
-
-
 
 Screen Component breakdown, Screen folder > 
 
@@ -94,7 +114,7 @@ Component:
     + for android, to make android_ripple property of <Pressable> work, need a <View> wrapping <Pressable>
     + on iOS, use conditional styling
 
-+ TextInput: more configs
++ <TextInput>: more configs
 + Background 
   + :bangbang: <View> by default only takes up space as much as it need. We can force it to use all space using `flex:1`
   + Add gradient background
@@ -682,3 +702,63 @@ styling game round logs
 ---
 
 76
+
+Customize a log item component with its own styling
+
+```js
+
+function GuessLogItem({ roundNumber, guess }) {
+  return (
+    <View style={styles.listItem}>
+      <Text style={styles.itemText}>#{roundNumber}</Text>
+      <Text style={styles.itemText}>Opponent's Guess: {guess}</Text>
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  listItem: {
+    borderColor: Colors.primary800,
+    borderWidth: 1,
+    borderRadius: 40,
+    padding: 12,
+    marginVertical: 8,
+    backgroundColor: Colors.accent500,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    elevation: 4,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+  itemText: {
+    fontFamily: "open-sans",
+  },
+});
+```
+
+
+
+GameScreen.js
+
++ FlatList renderItem uses "<GuessLogItem />"
+
+```js
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundListLength - itemData.index} guess={itemData.item}/>}
+          keyExtractor={(item)=>item}
+        />
+      </View>
+```
+
+
+
+At last, when game is over, display how many rounds it takes to make correct guess
+
++ in GameScreen, handle this in GameOverHandler
+
