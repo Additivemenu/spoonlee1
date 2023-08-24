@@ -12,6 +12,10 @@ All lecture materials is in the last module of each class
 
 ## Course outline
 
+:bangbang: [JavaScript basics](./JS/README.md)
+
+
+
 Part1: node.js basics
 
 | Class                      | Title                                                    | Description                                                  |
@@ -20,8 +24,8 @@ Part1: node.js basics
 | C2                         | Optional: JS refresher                                   |                                                              |
 | [3](./C3/README.md)        | Understanding the basics                                 | vanilla node.js to build a simple server                     |
 | [4](./C4/README.md)        | Improved Development Workflow and debugging              | npm <br/>nodemon <br>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
-| :star: [5](./C5/README.md) | Working with Express.js                                  |                                                              |
-| :star: [6](./C6/README.md) | Working with Dynamic Content & Adding Templating Engines |                                                              |
+| :star: [5](./C5/README.md) | Working with Express.js                                  | middleware <br> router                                       |
+| :star: [6](./C6/README.md) | Working with Dynamic Content & Adding Templating Engines | EJS,  similar to Jinja in python <br>pass argument to template from router |
 | :star: [7](./C7/README.md) | Modal View Controller (MVC)                              |                                                              |
 | 8                          | Enchanting App                                           |                                                              |
 | 9                          | Dynamic Routes &  Advanced Models                        |                                                              |

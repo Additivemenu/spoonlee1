@@ -432,15 +432,26 @@ html(lang="en")
 
 
 
-## 2.3 EJS
+## 2.3 :moon: EJS
 
 91-92
 
-有需求再看
-
-貌似比前两个template engine 的语法更加简洁
+:gem: 04-template-engine-EJS
 
 
+
+we will use EJS for the rest of this course
+
++ more similar to flask, directly couple with html
++ we can use include to reuse code blocks
+
+```ejs
+<%= %>		// for dynamic content
+
+<% js code %>	// for excuting js code
+
+<%- %>		// for inserting include
+```
 
 
 

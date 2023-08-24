@@ -252,6 +252,11 @@ now we see:
 
 <img src="./src_md/stack_navigator1.png" style="zoom:25%;" />
 
+
+
 ## Implementing Navigation between screens
 
 95
+
+
+
