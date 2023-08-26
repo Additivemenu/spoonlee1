@@ -78,9 +78,9 @@ React基础篇
 | Episode               | Title                                                        | Description                                                  |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    |                                                              |
-| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | useEffect <br>useReducer <br>useContext                      |
+| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | `useEffect()` <br>`useReducer()` <br>`useContext()`          |
 | [11](./C11/README.md) | :gem: Practice: Building a food order App                    | review and apply what we learned so far                      |
-| [12](./C12/README.md) | :bangbang: Scene behind react & Optimization                 | state or props change of a component => re-evaluation of this component<br>:bangbang: re-evaluation of a component !== re-rendering the real DOM <br> `React.memo()` <br> `useCallback()` |
+| [12](./C12/README.md) | :bangbang: Scene behind react & Optimization <br> mainly for performance optimization | state or props change of a component => re-evaluation of this component<br>:bangbang: re-evaluation of a component !== re-rendering the real DOM <br> `React.memo()` <br> `useCallback()`  for memorizing callback function across render cycle<br> `useMemo()`  for memorizing data across render cycle |
 | 13                    | Alternative way: class component                             |                                                              |
 
 中级篇
