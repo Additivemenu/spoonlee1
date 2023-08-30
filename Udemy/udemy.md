@@ -25,3 +25,5 @@
 ## devops
 
 + [aws](./AWS/Udemy_AWS.md)
++ [aws hands-on](./AWS_handson/myAWSHandson.md)
+

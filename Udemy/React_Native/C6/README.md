@@ -10,13 +10,16 @@ C6 React Native Navigation with React Navigation: MEAL APP
 
 
 
-key takeaway
+# Key takeaway
 
 + register screen components
-+ these registerd components will have access to object: navigation, route . Use this objects to define navigation and information passing logics
++ these registerd components will automatically have access to object: navigation, route. Use this objects to define navigation and information passing logics. 
+  + other unregistered component can have access to navigation & route via `useNavigation()` & `useRoute()` hooks
+
 + different types of navigator
   + Stack 
   + Drawer
++ Url source image's dimension must be specified for RN 
 
 
 
@@ -564,9 +567,188 @@ export default MealItem;
 
 
 
-### style screen header & backgrounds
+## Navigation option
+
+### Style screen header & backgrounds
 
 101-
+
+style default navigation header & backgrounds
+
+refer to https://reactnavigation.org/docs/stack-navigator#options check more option settings
+
+
+
+App.js
+
++ 这里我用的stack, 老师用的native-stack. 个别api不太一样
++ 通过Navigator 为registered screens设置default option
++ 也可在register时, 为单独的screen定义option
+
+```js
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+// import {createStackNavigator} from '@react-navigation/native-stack'
+
+const Stack = createStackNavigator();
+
+import CategoriesScreen from "./screens/CategoriesScreen";
+import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+
+export default function App() {
+  return (
+    <>
+      <StatusBar style="dark"></StatusBar>
+
+      {/* register screens here */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{  // default screen option
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+            cardStyle: { backgroundColor: "#3f2f25" },
+          }}
+        >
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoriesScreen}
+            options={{  // option for specific screen
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {},
+});
+```
+
+
+
+### Set Navigation options dynamically
+
+102
+
+方式1
+
++ at  screen register, use a function to return dynamic option obj
+
+```js
+export default function App() {
+  return (
+    <>
+      <StatusBar style="light"></StatusBar>
+
+      {/* register screens here */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            // default screen option
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+            cardStyle: { backgroundColor: "#3f2f25" },
+          }}
+        >
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoriesScreen}
+            options={{
+              // option for specific screen
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen
+            name="MealsOverview"
+            component={MealsOverviewScreen}
+            options={({ route, navigation }) => {
+               const catId = route.params.categoryId;
+               return {
+                 title: catId,
+               };
+             }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+```
+
+
+
+方式二 (preferred)
+
++ 在screen component里使用useEffect or useLayoutEffect来set option
+
+```js
+import { useLayoutEffect } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+
+import { MEALS, CATEGORIES } from "../data/dummy-data";
+import MealItem from "../components/MealItem";
+
+function MealsOverviewScreen({ route, navigation }) {
+  //  route.params:  object containing params which is defined while navigating
+  const catId = route.params.categoryId;
+
+  const displayedMeals = MEALS.filter((mealItem) => {
+    // check if meals's categoryIds contain this meal category id
+    return mealItem.categoryIds.indexOf(catId) >= 0; // check model -> meal.js
+  });
+	
+  // ****************!see this!*************************
+  useLayoutEffect(() => { // set screen title is a side effect, callback run after init rendering is done
+    const catTitle = CATEGORIES.find((cat) => cat.id === catId).title;
+    navigation.setOptions({
+      title: catTitle,
+    });
+  }, [catId, navigation]);
+  // ***************************************************
+
+  function renderMealItem(itemData) {
+    const item = itemData.item;
+    const mealItemProps = {
+      title: item.title,
+      imageUrl: item.imageUrl,
+      affordability: item.affordability,
+      complexity: item.complexity,
+      duration: item.duration,
+    };
+
+    return <MealItem {...mealItemProps} />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={displayedMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+      />
+    </View>
+  );
+}
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+
+```
+
+
 
 
 
@@ -574,11 +756,32 @@ export default MealItem;
 
 # MealDetailScreen(3rd layer)
 
+103-105
+
+
+
+添加第三层screen的navigation效果步骤和前面类似:
+
+Step1: register 3rd layer screen at App.js
+
+Step2: 在第二层screen里通过navigation obj 来define how to navigate (e.g. onPress) to  3rd layer screen. 
+
+
+
+为MealDetailScreen添加更多内容和styling  104 -105
+
++ cascading styling to overwrite compoent's default styling
+  + tailwind怎么cascade styling?
++ :bangbang: note <Text> in RN cannot receive border styling, you need to wrap it with a <View> and define border styling onto that <View>
++ create reusable UI component with default styling
 
 
 
 
 
+# Customize navigation Header component
+
+106-
 
 
 
