@@ -85,15 +85,15 @@ React基础篇
 
 中级篇
 
-| 14   | :star: sending HTTP request                              |      |
-| ---- | -------------------------------------------------------- | ---- |
-| 15   | :star: Building custom react hooks                       |      |
-| 16   | Working with forms & User input                          |      |
-| 17   | :gem: Practice: adding HTTP & form to the food order app |      |
-| 18   | :star: Redux (Alternative to Context)                    |      |
-| 19   | :star: Advanced Redux                                    |      |
-| 20   | :star: Build a Multi-Page SPA with React Router          |      |
-| 21   | Adding Authentication to React Apps                      |      |
+| [14](./C14/README.md) | :star: sending HTTP request                              |      |
+| --------------------- | -------------------------------------------------------- | ---- |
+| 15                    | :star: Building custom react hooks                       |      |
+| 16                    | Working with forms & User input                          |      |
+| 17                    | :gem: Practice: adding HTTP & form to the food order app |      |
+| 18                    | :star: Redux (Alternative to Context)                    |      |
+| 19                    | :star: Advanced Redux                                    |      |
+| 20                    | :star: Build a Multi-Page SPA with React Router          |      |
+| 21                    | Adding Authentication to React Apps                      |      |
 
 Ajax与Axios 见其他笔记
 

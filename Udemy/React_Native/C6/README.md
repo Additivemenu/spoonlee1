@@ -10,6 +10,17 @@ C6 React Native Navigation with React Navigation: MEAL APP
 
 
 
+key takeaway
+
++ register screen components
++ these registerd components will have access to object: navigation, route . Use this objects to define navigation and information passing logics
++ different types of navigator
+  + Stack 
+  + Drawer
+
+
+
+
 
 
 # Intro
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
 
 
 
-# Hands-on
+# MealCategory Screen (1st layer)
 
 ## Get start with React Nativation
 
@@ -254,9 +265,328 @@ now we see:
 
 
 
-## Implementing Navigation between screens
+# MealsOverView Screen (2nd layer)
 
-95
+
+
+## `navigation`: Implementing Navigation between screens
+
+95-97
+
+
+
+create a new screen component
+
+```js
+import { View, Text, StyleSheet } from "react-native";
+
+import { MEALS } from "../data/dummy-data";
+
+function MealsOverviewScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Meals Overview Screen</Text>
+    </View>
+  );
+}
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+```
+
+
+
+
+
+step1: register new screen component
+
++ 所有registered screen component会被提供navigation object作为props, 即只有registered的component才能使用navigation object
+  + note alternatively, we can also use `useNavigation()` hook to get that navigation object in any component (see class 97)
+
+```js
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
+
+import CategoriesScreen from "./screens/CategoriesScreen";
+import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+
+export default function App() {
+  return (
+    <>
+      <StatusBar style="dark"></StatusBar>
+
+      {/* register screens here */}
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="MealsCategories" component={CategoriesScreen} />
+          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {},
+});
+```
+
+
+
+
+
+step2: define callback that triggers navigation to the new screen
+
++ 利用props.navigation 来绑定navigation target sreen
+
++ 这里用到多重nested function, 主要是为了inner function可以直接access outer function的argument
+
+```js
+import { FlatList } from "react-native";
+
+import { CATEGORIES } from "../data/dummy-data";
+import CategoryGridTile from "../components/CategoryGridTile";
+
+
+//navigation props is provided if the component is registed on React navigation
+function CategoriesScreen({navigation}) {
+
+  function renderCategoryItem(itemData) {   // inner function so that we can use arguments of outer function
+    function pressHandler() {
+      navigation.navigate("MealsOverview");
+    }
+  
+    return (
+      <CategoryGridTile
+        title={itemData.item.title}
+        color={itemData.item.color}
+        onPress={pressHandler}
+      />
+    );
+  }
+
+
+  return (
+    <FlatList
+      data={CATEGORIES}
+      keyExtractor={(item) => item.id}
+      renderItem={renderCategoryItem}
+      numColumns={2}
+    />
+  );
+}
+
+export default CategoriesScreen;
+```
+
+
+
+now click on any CategoryItem, we will be navigate to a MealsOverviewScreen. And React Navigation automatically provde a go back button
+
+<img src="./src_md/navigate1.png" style="zoom: 25%;" />
+
+
+
+set the default screen of app
+
+---
+
+When setting up a Navigator (like `<Stack.Navigator>`) and registering its screens (via `<Stack.Screen>`), you can decide **which screen will be shown as a default when the app starts**.
+
++ Out of the box, the **top-most screen** (i.e. the **first child** inside of `<Stack.Navigator>`) is used as the initial screen.
++ we also has the freedom to disrupt above rule and point out which child be the default screen (check gpt)
+
+
+
+## `route`: pass data between screens
+
+98
+
+https://reactnavigation.org/docs/navigation-prop
+
+https://reactnavigation.org/docs/route-prop
+
+
+
+navigation.navigate() acts like a router: define target, define associated data 
+
+```js
+
+//navigation props is provided if the component is registed on React navigation
+function CategoriesScreen({navigation}) {
+
+  function renderCategoryItem(itemData) {   // inner function so that we can use arguments of outer function
+    function pressHandler() {
+      navigation.navigate("MealsOverview", {	// just like router in node.js ********
+        categoryId: itemData.item.id,
+      });
+    }
+  
+    return (
+      <CategoryGridTile
+        title={itemData.item.title}
+        color={itemData.item.color}
+        onPress={pressHandler}
+      />
+    );
+  }
+
+
+  return (
+    <FlatList
+      data={CATEGORIES}
+      keyExtractor={(item) => item.id}
+      renderItem={renderCategoryItem}
+      numColumns={2}
+    />
+  );
+}
+```
+
+
+
+in the target screen, use route to extract the info passed
+
++ 同理, route 和 navigation一样, 自动提供给registered screen component. 
+  + 也可以用useRoute() hook 在任何component中得到这个route obj
+
+```js
+function MealsOverviewScreen({route}) {
+    //  route.params:  object containing params which is defined while navigating
+   const catId = route.params.categoryId; 
+
+
+  return (
+    <View style={styles.container}>
+      <Text>Meals Overview Screen - {catId}</Text>
+    </View>
+  );
+```
+
+
+
+
+
+
+
+### displaying meals
+
+99
+
+MealOverViewScreen
+
++ 注意这里是如何filter某个meal category的
++ <FlatList>的使用, 老话题了
+
+```js
+import { View,  StyleSheet, FlatList } from "react-native";
+
+import { MEALS } from "../data/dummy-data";
+import MealItem from "../components/MealItem";
+
+function MealsOverviewScreen({ route }) {
+  //  route.params:  object containing params which is defined while navigating
+  const catId = route.params.categoryId;
+	
+
+  const displayedMeals = MEALS.filter((mealItem) => {
+     // check if meals's categoryIds contain this meal category id
+    return mealItem.categoryIds.indexOf(catId) >= 0; // check model -> meal.js
+  });
+
+  function renderMealItem(itemData) {
+    return <MealItem title={itemData.item.title}/>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={displayedMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+      />
+    </View>
+  );
+}
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+```
+
+MealItem (dummy version)
+
+```js
+import { View, Text } from "react-native";
+
+function MealItem({ title }) {
+  return (
+    <View>
+      <Text>{title}</Text>
+    </View>
+  );
+}
+
+export default MealItem;
+```
+
+
+
+
+
+### styling MealItem component
+
+100
+
+和navigation 无关, 复习前面
+
++ Image 的导入, RN 需要指定url来源的image的size
++ feedback effect when click on a MealItem
++ add shadows to MealItem 
++ round corner of each MealItem Card
+
+
+
+
+
+### style screen header & backgrounds
+
+101-
+
+
+
+
+
+# MealDetailScreen(3rd layer)
+
+
+
+
+
+
+
+
+
+
+
+# Drawer Navigator
+
+
 
 
 
