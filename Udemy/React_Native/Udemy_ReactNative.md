@@ -16,7 +16,7 @@ https://reactnative.dev/
 
 
 
-## Firt RN app on real device
+# Firt RN app on real device
 
 follow environment setup in RN document
 
@@ -58,7 +58,7 @@ Commands:
 
 
 
-## Set up local environment using emulator
+# Set up local environment using emulator
 
 Android emulator
 
@@ -67,6 +67,14 @@ Android emulator
 IOS emulator
 
 + Xcode => show content package => developer > application => simulator, press 'i'
+
+
+
+
+
+https://blog.expo.dev/the-new-expo-cli-f4250d8e3421
+
+
 
 
 

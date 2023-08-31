@@ -8,6 +8,8 @@ C6 React Native Navigation with React Navigation: MEAL APP
 
 3h course content
 
+:bangbang: note this course only explore some navigator in React Navigation, visit [Bottom Tabs Navigator | React Navigation](https://reactnavigation.org/docs/bottom-tab-navigator) for more
+
 
 
 # Key takeaway
@@ -15,10 +17,11 @@ C6 React Native Navigation with React Navigation: MEAL APP
 + register screen components
 + these registerd components will automatically have access to object: navigation, route. Use this objects to define navigation and information passing logics. 
   + other unregistered component can have access to navigation & route via `useNavigation()` & `useRoute()` hooks
-
+  + `Options` to a screen allows add additional or customized component to Navigation header, background ... A good practice is that, specific screen options should be defined inside that screen component 
+  
 + different types of navigator
-  + Stack 
-  + Drawer
+  + Stack: suitable for stacked pages navigation 
+  + Drawer: suitable for parallel pages navigation
 + Url source image's dimension must be specified for RN 
 
 
@@ -26,7 +29,11 @@ C6 React Native Navigation with React Navigation: MEAL APP
 
 
 
-# Intro
+
+
+
+
+# 1. Intro
 
 
 
@@ -194,11 +201,15 @@ const styles = StyleSheet.create({
 
 
 
+# 2. Stack Navigator
+
+:gem: 01-stack-navigator
 
 
-# MealCategory Screen (1st layer)
 
-## Get start with React Nativation
+## 2.1 MealCategory Screen (1st layer)
+
+### Get start with React Nativation
 
 94-
 
@@ -268,11 +279,11 @@ now we see:
 
 
 
-# MealsOverView Screen (2nd layer)
+## 2.2 MealsOverView Screen (2nd layer)
 
 
 
-## `navigation`: Implementing Navigation between screens
+### `navigation`: Implementing Navigation between screens
 
 95-97
 
@@ -411,7 +422,7 @@ When setting up a Navigator (like `<Stack.Navigator>`) and registering its scree
 
 
 
-## `route`: pass data between screens
+### `route`: pass data between screens
 
 98
 
@@ -482,7 +493,7 @@ function MealsOverviewScreen({route}) {
 
 
 
-### displaying meals
+#### displaying meals
 
 99
 
@@ -552,7 +563,7 @@ export default MealItem;
 
 
 
-### styling MealItem component
+#### styling MealItem component
 
 100
 
@@ -567,9 +578,9 @@ export default MealItem;
 
 
 
-## Navigation option
+### Navigation option
 
-### Style screen header & backgrounds
+#### Style screen header & backgrounds
 
 101-
 
@@ -633,7 +644,7 @@ const styles = StyleSheet.create({
 
 
 
-### Set Navigation options dynamically
+#### Set Navigation options dynamically
 
 102
 
@@ -754,7 +765,7 @@ const styles = StyleSheet.create({
 
 
 
-# MealDetailScreen(3rd layer)
+## 2.3 MealDetailScreen(3rd layer)
 
 103-105
 
@@ -779,17 +790,114 @@ Step2: 在第二层screen里通过navigation obj 来define how to navigate (e.g.
 
 
 
-# Customize navigation Header component
+## 2.4 Customize navigation Header component
 
 106-
 
+同理, 通过registeed screen的option来定义additional or customized navigation header component
+
++ 方式一: 在register时就定义option, 但这种方式不够灵活, 可以应用于option和screen component不相关的情景
++ 方式二 (good practice): 在screen component里定义option, 更加灵活, 因为你可以在option里定义和该screen component depedent的内容
+
+
+
+```js
+function MealDetailScreen({ route, navigation }) {
+
+	// 
+  function headerButtonPressHandler() {
+    console.log("Pressed!");
+  }
+	
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <Button title="Tap Me!" onPress={headerButtonPressHandler} />;
+      },
+    });
+  }, [navigation, headerButtonPressHandler]);
+
+	// jsx
+
+}
+```
+
+
+
+Replace above <Button> with a Customize Icon button for better looking
+
++ use <Ionicons>
++ add opacity effect  onPress
 
 
 
 
-# Drawer Navigator
+
+# 3. Drawer Navigator
+
+108-112
+
+:gem: 02-drawer-navigation
+
+[Drawer Navigator | React Navigation](https://reactnavigation.org/docs/drawer-navigator) install dependencies
+
+
+
+貌似有兼容性问题with react-native-reanimated, solution: 
+
+
+
+>  Following the [reanimated2](https://www.reanimated2.com/docs/fundamentals/installation) documentation , the problem is fixed adding the `react-native-reanimated/plugin ` to `babel.config.js` in root directory. After this, if the error persists, launch `expo r -c` for deploy the app with empty cache. This will probably fix the issue.
+>
+>  **-- IMPORTANT --**
+>
+> The `react-native-reanimated/plugin` has to be the last of every other plugins you may have installed in babel configuration.
+>
+> ```js
+> module.exports = function(api) {
+>   api.cache(true);
+>   return {
+>     presets: ['babel-preset-expo'],
+>     plugins: ['react-native-reanimated/plugin'],
+>   };
+> };
+> ```
 
 
 
 
 
+code 
+
+App.js
+
++ 和stack navigator一样, 先register screen components
+
+```js
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+import WelcomeScreen from "./screens/WelcomeScreen";
+import UserScreen from './screens/UserScreen'
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator screenOptions={{}}>
+        <Drawer.Screen name="User" component={UserScreen} />
+        <Drawer.Screen name="Welcome" component={WelcomeScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+
+
+## Config Drawer navigator 
+
+109-
+
+看至此
