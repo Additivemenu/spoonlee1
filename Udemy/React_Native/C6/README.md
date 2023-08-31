@@ -14,15 +14,25 @@ C6 React Native Navigation with React Navigation: MEAL APP
 
 # Key takeaway
 
-+ register screen components
-+ these registerd components will automatically have access to object: navigation, route. Use this objects to define navigation and information passing logics. 
-  + other unregistered component can have access to navigation & route via `useNavigation()` & `useRoute()` hooks
-  + `Options` to a screen allows add additional or customized component to Navigation header, background ... A good practice is that, specific screen options should be defined inside that screen component 
-  
-+ different types of navigator
+一句话总结: register screen component (navigators can be nested) + option to config navigator (we can pass dynamic data to option (e.g. dynamically control the navigator header title of a screen))
+
+
+
++ There are multiple types of React Navigator. But use of them shares the same pattern:
+  + Register screen components firstly. 
+  + we can config `option` to an individual screen, or apply common `option` to all registered screens
+    + `Option` to a screen allows add additional or customized component to Navigation header, background ... A good practice is that, specific screen options should be defined inside that screen component 
+
+  + These registerd components will automatically have access to object: `navigation`, `route`. Use this objects to define navigation and information passing logics. 
+    + other unregistered component can have access to navigation & route via `useNavigation()` & `useRoute()` hooks
+
++ Different types of navigator
   + Stack: suitable for stacked pages navigation 
   + Drawer: suitable for parallel pages navigation
+  + Tap: suitable for parallel pages navigation
++ :bangbang:Nested use of navigators
 + Url source image's dimension must be specified for RN 
++ use <Ionicons> to define icons in RN app
 
 
 
@@ -578,7 +588,7 @@ export default MealItem;
 
 
 
-### Navigation option
+### Navigation `option`
 
 #### Style screen header & backgrounds
 
@@ -794,7 +804,7 @@ Step2: 在第二层screen里通过navigation obj 来define how to navigate (e.g.
 
 106-
 
-同理, 通过registeed screen的option来定义additional or customized navigation header component
+同理, 通过registeed screen的`option`来定义additional or customized navigation header component
 
 + 方式一: 在register时就定义option, 但这种方式不够灵活, 可以应用于option和screen component不相关的情景
 + 方式二 (good practice): 在screen component里定义option, 更加灵活, 因为你可以在option里定义和该screen component depedent的内容
@@ -900,4 +910,245 @@ export default function App() {
 
 109-
 
-看至此
+config option of registered drawer screen component
+
+[Drawer Navigator | React Navigation](https://reactnavigation.org/docs/drawer-navigator#options)
+
+
+
+App.js
+
++ config `option` for individual screen or apply to all registered screens
+
+```js
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+
+import WelcomeScreen from "./screens/WelcomeScreen";
+import UserScreen from "./screens/UserScreen";
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        screenOptions={{
+          // default options for all below registered screens
+          headerStyle: { backgroundColor: "#3c0a6b" },
+          headerTintColor: "white",
+          drawerActiveBackgroundColor: "#f0e1ff",
+          drawerActiveTintColor: "#3c0a6b",
+          drawerStyle: { backgroundColor: "#ccc" },
+        }}
+      >
+        <Drawer.Screen
+          name="User"
+          component={UserScreen}
+          options={{
+            drawerLabel: "Welcome Screen",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={18} />
+            ),
+          }}
+        />
+        <Drawer.Screen name="Welcome" component={WelcomeScreen} options={{
+          drawerIcon: ({color, size}) => <Ionicons name="person" color={color} size={size}/>
+        }}/>
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+
+
+
+
+# 4. Taps Navigator
+
+## Bottom Taps Navigator
+
+110-
+
+:gem: 03-tap-navigator
+
+ 
+
+[Bottom Tabs Navigator | React Navigation](https://reactnavigation.org/docs/bottom-tab-navigator)
+
+check out how to install dependencies
+
+App.js
+
++ 同理, register + option config
+
+```js
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
+
+import WelcomeScreen from "./screens/WelcomeScreen";
+import UserScreen from "./screens/UserScreen";
+
+const BottomTab = createBottomTabNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <BottomTab.Navigator
+        screenOptions={{
+          // default options for all below registered screens
+          headerStyle: { backgroundColor: "#3c0a6b" },
+          headerTintColor: "white",
+          tabBarActiveTintColor: '#3c0a6b'
+        }}
+      >
+        <BottomTab.Screen
+          name="User"
+          component={UserScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person" color={color} size={size} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+      </BottomTab.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+
+
+
+
+# 5. :moon: Nesting Navigators
+
+同时使用stack navigator & drawer navigator
+
+111-112
+
+:gem: 04-nested-navigation
+
+
+
+Now, we have the Drawer navigator nested inside a stack navigator.
+
++ but how to remove the top header which belongs to the stack navigator? we don't want it
+
+<img src="./src_md/nestedNav1.png" style="zoom:25%;" />
+
+App.js
+
++ registered screen component的 props 可以被传递另一个navigator, 实现nested navigator的效果
++ 同样通过options来config各种navigator相关的内容
+
+```js
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, Button } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+// import {createStackNavigator} from '@react-navigation/native-stack'
+
+import CategoriesScreen from "./screens/CategoriesScreen";
+import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+import MealDetailScreen from "./screens/MealDetailScreen";
+import FavoriteScreen from "./screens/FavoriteScreen";
+
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: "#351401" },
+        headerTintColor: "white",
+        sceneContainerStyle: { backgroundColor: "#3f2f25" },
+        drawerContentStyle: { backgroundColor: "#351401" },
+        drawerInactiveTintColor: "white",
+        drawerActiveTintColor: "#351401",
+        drawerActiveBackgroundColor: "#c14b07",
+      }}
+    >
+      <Drawer.Screen
+        name="Categories"
+        component={CategoriesScreen}
+        options={{
+          title: "All Categories",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="list" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Favorites"
+        component={FavoriteScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="star" color={color} size={size} />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <>
+      <StatusBar style="light"></StatusBar>
+
+      {/* register screens here */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            // default screen option
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+            cardStyle: { backgroundColor: "#3f2f25" },
+          }}
+        >
+          <Stack.Screen
+            name="Drawer"
+            component={DrawerNavigator}		// nested navigator *****************
+            options={{
+              title: "All Categories",
+              headerShown: false,				// remove stack navigator's header *************
+            }}
+          />
+          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
+          <Stack.Screen
+            name="MealDetail"
+            component={MealDetailScreen}
+            options={{
+              title: "About the Meal",
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {},
+});
+```
+
+Now, we have following 1st layer, when click on a category card, we will navigate to a 2nd layer MealOverviewScreen
+
+<img src="./src_md/nestedNav2.png" style="zoom:25%;" />

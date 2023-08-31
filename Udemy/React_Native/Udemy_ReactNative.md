@@ -96,22 +96,22 @@ https://blog.expo.dev/the-new-expo-cli-f4250d8e3421
 
 Essentials of React Native (2 weeks to learn)
 
-| Class                      | Topic                                                        | Description                                   |
-| -------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
-| :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list |
-| [3](./C3/README.md)        | Debug React Native Apps                                      | React devtools                                |
-| :star: [4](./C4/README.md) | Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs |
-| [5](./C5/README.md)        | Build Adaptive & Responsive User Interface (Adapt to Platform & Device Size) | 有需求再看                                    |
-| :star: [6](./C6/README.md) | React Native Navigation with React Navigation                |                                               |
+| Class                      | Topic                                                        | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list                |
+| [3](./C3/README.md)        | Debug React Native Apps                                      | React devtools                                               |
+| :star: [4](./C4/README.md) | Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs                |
+| [5](./C5/README.md)        | Build Adaptive & Responsive User Interface (Adapt to Platform & Device Size) | 有需求再看                                                   |
+| :star: [6](./C6/README.md) | React Native Navigation with React Navigation                | Stack navigator <br>Drawer navigator (有需求再看完) <br>Tap navigator <br>Nesting navigators |
 
 React & React Native (2 weeks to learn)
 
-| Class   | Topic                                              | Description |
-| ------- | -------------------------------------------------- | ----------- |
-| 7       | App-wide state management with Redux & Context API |             |
-| :gem: 8 | The expense tracker App                            |             |
-| 9       | Handling user input                                |             |
-| 10      | Send HTTP request                                  |             |
+| Class               | Topic                                              | Description |
+| ------------------- | -------------------------------------------------- | ----------- |
+| [7](./C7/README.md) | App-wide state management with Redux & Context API |             |
+| :gem: 8             | The expense tracker App                            |             |
+| 9                   | Handling user input                                |             |
+| 10                  | Send HTTP request                                  |             |
 
 Advanced (1 week)
 
