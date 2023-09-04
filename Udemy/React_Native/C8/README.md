@@ -281,20 +281,132 @@ Revision on
 
 
 
-### Manage App-wide state with Context
+### :bangbang: Manage App-wide state with Context
 
 142
 
-
-
-
-
-### using context from inside component
+the App-wide state is an array that stores the expenses records, as we need to display it in several screen it is an App-wide state
 
 
 
 
 
-## Deleting & Updating Expenses
+store > expenses-context.js
+
++ revision on React Reducer for complex state management in a cohesive, decoupled manner. Similar to command pattern 
+  + 要素1: reducer function
+  + 要素2: useReducer hook to connect state with reducer function
+  + 要素3: dispatch action (& associated data) to reducer function in various callback handlers
++ Context API
+  + Context object 
+    + Define context format
+  + Context Provider (a wrapper component) 
+    + defines how the context is managed (normally useState or useReducer) 
+    + dispatch context obj, which would be received and used by other component
+
+```js
+import { createContext, useReducer } from "react";
+
+const DUMMY_EXPENSES = [
+  {
+    id: "e1",
+    description: "A pair of shoes",
+    amount: 59.99,
+    date: new Date("2021-12-19"),
+  },
+  {
+    id: "e2",
+    description: "A pair of trousers",
+    amount: 89.99,
+    date: new Date("2022-01-05"),
+  }
+  // ... more obj
+];
+
+export const ExpensesContext = createContext({
+  expenses: [],
+  addExpense: ({ description, amount, date }) => {},
+  deleteExpense: (id) => {},
+  updateExpense: (id, { description, amount, date }) => {},
+});
+
+// reducer function: define how to update given state based on the dispatched action *****
+// always return a new state (similar to cmmand pattern)
+function expensesReducer(state, action) {
+  switch (action.type) {
+    case "ADD":
+      const id = new Date().toString() + Math.random.toString();
+      return [{ ...action.payload, id: id }, ...state]; // add an obj to expenses array
+    case "UPDATE":
+      const updatableExpenseIndex = state.findIndex(
+        (expense) => expense.id === action.payload.id
+      );
+      const updatableExpense = state[updatableExpenseIndex];
+      const updatedItem = { ...updatableExpense, ...action.payload.data }; // a temp variable,  overwirte (update) target expense obj
+      const updatedExpenses = [...state];   // a temp variable
+      updatedExpenses[updatableExpenseIndex] = updatedItem;
+      return updatedExpenses; // newly updated state
+    case "DELETE":
+      return state.filter((expense) => expense.id !== action.payload);
+    default:
+      return state;
+  }
+}
+
+function ExpensesContextProvider({ children }) {
+  // hook: connect state and reducer function ************
+  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+
+  function addExpense(expenseData) {
+    dispatch({ type: "ADD", payload: expenseData }); // dispatch action to reudcer function
+  }
+  function deleteExpense(id) {
+    dispatch({ type: "DELETE", payload: id });
+  }
+  function updateExpense(id, expenseData) {
+    dispatch({ type: "UPDATE", payload: { id: id, data: expenseData } });
+  }
+
+  const value = {
+    expenses: expensesState,
+    addExpense: addExpense,
+    deleteExpense: deleteExpense,
+    updateExpense: updateExpense,
+  };
+
+  return (
+    <ExpensesContext.Provider value={value}>
+      {children}
+    </ExpensesContext.Provider>
+  );
+}
+
+export default ExpensesContextProvider;
+
+```
+
+
+
+### Using context from inside component
+
+143-
+
+that 3 screen component would useContext, check out there
+
+
+
+
+
+### Deleting & Updating Expenses
 
 144
+
+that 3 screen component would useContext and use dispatched context obj to manipulate the state (expenses array) defined in that context, chek out there
+
+
+
+
+
+145
+
+just some final touch
