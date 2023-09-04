@@ -8,7 +8,7 @@ C4 Diving deeper into components, Layouts & styling-building a Mini-Game App
 
 
 
-# Abstract
+# Key takeaway
 
 Contents (P45-78):
 
@@ -26,7 +26,7 @@ Contents (P45-78):
 
 + Complex layouts & styles
 + :bangbang: More complex game logic and state management logics
-  + screen navigation
+  + screen navigation (not using React Navigation)
   + use input validation
   + check if game end, restart game, iteratively guess user input
   + ...

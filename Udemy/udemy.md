@@ -1,4 +1,4 @@
-## front end
+## Front end
 + [React](./React/Udemy_React.md)
 
 + [React Native](./React_Native/Udemy_ReactNative.md)
@@ -6,7 +6,7 @@
 
 
 
-## backend 
+## Backend 
 
 + [node](./NodeJs/myNodeJS.md)
 
@@ -15,15 +15,21 @@
 
 
 
-## version control
+## Version control
 
 + [git](./Git/Udemy_Git.md)
 
 
 
 
-## devops
+## Devops
 
 + [aws](./AWS/Udemy_AWS.md)
 + [aws hands-on](./AWS_handson/myAWSHandson.md)
+
+
+
+
+## OS
++ [linux](./Linux/udemy_linux.md)
 

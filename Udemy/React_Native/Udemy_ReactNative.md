@@ -22,6 +22,14 @@ follow environment setup in RN document
 
 
 
+```shell
+npx create-expo-app --template
+```
+
+
+
+
+
 package.json中dependency和react app 中类似
 
 ```json
@@ -96,34 +104,34 @@ https://blog.expo.dev/the-new-expo-cli-f4250d8e3421
 
 Essentials of React Native (2 weeks to learn)
 
-| Class                      | Topic                                                        | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| :star: [2](./C2/README.md) | React Native Basics => :gem: Course Goal App                 | basic component, styling, state, dynamic list                |
-| [3](./C3/README.md)        | Debug React Native Apps                                      | React devtools                                               |
-| :star: [4](./C4/README.md) | Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs                |
-| [5](./C5/README.md)        | Build Adaptive & Responsive User Interface (Adapt to Platform & Device Size) | 有需求再看                                                   |
-| :star: [6](./C6/README.md) | React Native Navigation with React Navigation                | Stack navigator <br>Drawer navigator (有需求再看完) <br>Tap navigator <br>Nesting navigators |
+| Class               | Topic                                                        | Description                                                  |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [2](./C2/README.md) | :star: React Native Basics => :gem: Course Goal App          | basic component, styling, state, dynamic list                |
+| [3](./C3/README.md) | Debug React Native Apps                                      | React devtools                                               |
+| [4](./C4/README.md) | :star: Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs                |
+| [5](./C5/README.md) | Build Adaptive & Responsive User Interface (Adapt to Platform & Device Size) | 有需求再看                                                   |
+| [6](./C6/README.md) | :star: React Native Navigation with React Navigation :gem: meal menu app | Stack navigator <br>Drawer navigator <br>Tap navigator <br>Nesting navigators <br>navigation, route for passing info across screens <br>2 approaches to config a screen: options, setOptions inside a screen component |
+| [7](./C7/README.md) | App-wide state management with Redux & Context API           | recap with React Context & <br>Redux  (:a:有需求再看)        |
 
 React & React Native (2 weeks to learn)
 
-| Class               | Topic                                              | Description |
-| ------------------- | -------------------------------------------------- | ----------- |
-| [7](./C7/README.md) | App-wide state management with Redux & Context API |             |
-| :gem: 8             | The expense tracker App                            |             |
-| 9                   | Handling user input                                |             |
-| 10                  | Send HTTP request                                  |             |
+| Class                 | Topic                                                 | Description |
+| --------------------- | ----------------------------------------------------- | ----------- |
+| [8](./C8/README.md)   | :gem: The expense tracker App                         |             |
+| [9](./C9/README.md)   | :star: Handling user input                            |             |
+| [10](./C10/README.md) | :star::star:  Send HTTP request                       |             |
+| [11](./C11/README.md) | User Authentication                                   |             |
+| 12                    | :star: :star:Using Native Device Feature (Sensor API) |             |
 
 Advanced (1 week)
 
-| Class     | Topic                                    | Description |
-| --------- | ---------------------------------------- | ----------- |
-| 11        | User Authentication                      |             |
-| :star: 12 | Using Native Device Feature (Sensor API) |             |
-| 13        | Build React Native App without Expo      |             |
-| :star: 14 | Publishing React Native App              |             |
-| 15        | Push Notification                        |             |
+| Class | Topic                               | Description |
+| ----- | ----------------------------------- | ----------- |
+| 13    | Build React Native App without Expo |             |
+| 14    | :star: Publishing React Native App  |             |
+| 15    | Push Notification                   |             |
 
-Bonus
+Catch-up
 
 |      |                      |      |
 | ---- | -------------------- | ---- |
