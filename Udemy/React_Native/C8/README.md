@@ -10,7 +10,7 @@ Expense tracker app
 
 # Abstract
 
-:gem: build an expense tracker app (怎么感觉还是个to-do-list?)
+:gem: build an expense tracker app  from scratch (怎么感觉还是个可以CRUD的to-do-list?)
 
 
 
@@ -22,7 +22,36 @@ apply what we learned before:
 
 
 
-## Set up navigation and screens
+# key takeaways
+
+体会一个App的开发流程: 还是先打框架, 然后静态页面, 然后动态页面考虑state是什么如何管理
+
++ React组件化, 如何切分组件
+  + customize component for reusablility
++ RN 的 styling
+  + 外部向组件传style props
+    + allow to overwrite default styling
+    + allow to customize styling
+  + button onPress feedback effect
++ React Navigation的使用pattern
+  + nested navigator
+  + :bangbang: screen communication via `navigation` & `route` obj,  just like passing props to components
+  + :bangbang: screen options config: can intake a component as option obj field
+    + setup as screen props
+    + setup inside screen component via `navigation` obj
+
++ App-wide state management:  Context API
+  + Context Obj, Context Provider的关系
++ Complex state management: React Reducer
+  + reducer function, useReducer() hook, dispatch in callback handlers 的关系
+
+
+
+
+
+# Hands-on
+
+## 1. Set up navigation and screens
 
 
 
@@ -32,11 +61,7 @@ screen setup using React Navigation
 + stack-native navigator
 + bottom tap navigator
 
-
-
 3 screens
-
-
 
 
 
@@ -169,9 +194,11 @@ Now, results:
 
 
 
-## Expenses components
+## 2. Expenses components
 
-128-
+128-141
+
+
 
 define several expenses-related components
 
@@ -277,7 +304,7 @@ Revision on
 
 
 
-## Context (App-wide state) management
+## 3. Context (App-wide state) management
 
 
 
