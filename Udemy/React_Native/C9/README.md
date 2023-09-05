@@ -101,7 +101,7 @@ export default ExpenseForm;
 
 Input.js
 
-:bangbang: note how configurable of this component: 
+:bangbang: note how configurable this component is: 
 
 + conditional styling + mutiple styling
 

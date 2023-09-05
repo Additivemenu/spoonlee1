@@ -115,21 +115,21 @@ Essentials of React Native (2 weeks to learn)
 
 React & React Native (2 weeks to learn)
 
-| Class                 | Topic                                                 | Description |
-| --------------------- | ----------------------------------------------------- | ----------- |
-| [8](./C8/README.md)   | :gem: The expense tracker App                         |             |
-| [9](./C9/README.md)   | :star: Handling user input                            |             |
-| [10](./C10/README.md) | :star::star:  Send HTTP request                       |             |
-| [11](./C11/README.md) | User Authentication                                   |             |
-| 12                    | :star: :star:Using Native Device Feature (Sensor API) |             |
+| Class                 | Topic                                                        | Description |
+| --------------------- | ------------------------------------------------------------ | ----------- |
+| [8](./C8/README.md)   | :gem: The expense tracker App                                |             |
+| [9](./C9/README.md)   | :star: Handling user input                                   |             |
+| [10](./C10/README.md) | :star::star:  Send HTTP request                              |             |
+| [11](./C11/README.md) | User Authentication                                          |             |
+| [12](./C12/README.md) | :star: :star:Using Native Device Feature (Sensor API)  :gem: favorite places app |             |
 
 Advanced (1 week)
 
-| Class | Topic                               | Description |
-| ----- | ----------------------------------- | ----------- |
-| 13    | Build React Native App without Expo |             |
-| 14    | :star: Publishing React Native App  |             |
-| 15    | Push Notification                   |             |
+| Class                 | Topic                               | Description |
+| --------------------- | ----------------------------------- | ----------- |
+| 13                    | Build React Native App without Expo |             |
+| [14](./C14/README.md) | :star: Publishing React Native App  |             |
+| 15                    | Push Notification                   |             |
 
 Catch-up
 

@@ -2,9 +2,17 @@
 
 
 
+4 hours course 
+
+
+
 # Abstract
 
+:gem: build another app from a scratch: favorite places app
 
++ using camera, 
++ user location & Map
++ Storing Data on the Device
 
 
 

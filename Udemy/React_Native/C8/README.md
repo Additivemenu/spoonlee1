@@ -26,12 +26,12 @@ apply what we learned before:
 
 体会一个App的开发流程: 还是先打框架, 然后静态页面, 然后动态页面考虑state是什么如何管理
 
-+ React组件化, 如何切分组件
++ React组件化, 如何切分组件, 如何使得组件reusable
   + customize component for reusablility
 + RN 的 styling
   + 外部向组件传style props
-    + allow to overwrite default styling
-    + allow to customize styling
+    + allow to overwrite default styling => style = [...styles.defaultStyling,  newStyling]
+    + allow to customize styling => style = [styles.defaultStyling, newStyling]
   + button onPress feedback effect
 + React Navigation的使用pattern
   + nested navigator
