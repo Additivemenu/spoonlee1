@@ -397,6 +397,8 @@ https://developers.google.com/maps/documentation/maps-static/overview
 quick start: https://developers.google.com/maps/documentation/maps-static/overview#quick_example
 
 + go to google cloud to set your API key, which is needed when send request in your app https://console.cloud.google.com/google/maps-apis/overview
+  + you can set restriction to API key
+  + :bangbang: don't expose your API key to public! if you do, you will receive warning from google => .gitignore
 
 
 
@@ -530,6 +532,8 @@ const styles = StyleSheet.create({
 
 ```
 
+
+
 now once click on 'Locate User', we will receive the Image from Google static map api
 
 <img src="./src_md/google_static_map.jpeg" style="zoom:25%;" />
@@ -539,6 +543,8 @@ now once click on 'Locate User', we will receive the Image from Google static ma
 ### Interactive map
 
 203-
+
+we use google map or apple map here
 
 
 
