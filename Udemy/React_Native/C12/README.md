@@ -20,6 +20,10 @@ note we just cover a few native device APIs in this class, refer to expo doc for
 
 
 
+### key takeaways
+
++ expo provide a lot of libs for using native device. check out at  [Expo Documentation](https://docs.expo.dev/). 
+
 
 
 # Prepare
@@ -404,7 +408,7 @@ quick start: https://developers.google.com/maps/documentation/maps-static/overvi
 
 we will now construct a Url which contains the location info (lat, lng) that we just picked and attach this Url to <Image>, google map server will return an image showing the picked location
 
-+ 注意in your google cloud project, enable API
++ 注意in your google cloud project, enable API that is needed
 + API对应的url 1行不要加空格
 
 
@@ -542,9 +546,113 @@ now once click on 'Locate User', we will receive the Image from Google static ma
 
 ### Interactive map
 
-203-
+203-206
 
-we use google map or apple map here
+
+
+when click on 'pick on Map', navigate to a full screen interactive map that allows user to pick a location
+
+---
+
++ use <MapView> from expo [MapView - Expo Documentation](https://docs.expo.dev/versions/latest/sdk/map-view/)
+  + need flex: 1 to take up screen space
+  + show Apple map on iOS, google map on android (no use 3rd party API)
+
+
+
+```js
+import { useState } from "react";
+import { StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+
+function Map() {
+  const [selectedLocation, setSelectedLocation] = useState();
+
+  const region = {
+    latitude: 37.78,
+    longitude: -1222.43,
+    latitudeDelta: 0.0922, // define zoom of map
+    longitudeDelta: 0.0421,
+  };
+
+  function selectionLocationHandler(event) {	
+    // MapView onPress's callback
+    console.log(event);
+    const lat = event.nativeEvent.coordinate.latitude;
+    const lng = event.nativeEvent.coordinate.longitude;
+    setSelectedLocation({ lat: lat, lng: lng });
+  }
+
+  return (
+    <MapView
+      style={styles.map}
+      initialRegion={region}				// the inital view content
+      onPress={selectionLocationHandler}		// MapView is pressable!!
+    >
+      {selectedLocation && (
+        <Marker
+          title="Picked Location"
+          coordinate={{
+            latitude: selectedLocation.lat,
+            longitude: selectedLocation.lng,
+          }}
+        />
+      )}
+    </MapView>
+  );
+}
+
+export default Map;
+
+const styles = StyleSheet.create({
+  map: {
+    flex: 1, // take up all available space
+  },
+});
+```
+
+
+
+<img src="./src_md/marker_mapview1.jpeg" style="zoom:25%;" />
+
+
+
+save marked location 
+
+---
+
+205-206
+
+user can click on a button to save the location just marked, and that marker along with the map will be displayed back to <AddPlace> screen
+
++ 设计screen communication, 在Map screen需要向AddPlace screen传递user marked location的信息. 看似简单但涉及到以下问题: stack-navigator默认不会把已经在stack里的srceen重新re-render when navigate back to that screen, 所以导致当我们从Map screen回到AddPlace screen时, 没有看到被marked location, 因为AddPlace screen没有被re-render
+  + 解决方案是useEffect() + useIsFocused() hook
+
+
+
+
+
+Stack-navigator mechanism:
+
+say I have two screen component registered in a stack navigator, I firstly navigate from screen1 to screen2, then navigate back from screen2 to screen1, how many times does screen1 is rendered? 
+
+GPT:
+
+If you're using React Navigation's Stack Navigator and navigate from `Screen1` to `Screen2` and then navigate back from `Screen2` to `Screen1`, the render behavior is as follows:
+
+1. `Screen1` is initially rendered when it's first displayed.
+2. When you navigate from `Screen1` to `Screen2`, `Screen2` is pushed onto the stack and is rendered. `Screen1` is not unmounted; it remains in memory but is no longer visible.
+3. When you navigate back from `Screen2` to `Screen1`, `Screen2` is popped from the stack and `Screen1` becomes visible again. Since `Screen1` was not unmounted in the first place, it's not re-rendered. It just becomes visible again.
+
+So, in this flow, `Screen1` is rendered only once. 
+
+However, it's important to note that while the entire component might not re-render, parts of it (like child components or specific hooks) might re-execute based on changes in props or state. If you're seeing unexpected re-renders, tools like React's `PureComponent`, `React.memo`, or careful use of the `useEffect` hook can be utilized to control rendering behavior.
+
+
+
+`useIsFocus()` hook
+
++ a utility hook provided by React Navigation. It returns a boolean that indicates whether the screen it's used in is currently focused (active) within its navigator. This can be particularly useful in scenarios where you want to run certain effects or logic only when the screen is in focus.
 
 
 
@@ -554,5 +662,18 @@ we use google map or apple map here
 
 ## Form Submission
 
+207-
+
+看到这里
 
 
+
+
+
+
+
+
+
+# Databse connection 
+
+213-

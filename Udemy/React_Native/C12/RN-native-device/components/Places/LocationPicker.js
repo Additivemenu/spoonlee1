@@ -7,13 +7,35 @@ import {
 
 import OutlinedButton from "../UI/OutlinedButton";
 import { Colors } from "../../constants/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getMapPreview } from "../../util/location";
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
 
 function LocationPicker() {
-  const [pickedLocation, setPickedLocation] = useState();
+  const [pickedLocation, setPickedLocation] = useState();   // use to generate Google Static Map Image
   const [locationPermissionInfo, requestPermission] =
     useForegroundPermissions();
+
+  const navigation = useNavigation();
+  const route = useRoute();
+  const isFocused = useIsFocused(); // boolean
+
+  // user picked location from Map.js screen ------------------------------
+  useEffect(() => {
+    if (isFocused && route.params) {
+      const mapPickedLocation = {
+        // user picked location in Map.js
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng,
+      };
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [route, isFocused]);
+  // ---------------------------------------------------------------------
 
   async function verifyPermission() {
     if (locationPermissionInfo.status === PermissionStatus.UNDETERMINED) {
@@ -45,7 +67,9 @@ function LocationPicker() {
     });
   }
 
-  function pickOnMapHandler() {}
+  function pickOnMapHandler() {
+    navigation.navigate("Map");
+  }
 
   let locationPreview = <Text>No locaiton picked yet!</Text>;
   if (pickedLocation) {
