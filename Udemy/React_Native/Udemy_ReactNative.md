@@ -122,13 +122,15 @@ Essentials of React Native (2 weeks to learn)
 
 React & React Native (2 weeks to learn)
 
-| Class                 | Topic                                                        | Description                 |
-| --------------------- | ------------------------------------------------------------ | --------------------------- |
-| [8](./C8/README.md)   | :gem: The expense tracker App                                |                             |
-| [9](./C9/README.md)   | :star: Handling user input                                   |                             |
-| [10](./C10/README.md) | :star::star:  Send HTTP request                              |                             |
-| [11](./C11/README.md) | User Authentication                                          |                             |
-| [12](./C12/README.md) | :star: :star:Using Native Device Feature (Sensor API)  :gem: favorite places app | expo libs for native device |
+| Class                 | Topic                                                        | Description                                               |
+| --------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| [8](./C8/README.md)   | :gem: The expense tracker App (加长版to-do lists)            |                                                           |
+| [9](./C9/README.md)   | :star: Handling user input                                   |                                                           |
+| [10](./C10/README.md) | :star::star:  Send HTTP request                              | Axios                                                     |
+| [11](./C11/README.md) | User Authentication                                          |                                                           |
+| [12](./C12/README.md) | :star: :star:Using Native Device Feature (Sensor API)  :gem: favorite places app | expo libs for native device <br> google cloud API service |
+
+
 
 Advanced (1 week)
 

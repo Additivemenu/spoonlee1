@@ -1,5 +1,9 @@
 C5:  working with Express.js
 
+
+
+1h34min content
+
 # Abstract
 
 note content of web page in this class is still hard coded
@@ -31,7 +35,7 @@ handling HTTP request-response
 
 
 
-# Intro
+# 1. Intro
 
 
 
@@ -55,7 +59,7 @@ npm install --save express
 
 
 
-## middleware 
+## :moon: middleware 
 
 Express.js is all about middleware
 
@@ -99,9 +103,9 @@ and browser received the html we sent in the 2nd middleware
 
 
 
-# Routes
+# 2. Routes
 
-## Handling different routes
+## 2.1 Handling different routes
 
 63
 
@@ -216,7 +220,7 @@ app.listen(3001);
 
 
 
-## :moon: Parsing incoming requests
+## 2.2 Parsing incoming requests
 
 64
 
@@ -273,7 +277,7 @@ app.listen(3000);
 
 
 
-## Limit middleware execution to a certain HTTP method
+## 2.3 :full_moon: Limit middleware execution to a certain HTTP method
 
 :bangbang: additional filtering
 
@@ -329,7 +333,7 @@ app.listen(3000);
 
 
 
-## Using Express Router 
+## 2.4 :full_moon: Using Express Router 
 
 65
 
@@ -504,7 +508,7 @@ module.exports = router;
 
 
 
-# Views
+# 3. Views
 
 前面我们是直接res.send('') 以String的形式写html的, 这次send real HTML file upon request
 
