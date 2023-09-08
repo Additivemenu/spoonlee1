@@ -69,20 +69,20 @@ Part4: Some common API
 
 Part5: Modern Node.Js topic
 
-| Class                 | Title                                                        | Description |
-| --------------------- | ------------------------------------------------------------ | ----------- |
-| [24](./C24/README.md) | :star::star: REST API basics                                 |             |
-| [25](./C25/README.md) | :star::star: Advanced REST API Features: :gem: a practical app |             |
-| 26                    | Using async-await                                            |             |
-| 27                    | Websocket & Socket.io                                        |             |
-| [28](./C28/README.md) | GraphQL (in parallel to REST API)                            |             |
-| [29](./C29/README.md) | Deployment                                                   |             |
-| 30                    | :star: Testing Node.js                                       |             |
-| 31                    | Node.js as building tool & using npm                         |             |
-| 32                    | Modern Javascript & Nodejs                                   |             |
-| 33                    | NodeJS & Typescript                                          |             |
-| 34                    | an introduction to Deno                                      |             |
-| 35                    | Deno CRUD & Database                                         |             |
+| Class                 | Title                                                        | Description                  |
+| --------------------- | ------------------------------------------------------------ | ---------------------------- |
+| [24](./C24/README.md) | :star::star: REST API basics                                 | decouping Frontend & Backend |
+| [25](./C25/README.md) | :star::star: Advanced REST API Features: :gem: a practical app |                              |
+| 26                    | Using async-await                                            |                              |
+| 27                    | Websocket & Socket.io                                        |                              |
+| [28](./C28/README.md) | GraphQL (in parallel to REST API)                            |                              |
+| [29](./C29/README.md) | Deployment                                                   |                              |
+| 30                    | :star: Testing Node.js                                       |                              |
+| 31                    | Node.js as building tool & using npm                         |                              |
+| 32                    | Modern Javascript & Nodejs                                   |                              |
+| 33                    | NodeJS & Typescript                                          |                              |
+| 34                    | an introduction to Deno                                      |                              |
+| 35                    | Deno CRUD & Database                                         |                              |
 
 
 

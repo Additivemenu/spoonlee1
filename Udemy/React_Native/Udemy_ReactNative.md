@@ -23,6 +23,14 @@ https://reactnative.dev/
 
 
 
+看完RN和node之后, 可以看下下面的fullstack project
+
+:gem: [Youtube: RN + node fullstack blog app (~10hrs)](https://www.youtube.com/watch?v=m7uO85p-c0Q&list=PLaAoUJDWH9WptAE7BlTXBaoW0zx4b9jqz&index=2)  等等怎么用jsx写RN？
+
+https://www.youtube.com/watch?v=dfoZj7DPSAs
+
+
+
 # Firt RN app on real device
 
 follow environment setup in RN document
@@ -136,7 +144,7 @@ Advanced (1 week)
 
 | Class                 | Topic                               | Description |
 | --------------------- | ----------------------------------- | ----------- |
-| 13                    | Build React Native App without Expo |             |
+| [13](./C13/README.md) | Build React Native App without Expo |             |
 | [14](./C14/README.md) | :star: Publishing React Native App  |             |
 | 15                    | Push Notification                   |             |
 
