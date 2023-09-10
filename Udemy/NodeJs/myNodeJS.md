@@ -34,18 +34,18 @@ Part1: node.js basics
 | [4](./C4/README.md) | Improved Development Workflow and debugging              | npm <br/>nodemon <br>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
 | [5](./C5/README.md) | :star::star:Working with Express.js                      | middleware <br>router                                        |
 | [6](./C6/README.md) | Working with Dynamic Content & Adding Templating Engines | MVC中的View <br>EJS,  similar to Jinja in python <br>pass argument to template from router |
-| [7](./C7/README.md) | :star: Modal View Controller (MVC)                       | Controller <br>Model                                         |
-| 8                   | Optional: Enchanting App                                 |                                                              |
-| 9                   | Dynamic Routes &  Advanced Models                        |                                                              |
+| [7](./C7/README.md) | :star: Modal View Controller (MVC)                       | app -> router -> controller -> model <br>:bangbang: callback本质: 和Strategy Pattern很像 |
+| [8](./C8/README.md) | Optional: Enchanting App                                 |                                                              |
+| [9](./C9/README.md) | Dynamic Routes &  Advanced Models                        |                                                              |
 
 Part2: NodeJs with Database
 
-| Class | Title                  | Description |
-| ----- | ---------------------- | ----------- |
-| 10    | Node + SQL             |             |
-| 11    | Using Sequelize        |             |
-| 12    | Node + NoSQL (MongoDB) |             |
-| 13    | Using Mongoose         |             |
+| Class                 | Title                  | Description |
+| --------------------- | ---------------------- | ----------- |
+| [10](./C10/README.md) | Node + SQL             |             |
+| [11](./C11/README.md) | Using Sequelize        |             |
+| [12](./C12/README.md) | Node + NoSQL (MongoDB) |             |
+| [13](./C13/README.md) | Using Mongoose         |             |
 
 Part3: Security & Validations
 
@@ -74,7 +74,7 @@ Part5: Modern Node.Js topic
 | [24](./C24/README.md) | :star::star: REST API basics                                 | decouping Frontend & Backend |
 | [25](./C25/README.md) | :star::star: Advanced REST API Features: :gem: a practical app |                              |
 | 26                    | Using async-await                                            |                              |
-| 27                    | Websocket & Socket.io                                        |                              |
+| [27](./C27/README.md) | :star: Websocket & Socket.io                                 |                              |
 | [28](./C28/README.md) | GraphQL (in parallel to REST API)                            |                              |
 | [29](./C29/README.md) | Deployment                                                   |                              |
 | 30                    | :star: Testing Node.js                                       |                              |
@@ -85,6 +85,10 @@ Part5: Modern Node.Js topic
 | 35                    | Deno CRUD & Database                                         |                              |
 
 
+
+## :bangbang: Demos
+
+:gem: [demos](./GPT_demo/README.md)
 
 
 
