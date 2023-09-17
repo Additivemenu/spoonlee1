@@ -1,0 +1,495 @@
+https://www.youtube.com/watch?v=FcxjCPeicvU&t=12944s
+
+a private notes app
++ data is stored in MongoDB database
++ authentication using sessions & cookies
++ react bootstrap
++ in typescript
+
+provides good basics for a simple fullstack project
+
+other fullstack projects might include, check if you have time:
+https://www.youtube.com/watch?v=-0exw-9YJBo&list=PLillGF-RfqbbQeVSccR9PGKHzPJSWqcsm
+https://www.youtube.com/watch?v=k4lHXIzCEkM use material UI
+https://www.youtube.com/watch?v=SuMRI_A8umQ&list=PLpPqplz6dKxUaZ630TY1BFIo5nP-_x-nL&index=17
+
+
+
+
+
+# Backend
+
+## Project setup
+
+### Node, Express, TS, Eslint setup
+
+
+
+```js
+npm install --save-dev typescript
+npx tsc --init
+
+npm i express
+npm i --save-dev @types/express
+
+npx tsc // compile ts to js, then you can run js file
+node server.js
+```
+
+if version not compatible, you can just use versions in the video
+
+
+
+in tsconfig file, add
+
+```js
+"outDir": "./dist", 
+```
+
+this will put compiled js file under directory dist
+
+
+
+```js
+// for easy run ts project
+npm install --save-dev nodemon
+npm install -D ts-node
+npx nodemon src/server.ts	// 可以把这个写到script里  npm start
+```
+
+Eslint setup 39min-
+
+```js
+npm i -D eslint
+npx eslint --init	// eslint config
+```
+
+```js
+"lint": "eslint . --ext .ts"		// script for npm run lint: run eslint for checking
+// 其实也可以用vscode的Eslint extension来让vscode自动检测, 不用手动run eslint了
+```
+
+
+
+### MongoDB Atlas + Mongoose setup
+
+49min-
+
+[Mongodb Atlas](https://www.mongodb.com/cloud/atlas/lp/try4?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core_prosp-brand_gic-null_apac-au_ps-all_desktop_eng_lead&utm_term=mongodb%20atlas%20database&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=12212624341&adgroup=115749705583&cq_cmp=12212624341&gad=1&gclid=Cj0KCQjwmICoBhDxARIsABXkXlIfA7m0maTdUlvIOg807o6P8KKIzqAaXz_kqPuUjdQ7f9HVy0aZHUQaAtB-EALw_wcB)
+
+add ip address
+
+create a mongodb cloud database 
+
+Security config (a bit like Google API KEY setup)
+
+
+
+connect MongoDB with your application
+
+```js
+npm i dotenv		// environment variable managing
+npm i mongoose
+npm i envalid		// enforcing environment variable type
+```
+
+
+
+server.ts
+
+```ts
+import "dotenv/config";
+import env from "./util/validateEnv";
+import mongoose from "mongoose";
+
+import app from "./app";
+
+const port = env.PORT;
+
+mongoose
+  .connect(env.MONGO_CONNECTION_STRING!)
+  .then(() => {
+    console.log("Mongoose connected");
+    app.listen(port, () => {
+      console.log("server running on port: ", port);
+    });
+  })
+  .catch(console.error);
+```
+
+app.ts
+
+```ts
+import express from "express";
+
+const app = express();
+
+app.get("/", (req, res) => {
+    res.send("hello, world!");
+  });
+
+  export default app;
+```
+
+Util > validateEnv.ts
+
+```ts
+import { cleanEnv } from "envalid";
+import { port, str } from "envalid/dist/validators";
+
+export default cleanEnv(process.env, {
+  MONGO_CONNECTION_STRING: str(),
+  PORT: port(),
+});
+```
+
+.env
+
+```ts
+MONGO_CONNECTION_STRING=mongodb+srv://spoonlee24k:<your mongodb user password>@cluster0.yaihol6.mongodb.net/?retryWrites=true&w=majority
+PORT=8080
+```
+
+
+
+### MongoDB model setup + Express error handling
+
+https://mongoosejs.com/docs/documents.html
+
+
+
+First we define model for database
+
+```ts
+// contains note model
+import { InferSchemaType, Schema, model } from "mongoose";
+
+const noteSchema = new Schema(
+  {
+    title: {
+      type: String,     // note capital S
+      required: true,
+    },
+    text: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+// ts
+type Note = InferSchemaType<typeof noteSchema>;
+
+export default model<Note>("Note", noteSchema)
+```
+
+Then in MongoDB Atlas webpage, just choose the connected db and mannually insert a record that obeys above model 
+
+
+
+After that, we define following get request to retrieve the note model from db
+
+```ts
+import express, { NextFunction, Request, Response } from "express";
+
+import NoteModel from "../model/note";
+
+const app = express();
+
+app.get("/", async (req, res, next) => {
+  try {
+    // throw Error("blah!"); // simulate an error
+    const notes = await NoteModel.find().exec(); // db query
+    res.status(200).json(notes);
+  } catch (error) {
+    next(error); // forward to the next middleware
+  }
+});
+
+app.use((req, res, next) => {
+  next(Error("Endpoint not found!"));
+});
+
+// ! error middleware
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(error);
+  let errorMessage = "An unknown error occurred";
+  if (error instanceof Error) errorMessage = error.message;
+  res.status(500).json({ error: errorMessage });
+});
+
+export default app;
+```
+
+Easy-peasy!
+
+
+
+
+
+## Backend coding
+
+1h40min-
+
+### Routers, controllers & creating notes
+
+改成server-app-router-controller 写法
+
+
+
+
+
+server.ts
+
++ Environment variables 
++ database connection definition
+
+```ts
+import "dotenv/config";
+import env from "./util/validateEnv";
+import mongoose from "mongoose";
+
+import app from "./app";
+
+const port = env.PORT;
+
+mongoose
+  .connect(env.MONGO_CONNECTION_STRING!)
+  .then(() => {
+    console.log("Mongoose connected");
+    app.listen(port, () => {
+      console.log("server running on port: ", port);
+    });
+  })
+  .catch(console.error);
+
+```
+
+app.ts
+
++ regiser middlewares
+
+```ts
+import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
+
+import noteRoutes from './routes/notes'
+
+const app = express();
+
+// middlewares
+app.use(morgan("dev"));   // for logging
+app.use(express.json());  // express accept json body, now we can send json to server
+
+app.use("/api/notes", noteRoutes);
+
+app.use((req, res, next) => {
+  next(Error("Endpoint not found!"));
+});
+
+// ! error middleware
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(error);
+  let errorMessage = "An unknown error occurred";
+  if (error instanceof Error) errorMessage = error.message;
+  res.status(500).json({ error: errorMessage });
+});
+
+export default app;
+```
+
+router > notes.ts
+
++ separation of responsibilities
+
+```ts
+import * as NotesController from "../controllers/notes";
+import express from "express";
+
+const router = express.Router();
+
+router.get("/", NotesController.getNotes); // not app.get() here
+
+router.get("/:noteId", NotesController.getNote);     // get a single note
+
+router.post("/", NotesController.createNote);
+
+export default router;
+```
+
+controllers > notes.ts
+
++ Handling business logic. Just like Service in SpringBoot
++ `NoteModel` is like `SpringDataJPA`, a Facade to access database
+
+```ts
+import { RequestHandler } from "express";
+import NoteModel from "../../model/note";
+
+export const getNotes: RequestHandler = async (req, res, next) => {
+  try {
+    // throw Error("blah!"); // simulate an error
+    const notes = await NoteModel.find().exec(); // db query
+    res.status(200).json(notes);
+  } catch (error) {
+    next(error); // forward to the next middleware
+  }
+};
+
+export const getNote: RequestHandler = async (req, res, next) => {
+  const noteId = req.params.noteId;
+
+  try {
+    const note = await NoteModel.findById(noteId).exec();       //! like SpringDataJPA, a Facade to access database 
+    res.status(200).json(note);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createNote: RequestHandler = async (req, res, next) => {
+  const title = req.body.title;
+  const text = req.body.text;
+
+  try {
+    const newNote = await NoteModel.create({   // ! like SpringDataJPA
+      title: title,
+      text: text,
+    });
+    res.status(201).json(newNote);
+  } catch (error) {
+    next(error); // pass to error handler
+  }
+};
+```
+
+
+
+
+
+:star: morgan 
+
+---
+
+```js
+npm i morgan 	// for logging
+npm i --save-dev @types/morgan  // need also downlaod ts type for this package
+```
+
+logging be like:
+
+```shell
+GET /api/notes/6501ab08c32b5dd187631917 200 35.260 ms - 81
+GET /api/notes 200 25.110 ms - 436
+```
+
+
+
+
+
+
+
+### Express HTTP error handling
+
+2h03min-
+
+看到这
+
+
+
+
+
+### Update + delete notes (backend)
+
+
+
+
+
+
+
+# Frontend
+
+2h38min-
+
+
+
+## Project setup
+
+### React setup with typescript
+
+
+
+
+
+
+
+## Frontend coding
+
+### Fetching notes + proxy
+
+
+
+### React components & CSS modules
+
+
+
+
+
+### Finishing notes styling
+
+
+
+
+
+### Creating notes from frontend
+
+
+
+
+
+### update + delete notes (frontend)
+
+
+
+
+
+### Loading/error/empty states
+
+
+
+
+
+# Additionally
+
+5h10min-7h50min
+
+## User authentication with express - sessions & cookies
+
+
+
+
+
+## Frontend authentication + extracting form field components
+
+
+
+
+
+## Protecting users notes with auth middleware
+
+
+
+
+
+## Routing with react-router-dom
+
+
+
+
+
+## Handling different HTTP errors in React
+
+
+

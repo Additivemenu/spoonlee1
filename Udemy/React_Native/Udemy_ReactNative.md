@@ -126,7 +126,7 @@ Essentials of React Native (2 weeks to learn)
 | [4](./C4/README.md) | :star: Dive Deeper: Component, Layout, styling => :gem: build a Mini-Game app | Look to RN docs for more core component specs                |
 | [5](./C5/README.md) | Build Adaptive & Responsive User Interface (Adapt to Platform & Device Size) | 有需求再看                                                   |
 | [6](./C6/README.md) | :star::star: React Native Navigation with React Navigation :gem: meal menu app | Stack navigator (可看看stack-navigator的切屏原理) <br>Drawer navigator <br>Tap navigator <br>Nesting navigators <br>navigation, route for passing info across screens <br>2 approaches to config a screen: options, setOptions inside a screen component |
-| [7](./C7/README.md) | App-wide state management with Redux & Context API           | recap with React Context & <br>Redux  (:a:有需求再看)        |
+| [7](./C7/README.md) | App-wide state management with Redux & Context API :gem: meal menu app | recap with React Context & <br>Redux  (:a:有需求再看)        |
 
 React & React Native (2 weeks to learn)
 
@@ -137,8 +137,6 @@ React & React Native (2 weeks to learn)
 | [10](./C10/README.md) | :star::star:  Send HTTP request                              | Axios                                                     |
 | [11](./C11/README.md) | User Authentication                                          |                                                           |
 | [12](./C12/README.md) | :star: :star:Using Native Device Feature (Sensor API)  :gem: favorite places app | expo libs for native device <br> google cloud API service |
-
-
 
 Advanced (1 week)
 

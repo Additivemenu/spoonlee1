@@ -34,8 +34,8 @@ Part1: node.js basics
 | [4](./C4/README.md) | Improved Development Workflow and debugging              | npm <br/>nodemon <br>Global Features vs Core Modules vs Third-Party Modules <br>Debugger |
 | [5](./C5/README.md) | :star::star:Working with Express.js                      | middleware <br>router                                        |
 | [6](./C6/README.md) | Working with Dynamic Content & Adding Templating Engines | MVC中的View <br>EJS,  similar to Jinja in python <br>pass argument to template from router |
-| [7](./C7/README.md) | :star: Modal View Controller (MVC)                       | app -> router -> controller -> model <br>:bangbang: callback本质: 和Strategy Pattern很像 |
-| [8](./C8/README.md) | Optional: Enchanting App                                 |                                                              |
+| [7](./C7/README.md) | :star: Modal View Controller (MVC)                       | server side rendering <br>app -> router -> controller -> model <br>:bangbang: callback本质: 和Strategy Pattern很像 |
+| [8](./C8/README.md) | Optional: Enchanting App                                 | a practice class                                             |
 | [9](./C9/README.md) | Dynamic Routes &  Advanced Models                        |                                                              |
 
 Part2: NodeJs with Database
