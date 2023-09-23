@@ -238,8 +238,6 @@ Easy-peasy!
 
 
 
-
-
 server.ts
 
 + Environment variables 
@@ -389,13 +387,136 @@ GET /api/notes 200 25.110 ms - 436
 
 
 
-
-
-### Express HTTP error handling
+### :bangbang: Express HTTP error handling
 
 2h03min-
 
-看到这
+showing meaningful error message to front end is very crucial!
+
+```ts
+// use below package for convenience
+npm i http-errors
+npm i -D @types/http-errors
+```
+
+
+
+app.ts
+
++ Here, we use `createHttpError()` to convert the error message we captured to a more specific type of error
++ and we handle it and send error response back to front end
+
+```ts
+import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
+
+import noteRoutes from './routes/notes'
+import createHttpError, {isHttpError} from "http-errors";
+
+const app = express();
+
+// middlewares
+app.use(morgan("dev"));   // for logging
+app.use(express.json());  // express accept json body, now we can send json to server
+
+app.use("/api/notes", noteRoutes);
+
+app.use((req, res, next) => {
+  next(createHttpError(404, "Endpoint not found!"));
+});
+
+// ! error middleware: what is left is passed to here
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(error);
+  let errorMessage = "An unknown error occurred";
+  let statusCode = 500;
+
+  if (isHttpError(error)) {
+    statusCode = error.status;
+    errorMessage = error.message;
+  }
+
+  res.status(statusCode).json({ error: errorMessage });
+});
+
+export default app;
+```
+
+
+
+controller > notes.ts
+
++ we can use TS to confine the type of request body
++ Also, we use `createHttpError()` to throw more specific type of error and error message
+
+```ts
+import { RequestHandler } from "express";
+import NoteModel from "../../model/note";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
+
+export const getNotes: RequestHandler = async (req, res, next) => {
+  try {
+    // throw Error("blah!"); // simulate an error
+    const notes = await NoteModel.find().exec(); // db query
+    res.status(200).json(notes);
+  } catch (error) {
+    next(error); // forward to the next middleware
+  }
+};
+
+export const getNote: RequestHandler = async (req, res, next) => {
+  const noteId = req.params.noteId;
+
+  try {
+    if (!mongoose.isValidObjectId(noteId)) {
+      // validate user input
+      throw createHttpError(400, "Invalid note id!");
+    }
+
+    const note = await NoteModel.findById(noteId).exec(); //! like SpringDataJPA, a Facade to access database
+
+    if (!note) {
+      throw createHttpError(404, "Note not found!");
+    }
+
+    res.status(200).json(note);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface CreateNoteBody {
+  // used to confine request body type
+  title?: string; // this can be optional
+  text?: string;
+}
+
+export const createNote: RequestHandler<
+  unknown,
+  unknown,
+  CreateNoteBody,
+  unknown
+> = async (req, res, next) => {
+  const title = req.body.title;
+  const text = req.body.text;
+
+  try {
+    if (!title) {
+      throw createHttpError(400, "Note must have a title!");
+    }
+
+    const newNote = await NoteModel.create({
+      title: title,
+      text: text,
+    });
+    res.status(201).json(newNote);
+  } catch (error) {
+    next(error); // pass to error handler
+  }
+};
+```
 
 
 
@@ -403,9 +524,9 @@ GET /api/notes 200 25.110 ms - 436
 
 ### Update + delete notes (backend)
 
+2h20min-
 
-
-
+看到这里
 
 
 
