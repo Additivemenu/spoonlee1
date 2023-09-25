@@ -526,29 +526,167 @@ export const createNote: RequestHandler<
 
 2h20min-
 
-看到这里
+
+
+Controller > notes.ts
+
++ add 2 new endpoint
++ remember to register them in router > notes.ts
+
+```ts
+interface UpdateNoteParams {
+  noteId: string;
+}
+
+interface UpdateNoteBody {
+  title?: string; // optional
+  text?: string;
+}
+
+export const updateNote: RequestHandler<
+  UpdateNoteParams,
+  unknown,
+  UpdateNoteBody,
+  unknown
+> = async (req, res, next) => {
+  const noteId = req.params.noteId;
+  const newTitle = req.body.title;
+  const newText = req.body.text;
+
+  try {
+    // validate user input
+    if (!mongoose.isValidObjectId(noteId)) {
+      throw createHttpError(400, "Invalid note id!");
+    }
+
+    if (!newTitle) {
+      throw createHttpError(400, "Note must have a title!");
+    }
+
+    const note = await NoteModel.findById(noteId).exec(); // ! mongoose - just like spring data jpa
+    if (!note) {
+      throw createHttpError(404, "Note not found!");
+    }
+
+    note.title = newTitle;
+    note.text = newText;
+
+    const updateNote = await note.save(); // ! mongoose - just like spring data jpa
+    // NoteModel.findByIdAndUpdate()  // this also works
+    res.status(200).json(updateNote);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
-# Frontend
+export const deleteNote: RequestHandler = async(req, res, next) => {
+  const noteId = req.params.noteId;
+  try{
+    if (!mongoose.isValidObjectId(noteId)) {
+      throw createHttpError(400, "Invalid note id!");
+    }
+    
+    const note = await NoteModel.findById(noteId).exec();
+    if(!note){
+      throw createHttpError(404, "Note not found");
+    }
+
+    await note.deleteOne();
+    // NoteModel.findByIdAndDelete()  // this also works
+    res.sendStatus(204);  // !we are not sending json here, because front end would only need status code
+
+  } catch (error) {
+    next(error);
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+# 2. Frontend
 
 2h38min-
 
 
 
-## Project setup
+## 2.1 Project setup
 
 ### React setup with typescript
 
+```ts
+npx create-react-app frontend --template typescript
+```
+
+
+
+Intro to declarative UI programming
+
+
+
+### Hello World 
+
+bootstrap
+
+https://react-bootstrap.netlify.app/docs/getting-started/introduction
+
+after installing bootstrap, add below import in index.tsx, which is the entry file
+
+```ts
+import 'bootstrap/dist/css/bootstrap.min.css';  
+```
+
+
+
+a hello world react app
+
+```ts
+import React, { useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { Button } from 'react-bootstrap';
+
+function App() {
+  const [clickCount, setClickCount] = useState(0);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload. 
+        </p>
+        <Button onClick={()=>setClickCount((prevCount)=>prevCount+1)}>
+          clicked {clickCount} times
+        </Button>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
 
 
 
 
 
-
-## Frontend coding
+## 2.2 Frontend coding
 
 ### Fetching notes + proxy
+
+2h58min-
+
+看到这里
+
+
 
 
 
@@ -582,7 +720,7 @@ export const createNote: RequestHandler<
 
 
 
-# Additionally
+# 3. Additionally
 
 5h10min-7h50min
 
