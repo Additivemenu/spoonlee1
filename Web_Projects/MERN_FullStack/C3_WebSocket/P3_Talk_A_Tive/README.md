@@ -666,23 +666,63 @@ connectDB();			// invoke after dotenv
 
 
 
-
-
-
-
-
-
 # 3. Advanced 
 
 C9-C12
 
 3hrs 
 
+now we are going to add more logics  at the backend
+
+
+
 
 
 ## User Authentication
 
 C9
+
+
+
+### Server
+
+```js
+npm i express-async-handler
+```
+
+
+
+0-8min- user register api mainbody
+
+
+
+8min-generate and attach JWT token in the response to client if user created successfully
+
+```js
+npm i jsonwebtoken
+```
+
+
+
+14min- auth user login
+
+```js
+npm i bcrypt		// for encrypt user password 
+```
+
+
+
+
+
+22min-24min error handling middleware
+
+
+
+
+
+### client
+
+24min-
 
 
 
