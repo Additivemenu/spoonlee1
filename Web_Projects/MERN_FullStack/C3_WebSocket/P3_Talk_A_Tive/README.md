@@ -12,6 +12,8 @@ Server
 
 + MongoDB schema
 + Connect MongoDB
++ User sign up & authentication using JWT token
++ :gem: use morgon for logging to help debug
 
 
 
@@ -20,6 +22,10 @@ Client
 + React Router
 
 + Chakra UI lib
+
++ set proxy in package.json for CORS
+
++ upload image to cloudiary, then MongoDB store pic url
 
   
 
@@ -678,7 +684,7 @@ now we are going to add more logics  at the backend
 
 
 
-## User Authentication
+## :moon: User Authentication
 
 C9
 
@@ -690,11 +696,7 @@ C9
 npm i express-async-handler
 ```
 
-
-
-0-8min- user register api mainbody
-
-
+0-8min- user register api mainbody API
 
 8min-generate and attach JWT token in the response to client if user created successfully
 
@@ -702,21 +704,246 @@ npm i express-async-handler
 npm i jsonwebtoken
 ```
 
-
-
-14min- auth user login
+14min- auth user login API
 
 ```js
 npm i bcrypt		// for encrypt user password 
+```
+
+22min-24min error handling middleware
+
+
+
+使用postman test signup & login API
+
+
+
+code
+
+---
+
+controllers > userControllers.js
+
+核心的业务逻辑所在
+
++ pattern: 边写写检查input, 与database operation结果, 并throw errors
++ 在sign up API里, JWT token is generated and attached in the response to client
+
+```js
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+
+const generateToken = require("../config/generateToken");
+
+// do a step, then check error --------------------------------------------------------
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password, pic } = req.body;
+
+  // ! validate input from req
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("Please Enter all the Fields!");
+  }
+
+  const userExists = await User.findOne({ email }); // ! database manipulation: check if user exist
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await User.create({
+    // ! Database Manipulateion: create user
+    name,
+    email,
+    password,
+    pic,
+  });
+
+  if (user) {
+    // return response to client
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("Failed to create the user");
+  }
+});
+
+// user login authentication ------------------------------------------------------------------
+const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({email});   // ! database manipulation
+
+  if(user && (await user.matchPassword(password))){
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: generateToken(user._id),
+    })
+  } else {
+    res.status(401);
+    throw new Error("Invalid Email or Password");
+  }
+});
+
+module.exports = { registerUser, authUser };
+
+```
+
+config > generateToken.js
+
+```js
+const jwt = require("jsonwebtoken");
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
+
+module.exports = generateToken;
+```
+
+routes > userRoute.js
+
++ bind controller service to API path
+
+```js
+const express = require("express");
+const router = express.Router();
+
+const { registerUser, authUser } = require("../controllers/userControllers");
+
+router.post("/login", authUser);
+router.route("/").post(registerUser);
+
+module.exports = router;
 ```
 
 
 
 
 
-22min-24min error handling middleware
+database model
+
+models > userModel.js
+
++ 除了 schema限定数据类型外, 还加入了一些自定义function为user model 提供额外的behaviour
+  + encrypt user's password before save
+  + compare user's input password with saved password in DB
+
+```js
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+const userSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, require: true, unique: true },
+    password: { type: String, required: true },
+    pic: {
+      type: String,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    },
+  },
+  { timestamps: true }
+);
+
+// ! like AOP: before save, do this:  encrypt user's password
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+```
 
 
+
+
+
+error handling
+
+app.js
+
++ 最后几个app.use() 一定是注册上error handler
+
+```js
+const express = require("express");
+const { chats } = require("./data/data");
+const dotenv = require("dotenv");
+
+const connectDB = require("./config/db");
+const colors = require("colors"); // coloring console.log() in terminal
+const userRoutes = require("./routes/userRoutes");
+
+const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
+
+dotenv.config();
+connectDB();
+
+const app = express();
+app.use(express.json()); // !tell server to access json data
+
+app.get("/", (req, res) => {
+  res.send("API is running!");
+});
+
+app.use("/api/user", userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);    // ! general error handler 
+
+const PORT = process.env.PORT || 8080;
+app.listen(
+  PORT,
+  console.log(`Server is listening on port ${PORT}`.yellow.bold)
+);
+```
+
+Middlewares > errorMiddleware.js
+
+```js
+const notFound = (req, res, next) => {
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+};
+
+const errorHandler = (err, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode);
+  res.json({
+    message: err.message,
+    stack: process.env.NODE_ENV === "production" ? null : err.stack,
+  });
+};
+
+module.exports = { notFound, errorHandler };
+```
+
+
+
+so far so good
 
 
 
@@ -724,7 +951,56 @@ npm i bcrypt		// for encrypt user password
 
 24min-
 
+有了server 的 sign up, login API 后, 我们先通过postman测试是通过的, 现在我们在client发送request
 
+
+
+<span style="color: red">24-32min upload picture to `cloudinary` (it will store the pic and return a url, your MongoDB just store that url)</span>
+
++ set up cloudinary (make sure upload presets (chat-app) is unsigned)
+
+32min-37min sign up handler, post sign up form data to MongoDB
+
+37min- 40min login handler
+
+
+
+code 
+
+---
+
+too many code in frontend, not show here
+
+mainy in components > auth > SignUp.js , Login.js `submitHandler`
+
++ use axios to send post request to server, wrapped in try-catch block
++ 同样, 边检查user input, 边throw error (popup toast) 
+
+
+
+:bangbang: 需要注意的是, 这里用了useHistory(), which is react router V5 feature, replaced by other hooks in V6
+
+submitHandler 
+
+```js
+// step1: check user input
+
+// step2: sned request
+try{
+  // use axios send request
+  
+  // after successfully get data from server, do something e.g. localStorage...
+}catch (error) {
+  
+  // show error message to client
+}
+```
+
+
+
+
+
+so far so good
 
 
 
