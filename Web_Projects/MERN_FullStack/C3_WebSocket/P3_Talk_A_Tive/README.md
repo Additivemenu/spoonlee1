@@ -13,20 +13,30 @@ Server
 + MongoDB schema
 + Connect MongoDB
 + User sign up & authentication using JWT token
+  + `protect` middleware to authenticate a user login
+
 + :gem: use morgon for logging to help debug
++ 写server api pattern: 边写边validate user input or a db operation result
+
+Postman
+
++ set and save environment variables
++ Authentication token
 
 
 
 Client
 
-+ React Router
++ React Router V5 
 
-+ Chakra UI lib
++ use of Chakra UI lib
 
-+ set proxy in package.json for CORS
++ set proxy in package.json for CORS. we can also config CORS at server 
 
 + upload image to cloudiary, then MongoDB store pic url
 
+  
+  
   
 
 
@@ -223,7 +233,7 @@ so far so good!
 
 
 
-## Defining Schema and Models with mongoose
+## :moon: Defining Schema and Models with mongoose
 
 C6
 
@@ -238,9 +248,9 @@ models > chatModel.js
 ```js
 const mongoose = require("mongoose");
 
-const chatModel = mongoose.schema(
+const chatModel = mongoose.Schema(
   {
-    chatName: { type: string, trim: true },
+    chatName: { type: String, trim: true },
     isGroupChat: { type: Boolean, default: false },
     users: [
       {
@@ -676,7 +686,7 @@ connectDB();			// invoke after dotenv
 
 C9-C12
 
-3hrs 
+3.5 hrs 
 
 now we are going to add more logics  at the backend
 
@@ -684,7 +694,7 @@ now we are going to add more logics  at the backend
 
 
 
-## :moon: User Authentication
+## 3.1 :moon: User Authentication
 
 C9
 
@@ -947,7 +957,7 @@ so far so good
 
 
 
-### client
+### Client
 
 24min-
 
@@ -1004,21 +1014,538 @@ so far so good
 
 
 
-## Search User and Create chat APIs
+## 3.2 Search User and Create chat APIs
 
 C10
 
+focus on server REST APIs
 
 
-## Build Chat Page UI
+
+https://www.mongodb.com/docs/manual/reference/operator/query/regex/
+
+0-8min search all user api
+
++ search all users except myself -> require authorization to identify I am logged in!
+
+8min- :bangbang: user login authentication 
+
++ use JWT token to verify a user is login ->middlewares > authMiddleware.js
++ 实现方法是, 将user login API 返回的JWT token携带到以后该user发送的request的authorization里, server会`req.headers.authorization` (authMiddleware.js)来判断user是否login
+  + token type is Bearer token. postman是可以测试的 -> HTTP request的authorisation里设置
+
+
+
+userRouter.js
+
++ 一个path可以跟多个http method
+
+```js
+const express = require("express");
+const router = express.Router();
+
+const {
+  registerUser,
+  authUser,
+  allUsers,
+} = require("../controllers/userControllers");
+const { protect } = require("../middlewares/authMiddleware");
+
+// /api/user/
+router.post("/login", authUser);
+router
+  .route("/")
+  .post(registerUser) //
+  .get(protect, allUsers);      // !  protect runs before allUsers- first verify user login state (protect middleware), then search all users (as search all users require user to login)
+
+module.exports = router;
+```
+
+
+
+:bangbang: middlewares > authMiddleware.js
+
++ attach the authenticated user to request
+
+```js
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel.js");
+const asyncHandler = require("express-async-handler");
+
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization && // jwt token here
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    console.log(req.headers.authorization);
+
+    try {
+      // Bearer sfsafnwajejdanda
+      token = req.headers.authorization.split(" ")[1]; // just take the token content
+      console.log(token);
+
+      //decodes token id
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(decoded);
+			
+      // ! attach the authenticated user to request
+      req.user = await User.findById(decoded.id).select("-password"); // ! return user without password from db
+      console.log(req.user);
+
+      next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Not authorized, token failed!");
+    }
+  }
+
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
+
+module.exports = { protect };
+```
+
+userController:
+
++ allUsers need user to login
+
+```js
+// /api/user?search=bob    get all users -------------------------------
+const allUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          // mongoDB syntax
+          { name: { $regex: req.query.search, $options: "i" } }, // case insensitive
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  console.log(`keyword: ${keyword}`);
+
+  const users = await User.find(keyword) //
+                          .find({ _id: { $ne: req.user._id } }); // ! this line require user login, it return all other user except the one making the request
+  res.send(users);
+});
+```
+
+
+
+
+
+12min- define chat api
+
+Previously, we are just focusing on User, Now we proceed to create our second entity related APIs - chat
+
+chat - router, controller 
+
+chatRouter.js
+
+```js
+const express = require("express");
+const { protect } = require("../middlewares/authMiddleware");
+const {accessChat} = require("../controllers/chatControllers")
+
+const router = express.Router();
+
+// /api/chat
+router.route("/").post(protect, accessChat);
+router.route("/").get(protect, fetchChat);
+
+router.route("/group").post(protect, createGroupChat);
+router.route("/rename").put(protect, renameGroup);
+router.route("/groupremove").put(protect, removeFromGroup);
+router.route("/groupadd").put(protect, addToGroup);
+
+module.exports = router;
+```
+
+
+
+
+
+### create or access a one-on-one chat with another user
+
+12min-
+
+```js
+const asyncHandler = require("express-async-handler");
+const Chat = require("../models/chatModel");
+const User = require("../models/userModel")
+
+// const accessChat = (req, res) => {
+//     res.send("accessChat")
+// }
+
+// access chat of the loggedin user
+const accessChat = asyncHandler(async (req, res) => {
+  const { userId } = req.body;      // one-on-one chat target user
+  console.log("some one is trying to acces chat!")
+
+  if (!userId) {
+    console.log("UserId param not sent with request!");
+    return res.sendStatus(400);
+  }
+
+  // ! MongoDB manipulation
+  let isChat = await Chat.find({
+    isGroupChat: false,
+    $and: [
+      { users: { $elemMatch: { $eq: req.user._id } } },
+      { users: { $elemMatch: { $eq: userId } } },
+    ],
+  })
+    .populate("users", "-password")
+    .populate("latestMessage");
+
+  isChat = await User.populate(isChat, {
+    path: "latestMessage.sender",
+    select: "name pic email",
+  });
+
+  // after find the chat
+  if (isChat.length > 0) {
+    res.send(isChat[0]);
+
+  } else {
+    // ! if no existing chat found, create one
+    var chatData = {
+      chatName: "sender",
+      isGroupChat: false,
+      users: [req.user._id, userId],
+    };
+    //
+    try {
+      const createdChat = await Chat.create(chatData);
+
+      const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+        "users",
+        "-password"
+      );
+      res.status(200).send(FullChat);
+    } catch (error) {
+      res.status(400);
+      throw new Error(error.message);
+    }
+  }
+});
+
+module.exports = { accessChat };
+```
+
+
+
+Postman test API: 
+
+return from postman
+
++ "users" is populated as in the code. More flexible than SQL
+
+```json
+{
+    "_id": "651375d6da69b24d28bc671b",
+    "chatName": "sender",
+    "isGroupChat": false,
+    "users": [
+        {
+            "_id": "651360732c81916b88e2b7e0",
+            "name": "Bob Sponge",
+            "email": "BobSponge@gmail.com",
+            "pic": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+            "createdAt": "2023-09-26T22:51:31.859Z",
+            "updatedAt": "2023-09-26T22:51:31.859Z",
+            "__v": 0
+        },
+        {
+            "_id": "6512c05311a0a3d716a76462",
+            "name": "bob",
+            "email": "bob@gmail.com",
+            "pic": "http://res.cloudinary.com/douejh0qp/image/upload/v1695727698/g2o5vdqtnrbbaiklth4n.png",
+            "createdAt": "2023-09-26T11:28:19.912Z",
+            "updatedAt": "2023-09-26T11:28:19.912Z",
+            "__v": 0
+        }
+    ],
+    "createdAt": "2023-09-27T00:22:46.607Z",
+    "updatedAt": "2023-09-27T00:22:46.607Z",
+    "__v": 0
+}
+```
+
+MongDB
+
+![](./src_md/chat1.png)
+
+
+
+
+
+### fetch all chat of the logged in user
+
+25min-
+
+chatControllers.js
+
++ req.user is attached by `authMiddleware.js`  > protect
+
+```js
+const fetchChats = asyncHandler(async (req, res) => {
+  try {
+    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } }) //  loop over all Chat's users attribute and find the ones that elemMatch
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password")
+      .populate("latestMessage")
+      .sort({ updatedAt: -1 })
+      .then(async (results) => {
+        results = await User.populate(results, {
+          path: "latestMessage.sender",
+          select: "name pic email",
+        });
+        res.status(200).send(results);
+      });
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+```
+
+
+
+
+
+### Group chat
+
+#### create group chat 
+
+30min-
+
+the user create the group chat will become the group chat admin
+
+
+
+
+
+```js
+const createGroupChat = asyncHandler(async (req, res) => {
+  if (!req.body.users || !req.body.name) {
+    return res.status(400).send({ message: "Please Fill all the fields!" });
+  }
+
+  let users = JSON.parse(req.body.users);       // ! note users in req.body is string
+
+  if (users.length < 2) {
+    return res
+      .status(400)
+      .send("More than 2 users are required to form a group chat!");
+  }
+
+  users.push(req.user);
+
+  // now MongoDB manipulation -------------------------------
+  try {
+    const groupChat = await Chat.create({
+      chatName: req.body.name,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: req.user,
+    });
+
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).json(fullGroupChat);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+```
+
+
+
+
+
+Postman test
+
+request body for the post request
+
+```json
+{
+    "name": "Test Group",
+    "users": "[\"65129af14472a48d456b6984\", \"6512c05311a0a3d716a76462\"]"  // the user you want to add in group chat
+}
+```
+
+postman returns
+
+```json
+{
+    "_id": "651381448d3be550b354151d",
+    "chatName": "Test Group",
+    "isGroupChat": true,
+    "users": [
+        {
+            "_id": "65129af14472a48d456b6984",
+            "name": "XS Li",
+            "email": "spoon@gmail.com",
+            "pic": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+            "createdAt": "2023-09-26T08:48:49.375Z",
+            "updatedAt": "2023-09-26T08:48:49.375Z",
+            "__v": 0
+        },
+        {
+            "_id": "6512c05311a0a3d716a76462",
+            "name": "bob",
+            "email": "bob@gmail.com",
+            "pic": "http://res.cloudinary.com/douejh0qp/image/upload/v1695727698/g2o5vdqtnrbbaiklth4n.png",
+            "createdAt": "2023-09-26T11:28:19.912Z",
+            "updatedAt": "2023-09-26T11:28:19.912Z",
+            "__v": 0
+        },
+        {
+            "_id": "651360732c81916b88e2b7e0",
+            "name": "Bob Sponge",
+            "email": "BobSponge@gmail.com",
+            "pic": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+            "createdAt": "2023-09-26T22:51:31.859Z",
+            "updatedAt": "2023-09-26T22:51:31.859Z",
+            "__v": 0
+        }
+    ],
+    "groupAdmin": {
+        "_id": "651360732c81916b88e2b7e0",
+        "name": "Bob Sponge",
+        "email": "BobSponge@gmail.com",
+        "pic": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        "createdAt": "2023-09-26T22:51:31.859Z",
+        "updatedAt": "2023-09-26T22:51:31.859Z",
+        "__v": 0
+    },
+    "createdAt": "2023-09-27T01:11:32.055Z",
+    "updatedAt": "2023-09-27T01:11:32.055Z",
+    "__v": 0
+}
+```
+
+
+
+#### rename group chat
+
+36min-
+
+```js
+const renameGroup = asyncHandler(async (req, res) => {
+  const { chatId, chatName } = req.body;
+
+
+  const updatedChat = await Chat.findByIdAndUpdate( //! DB manipulation
+    chatId,
+    {
+      chatName: chatName,
+    },
+    {
+      new: true, // return updated value
+    }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!updatedChat) {
+    res.status(404);
+    throw new Error("Chat Not Found!");
+  } else {
+    res.json(updatedChat);
+  }
+});
+```
+
+
+
+#### Add / remove a user in group chat
+
+39min-
+
+```js
+const addToGroup = asyncHandler(async (req, res) => {
+  const { chatId, userId } = req.body;
+
+  const added = await Chat.findByIdAndUpdate(
+    chatId,
+    {
+      $push: { users: userId },
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!added) {
+    res.status(404);
+    throw new Error("Chat Not Found!");
+  } else {
+    res.json(added);
+  }
+});
+
+const removeFromGroup = asyncHandler(async (req, res) => {
+    const { chatId, userId } = req.body;
+  
+    const removed = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { users: userId },
+      },
+      { new: true }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+  
+    if (!removed) {
+      res.status(404);
+      throw new Error("Chat Not Found!");
+    } else {
+      res.json(removed);
+    }
+  });
+
+```
+
+
+
+
+
+
+
+
+
+## 3.3 Build Chat Page UI
 
 C11
 
 
 
-## Group chat UI
+
+
+
+
+
+
+## 3.4 Group chat - CRUD user
 
 C12
+
+
+
+
+
+
 
 
 

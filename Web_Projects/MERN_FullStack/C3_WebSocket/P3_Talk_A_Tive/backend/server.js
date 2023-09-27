@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const colors = require("colors"); // coloring console.log() in terminal
 const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes")
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes)
 
 app.use(notFound);
 app.use(errorHandler);    // ! general error handler 

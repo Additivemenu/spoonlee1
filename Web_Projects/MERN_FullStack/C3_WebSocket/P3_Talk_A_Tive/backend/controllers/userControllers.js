@@ -5,20 +5,20 @@ const generateToken = require("../config/generateToken");
 
 // do a step, then check error --------------------------------------------------------
 const registerUser = asyncHandler(async (req, res) => {
-  console.log("someone just post a sign up request!")
+  console.log("someone just post a sign up request!");
   const { name, email, password, pic } = req.body;
 
   // ! validate input from req
   if (!name || !email || !password) {
     res.status(400);
-    console.log("Please Enter all the Fields!")
+    console.log("Please Enter all the Fields!");
     throw new Error("Please Enter all the Fields!");
   }
 
   const userExists = await User.findOne({ email }); // ! database manipulation: check if user exist
   if (userExists) {
     res.status(400);
-    console.log("user already exist!")
+    console.log("user already exist!");
     throw new Error("User already exists");
   }
 
@@ -37,12 +37,12 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       pic: user.pic,
-      token: generateToken(user._id),  // ! attach JWT token to client
+      token: generateToken(user._id), // ! attach JWT token to client
     });
-    console.log("a user successfully signed up!")
+    console.log("a user successfully signed up!");
   } else {
     res.status(400);
-    console.log("Failed to create the user!")
+    console.log("Failed to create the user!");
     throw new Error("Failed to create the user!");
   }
 });
@@ -50,22 +50,41 @@ const registerUser = asyncHandler(async (req, res) => {
 // user login authentication ------------------------------------------------------------------
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(`${email} is trying to login!`)
-  const user = await User.findOne({email});   // ! database manipulation
+  console.log(`${email} is trying to login!`);
+  const user = await User.findOne({ email }); // ! database manipulation
 
-  if(user && (await user.matchPassword(password))){
+  if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       pic: user.pic,
       token: generateToken(user._id),
-    })
-    console.log(`${email} has logged in!`)
+    });
+    console.log(`${email} has logged in!`);
   } else {
     res.status(401);
     throw new Error("Invalid Email or Password");
   }
 });
 
-module.exports = { registerUser, authUser };
+// /api/user?search=bob    get all users -------------------------------
+const allUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          // mongoDB syntax
+          { name: { $regex: req.query.search, $options: "i" } }, // case insensitive
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  console.log(`keyword: ${keyword}`);
+
+  const users = await User.find(keyword) //
+                          .find({ _id: { $ne: req.user._id } }); // ! this line require user login, it return all other user except the one making the request
+  res.send(users);
+});
+
+
+module.exports = { registerUser, authUser, allUsers };
