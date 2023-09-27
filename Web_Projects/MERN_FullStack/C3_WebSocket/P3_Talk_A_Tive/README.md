@@ -8,6 +8,10 @@ mainly to learn mongoDB and web socket (socket io)
 
 # Key Takeaways
 
+some vscode extensions
+
+
+
 Server
 
 + MongoDB schema
@@ -1521,7 +1525,7 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 
 
 
-
+so far so good!
 
 
 
@@ -1529,7 +1533,156 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 
 C11
 
+client side coding, integrate 3.2 server API
 
+login as guest
+
+
+
+### context 
+
+0min-
+
+make logged in user's info app-wide availble
+
+creating context
+
++ make user's logged in state app-width available
+  + useEffect(): fetch user info from local storage and set to a app-wide state
+
+```js
+import { createContext, useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
+const ChatContext = createContext();
+
+// user logged in state should be app-wide available
+const ChatProvider = ({ children }) => {
+  const [user, setUser] = useState();
+  const history = useHistory();
+
+  // ! note since ChatProvider is wrapper around <App/>, the call back in useEffect() will firstly run as npm start
+  // ! but shouldn't that have a circular dependency? 
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo")); // ! note JSON parse string to object, localStorage has been set after user login 
+    setUser(userInfo);
+
+    if (!userInfo) {
+      console.log("in chat provider, no user is logged in!")
+      history.push("/");  // go back to home page if no user is loggedin  ! circular dependency?
+    }
+  }, [history]);
+
+  return (
+    // bound context(state + setState) to context provider
+    <ChatContext.Provider value={{ user, setUser }}>
+      {children}
+    </ChatContext.Provider>
+  );
+};
+
+// just make context app-wide available
+export const ChatState = () => {
+  return useContext(ChatContext);
+};
+
+export default ChatProvider;
+```
+
+
+
+index.js
+
++ remember to wrap app with context provider
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";
+import ChatProvider from "./Context/ChatProvider";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <ChatProvider>
+    <BrowserRouter>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
+  </ChatProvider>
+);
+
+```
+
+
+
+HomePage.js
+
++ add a useEffect() to keep user login state
+
+```js
+  const history = useHistory();
+
+  useEffect(() => { // check local storage, keep user login state
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    if (user) history.push("/chats");
+  }, [history]);
+```
+
+
+
+
+
+### chat page 
+
+6min-11min
+
+general layout and components
+
++ SideDrawer.js
++ ChatBox.js
++ MyChats.js
+
+
+
+#### SideDrawer 
+
+the tool bar on top of the screen
+
+11min-
+
+
+
+Menu
+
+top right menu
+
+
+
+modal
+
+logout 
+
+
+
+
+
+Search user side drawer
+
+29min-44min
+
+top left 
+
+UP TO HERE
+
+
+
+#### Rendering all chats
+
+45min-60min
 
 
 
@@ -1541,7 +1694,7 @@ C11
 
 C12
 
-
+client side coding
 
 
 

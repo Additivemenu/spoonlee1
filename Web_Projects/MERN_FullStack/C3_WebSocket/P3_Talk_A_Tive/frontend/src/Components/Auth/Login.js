@@ -27,6 +27,7 @@ const Login = () => {
 
   const submitHandler = async () => {
     setLoading(true);
+    // validate input
     if (!email || !password) {
       toast({
         title: "Please Fill all the Fields!",
@@ -39,12 +40,15 @@ const Login = () => {
       return;
     }
 
+    // implement business logic
     try {
       const config = {
         headers: {
           "content-type": "application/json",
         },
       };
+
+      console.log("sending login request")
       const { data } = await axios.post(
         // ! axios login request
         "api/user/login",
@@ -52,17 +56,20 @@ const Login = () => {
         config
       );
 
-      toast({
+      // popup for sucessful login
+      toast({ 
         title: "Login Successful!",
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+
       // ! local mechanism after successful login
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats"); // navigate to "/chats" and push it into history. Note this is React Router V5 feature, not in V6
+      history.push("/chats"); // ! navigate to "/chats" and push it into history. Note this is React Router V5 feature, not in V6
+   
     } catch (error) {
       toast({
         title: "Error Occured!",

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Box,
   Container,
@@ -13,6 +14,20 @@ import Login from "../Components/Auth/Login";
 import Signup from "../Components/Auth/Signup";
 
 const HomePage = () => {
+  const history = useHistory();
+
+  useEffect(() => {
+    // check local storage, keep user login state
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+
+    console.log("in home page, geting user logged in state");
+    
+    if (user) {
+      console.log(`${user.name} has logged in, now directly to chat page`)
+      history.push("/chats");
+    }
+  }, [history]);
+
   return (
     <Container maxW="xl" centerContent>
       <Box

@@ -49,6 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // user login authentication ------------------------------------------------------------------
 const authUser = asyncHandler(async (req, res) => {
+  
   const { email, password } = req.body;
   console.log(`${email} is trying to login!`);
   const user = await User.findOne({ email }); // ! database manipulation
