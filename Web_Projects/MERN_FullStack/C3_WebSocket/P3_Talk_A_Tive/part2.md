@@ -1130,8 +1130,77 @@ too many code,  just show key points and watch for server-client communication
 
     
 
-
+![](./src_md/createGroupChatModal1.png)
 
 
 
 ## ChatBox
+
+24min-
+
+<span style="color: yellow">ChatBox.js</span>. 右半边那个窗口
+
++ Component communication - state lifting: MyChats.js - ChatBox.js
+
+  + User interact with ChatBox.js, but change also propogate to MyChats.js
+
+  ```js
+  import React, { useEffect, useState } from "react";
+  import axios from "axios";
+  import { Box } from "@chakra-ui/react";
+  
+  import { ChatState } from "../Context/ChatProvider";
+  import SideDrawer from "../Components/miscellaneous/SideDrawer";
+  import MyChats from "../Components/Chat/MyChats";
+  import ChatBox from "../Components/Chat/ChatBox";
+  
+  const ChatPage = () => {
+    const { user } = ChatState(); // ! get app-wide context: user logged in state
+    const [fetchAgain, setFetchAgain] = useState(false);
+  
+  
+    return (
+      <div style={{ width: "100%" }}>
+        {user && <SideDrawer />}
+  
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          w="100%"
+          h="91.5vh"
+          padding="10px"
+        >
+          {/* state lifting */}
+          {user && <MyChats fetchAgain={fetchAgain}/>}
+          {/* state lifiting, as user input in ChatBox, influence MyChats */}
+          {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />} 
+        </Box>
+      </div>
+    );
+  };
+  
+  export default ChatPage;
+  ```
+
+  
+
++ <span style="color: yellow">SingleChat.js</span>
+
+  + basic frames 24 - 37min
+    + conditional rendering based on state `selectedChat`
+  + <span style="color: yellow">UpdateGroupChatModal.js</span> 
+    + Modal UI buildup 37min-45min
+      + Chakra UI的Modal基本都是一个button + 一个 modal component
+    + Modal functionality (use server api) 45min-
+      + update group chat name
+      + Add new user to group chat 49min-52min
+      + user leave the group chat 52min-54min
+      + admin user can choose to kick other user out 52-54min
+
+
+
+![](./src_md/updateGroupChatModal1.png)
+
+
+
+so far so good!

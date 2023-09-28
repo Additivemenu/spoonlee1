@@ -33,9 +33,17 @@ Client
 
 + React Router V5 
 + use of Chakra UI lib
+  + modal
+  + Toast for input feedback
+  + Menu
+
 + set proxy in package.json for CORS. we can also config CORS at server 
 + upload image to cloudiary, then MongoDB store pic url
 + manage logged-in user's dynamic info (state) in Context API
++ handler inovling http request code pattern
+  + check input, then do business
+  + set boolean state for visual feedback whether async operation is done or not
+
 
 
 
