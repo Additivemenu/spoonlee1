@@ -4,13 +4,18 @@ mainly to learn mongoDB and web socket (socket io)
 
 
 
+his code is not really elegant and readble, practice to rebuild the app in your own way
+
++ Not using any UI lib
++ make the code more elegant and readable
+
 
 
 # Key Takeaways
 
 some vscode extensions
 
-
++ code spell checker
 
 Server
 
@@ -39,8 +44,13 @@ Client
 
 + set proxy in package.json for CORS. we can also config CORS at server 
 + upload image to cloudiary, then MongoDB store pic url
-+ manage logged-in user's dynamic info (state) in Context API
-+ handler inovling http request code pattern
++ :bangbang: Authentication & authorization (logged-in user can only see his data)
+  + done by set config when sending axios request
+
++ :bangbang: manage logged-in user's dynamic info (state) in Context API
+  + localStorage
+
++ :star: handler inovling http request code pattern
   + check input, then do business
   + set boolean state for visual feedback whether async operation is done or not
 
@@ -54,5 +64,5 @@ Client
 | ------------------- | ------------------------------------ | ------------------------ |
 | [Part1](./part1.md) | Intro & Basic setup                  |                          |
 | [Part2](./part2.md) | General UI & API build up            | REST <br>more like JR P3 |
-| [Part3](./part3.md) | :bangbang: Messaging <br> Deploy App | Socket.io                |
+| [Part3](./part3.md) | :bangbang: Messaging <br> Deploy App | REST <br>Socket.io       |
 

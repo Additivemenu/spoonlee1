@@ -4,8 +4,10 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const colors = require("colors"); // coloring console.log() in terminal
+
 const userRoutes = require("./routes/userRoutes");
-const chatRoutes = require("./routes/chatRoutes")
+const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoute");
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
@@ -20,10 +22,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
-app.use("/api/chat", chatRoutes)
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use(notFound);
-app.use(errorHandler);    // ! general error handler 
+app.use(errorHandler); // ! general error handler
 
 const PORT = process.env.PORT || 8080;
 app.listen(

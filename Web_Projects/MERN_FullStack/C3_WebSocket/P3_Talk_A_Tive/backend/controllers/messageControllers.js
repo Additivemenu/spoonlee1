@@ -1,49 +1,3 @@
-# Messaging
-
-1.5 hrs
-
-
-
-## Send message API (one-to-one, group-chat)
-
-C13
-
-server coding: REST APIs
-
-
-
-<span style="color: yellow">sever.js</span>
-
-```js
-app.use("/api/message", messageRoutes);
-```
-
-<span style="color: yellow">messageRoute.js</span>
-
-```js
-const express = require("express");
-
-const {protect} = require("../middlewares/authMiddleware")
-const {sendMessage, allMessages} = require("../controllers/messageControllers")
-
-const router = express.Router();
-
-// /api/message
-router.route('/').post(protect, sendMessage)
-router.route('/:chatId').get(protect, allMessages)
-
-module.exports = router;
-```
-
-
-
-Controllers > <span style="color: yellow">messageControllers.js</span>
-
-+ send a message in a chat 
-
-+ fetch all messages of a chat
-
-```js
 const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
@@ -68,8 +22,8 @@ const sendMessage = asyncHandler(async (req, res) => {
   try {
     let message = await Message.create(newMessage); // ! DB
 
-    message = await message.populate("sender", "name pic"); // populate "sender"'s "name, pic" 
-    message = await message.populate("chat"); // populate with "chat"'s all attributes
+    message = await message.populate("sender", "name pic");
+    message = await message.populate("chat");
     message = await User.populate(message, {
       path: "chat.users",
       select: "name pic email",
@@ -101,64 +55,3 @@ const allMessages = asyncHandler(async (req, res) => {
 });
 
 module.exports = { sendMessage, allMessages };
-```
-
-
-
-so far so good
-
-
-
-
-
-## Single And Group Chat Message in React
-
-C14
-
-REST APIs
-
-client coding: integrate with APIs in last C13
-
-
-
-UP TO HERE
-
-
-
-## Real Time Messaing  
-
-C15
-
-socket.io
-
-
-
-
-
-
-
-
-
-## Real Time Notification
-
-C16
-
-socket.io
-
-
-
-
-
-
-
-
-
-# Deploy
-
-C17
-
-10min
-
-
-
-deploying fullstack app to Render
