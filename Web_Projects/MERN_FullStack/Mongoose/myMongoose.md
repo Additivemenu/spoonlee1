@@ -2,6 +2,26 @@ Mongoose
 
 
 
+https://www.bilibili.com/video/BV16u4y1y7Fm/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=c6866d088ad067762877e4b6b23ab9df
+
+
+
+:tv:[MongoDB](https://www.youtube.com/watch?v=ofme2o29ngU&t=22s)
+
+:tv:[Mongoose](https://www.youtube.com/watch?v=DZBGEVgL2eE)
+
+
+
+install MongoDB
+
+https://www.mongodb.com/docs/manual/installation/
+
+use shell to install, start, manipulate MongoDB 
+
+
+
+
+
 
 
 ## A quick look

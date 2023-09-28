@@ -40,6 +40,7 @@ module.exports = router;
 Controllers > <span style="color: yellow">messageControllers.js</span>
 
 + send a message in a chat 
+  + :bangbang: wait, where does the message is stored in the chat? - message has a field "chat" that's already referencing to the chat it belongs to (like a foreign key)
 
 + fetch all messages of a chat
 
@@ -67,18 +68,21 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   try {
     let message = await Message.create(newMessage); // ! DB
-
+	
+    // populate message's attributes 
     message = await message.populate("sender", "name pic"); // populate "sender"'s "name, pic" 
     message = await message.populate("chat"); // populate with "chat"'s all attributes
     message = await User.populate(message, {
       path: "chat.users",
       select: "name pic email",
     });
-
+	
+    // update other collections related
     await Chat.findByIdAndUpdate(req.body.chatId, {
       latestMessage: message,
     });
-
+	
+    // return message back 
     res.json(message);
   } catch (error) {
     res.status(400);
@@ -111,27 +115,52 @@ so far so good
 
 
 
-## Single And Group Chat Message in React
+## :moon: Single And Group Chat Message in React
 
 C14
 
 REST APIs
 
-client coding: integrate with APIs in last C13
+client coding: integrate with APIs in previous class: one-on-one chatting
 
 
 
-UP TO HERE
+
+
+<span style="color: yellow">SingleChat.js</span>
+
++ send a message in selected chat
++ Fetch all messages in selected chat
 
 
 
-## Real Time Messaing  
+render messages 16min- 29min
+
++ <span style="color: yellow">ScrollableChat.js</span>
+
+```js
+npm i react-scrollable-feed
+```
+
++ :bangbang: 根据message sender的不同， 进行不同的styling 与conditional rendering (还能这样!)
+
+
+
+
+
+## :moon: Real Time Messaing  
 
 C15
 
 socket.io
 
 
+
+now turn to group chatting
+
+
+
+UP TO HERE
 
 
 

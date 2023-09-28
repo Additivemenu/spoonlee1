@@ -19,7 +19,7 @@ const ChatProvider = ({ children }) => {
 
     if (!userInfo) {
       console.log("in chat provider, no user is logged in!")
-      // history.push("/");  // ! go back to home page if no user is loggedin  ! circular dependency? which useEffect run first? this one or the one in HomePage.js
+      history.push("/");  // ! go back to home page if no user is loggedin  ! circular dependency? which useEffect run first? this one or the one in HomePage.js
     }
   }, [history]);
 

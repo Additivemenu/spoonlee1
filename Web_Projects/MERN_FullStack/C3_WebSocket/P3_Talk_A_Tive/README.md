@@ -8,6 +8,7 @@ his code is not really elegant and readble, practice to rebuild the app in your 
 
 + Not using any UI lib
 + make the code more elegant and readable
++ use typescript
 
 
 
@@ -53,6 +54,7 @@ Client
 + :star: handler inovling http request code pattern
   + check input, then do business
   + set boolean state for visual feedback whether async operation is done or not
++ :bangbang: React Router should be outside of context provider 
 
 
 

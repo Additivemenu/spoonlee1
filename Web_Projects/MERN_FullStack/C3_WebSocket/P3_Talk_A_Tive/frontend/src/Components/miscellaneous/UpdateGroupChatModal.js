@@ -22,7 +22,7 @@ import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [groupChatName, setGroupChatName] = useState();
@@ -196,19 +196,19 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
         config
       );
 
-      userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);  // ! update UI state 
-      setFetchAgain(!fetchAgain);
-
+      userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data); // ! update UI state
+      setFetchAgain(!fetchAgain);  // fetch all chats again
+      fetchMessages();  // ! fetch message of current selected chat again
       setLoading(false);
     } catch (error) {
-        toast({
-            title: "Error Occured!",
-            description: error.message,
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-            position: "bottom",
-          });
+      toast({
+        title: "Error Occured!",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
     }
   };
 
