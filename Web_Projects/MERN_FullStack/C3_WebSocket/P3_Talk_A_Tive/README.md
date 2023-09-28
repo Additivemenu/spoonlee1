@@ -32,12 +32,10 @@ Postman
 Client
 
 + React Router V5 
-
 + use of Chakra UI lib
-
 + set proxy in package.json for CORS. we can also config CORS at server 
-
 + upload image to cloudiary, then MongoDB store pic url
++ manage logged-in user's dynamic info (state) in Context API
 
 
 
@@ -49,5 +47,4 @@ Client
 | [Part1](./part1.md) | Intro & Basic setup                  |                          |
 | [Part2](./part2.md) | General UI & API build up            | REST <br>more like JR P3 |
 | [Part3](./part3.md) | :bangbang: Messaging <br> Deploy App | Socket.io                |
-
 

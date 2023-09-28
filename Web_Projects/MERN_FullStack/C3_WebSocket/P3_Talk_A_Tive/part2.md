@@ -1078,6 +1078,60 @@ C12
 
 client side coding
 
+还是integrate section2中API [section 2](#2-search-user-and-create-chat-apis)
 
 
-up to here
+
+too many code,  just show key points and watch for server-client communication
+
+
+
+## Create group chat
+
+0-24min
+
++ <span style="color: yellow">GroupChatModal.js</span>
+
+  + input group chat name
+
+  + input users to add
+
+    + search user & render searched results
+
+      ```js
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/user/?search=${search}`, config); // ! axios get
+      ```
+
+    + click on search results to add a user to selectedUsers
+
+  + submit create group chat form 20min-24min
+
+    ```js
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    
+    const { data } = await axios.post(        // ! axios post
+    `/api/chat/group`,
+    {
+      name: groupChatName,
+      users: JSON.stringify(selectedUsers.map((u) => u._id)),       
+    },
+    config
+    );
+    ```
+
+    
+
+
+
+
+
+## ChatBox
