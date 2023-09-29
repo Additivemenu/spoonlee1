@@ -30,6 +30,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ChatLoading from "../Chat/ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";
+import { getSender } from "../config/ChatLogics";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState(""); // input
@@ -37,7 +38,14 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false); // loading search results
   const [loadingChat, setLoadingChat] = useState(); //loading chat results
 
-  const { user, setSelectedChat, chats, setChats } = ChatState(); // get app-wide context: user's logged in state
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notifications,
+    setNotifications,
+  } = ChatState(); // get app-wide context: user's logged in state
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure(); // Drawer
   const toast = useToast();
@@ -69,7 +77,7 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);  // ! axios get: an array of users matching input
+      const { data } = await axios.get(`/api/user?search=${search}`, config); // ! axios get: an array of users matching input
 
       setLoading(false);
       setSearchResult(data);
@@ -85,7 +93,7 @@ const SideDrawer = () => {
     }
   };
 
-  //! access chat with specific user 
+  //! access chat with specific user
   const accessChat = async (userId) => {
     try {
       setLoadingChat(true);
@@ -98,8 +106,8 @@ const SideDrawer = () => {
       };
 
       const { data } = await axios.post("api/chat", { userId }, config); // ! axios post, create a chat with a specified user
-      
-      // if newly created chat not in chats, append it to chats 
+
+      // if newly created chat not in chats, append it to chats
       if (!chats.find((c) => c._id === data._id)) {
         setChats([data, ...chats]);
       }
@@ -143,12 +151,33 @@ const SideDrawer = () => {
           Talk-A-Tive
         </Text>
 
+        {/* notifications */}
         <div>
           <Menu>
             <MenuButton p={1}>
-              <BellIcon fontSize="2xl" m={1} />
+              {/* notification badge here (outdated dependency) */}
+              <BellIcon
+                fontSize="2xl"
+                color={notifications.length > 0 ? "red" : "black"}
+                m={1}
+              />
             </MenuButton>
-            {/* <MenuList></MenuList> */}
+            <MenuList pl={2}>
+              {!notifications.length && "No New Messages"}
+              {notifications.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotifications(notifications.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
 
           <Menu>
@@ -208,7 +237,7 @@ const SideDrawer = () => {
             )}
 
             {/* feedback of loading chat */}
-            {loadingChat && <Spinner ml="auto" display="flex"/> }
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

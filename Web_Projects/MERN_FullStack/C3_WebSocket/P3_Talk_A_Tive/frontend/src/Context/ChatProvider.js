@@ -8,6 +8,7 @@ const ChatProvider = ({ children }) => {
   const [user, setUser] = useState();   // logged in user
   const [selectedChat, setSelectedChat] = useState();   // the current chat user selected
   const [chats, setChats] = useState([]);   // all chats that logged in user get involved 
+  const [notifications, setNotifications] = useState([]);   
 
   const history = useHistory();
 
@@ -25,7 +26,7 @@ const ChatProvider = ({ children }) => {
 
   return (
     // bound context(state + setState) to context provider
-    <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}>
+    <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats, notifications, setNotifications }}>
       {children}
     </ChatContext.Provider>
   );

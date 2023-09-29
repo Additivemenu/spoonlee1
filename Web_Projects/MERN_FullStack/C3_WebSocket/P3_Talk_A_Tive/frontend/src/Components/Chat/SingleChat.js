@@ -34,7 +34,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const toast = useToast();
 
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    notifications,
+    setNotifications,
+  } = ChatState();
 
   //! socket io ================================================================ //
   useEffect(() => {
@@ -65,8 +71,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         config
       );
 
-      console.log(`fetched all messages from chat ${selectedChat._id}:`);
-      console.log(data);
+      // console.log(`fetched all messages from chat ${selectedChat._id}:`);
+      // console.log(data);
 
       setMessages(data);
       setLoading(false);
@@ -90,24 +96,32 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     fetchMessages();
 
     selectedChatCompare = selectedChat; // note selectedChatCompare is not react state
-    console.log("selected chat compare is: ");
-    console.log(selectedChatCompare);
+    // console.log("selected chat compare is: ");
+    // console.log(selectedChatCompare);
   }, [selectedChat]); // make sure when selectedChat changed, messages displayed on screen also change
 
-  // ! socket io: receive new message from other users to achieve real-time chat
+  useEffect(() => {
+    console.log(notifications, "--------------------------------");
+  }, [notifications]);
+
+  // ! socket io: receive new message from other users (emit by server) to achieve real-time chat
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // FIXME: no chat selected or not the chat that i am currently selected, so give notification
+        // TODO: no chat selected or not the chat that i am currently selected, so give notification
+        if (!notifications.includes(newMessageReceived)) {
+          setNotifications([newMessageReceived, ...notifications]);
+          setFetchAgain(!fetchAgain); // re-fetch all chats for logged-in user since the new message might come from a new chat
+        }
       } else {
         // the chat that i am currently selected, so update the messages
-        console.log(
-          `new message received from server, now update the messages...`
-        );
-        console.log(newMessageReceived);
+        // console.log(
+        //   `new message received from server, now update the messages...`
+        // );
+        // console.log(newMessageReceived);
         setMessages([...messages, newMessageReceived]);
       }
     });
@@ -136,8 +150,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           config
         );
 
-        console.log("message sent: ");
-        console.log(data);
+        // console.log("message sent: ");
+        // console.log(data);
 
         // ! socket io: send new message to server ===================================================== //
         socket.emit("new message", data);
@@ -248,13 +262,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
 
             <FormControl onKeyDown={sendMessageHandler} isRequired mt={3}>
-              {isTyping ? (
-                <div>
-                  opponent is typing...
-                </div>
-              ) : (
-                <></>
-              )}
+              {isTyping ? <div>opponent is typing...</div> : <></>}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
