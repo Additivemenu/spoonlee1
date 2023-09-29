@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./style.css"
+import "./style.css";
 import { ChatState } from "../../Context/ChatProvider";
 import {
   Box,
@@ -10,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 
 import ProfileModal from "../miscellaneous/ProfileModal";
@@ -18,16 +18,35 @@ import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 import ScrollableChat from "./ScrollableChat";
 import axios from "axios";
 
+// socket io ============================ //
+import io from "socket.io-client";
+const ENDPOINT = "http://localhost:8081";
+let socket, selectedChatCompare;
+
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const toast = useToast();
 
   const { user, selectedChat, setSelectedChat } = ChatState();
 
-  // ========================================================================== /
+  //! socket io ================================================================ //
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user); // emit logged-in user to socket io server
+    socket.on("connected", () => setSocketConnected(true));
+
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+  }, []);
+  // ! ========================================================================== //
+
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -46,11 +65,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         config
       );
 
-      console.log(`fetched all messages from chat ${selectedChat._id}:`)
+      console.log(`fetched all messages from chat ${selectedChat._id}:`);
       console.log(data);
 
       setMessages(data);
       setLoading(false);
+      //! socket io: user join a chat ================================================================ //
+      socket.emit("join chat", selectedChat._id); // ! logged-in user join the chat room
+      // ! ========================================================================== //
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -63,9 +85,33 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+  // ! use efefct to fetch messages when selectedChat changed
   useEffect(() => {
     fetchMessages();
-  }, [selectedChat]);
+
+    selectedChatCompare = selectedChat; // note selectedChatCompare is not react state
+    console.log("selected chat compare is: ");
+    console.log(selectedChatCompare);
+  }, [selectedChat]); // make sure when selectedChat changed, messages displayed on screen also change
+
+  // ! socket io: receive new message from other users to achieve real-time chat
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
+        // FIXME: no chat selected or not the chat that i am currently selected, so give notification
+      } else {
+        // the chat that i am currently selected, so update the messages
+        console.log(
+          `new message received from server, now update the messages...`
+        );
+        console.log(newMessageReceived);
+        setMessages([...messages, newMessageReceived]);
+      }
+    });
+  });
 
   // ========================================================================== //
   const sendMessageHandler = async (event) => {
@@ -93,6 +139,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         console.log("message sent: ");
         console.log(data);
 
+        // ! socket io: send new message to server ===================================================== //
+        socket.emit("new message", data);
+        // ! ========================================================================== //
+
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -112,6 +162,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setNewMessage(e.target.value);
 
     // Typing Indicator Logic
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+
+    // set timer to stop typing
+    let lastTypingTime = new Date().getTime();
+    let timerLength = 3000;
+    setTimeout(() => {
+      let timeNow = new Date().getTime();
+      let timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
   return (
@@ -148,7 +216,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
-                  fetchMessages = {fetchMessages}
+                  fetchMessages={fetchMessages}
                 />
               </>
             )}
@@ -175,11 +243,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               />
             ) : (
               <div className="messages">
-                <ScrollableChat messages={messages}/>
+                <ScrollableChat messages={messages} />
               </div>
             )}
 
             <FormControl onKeyDown={sendMessageHandler} isRequired mt={3}>
+              {isTyping ? (
+                <div>
+                  opponent is typing...
+                </div>
+              ) : (
+                <></>
+              )}
               <Input
                 variant="filled"
                 bg="#E0E0E0"

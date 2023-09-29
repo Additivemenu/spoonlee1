@@ -129,6 +129,8 @@ client coding: integrate with APIs in previous class: one-on-one chatting
 
 <span style="color: yellow">SingleChat.js</span>
 
+涉及2个API的调用:
+
 + send a message in selected chat
 + Fetch all messages in selected chat
 
@@ -148,19 +150,74 @@ npm i react-scrollable-feed
 
 
 
-## :moon: Real Time Messaing  
+## :bangbang: Real Time Messaing  
 
 C15
 
 socket.io
 
+https://socket.io/
+
+server + client closely intertwine
+
++ in client side, socket io code is intertwine with REST APIs  handler. Handler or useEffect() logics really matters!
++ in server side, socket io code is decouped from REST APIs
+  + by using `socket.on()` `socket.emit()` , client and server can communicate bidirectionally 
 
 
-now turn to group chatting
+
+backend
+
+```js
+npm install socket.io
+```
 
 
 
-UP TO HERE
+
+
+frontend
+
+```js
+npm i socket.io-client
+```
+
+
+
+
+
+---
+
+以下对应
+
+```js
+io.on("connection", (socket) => {
+	// socket io api 1
+  
+  // socket io api 2
+});
+```
+
+
+
+
+
++ socket io server set up 2-4min
+  + note we set a timeout to socket
++ socket io client set up 4-10min 
+  + <span style="color: yellow">SingleChat.js</span>
++ :bangbang: join a chat 10-12min
++ :bangbang: real time messaging 12min-21min
+  + previously, our messaging is not in real-time, a user has to refresh the page to trigger useEffect in SingleChat.js to re-fetch all chat messages in selected chat. This is an active request from client. We now need the server to push the new messages to all other users actively. 
+  + 类似observer pattern, sender 1st send a message to server then server emit that message to all other users in the chat ( observer list registed by joining a chat)
+
++ Real time typing visual feedback 21min-
+  + other users can see the opposite is typing
+  + add animation to loading visual feedback 29min-[lottie web]( https://lottiefiles.com/search?q=typing&category=animations) => not important, not include in code
+
+
+
+
 
 
 
@@ -173,6 +230,10 @@ UP TO HERE
 C16
 
 socket.io
+
+
+
+when user not selecting any chats, someone send a message to the user, the user should be notified in real-time. Similar in real-time chatting, when someone send a message to server, server immediately emit that message to other users 
 
 
 

@@ -9,20 +9,20 @@ const protect = asyncHandler(async (req, res, next) => {
     req.headers.authorization && // jwt token here
     req.headers.authorization.startsWith("Bearer")
   ) {
-    console.log(req.headers.authorization);
+    // console.log(req.headers.authorization);
 
     try {
       // Bearer sfsafnwajejdanda
       token = req.headers.authorization.split(" ")[1]; // just take the token content
-      console.log(token);
+      // console.log(token);
 
       //decodes token id
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
+      //console.log(decoded);
 
       // ! attach the authenticated user to request
       req.user = await User.findById(decoded.id).select("-password"); // ! return user without password from db
-      console.log(req.user);
+      // console.log(req.user);
 
       next();
     } catch (error) {
