@@ -26,4 +26,5 @@ Socket IO (web socket) projects
 | ---------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
 | [1](./C3_WebSocket/P2_Chat_App/README.md)      | Chat App Demo                                   | :bangbang: CORS <br> Socket IO vs. WebSocket <br> Socket IO basics |
 | [2](./C3_WebSocket/P1_Chat_App_Demo/README.md) | Chat App (later joined user can see whole chat) |                                                              |
-|                                                |                                                 |                                                              |
+| [3](./C3_WebSocket/P3_Talk_A_Tive/README.md)   | :gem: Talk-A-TIve                               | Full stack real-time chat-app                                |
+

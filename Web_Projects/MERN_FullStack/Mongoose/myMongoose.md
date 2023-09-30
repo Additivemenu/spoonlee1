@@ -6,17 +6,15 @@ https://www.bilibili.com/video/BV16u4y1y7Fm/?spm_id_from=333.1007.top_right_bar_
 
 
 
-Source: 
+
+
+
+
+# 1. MongoDB
 
 :tv:[MongoDB](https://www.youtube.com/watch?v=ofme2o29ngU&t=22s)
 
-:tv:[Mongoose](https://www.youtube.com/watch?v=DZBGEVgL2eE)
 
-
-
-
-
-# MongoDB
 
 install MongoDB
 
@@ -25,6 +23,14 @@ https://www.mongodb.com/docs/manual/installation/
 use shell to install, start, manipulate MongoDB 
 
 https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition
+
+
+
+:gem: [MongoDB cheatsheet](./Assets/Dark.pdf)
+
+
+
+
 
 
 
@@ -191,7 +197,206 @@ db.users.deleteMany({age: {$exists: false}})
 
 
 
-# Mongoose
+# 2. Mongoose
+
+:tv:[Mongoose](https://www.youtube.com/watch?v=DZBGEVgL2eE)
+
+
+
+Mongoose Basics
+
+Schema Types
+
+Scheme Validation
+
+script.js
+
+```js
+const mongoose = require("mongoose");
+const User = require("./Schema/User"); // import User model
+
+mongoose.connect("mongodb://localhost/testdb");
+
+async function run() {
+  try {
+    const user = await User.create({  // User.create() go through schema validation, but some methods do not
+      name: "shawn",
+      age: 26,
+      email: "TEST@gmail.com",
+      hobbies: ["Weight Lifting", "Bowling"],
+      address: {
+        street: "123 Fake St",
+        city: "Boston",
+      },
+    }); // create a user document in the User collection
+    console.log(user);
+  } catch (err) {
+    console.log(err.message);
+
+  }
+
+}
+run();
+```
+
+User.js
+
++ validation
++ Referencing to another schema
+
+```js
+const mongoose = require("mongoose");
+
+const addressSchema = new mongoose.Schema({
+  street: String,
+  city: String,
+});
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: {type: Number, min: 1, max: 100, validate: {
+    validator: v => v%2 === 0,
+    message: props => `${props.value} is not an even number!`
+  }},
+  email: { type: String, minLength:10, required: true, lowercase: true },
+  createdAt: { type: Date, default: () => Date.now(), immutable: true },
+  updatedAt: { type: Date, default: () => Date.now() },
+  bestFriend: mongoose.Schema.Types.ObjectId, // reference to another document in the same collection
+  hobbies: [String], // array of strings,
+  address: addressSchema,
+});
+
+// 'User" collection
+module.exports = mongoose.model("User", userSchema);
+```
+
+
+
+
+
+
+
+## Query Basics
+
+```js
+const mongoose = require("mongoose");
+const User = require("./Schema/User"); // import User model
+
+mongoose.connect("mongodb://localhost/testdb");
+
+
+
+async function getUser() {
+  try {
+    const users = await User.findById("6517b63b2aa1d45e2dabb3c2");
+    console.log(users);
+
+    const user2 = await User.exists({ name: "shawn" });
+    console.log(user2);
+
+    const user3 = await User.where("name")
+      .equals("shawn")
+      .where("age")
+      .gte(26)
+      .populate("bestFriend") // like doing a join
+      .limit(1);
+
+    await user3[0].save();
+
+    console.log(user3);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+getUser();
+```
+
+
+
+
+
+## Advancd 
+
+24min-34min
+
++ Schema Methods / VIrtuals
+
++ Schema Middlewares
+
+
+
+```js
+const mongoose = require("mongoose");
+
+const addressSchema = new mongoose.Schema({
+  street: String,
+  city: String,
+});
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: {
+    type: Number,
+    min: 1,
+    max: 100,
+    validate: {
+      validator: (v) => v % 2 === 0,
+      message: (props) => `${props.value} is not an even number!`,
+    },
+  },
+  email: { type: String, minLength: 10, required: true, lowercase: true },
+  createdAt: { type: Date, default: () => Date.now(), immutable: true },
+  updatedAt: { type: Date, default: () => Date.now() },
+  bestFriend: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // ! reference to another document in the same collection
+  hobbies: [String], // array of strings,
+  address: addressSchema,
+});
+
+// ! customize methods -------------------------------------
+//  add a instance method to the schema
+userSchema.methods.sayHi = function () {
+  // ! note has to use real function, not arrow function
+  console.log(`Hi, my name is ${this.name}`);
+};
+
+// customized static method, this is a function can be called upon User
+userSchema.statics.findByName = function (name) {
+  // ! note has to use real function, not arrow function
+  return this.where({ name: new RegExp(name, "i") });
+};
+
+// customized chainable query method, note not a function, cannot call upon User
+userSchema.query.byName = function (name) {
+  return this.where({ name: new RegExp(name, "i") });
+};
+
+// a virtual field of a user document
+userSchema.virtual("namedEmail").get(function () {
+  return `${this.name} <${this.email}>`;
+});
+
+// ! middleware (similar to AOP) ---------------------------------------------
+userSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  throw new Error("failed to save!");
+  next();
+});
+
+userSchema.post("save", function (doc, next) {
+  doc.sayHi();
+  next();
+});
+
+// 'User" collection
+module.exports = mongoose.model("User", userSchema);
+```
+
+
+
+
+
+# 3. ChatGPT: Mongoose
 
 ## A quick look
 
