@@ -1,3 +1,5 @@
+const path = require("path");
+
 const express = require("express");
 const { chats } = require("./data/data");
 const dotenv = require("dotenv");
@@ -18,12 +20,27 @@ const app = express();
 app.use(express.json()); // !tell server to access json data
 
 app.get("/", (req, res) => {
-  res.send("API is running!");
+  res.send("API is running successfully!");
 });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+
+// --------------------- deployment -----------------------------
+// const __dirname1 = path.resolve();
+// if ((process.env.NODE_ENV = "production")) {
+//   app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+//   });
+// } else {
+//   app.get("/", (req, res) => {
+//     res.send("API is running successfully!");
+//   });
+// }
+// --------------------- deployment -----------------------------
 
 app.use(notFound);
 app.use(errorHandler); // ! general error handler
@@ -89,8 +106,8 @@ io.on("connection", (socket) => {
   });
 
   // turn off socket if user leave
-  socket.off("setup", ()=>{
+  socket.off("setup", () => {
     console.log("USER DISCONNECTED");
     socket.leave(userData._id);
-  })
+  });
 });

@@ -6,11 +6,17 @@ https://www.bilibili.com/video/BV16u4y1y7Fm/?spm_id_from=333.1007.top_right_bar_
 
 
 
+Source: 
+
 :tv:[MongoDB](https://www.youtube.com/watch?v=ofme2o29ngU&t=22s)
 
 :tv:[Mongoose](https://www.youtube.com/watch?v=DZBGEVgL2eE)
 
 
+
+
+
+# MongoDB
 
 install MongoDB
 
@@ -18,11 +24,174 @@ https://www.mongodb.com/docs/manual/installation/
 
 use shell to install, start, manipulate MongoDB 
 
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition
+
+
+
+## add data & query data
+
+```js
+brew services start mongodb-community@7.0
+mongosh  
+
+// in test (default database, not exist until you create data  in it) >
+show dbs
+use <databasename>
+
+// in selcetd database
+show collections 
+db.dropDatabase()  // drop the database 
+db // show current db
+db.users.insertOne({name: "Shawn"})	// insert a document 
+db.users.insertOne({name: "sally", age: 19, address:{street: "987 Noth st"}, hobbies: ["running", "reading"] })
+
+db.users.find() // find all documents in "users" collection, auto create _id for each document
+[
+  { _id: ObjectId("6517708210bf2b4c2c2724f4"), name: 'joe' },
+  {
+    _id: ObjectId("6517715210bf2b4c2c2724f5"),
+    name: 'sally',
+    age: 19,
+    address: { street: '987 Noth st' },
+    hobbies: [ 'running', 'reading' ]
+  }
+]
+
+db.users.insertMany([{name: "Jill"}, {name: "mike"}])
+db.users.insertMany([{name: "Kyle", age: 26, hobbies: ["wieght lifting", "bowling"], address: {street: "123 Main st", city: "New York City"}}, {name: "billy", age: 41, hobbies: ['swimming', 'bowling'], address: {street: "442 South St", city: "New York City"}}])
+
+// query
+db.users.find().limit(2)
+[
+  { _id: ObjectId("6517708210bf2b4c2c2724f4"), name: 'joe' },
+  {
+    _id: ObjectId("6517715210bf2b4c2c2724f5"),
+    name: 'sally',
+    age: 19,
+    address: { street: '987 Noth st' },
+    hobbies: [ 'running', 'reading' ]
+  }
+]
+
+db.users.find().sort({name:1}).limit(2)  // sort based on name in ascending order
+db.users.find().sort({age: -1, name: -1}).limit(2)
+db.users.find().skip(1).limit(2)
+
+db.users.find({name: "Kyle"})
+[
+  {
+    _id: ObjectId("651772b510bf2b4c2c2724f8"),
+    name: 'Kyle',
+    age: 26,
+    hobbies: [ 'wieght lifting', 'bowling' ],
+    address: { street: '123 Main st', city: 'New York City' }
+  }
+]
+
+db.users.find({name: "Kyle"}, {name: 1, age:1})  // _id is by default returned 
+[
+  { _id: ObjectId("651772b510bf2b4c2c2724f8"), name: 'Kyle', age: 26 }
+]
+
+db.users.find({name: "Kyle"}, {name: 1, age:1, _id: 0})  // not return id
+[ { name: 'Kyle', age: 26 } ]
+
+db.users.find({name: "Kyle"}, {age:0})		// return results without age
+[
+  {
+    _id: ObjectId("651772b510bf2b4c2c2724f8"),
+    name: 'Kyle',
+    hobbies: [ 'wieght lifting', 'bowling' ],
+    address: { street: '123 Main st', city: 'New York City' }
+  }
+]
+
+// complex query
+db.users.find({name: {$ne: "Sally"  }})	// not equal
+db.users.find({age: {$gt: 13}  })		// greater than
+db.users.find({name: {$in: ["Kyle", "sally"]}  })  // in
+db.users.find({name: {$nin: ["Kyle", "sally"]}  }) // not in
+db.users.find({age: {$exists: true}})		// return document that has an age field (including age = null)
+db.users.find({age: {$gte: 20, $lte: 40}}) // age: [20, 40]
+db.users.find({age: {$gte: 20, $lte: 40}, name: "Kyle"})
+
+db.users.find({$and:[{age:26}, {name: "Kyle"}]})
+db.users.find({$or:[{age:{$lte:20}}, {name: "Kyle"}]})
+[
+  {
+    _id: ObjectId("6517715210bf2b4c2c2724f5"),
+    name: 'sally',
+    age: 19,
+    address: { street: '987 Noth st' },
+    hobbies: [ 'running', 'reading' ]
+  },
+  {
+    _id: ObjectId("651772b510bf2b4c2c2724f8"),
+    name: 'Kyle',
+    age: 26,
+    hobbies: [ 'wieght lifting', 'bowling' ],
+    address: { street: '123 Main st', city: 'New York City' }
+  }
+]
+
+// nested query, but $not is used less frequently
+db.users.find({age: {$not: {$lte: 20}}})	// return users whose age is not {lte: 20}
+
+
+db.users.insertMany([{name: "Tom", balance: 100, debt: 200}, {name: "Kristin", balance: 20, debt: 0}])
+db.users.find({$expr: {$gt: ["debt", "balance"]}})
+db.users.find({$expr: {$gt: ["$debt", "$balance"]}})	// return users whose "debt" is gt "balance"
+
+
+db.users.find({"address.street": "442 South St"})  // for a nested field
+db.users.findOne({age: {$lte: 40}})
+db.users.countDocuments({age: {$lte: 40}})
+
+exit // exit mongosh
+```
 
 
 
 
 
+## update data
+
+
+
+```js
+db.users.updateOne({age: 26}, {$set: {age:27}})
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$set: {name:"Shawn"}})
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$inc: {age: 3}})
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$rename: {name: "firstname"}})
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$unset: {age: ""}}) 
+
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$push: {hobbies: "Gaming"}})
+db.users.updateOne({_id: ObjectId("651772b510bf2b4c2c2724f8")}, {$pull: {hobbies: "Gaming"}}
+                    
+db.users.updateMany({address: {$exists: true}}, {$unset: {address: ""}})  
+
+db.users.replaceOne({age: 30}, {name: "John"}) // find the first documents with age=30, and replace that document with {name: "John"}
+```
+
+
+
+## delete data
+
+```js
+db.users.deleteOne({name: "Jogn"})
+
+db.users.deleteMany({age: {$exists: false}})
+{ acknowledged: true, deletedCount: 6 }
+
+```
+
+
+
+
+
+
+
+# Mongoose
 
 ## A quick look
 
