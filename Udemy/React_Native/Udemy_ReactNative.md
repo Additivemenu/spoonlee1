@@ -136,7 +136,7 @@ React & React Native (2 weeks to learn)
 | [9](./C9/README.md)   | :star: Handling user input                                   |                                                           |
 | [10](./C10/README.md) | :star::star:  Send HTTP request                              | Axios                                                     |
 | [11](./C11/README.md) | User Authentication                                          |                                                           |
-| [12](./C12/README.md) | :star: :star:Using Native Device Feature (Sensor API)  :gem: favorite places app | expo libs for native device <br> google cloud API service |
+| [12](./C12/README.md) | :star: :star: Using Native Device Feature (Sensor API)  :gem: favorite places app | expo libs for native device <br> google cloud API service |
 
 Advanced (1 week)
 

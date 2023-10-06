@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../script.js" type="module"></script>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #message-container {
+        width: 50%;
+        height: 70vh;
+        overflow-y: scroll;
+        border: 1px solid black;
+      }
+      #form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .message-input-container {
+        display: flex;
+        align-items: center;
+      }
+      .room-input-container {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- display -->
+    <div id="message-container"></div>
+    <!-- user input -->
+    <form id="form">
+      <div class="message-input-container">
+        <label for="message-input">Message</label>
+        <input type="text" id="message-input" />
+        <button type="submit" id="send-button">Send</button>
+      </div>
+
+      <div class="room-input-container">
+        <label for="room-input">Room</label>
+        <input type="text" id="room-input" />
+        <button type="button" id="room-button">Join</button>
+      </div>
+    </form>
+  </body>
+</html>

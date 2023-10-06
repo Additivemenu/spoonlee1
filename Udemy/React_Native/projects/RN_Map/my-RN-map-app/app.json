@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobileWk4Tut",
-    "slug": "mobileWk4Tut",
+    "name": "my-RN-map-app",
+    "slug": "my-RN-map-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

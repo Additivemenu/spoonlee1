@@ -258,7 +258,13 @@ chatGPT: The `useRef` hook in React is used to create a reference to a DOM eleme
 
 
 
-use ref 可以平替 state, 但是有时需要对real DOM直接进行操作, 这不是react的核心思想
+Adds-on:
+
+:pencil: [learn useRef() in 11 mins: 3 use cases](./sub_topics/useRef.md)
+
+:bangbang: use ref 可以平替 state, 但是有时需要对real DOM直接进行操作, 这不是react的核心思想, 因为react就是为了避免对real DOM进行直接操作
+
+
 
 
 
@@ -374,6 +380,10 @@ export default AddUser;
 ref vs. state
 
 + if just for reading, ref is better 
+
+
+
+
 
 
 

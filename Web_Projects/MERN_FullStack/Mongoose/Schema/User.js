@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   address: addressSchema,
 });
 
-// ! hooks
+// ! hooks ---------------------------------------------------
 //  add a instance method to the schema
 userSchema.methods.sayHi = function () {
   // ! note has to use real function, not arrow function
@@ -47,7 +47,7 @@ userSchema.virtual("namedEmail").get(function () {
   return `${this.name} <${this.email}>`;
 });
 
-// ! middleware
+// ! middleware -----------------------------------------------
 userSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   throw new Error("failed to save!");
