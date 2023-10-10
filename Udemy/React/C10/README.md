@@ -8,6 +8,12 @@ Handling side effects, using Reducers & Using the context API
 
 # 1. Effects & useEffect
 
+
+
+:gem: [useEffect case study](./sub_topics/useEffect.md)
+
+
+
 ## What are "(side) effects" & introducing useEffect
 
 143
