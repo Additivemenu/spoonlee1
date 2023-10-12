@@ -2,7 +2,7 @@ C20 build SPA using React Router
 
 
 
-4hrs content
+4hrs content, 可单独看
 
 
 
@@ -114,13 +114,13 @@ export default App;
 
 
 
-## navigate between pages using link
+## navigate between pages using `<Link/>`
 
 306
 
 Home.js
 
-+ use `<Link />` for react router page navigation, as it hinders unnecessary re-request of html file 
++ use `<Link />` for react router page navigation, as it hinders unnecessary re-request of html file. `<Link />` essentially uses `<a/>` internally
   + use `<a>` will also work, but there are unnecessary overhead and not authentic to react router
 
 ```js
@@ -313,6 +313,54 @@ export default ErrorPage;
 309-310
 
 
+
+MainNavigation.js
+
++ `NavLink` can further have visual effect indicating which page you are currently at. 
+
+```js
+import { NavLink } from "react-router-dom";
+
+import classes from "./MainNavigation.module.css";
+
+function MainNavigation() {
+  return (
+    <header className={classes.header}>
+      <nav>
+        <ul className={classes.list}>
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              // style={({ isActive }) => ({
+              //   textAlign: isActive ? "center" : "left",
+              // })}
+              end
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="products"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              {" "}
+              Products{" "}
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+}
+
+export default MainNavigation;
+```
 
 
 

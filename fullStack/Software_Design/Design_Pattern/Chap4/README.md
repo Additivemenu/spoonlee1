@@ -353,8 +353,6 @@ Solution: use Bridge pattern
 + 是一种结构型设计模式
 + Bridge pattern基于<u>**类的最小设计原则**</u> (即通过定义尽量少数量的类来实现功能)，通过使用封装、聚合及继承等行为让不同的类承担不同的职责。它的主要特点是把抽象(Abstraction)与行为实现 (Implementation)分离开来，从而可以保持各部分的独立性以及应对他们的功能 扩展
 
-
-
 ![](./Src_md/bridge2.png)
 
 + Client类: 桥接模式的调用者
@@ -1200,6 +1198,10 @@ Having a facade is handy when you need to integrate your app with a sophisticate
 
 
 :bangbang: Facade的核心思想在于, mask the system complexity and hide the details behind, 往往作为indirection 用于连接system之间的通信. 这样可以减少当前系统和其他系统之间的耦合, 如果其他系统发生变动, 只需要修改Facade就行了, 不需要去大量修改当前系统的代码. 像Java RMI, socket都属于Facade思想, 将complex system的detail mask掉, 对外只提供single interface
+
+
+
+
 
 
 

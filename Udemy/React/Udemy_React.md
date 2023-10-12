@@ -78,7 +78,7 @@ React基础篇
 | Episode               | Title                                                        | Description                                                  |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [9](./C9/README.md)   | Working with Fragments, portals and "Ref"                    | React Fragments<br>React Portal<br>:bangbang: `useRef()` vs. `useState()` |
-| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | `useEffect()` <br>`useReducer()` <br>`useContext()`          |
+| [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | `useEffect()` , cleanup function<br>`useReducer()` <br>`useContext()` |
 | [11](./C11/README.md) | :gem: Practice: Building a food order App                    | review and apply what we learned so far                      |
 | [12](./C12/README.md) | :bangbang: Scene behind react & Optimization <br> mainly for performance optimization | state or props change of a component => re-evaluation of this component<br>:bangbang: re-evaluation of a component !== re-rendering the real DOM <br> `React.memo()` <br> `useCallback()`  for memorizing callback function across render cycle<br> `useMemo()`  for memorizing data across render cycle |
 | 13                    | Alternative way: class component                             |                                                              |
@@ -90,8 +90,8 @@ React基础篇
 | 15                    | :star: Building custom react hooks                       |      |
 | 16                    | Working with forms & User input                          |      |
 | 17                    | :gem: Practice: adding HTTP & form to the food order app |      |
-| 18                    | :star: Redux (Alternative to Context)                    |      |
-| 19                    | :star: Advanced Redux                                    |      |
+| [18](./C18/README.md) | :star: Redux (Alternative to Context)                    |      |
+| [19](./C19/README.md) | :star: Advanced Redux                                    |      |
 | [20](./C20/README.md) | :star: Build a Multi-Page SPA with React Router          |      |
 | 21                    | Adding Authentication to React Apps                      |      |
 
@@ -103,7 +103,7 @@ Bonus篇
 
 | 22                    | Deploying react app                          |      |
 | --------------------- | -------------------------------------------- | ---- |
-| 23                    | Introduction to Next.js                      |      |
+| 23                    | :star: Introduction to Next.js               |      |
 | 24                    | Animating React Apps                         |      |
 | 25                    | Replacing Redux with React Hooks             |      |
 | 26                    | :star: Test React Apps (Unit test)           |      |
