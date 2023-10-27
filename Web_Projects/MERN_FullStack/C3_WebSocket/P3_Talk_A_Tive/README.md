@@ -89,6 +89,6 @@ Client
 | Id                  | Title                                                        | Description                                            |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
 | [Part1](./part1.md) | Intro & Basic setup                                          | MongoDB setup                                          |
-| [Part2](./part2.md) | General UI & API build up                                    | REST <br>Mongoose <br>upload image <br>more like JR P3 |
+| [Part2](./part2.md) | General UI & REST API build up                               | REST <br>Mongoose <br>upload image <br>more like JR P3 |
 | [Part3](./part3.md) | Business logic component <br>:bangbang: Messaging <br> Deploy App | REST <br>Socket.io <br>:star: React States summary     |
 

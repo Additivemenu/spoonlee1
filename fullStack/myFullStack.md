@@ -1,30 +1,25 @@
 **学无止境, 你所学到的可能只是沧海之一粟, Java要学的东西有很多很多...stay hungry, stay foolish**
 
----
-
-跳转:
-
-clean code:
-+ [clean code](./CleanCode/clean_code.md)
-
-Version control:
-+ [Git](./Git/readme.md)
-
-Front End:
-+ [FrontEnd](./FrontEnd_Basics/myFrontEndBasics.md)
 
 
-Back End:
-+ [Java](./Programming_Language/myPrograLang.md)
+| Id                                          | Topic                | Description   |
+| ------------------------------------------- | -------------------- | ------------- |
+| [1](./FrontEnd_Basics/myFrontEndBasics.md)  | FrontEnd Basics      | HTML, CSS, JS |
+| [2](./Programming_Language/myPrograLang.md) | BackEnd              | Java          |
+| [3](./Database/myDatabase.md)               | Database             |               |
+| [4](./Git/readme.md)                        | version control: git |               |
 
-Database:
-+ [Database](./Database/myDatabase.md)
 
-Good practice:
-+ [Software Design](./Software_Design/mySoftwareDesign.md)
 
-Career
-+ [IT career](./myITCareer.md)
+Software Engineering
+
+| Id                                         | Topic                    | Description         |
+| ------------------------------------------ | ------------------------ | ------------------- |
+| [1](./CleanCode/clean_code.md)             | clean code               |                     |
+| [2](./Software_Design/mySoftwareDesign.md) | software design          | OOP design patterns |
+| [3](./myITCareer.md)                       | software engineer career |                     |
+
+
 
 ---
 

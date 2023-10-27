@@ -1,6 +1,6 @@
+resources:
+
 :computer: [尚硅谷: Promise从入门到精通](https://www.bilibili.com/video/BV1GA411x7z1/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
-
-
 
 
 

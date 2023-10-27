@@ -335,10 +335,99 @@ circle2.draw();
 
 
 
-# 4.闭包
+# 4. :bangbang: closure (闭包)
 
 https://www.bilibili.com/video/BV1mG411h7aD?p=106&vd_source=c6866d088ad067762877e4b6b23ab9df
 
 通过利用函数作用域, 限定一个变量的全局access
 
 [Demo: closed package](./closePackage.html)
+
+
+
+
+
+## Java class field vs. JS closure
+
+The concept of closures in JavaScript and fields in Java's classes do have some similarities, but they're distinct concepts stemming from the differences between the languages and their paradigms.
+
+Let's delve into this comparison:
+
+
+
+Java Class Fields
+
+---
+
+In Java, class fields are variables defined within a class. These fields hold the state of an object, and depending on their access modifiers (`public`, `private`, `protected`), they can be accessed or modified either directly or via methods.
+
+```java
+public class Counter {
+    private int count = 0;
+
+    public void increment() {
+        count++;
+        System.out.println(count);
+    }
+
+    public void decrement() {
+        count--;
+        System.out.println(count);
+    }
+}
+
+Counter counter = new Counter();
+counter.increment(); // Outputs: 1
+counter.increment(); // Outputs: 2
+counter.decrement(); // Outputs: 1
+```
+
+In the above Java code, `count` is a private field of the `Counter` class. It can't be accessed directly from outside the class, but the methods `increment` and `decrement` can interact with it.
+
+
+
+JavaScript Closures
+
+---
+
+As explained earlier, closures in JavaScript arise when a function references variables from its lexical scope, even after the outer function has completed its execution.
+
+```javascript
+function createCounter() {
+    let count = 0;
+
+    return {
+        increment: function() {
+            count++;
+            console.log(count);
+        },
+        decrement: function() {
+            count--;
+            console.log(count);
+        }
+    };
+}
+
+const counter = createCounter();
+counter.increment(); // Outputs: 1
+counter.increment(); // Outputs: 2
+counter.decrement(); // Outputs: 1
+```
+
+Here, `count` is not a field of a class (since we're not using classes), but it's a variable in the `createCounter` function's scope. The inner functions (`increment` and `decrement`) close over this variable, forming a closure, allowing them to access and modify it even after `createCounter` has finished execution.
+
+
+
+Comparison
+
+---
+
+1. **Encapsulation**: Both closures in JavaScript and private fields in Java classes achieve a form of encapsulation. They hide internal state and expose behavior.
+
+2. **Memory**: In both cases, as long as there's a reference to the functions (for closures) or the object (for class fields), the state (like `count`) remains in memory.
+
+3. **Paradigm**: While Java's fields align with its object-oriented paradigm, JavaScript closures align more with functional programming, though they can be used in an object-oriented manner as well.
+
+4. **Access**: In Java, you can have getters and setters to interact with private fields. In the closure example, the state (`count`) is entirely encapsulated and can't be directly accessed or modified from outside, unlike with class fields where getters or setters could provide such access.
+
+In conclusion, while there are parallels between the two—especially in how they can be used to encapsulate state—they arise from different paradigms and language designs. If understanding closures as similar to Java's class fields helps you grasp the concept better, that's a useful analogy! However, always remember the unique characteristics and capabilities of each.

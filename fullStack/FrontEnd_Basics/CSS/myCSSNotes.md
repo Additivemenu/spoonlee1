@@ -2,9 +2,11 @@
 
 + [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
 
----
 
-Content
+
+
+
+# key takeaway
 
 一个选择器内的CSS属性大致分为4类:
 + position(定位)
@@ -21,66 +23,6 @@ Content
 
 
 
-- [0. BEM命名规范](#0-bem命名规范)
-- [1. :full\_moon:选择器](#1-full_moon选择器)
-  - [1.1. 基本选择器](#11-基本选择器)
-  - [1.2 层次选择器](#12-层次选择器)
-    - [1.2.1 基本层级选择器](#121-基本层级选择器)
-    - [1.2.2 结构伪类选择器](#122-结构伪类选择器)
-  - [1.4 属性选择器](#14-属性选择器)
-  - [1.5 :moon: 伪类(pseudo class)](#15-moon-伪类pseudo-class)
-  - [1.6 :moon: 伪元素 (Pseudo element)](#16-moon-伪元素-pseudo-element)
-- [2. CSS基本语法与特性](#2-css基本语法与特性)
-  - [2.1 施加CSS的三种方式](#21-施加css的三种方式)
-  - [2.2 :full\_moon: CSS三大特性](#22-full_moon-css三大特性)
-    - [2.1 层叠性](#21-层叠性)
-    - [2.2 继承性](#22-继承性)
-    - [2.3 优先级(权重)](#23-优先级权重)
-  - [2.3 :full\_moon: :full\_moon: 元素模式的转化](#23-full_moon-full_moon-元素模式的转化)
-  - [2.4 Emmet语法](#24-emmet语法)
-- [3. :moon: Block element](#3-moon-block-element)
-  - [2.0 box model (盒模型)](#20-box-model-盒模型)
-    - [盒模型注意事项:](#盒模型注意事项)
-  - [2.1 Basics of Block](#21-basics-of-block)
-    - [2.1.1 设置html, body margin \& padding](#211-设置html-body-margin--padding)
-    - [2.1.2 :full\_moon:文档流](#212-full_moon文档流)
-      - [2.1.3 Display属性](#213-display属性)
-  - [2.2 :star: Position of Block](#22-star-position-of-block)
-    - [2.2.1 static (by default)](#221-static-by-default)
-    - [2.2.2 :star: relative](#222-star-relative)
-    - [2.2.3 absolute](#223-absolute)
-    - [2.2.4 fixed](#224-fixed)
-    - [2.2.5 sticky](#225-sticky)
-    - [2.2.6 :star: 位移属性参照物](#226-star-位移属性参照物)
-    - [2.2.7 :star: block的覆盖关系: z-index](#227-star-block的覆盖关系-z-index)
-  - [2.3 :star:Flexbox](#23-starflexbox)
-    - [2.3.1 Display: Flex](#231-display-flex)
-    - [2.3.2 Flex flow](#232-flex-flow)
-    - [2.3.3 align-content](#233-align-content)
-    - [2.3.4 flex-grow/flex-shrink](#234-flex-growflex-shrink)
-    - [2.3.5 :star:content, item \& self](#235-starcontent-item--self)
-      - [2.3.5.1 Only flex flow](#2351-only-flex-flow)
-      - [2.3.5.2 content](#2352-content)
-      - [2.3.5.3 item](#2353-item)
-      - [2.3.5.4 self](#2354-self)
-    - [2.3.6 :moon: order](#236-moon-order)
-    - [2.3.7 Flexbox Practice](#237-flexbox-practice)
-  - [2.4 :moon: grid](#24-moon-grid)
-    - [2.4.1 display: grid](#241-display-grid)
-- [4. 其他渲染属性](#4-其他渲染属性)
-  - [4.1 :full\_moon: Text](#41-full_moon-text)
-    - [4.1.1 常用的Text相关Properties](#411-常用的text相关properties)
-    - [4.1.2 text属性单位](#412-text属性单位)
-      - [4.1.2.1 长度属性](#4121-长度属性)
-      - [4.1.2.2 颜色属性](#4122-颜色属性)
-  - [4.2 :full\_moon: Background](#42-full_moon-background)
-    - [4.2.1 object-fit](#421-object-fit)
-  - [4.3 animation](#43-animation)
-- [5. CSS动态效果](#5-css动态效果)
-  - [5.1 media query - responsive web page](#51-media-query---responsive-web-page)
-
-
----
 学习资源
 
 [mozilla CSS](https://developer.mozilla.org/en-US/docs/Web)

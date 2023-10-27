@@ -22,10 +22,23 @@ socket IO is to give server ability for initiating active messaging to client, n
   + can seperate different connection logic
 
 
+:bangbang: testing socket.io:
++ use postman
++ use html + script as frontend 
+  + snowpack
+  + socket.io
 
 
 
+'socket' vs. 'io'
 
+- **`socket`**: Represents a single connection to a specific client. You use this to interact with that individual client – for instance, to send a message to just that one client or to gather information about its specific connection.
+
+- **`io`**: Represents the entire `Socket.io` server instance and thus manages all client connections. You use this when you want to broadcast messages to all connected clients or when you want to perform actions that involve multiple clients.
+
+So, in essence:
+- If you're thinking about one specific user/client: Use `socket`.
+- If you're thinking about all users/clients (or a subset, but more than one): Use `io`.
 
 # pre-cursor
 
