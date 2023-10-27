@@ -103,15 +103,11 @@ P10
     + namspacing: isolating resources per process
     + control groups: limit amount of resources used per resources
 
-https://app.diagrams.net/#G1IOiTwUSym-IjUk9D33BpFLfriUFh5ah_#%7B%22pageId%22%3A%225daf66b9-7c82-518c-1e95-bc07e2af50f2%22%7D
-
-
+a pic here
 
 
 
 relationnship between image and container
-
-
 
 
 
