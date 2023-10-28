@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--1. variables-->
+    <!--centralized-management property, later on we can directly change the value of a property
+    format: ${name}
+    -->
+    <property name="pattern" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSSS} %c %M %L %thread %m %n"></property>
+    <!--
+        output format:
+        %-5level: occupy 5 char
+        %d{yyyy-MM-dd HH:mm:ss.SSSS}: data
+        %c: class full name
+        %M: method
+        %L: row index
+        %thread: thread name
+        %m or %msg: message we want to output
+        %n: turn to the next row
+    -->
+    <!--centralized property for log path-->
+    <property name="log_dir" value="./logs"></property>
+
+    <!--2. appender-->
+    <!--2.1 console appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--control OutputStream instance: System.out(by default) -> System.err -->
+        <target>System.err</target>
+        <!--define log message format (layout)-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--2.2 file appender-->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <!--file path-->
+        <file>${log_dir}/testFile.log</file>
+        <!--append the file instead of overwritten-->
+        <append>true</append>
+        <!-- set immediateFlush to false for much higher logging throughput -->
+        <immediateFlush>true</immediateFlush>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--2.3 html format log output appender: for better readability-->
+    <appender name="HTML_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${log_dir}/logback.html</file>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <pattern>${pattern}</pattern>
+            </layout>
+        </encoder>
+
+    </appender>
+
+    <!--2.4 RollingFileAppender-->
+    <appender name="ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--file path-->
+        <file>${log_dir}/roll_logback.log</file>
+        <!--append the file instead of overwritten-->
+        <append>true</append>
+        <!-- set immediateFlush to false for much higher logging throughput -->
+        <immediateFlush>true</immediateFlush>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+
+        <!--log break down rule-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--break down by time (continuing roll_logback.log)-->
+            <FileNamePattern>${log_dir}/rolling.%d{yyyy-MM-dd-HH-mm}.log%i.gz</FileNamePattern>
+            <!--break down by file size-->
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+
+        <!--log level filter-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--filter rule-->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+    </appender>
+
+    <!--2.5 asynchronized log-->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!--point to a specific existing appender-->
+        <appender-ref ref="ROLL_FILE"></appender-ref>
+    </appender>
+
+
+    <!--3. logger instance: define which appenders should be added onto the logger-->
+    <!--3.1 root logger configuration-->
+    <root level="ALL">
+        <appender-ref ref="console"></appender-ref>
+<!--        <appender-ref ref="FILE"></appender-ref>>-->
+<!--        <appender-ref ref="HTML_FILE"></appender-ref>-->
+<!--        <appender-ref ref="ROLL_FILE"></appender-ref>-->
+        <appender-ref ref="ASYNC"></appender-ref>
+    </root>
+
+    <!--3.2 customized logger instance
+    name: the package name that you want to apply this logger (root logger won't apply to that package)
+    additivity = false: customized logger instance will not  inherit from its parent logger
+    -->
+    <logger name="LogbackTest" level="info" additivity="false">
+        <appender-ref ref="console"></appender-ref>
+    </logger>
+</configuration>

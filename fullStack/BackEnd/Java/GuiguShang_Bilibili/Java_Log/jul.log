@@ -1,0 +1,14 @@
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+SEVERE: severe
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+WARNING: warning
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+INFO: info
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+CONFIG: config
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+FINE: fine
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+FINER: finer
+12月 27, 2022 10:55:17 上午 JUL.JULTest testLogConfig
+FINEST: finest

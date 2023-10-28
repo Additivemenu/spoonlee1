@@ -352,3 +352,51 @@ Total items count: 2
 All items: [ 'apple', 'banana' ]
 ```
 
+
+## require() vs. import()
+
+`require()` and `import` are both mechanisms to include modules in your code, but they come from different module systems and have different behaviors and syntaxes. Here are the key differences between them:
+
+### 1. Origin:
+- **require()**: It's part of the CommonJS module system, which is used primarily in Node.js. 
+- **import**: It's part of the ES6 (ES2015) module system, which is a standard for ECMAScript and is natively supported in modern browsers and in recent versions of Node.js.
+
+### 2. Syntax:
+- **require()**: 
+  ```javascript
+  const module = require('module-name');
+  ```
+- **import**: 
+  ```javascript
+  import module from 'module-name';
+  // or
+  import { specificFunction } from 'module-name';
+  ```
+
+### 3. Synchronous vs. Asynchronous:
+- **require()**: It's synchronous. When you `require` a module, it loads and evaluates the module immediately.
+- **import**: It's static and works asynchronously. With native ES6 modules in browsers, modules are fetched asynchronously.
+
+### 4. Dynamic vs. Static:
+- **require()**: Can be called conditionally or dynamically within functions, loops, or conditionals.
+- **import**: Must be at the top level of your code (not inside functions, loops, or conditionals). They are more static in nature.
+
+### 5. Interoperability:
+- **require()**: Designed primarily for Node.js and not natively supported in browsers (unless you use bundlers like Webpack or Browserify).
+- **import**: Native support in modern browsers and can be used in Node.js (version 13.2.0 onwards with the `--experimental-modules` flag, and by default from version 14 onwards). 
+
+### 6. Module Object:
+- **require()**: Modules export a `module.exports` object. If you want to export multiple items, they are typically attached as properties of that object.
+- **import**: Modules can have a default export (`export default ...`) and/or named exports (`export const ...`). Import allows for destructuring to import specific named exports.
+
+### 7. File Extensions:
+- **require()**: In Node.js, you can omit the `.js` file extension, and Node will still resolve the module.
+- **import**: In most setups, you'll need to specify the full path including the `.js` extension (unless configured otherwise).
+
+### 8. Caching:
+Both systems cache modules, but the ways you might interact with or clear that cache can differ.
+
+### 9. Top-level Code Execution:
+In both systems, top-level code in a module (code not inside a function) will execute when the module is imported or required. However, it will only execute once. If the module is imported or required again, the cached version is used, and the top-level code is not re-executed.
+
+While there are clear differences, it's also worth noting that many tools and platforms (like Node.js and Webpack) provide ways to bridge or interoperate between these two systems. As of Node.js version 14, ES6 modules are supported by default, but the CommonJS system (with `require()`) remains widely used in the Node.js ecosystem.

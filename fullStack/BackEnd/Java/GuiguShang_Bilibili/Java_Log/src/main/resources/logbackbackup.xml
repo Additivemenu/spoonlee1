@@ -1,0 +1,35 @@
+<?xml version="1.0" encoidng="UTF-8"?>
+<configuration>
+    <!--centralized-management property, later on we can directly change the value of a property
+    format: ${name}
+    -->
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSSS} %c %M %L [%thread] %m%n"></property>
+    <!--
+        output format:
+        %-5level: occupy 5 char
+        %d{yyyy-MM-dd HH:mm:ss.SSSS}: data
+        %c: class full name
+        %M: method
+        %L: row index
+        %thread: thread name
+        %m or %msg: message we want to output
+        %n: turn to the next row
+    -->
+
+    <!--appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--control OutputStream instance: System.out(by default) -> System.err -->
+        <target>System.err</target>
+        <!--define log message format (layout)-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--logger instance-->
+    <!--root logger configuration-->
+    <root level="ALL">
+        <appender-ref ref="console"></appender-ref>
+    </root>
+
+</configuration>
