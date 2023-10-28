@@ -9,43 +9,53 @@ C2 Manipulating Containers uising docker client
 
 
 ```js
-docker run
+docker run <container id>						// run default command
+docker run <container id> <command>	// override default command
 
 docker ps
+docker ps --all
 
-docker create
+// container lifecycle
+docker create <image name>
+docker start <container id>
 
-docker start
+docker logs		// retrive logs
+
+docker system prune
 
 docker stop
 docker kill
+
+// 
+docker exec -it <container id> <command>  // run command inside a running container
+docker exec -it <container id> sh					// enter the container
 ```
 
 
 
 
 
+# Hands-on
 
+## `docker run`
 
+### docker run in detail
 
-
-
-
-## docker run in detail
-
-```sh
-docker run <iamge name>
+```js
+docker run <iamge name>  // try to create and run a image instance - container
 ```
 
 what's behind the scene of running it
 
 
 
-## overriding default command
+
+
+### Overriding default command
 
 P13
 
-```sh
+```js
 docker run <iamge name> <command>
 ```
 
@@ -53,14 +63,14 @@ docker run <iamge name> <command>
 
 e.g.
 
-```sh
+```js
 (base) ➜  ~ docker run busybox echo hi there
 hi there
 ```
 
 
 
-```sh
+```js
 (base) ➜  ~ docker run busybox ls
 bin
 dev
@@ -89,7 +99,7 @@ what behind the scene is:
 
 
 
-## list all running containers
+## `docker ps`
 
 ```js
 // firstly start a long-running docker instance
@@ -110,9 +120,9 @@ docker ps --all
 
 
 
-## container lifecycle
+## Container lifecycle
 
-
+container 的CRUD
 
 ```js
 docker run = docker create + docker start
@@ -125,6 +135,8 @@ docker create <image name>
 ```js
 docker start <container id>
 ```
+
+
 
 e.g.
 
@@ -167,6 +179,10 @@ Are you sure you want to continue? [y/N]
 
 
 
+
+
+### `docker logs`
+
 retrive logs
 
 + not running container again but just retrive logs
@@ -183,6 +199,8 @@ hi there
 
 
 
+### `docker stop`
+
 stopping a running container 
 
 ```js
@@ -195,38 +213,87 @@ docker kill <container id>		// stop the container immediately
 
 
 
-## Multi-command container 
+## `docker exec`
 
-p20
-
-
-
-
+P20-22
 
 Executing command in running container
 
+```js
+docker exec -it <container id> <command>
+```
+
+
+
+e.g.
+
+in a terminal create and start a container for redis:
+
+```js
+docker run redis
+```
+
+in another terminal, run: 
+
+```js
+(base) ➜  ~ docker exec -it 2bf272ab82e7 redis-cli
+127.0.0.1:6379> set myvalue 5
+OK
+127.0.0.1:6379> get myvalue
+"5"
+127.0.0.1:6379> 
+```
+
+<img src="./src_md/multi-command1.png" style="zoom: 50%;" />
+
+IT flag's role
+
+P22
+
+```js
+-it // allows us to provide input into the container
+
+-i -t // actually a combination of -i -t
+// -i allows terminal's input going into the STDIN for the container
+// -t make the input and output format prettier in terminal
+```
+
+
+
+every container has 3 'port' to outside
+
++ STDIN: standard in
++ STDOUT: standard out
++ STDERR: standard error
+
+<img src="./src_md/it-flag1.png" style="zoom:50%;" />
 
 
 
 
 
+entering the docker container
 
-IT flag
-
-
-
-
++ so that you don't have to run `docker exec` over and over again
 
 getting a command prompt in a container 
 
-
+```js
+docker exec -it <container id> sh		// again 'sh' is an additional command 
+```
 
 
 
 starting with a shell
+
+```js
+docker run -it busybox sh
+```
 
 
 
 
 
 container isolation
+
+just demonstrate if two containers not connected, they do not share their file system

@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.send('Chat server is up and running!');
 });
 
-// socket io --------------------------------
+// ! socket io --------------------------------
 socketController(io);  // Set up the socket listeners
 
 const PORT = 3000;

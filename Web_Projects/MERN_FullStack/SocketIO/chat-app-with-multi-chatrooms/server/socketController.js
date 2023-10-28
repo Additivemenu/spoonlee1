@@ -19,21 +19,22 @@ const socketController = (io) => {
     
         socket.on('joinRoom', ({ name, room }) => {
             socket.join(room);
-            socket.username = name;
+            // ! custom properties in socket object: username, currentRoom
+            socket.username = name;         
             socket.currentRoom = room;
             
              // Add user to active users list
             usersInRooms[room].push(name);
-            // ! Send updated user list to everyone in the room
-            io.to(room).emit('roomUsers', usersInRooms[room]);
+            // ! Send updated user list to everyone in the room (this line broadcasts the message to every user in the specified room, including the sender)
+            io.to(room).emit('roomUsers', usersInRooms[room]); 
     
             // ! Send the chat history to the user when they join
             socket.emit('chatHistory', chatHistory[room]);
             
-             // Notify the user they have joined the room
-             socket.emit('message', { user: 'admin', text: `Welcome to ${room}, ${name}!` });
+            // Notify the user they have joined the room (This line sends a message only to the user who has just joined the room.)
+            socket.emit('message', { user: 'admin', text: `Welcome to ${room}, ${name}!` });
     
-            // Broadcast to all other users in the room
+            // Broadcast to all other users in the room (This line broadcasts a message to everyone else in the room, except for the user who just joined.)
             socket.broadcast.to(room).emit('message', { user: 'admin', text: `${name} has joined ${room}!` });
         });
     

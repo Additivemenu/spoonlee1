@@ -8,7 +8,7 @@ Course website:  https://www.udemy.com/course/docker-and-kubernetes-the-complete
 22 hrs course
 
 + a fruitful diagrams for explaination
-+ a lot content on multiple container app
++ a lot addresses on multiple container app
 
 
 
@@ -25,7 +25,7 @@ C2-C4
 | Class               | Topic                                     | Description |
 | ------------------- | ----------------------------------------- | ----------- |
 | [2](./C2/readme.md) | Manipulating Container with docker client |             |
-| 3                   | Build custom image through docker server  |             |
+| [3](./C3/readme.md) | Build custom image through docker server  |             |
 | 4                   | Make real project with docker             |             |
 
 
@@ -74,7 +74,7 @@ why use Docker
 
 
 
-what is Docker
+## what is Docker
 
 + image: single file that has all dependencies & configs  requried to run a program
 + Container: instance of an image, runs a program
@@ -93,7 +93,7 @@ docker run hello-world
 
 
 
-:bangbang: what really is container?
+## :bangbang: what really is container?
 
 P10
 
@@ -113,6 +113,6 @@ relationnship between image and container
 
 
 
-how is docker running on my computer?
+## how is docker running on my computer?
 
 + installing docker also installs a linux virtual machine, it runs on top of that linux virual machine
