@@ -336,17 +336,44 @@ focus on server REST APIs
 
 
 
+## :bangbang: Endpoint that need user logged-in state
+
 https://www.mongodb.com/docs/manual/reference/operator/query/regex/
 
 0-8min search all user api
 
-+ search all users except myself -> require authorization to identify I am logged in!
++ search all users except myself -> it require authorization to identify if I am logged in! we don't want to expose this endpoint to everyone but the user who logged-in
+
+
 
 8min- :bangbang: user login authentication 
 
 + use JWT token to verify a user is login ->middlewares > authMiddleware.js
 + 实现方法是, 将user login API 返回的JWT token携带到以后该user发送的request的authorization里, server会`req.headers.authorization` (authMiddleware.js)来判断user是否login
-  + token type is Bearer token. postman是可以测试的 -> HTTP request的authorisation里设置
+  + token type is Bearer token. postman是可以测试的 -> HTTP request的authorisation -> token type: bearer token + token content 
+
+
+
+Attaching JWT token in FrontEnd is like:
+
++ in request header, we attach the JWT token
+
+```js
+const config = {
+  headers: {
+    Authorization: `Bearer ${user.token}`,
+  },
+};
+
+const { data } = await axios.get(`/api/user?search=${search}`, config); // ! axios get: an array of users matching input
+
+```
+
+
+
+
+
+
 
 
 
@@ -379,7 +406,9 @@ module.exports = router;
 
 :bangbang: middlewares > authMiddleware.js
 
-+ attach the authenticated user to request
++ attach the authenticated user info to request, then proceed the request to next function: `allUsers`
+  + `jwt.verify()` decode the JWT token hash to a JS object (its fields depend on how you create the JWT token)
+
 
 ```js
 const jwt = require("jsonwebtoken");
@@ -401,7 +430,7 @@ const protect = asyncHandler(async (req, res, next) => {
       console.log(token);
 
       //decodes token id
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);		// ! decode the token into plaintext
       console.log(decoded);
 			
       // ! attach the authenticated user to request
@@ -426,7 +455,7 @@ module.exports = { protect };
 
 userController:
 
-+ allUsers need user to login
++ `allUsers` function need user to login to proceed
 
 ```js
 // /api/user?search=bob    get all users -------------------------------
@@ -452,7 +481,11 @@ const allUsers = asyncHandler(async (req, res) => {
 
 
 
-12min- define chat api
+
+
+# 3. Chat API
+
+C10 12min- define chat api
 
 Previously, we are just focusing on User, Now we proceed to create our second entity related APIs - chat
 
@@ -603,7 +636,7 @@ MongDB
 
 
 
-## Fetch all chat of the logged in user
+## Fetch all chat of the logged-in user
 
 25min-
 
@@ -847,7 +880,7 @@ so far so good!
 
 
 
-# 3. Build Chat Page UI
+# 4. Build Chat Page UI
 
 C11
 
@@ -1072,7 +1105,7 @@ so far so good
 
 
 
-# 4. Group chat - CRUD user
+# 5. Group chat - CRUD user
 
 C12
 

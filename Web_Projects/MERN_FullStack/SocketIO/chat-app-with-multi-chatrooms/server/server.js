@@ -12,7 +12,7 @@ const io = socketIo(server, {
 });
  
 
-// REST api ---------------------------------
+// ! REST api ---------------------------------
 app.get('/', (req, res) => {
     res.send('Chat server is up and running!');
 });

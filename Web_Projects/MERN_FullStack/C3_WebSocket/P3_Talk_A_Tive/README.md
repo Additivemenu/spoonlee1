@@ -1,3 +1,5 @@
+Resource
+
 https://www.youtube.com/watch?v=3vRcB0P84t4&list=PLKhlp2qtUcSZsGkxAdgnPcHioRr-4guZf
 
 mainly to learn mongoDB and web socket (socket io)
@@ -86,9 +88,9 @@ Client
 
 # Content List
 
-| Id                  | Title                                                        | Description                                            |
-| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
-| [Part1](./part1.md) | Intro & Basic setup                                          | MongoDB setup                                          |
-| [Part2](./part2.md) | General UI & REST API build up                               | REST <br>Mongoose <br>upload image <br>more like JR P3 |
-| [Part3](./part3.md) | Business logic component <br>:bangbang: Messaging <br> Deploy App | REST <br>Socket.io <br>:star: React States summary     |
+| Id                  | Title                                                        | Description                                                  |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Part1](./part1.md) | Intro & Basic setup                                          | MongoDB setup                                                |
+| [Part2](./part2.md) | General UI & REST API build up                               | REST <br>Mongoose <br>upload image <br>:bangbang: user authorization using JWT <br>more like JR P3 |
+| [Part3](./part3.md) | Business logic component <br>:bangbang: Messaging <br> Deploy App | REST <br>Socket.io <br>:star: React States summary           |
 
