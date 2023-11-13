@@ -26,7 +26,7 @@ const socketController = (io) => {
 
     socket.on("joinRoom", ({ name, room }) => {
       socket.join(room);
-      // custom properties in socket object: username, currentRoom
+      // ! custom properties in socket object: username, currentRoom
       socket.username = name;
       socket.currentRoom = room;
 
@@ -46,15 +46,6 @@ const socketController = (io) => {
         text: `${name} has joined ${room}!`,
       }); // Broadcast to all other users in the room (This line broadcasts a message to everyone else in the room, except for the user who just joined.)
 
-      // ! If this is the first user in the room, send an announcement after 10 seconds  ***********
-      if (isFirstUserInRoom) {
-        setTimeout(() => {
-          io.to(room).emit("message", {
-            user: "admin",
-            text: "This room has already lasted for 10 seconds.",
-          });
-        }, 10000); // 10 seconds
-      }
 
       // ! If this is the first user in the room, start a countdown  and broadcast it to the room
       if (isFirstUserInRoom) {
@@ -67,6 +58,12 @@ const socketController = (io) => {
           if (timeLeft < 0) {
             clearInterval(countdownTimers[room]);
             countdownTimers[room] = null;
+
+            io.to(room).emit("message", {
+              user: "admin",
+              text: "This room has already lasted for 10 seconds. Now start the game!",
+            });
+
           }
         }, 1000); // 10 seconds
       }
