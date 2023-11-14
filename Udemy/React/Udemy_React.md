@@ -68,12 +68,14 @@ React基础篇
 | [2](./C2/README.md) | JS Refersh                                                   |             |
 | [3](./C3/README.md) | React basics, working with component                         | React component <br> props <br> wrapper components vs. normal components |
 | [4](./C4/README.md) | :star: React state, working with event,  :bangbang: component communication | State <br> :bangbang: update state based on previous state <br> :bangbang: `<input>`: two way binding <br>Event |
-| [5](./C5/README.md)                   | Rendering List, Conditional Content                          | Map list to JSX; <br>conditional react component |
+| [5](./C5/README.md)                   | Rendering List, Conditional Content                          | Map JS list to JSX; <br>conditional react component |
 | [6](./C6/README.md) | Styling React Component                                      | conditional styling; <br>styled component + css modules |
 | [7](./C7/README.md) | :bangbang: Debugging react apps                              | break points <br>React dev-tools |
 | [8](./C8/README.md) | :gem: Practice: a complete Practice Project         | :bangbang: react re-render mechanism <br> :question: demo1:  还有关于react diffing的小bug. 先不管， 先往下学 <br> demo2 : error state management; 弹窗的产生与关闭<br> |
 
 进阶篇
+
++ more react hooks
 
 | Episode               | Title                                                        | Description                                                  |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -81,7 +83,7 @@ React基础篇
 | [10](./C10/README.md) | :star: Handing side effect, use Reducers & Context   ----> Redux later | `useEffect()` , cleanup function<br>`useReducer()` <br>`useContext()` |
 | [11](./C11/README.md) | :gem: Practice: Building a food order App                    | review and apply what we learned so far                      |
 | [12](./C12/README.md) | :bangbang: Scene behind react & Optimization <br> mainly for performance optimization | state or props change of a component => re-evaluation of this component<br>:bangbang: re-evaluation of a component !== re-rendering the real DOM <br> `React.memo()` <br> `useCallback()`  for memorizing callback function across render cycle<br> `useMemo()`  for memorizing data across render cycle |
-| 13                    | Alternative way: class component                             |                                                              |
+| 13                    | Alternative way: class component                             | Skip                                                         |
 
 中级篇
 

@@ -1186,7 +1186,7 @@ public class Client {
 
 
 
-# 5. :moon: 外观模式 (Facade)
+# 5. :full_moon: 外观模式 (Facade)
 81-85
 
 UniMelb week 8, 参考case:  https://refactoring.guru/design-patterns/facade very helpful and informative
@@ -1208,9 +1208,238 @@ Having a facade is handy when you need to integrate your app with a sophisticate
 # 6. 享元模式 (Flyweight)
 86-90
 
+https://refactoring.guru/design-patterns/flyweight
+
+核心思想在于充分重复利用好已经存在的资源(e.g. java object)来减少内存开销或者性能瓶颈,  use case主要是池技术: 数据库连接池, 缓冲池子, Java中的String的常量池...
 
 
 
+背景:
+
+小型的外包项目，给客户A做一个产品展示网站，客户A的朋友感觉效果不错，也希 望做这样的产品展示网站，但是要求都有些不同:
+
+1) 有客户要求以新闻的形式发布
+2) 有客户人要求以博客的形式发布
+3) 有客户希望以微信公众号的形式发布
+
+
+
+传统方案解决网站展现项目
+
+1) 直接复制粘贴一份，然后根据客户不同要求，进行定制修改 
+2) 给每个网站租用一个空间
+3) 方案设计示意图
+
+![](./src_md/flyweight1.png)
+
+传统方案解决网站展现项目-问题分析
+
+1) 需要的网站结构相似度很高，而且都不是高访问量网站，如果分成多个虚拟空间来 处理，相当于一个相同网站的实例对象很多，造成服务器的资源浪费
+2) 解决思路:整合到一个网站中，共享其相关的代码和数据，对于硬盘、内存、CPU、 数据库空间等服务器资源都可以达成共享，减少服务器资源
+3) 对于代码来说，由于是一份实例，维护和扩展都更加容易
+4) 上面的解决思路就可以使用 享元模式来解决
+
+
+
+## 基本介绍
+
+1) 享元模式(Flyweight Pattern) 也叫 蝇量模式: 运用共享技术有效地支持大量细粒度的对象
+
+2) 常用于系统底层开发，解决系统的性能问题。像 数据库连接池，里面都是创建好的连接对象，在 这些连接对象中有我们需要的则直接拿来用，避 免重新创建，如果没有我们需要的，则创建一个
+
+3. <u>享元模式能够解决重复对象的内存浪费的问题， 当系统中有大量相似对象，需要缓冲池时。不需总是创建新对象，可以从缓冲池里拿。这样可以 降低系统内存，同时提高效率.</u>
+
+4. 享元模式经典的应用场景就是池技术了，`String常量池`、`数据库连接池`、`缓存池`等等都是享元模式 的应用，享元模式是池技术的重要实现方式
+
+
+
+![](./src_md/flyweight2.png)
+
+原理图说明:
+
+1. FIyweight 是抽象的享元角色，他是产品的抽象类，同时定义出对象的外部状态和内部状态(后面介绍)的接口或实现
+2. ﻿﻿﻿ConcreteFlyweight 是具体的享元角色，是具体的产品类，实现抽象角色定义相关业务
+3. ﻿﻿﻿UnSharedr oncreteFlyWeizht 是不可共享的角色，一般不会出现在享元工厂。
+4. ﻿﻿﻿FlyWeigtt Factory 享元工厂类，用于构建一个池容器(集合），同时提供放池中获取对象方法
+
+
+
+内部状态 vs. 外部状态:
+
+比如围棋、五子棋、跳棋，它们都有大量的棋子对象，围棋和五子棋只有黑白两色，跳棋颜色多一 点，所以棋子颜色就是棋子的内部状态;而各个棋子之间的差别就是位置的不同，当我们落子后， 落子颜色是定的，但位置是变化的，所以棋子坐标就是棋子的外部状态
+
++ 享元模式提出了两个要求:细粒度和共享对象。这里就涉及到内部状态和外部状态 了，即将对象的信息分为两个部分:内部状态和外部状态. 要实现flyweight pattern, 首先要明确问题涉及到内部状态和外部状态
+  + 内部状态指对象共享出来的信息，存储在享元对象内部且不会随环境的改变而改变 
+  + 外部状态指对象得以依赖的一个标记，是随环境改变而改变的、不可共享的状态。
+
+举个例子:围棋理论上有361个空位可以放棋子，每盘棋都有可能有两三百个棋子对 象产生，因为内存空间有限，一台服务器很难支持更多的玩家玩围棋游戏，如果用 享元模式来处理棋子，那么棋子对象就可以减少到只有两个实例，这样就很好的解 决了对象的开销问题
+
+
+
+## :gem: Demo - 网站外包
+
+P88
+
+
+
+![](./src_md/flyweight3.png)
+
+
+
+分清楚内部状态和外部状态
+
+```java
+public abstract class WebSite {
+
+    public abstract void use(User user);
+}
+
+public class ConcreteWebSite extends WebSite{
+    // ******** 共享的部分, 属于是内部状态 ************
+    private String type = "";       // 网站的发布类型
+
+
+    public ConcreteWebSite(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public void use(User user) {        // ! user 是 外部状态
+        System.out.println("网站的发布形式为:" + type + ", user is " + user.getUserName());
+    }
+}
+
+public class User {
+    private String userName;
+
+    public User(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+}
+```
+
+
+
+```java
+public class WebSiteFactory {
+
+    // 集合, 充当池的作用
+    private HashMap<String, ConcreteWebSite> pool = new HashMap<>();
+
+
+    // 根据网站的类型, 返回一个网站, 如果没有就创建一个, 并放入池中
+    public WebSite getWebSiteCategory(String type) {
+        if (!pool.containsKey(type)) {
+            pool.put(type, new ConcreteWebSite(type));
+
+        }
+
+        return (WebSite) pool.get(type);
+    }
+
+
+    // 获取网站分类的总数 (即pool里有多少个网站)
+    public int getWebSiteCount(){
+        return pool.size();
+    }
+
+}
+```
+
+
+
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        WebSiteFactory webSiteFactory = new WebSiteFactory();
+
+        // 用户要一个以新闻形式发布的网站
+        WebSite webSite1 = webSiteFactory.getWebSiteCategory("news");
+        webSite1.use(new User("user1"));
+
+        // 用户要一个以blog形式发布的网站
+        WebSite webSite2 = webSiteFactory.getWebSiteCategory("blog");
+        webSite2.use(new User("user2"));
+
+        // 用户要一个以blog形式发布的网站
+        WebSite webSite3 = webSiteFactory.getWebSiteCategory("blog");
+        webSite3.use(new User("user3"));
+
+        // 用户要一个以blog形式发布的网站
+        WebSite webSite4 = webSiteFactory.getWebSiteCategory("blog");
+        webSite4.use(new User("user4"));
+
+        System.out.println(webSite2 == webSite3);
+        System.out.println("instance count in pool is: " + webSiteFactory.getWebSiteCount());        // 2
+    }
+}
+```
+
+Result:
+
++ 可见我们实际创建的内部状态的instance (website type)只有2个, 做到了内部状态和外部状态分离表达
+
+```shell
+网站的发布形式为:news, user is user1
+网站的发布形式为:blog, user is user2
+网站的发布形式为:blog, user is user3
+网站的发布形式为:blog, user is user4
+true
+instance count in pool is: 2
+```
+
+
+
+
+
+## JDK 源码赏析: Integer
+
+Integer 的 `valueOf()`方法使用了flyweight pattern
+
+```js
+public static Integer valueOf(int i) {
+    if (i >= IntegerCache.low && i <= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+```
+
+
+
+```Java
+public class Flyweight {
+    public static void main(String[] args) {
+        // 如果是通过Integer.valueOf(x):  x 在[-128, 128), 则使用享元模式返回, 否则返回new Integer(x)
+        // 小结:
+        // 1. 在valueOf() 方法中, 先判断值是否在IntegerCache中, 如果不在, 就创建新的Integer对象 (new Integer(x)), 否则就直接从
+        //    缓存池中返回
+        // 2. valueOf() 方法就使用了flyweight pattern. 如果valueOf()得到一个[-128, 127)的Integer instance, 执行速度比new Integer(x)快
+
+        Integer x = Integer.valueOf(127);
+        Integer y = new Integer(127);
+        Integer z = Integer.valueOf(127);
+        Integer w = new Integer(127);
+        System.out.println(x.equals(y)); // true
+        System.out.println(x == y); // false
+        System.out.println(x == z); // *** true
+        System.out.println(w == x); // false
+        System.out.println(w == y); // false
+
+        Integer x1 = Integer.valueOf(200);
+        Integer x2 = Integer.valueOf(200);
+        System.out.println(x1 == x2);       // false
+    }
+}
+```
 
 
 
