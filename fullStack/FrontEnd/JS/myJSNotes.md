@@ -12,28 +12,33 @@
 |:moon: [C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
 |:full_moon: [C4](./C4_CoupingWithHTMLCSS/README.md) |DOM |DOM <br/>event |
 |[C5](./C5_Debug/README.md) | JS debug & Exception | |
-|:moon: [ES6: Promose](./Promise/myPromise.md) | Promise, async-await | |
+|:moon: [ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | |
 
 
 
----
-学习资源
+
+
+## 学习资源
 
 1. [b站尚硅谷JS视频笔记](https://github.com/limingzhong61/LearningNotes/blob/master/JSNote/JavaScript/JavaScript.md) 
    可以从中窥探JS重点框架, 先浏览这个再去看MDN文档
 
-2. [mozilla (讲的比W3全面些)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
-   + **尚硅谷视频笔记看完后主要看这个, MDN看熟了以后查文档也顺手**
-   + JS红宝书拿来作为参考书籍辅助看原理, 但看书做笔记根本记不住啊而且很耗费时间,
+2. :bangbang: [mozilla (讲的比W3全面些)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
+
+   + :star: 集中看intermediate & advanced 的部分
+
+   + 有一些demo可以直接在brower跑, 很方便
+   + JS红宝书拿来作为参考书籍辅助看原理, 但看书做笔记根本记不住啊而且很耗费时间
 
 3. [W3 JS (但是讲的比较浅)](https://www.w3schools.com/js/default.asp)
 
-4. <<JavaScript高级程序设计>> 4th edition
+4. <<JavaScript高级程序设计>> 4th edition (红宝书)
+
    - 作为补充性质的参考书目
 
----
 
 
+## 龙哥说的
 
 写代码注意: 可扩展性(Reusable), 可维护性(Matainability), 可读性(Readability) 这也是最精华的思想
 

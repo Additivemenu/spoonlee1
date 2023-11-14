@@ -10,10 +10,16 @@ C20 build SPA using React Router
 
 + what is SPA ? why we need SPA
 + defining routes & navigation header
+  + nested pages: if multiple pages share a common component
+
++ navigate programmatically
+  + in react  navigation for react native, screens are registered and identified by screen name; parameters are passed into that screen when navigate programmatically 
+  + Similarly,  in react router for react web, <span style="color: yellow">a page is registered and identified by a url path</span>, parameters are passed into that page through the url's parameter
 
 
 
-# Intro
+
+# 1. React Route basics
 
 multiple page in single-page application
 
@@ -366,6 +372,301 @@ export default MainNavigation;
 
 
 
+# 2. Navigating programmatically
+
+
+
+```js
+useNavigate() // this hook works just like react navigation in react native
+```
+
+e.g. 
+
+```js
+import { Link, useNavigate } from "react-router-dom";
+
+function HomePage() {
+  const navigate = useNavigate();
+  function navigateHandler() {
+    navigate("/products");
+  }
+
+  return (
+    <>
+      <h1>My Home Page</h1>
+      <p>
+        Go to <Link to="/products">the list of products </Link>
+      </p>
+      <p>
+        <button onClick={navigateHandler}>navigate</button>
+      </p>
+    </>
+  );
+}
+
+export default HomePage;
+```
+
+
+
+
+
 ## Dynamic Routes
 
 311-
+
+```js
+useParams() // this hook works similar to useRoute in react navigation for react native
+```
+
+
+
+App.js
+
++ register the path for `ProductDetails` page. the URL contains the parameters 
+
+```js
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import HomePage from "./pages/Home";
+import ProductPage from "./pages/Products";
+import RootLayout from "./pages/Root";
+import ErrorPage from "./pages/Error";
+import ProductDetail from "./pages/ProductDetail";
+
+//https://example.com/products
+// register pages here
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "/", element: <HomePage /> },
+      { path: "/products", element: <ProductPage /> },
+      { path: "/products/:productId", element: <ProductDetail /> },     // ! dynamic route
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+```
+
+Products.js
+
++ craft dynamic route URL path
+
+```js
+import { Link } from "react-router-dom";
+
+const PRODUCTS = [
+  { id: "p1", title: "Product 1" },
+  { id: "p2", title: "Product 2" },
+  { id: "p3", title: "Product 3" },
+];
+
+function ProductPage() {
+  return (
+    <>
+      <h1>Products Page</h1>
+      <ul>
+        {PRODUCTS.map((prod) => (
+          <li key={prod.id}>
+    			// dynamic routes here
+            <Link to={`/products/${prod.id}`}>{prod.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export default ProductPage;
+```
+
+ProductDetail.js
+
++ `useParams` to extract parameter within the route path defined when registering the page
+
+```js
+import React from "react";
+import { useParams } from "react-router-dom";
+
+const ProductDetail = () => {
+  const params = useParams();
+
+  // params.productId;
+
+  return (
+    <>
+      <h1>Product Details</h1>
+      <p>{params.productId}</p>			
+    </>
+  );
+};
+
+export default ProductDetail;
+```
+
+
+
+
+
+## Relative vs. absolute path
+
++ absolute path: a path starts with '/'
+  + 感觉这个在多人协作编程时更不容易出歧义? 
++ relative path: a path not starts with '/'
+  + `..` 也算relative path, 回到之前的path
+
+
+
+App.js
+
++ 以下path改为relative path
+
+```js
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "", element: <HomePage /> },
+      { path: "products", element: <ProductPage /> },
+      { path: "products/:productId", element: <ProductDetail /> },     // ! dynamic route
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+
+
+alternatively, we can also use 'index route' to define the default route
+
+```js
+//https://example.com/products
+// register pages here
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      // { path: "", element: <HomePage /> },
+      { index: true, element: <HomePage /> },     // *********** index route (default route) ******
+      { path: "products", element: <ProductPage /> },
+      { path: "products/:productId", element: <ProductDetail /> },     // ! dynamic route
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+
+
+# 2.5 :gem: practice
+
+456 
+
+:gem: 02-adv-starting-project
+
+
+
+app.js
+
++ register pages with url 
++ nested: 使得多个page可以共享某个组件 
+
+```js
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import HomePage from "./pages/Home";
+import EventsPage from "./pages/Events";
+import EventDetailPage from "./pages/EventDetail";
+import NewEventPage from "./pages/NewEvent";
+import EditEventPage from "./pages/EditEvent";
+import RootLayout from "./pages/Root";
+import EventsRootLayout from "./pages/EventsRoot";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      {
+        path: "events",
+        element: <EventsRootLayout />,
+        children: [
+          { index: true, element: <EventsPage /> },
+          { path: ":eventId", element: <EventDetailPage /> },
+          { path: "new", element: <NewEventPage /> },
+          { path: ":eventId/edit", element: <EditEventPage /> },
+        ],
+      },
+    ],
+  },
+]);
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+```
+
+
+
+EventsRootLayout.js
+
++ 由app.js中route的register知道, 以"/evnets"为开头的url对应的page共享`EventNavigation`组件
+
+```js
+import React from "react";
+import { Outlet } from "react-router-dom";
+import EventsNavigation from "../components/EventsNavigation";
+
+const EventsRootLayout = () => {
+  return (
+    <>
+      <EventsNavigation />
+    	// Outlet represents the children when register this page
+      <Outlet /> 
+    </>
+  );
+};
+
+export default EventsRootLayout;
+```
+
+
+
+# 3. Dive deeper 
+
+接着2.5的practice做
+
+:gem: 03-dive-deeper-projects
+
+## 3.1 Loader 
+
+459-
+
+看到这里
+
+
+
+
+
+## 3.2 Data Submission
+
+472-

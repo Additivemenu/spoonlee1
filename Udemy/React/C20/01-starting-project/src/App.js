@@ -4,6 +4,7 @@ import HomePage from "./pages/Home";
 import ProductPage from "./pages/Products";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/Error";
+import ProductDetail from "./pages/ProductDetail";
 
 //https://example.com/products
 // register pages here
@@ -13,8 +14,10 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/products", element: <ProductPage />},
+      // { path: "", element: <HomePage /> },
+      { index: true, element: <HomePage /> },     // index route (default route)
+      { path: "products", element: <ProductPage /> },
+      { path: "products/:productId", element: <ProductDetail /> },     // ! dynamic route
     ],
   },
 ]);
