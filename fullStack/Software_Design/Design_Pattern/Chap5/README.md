@@ -223,7 +223,7 @@ public class Client {
 
 
 
-# 2. 命令模式 (Command)
+# 2. :bangbang: 命令模式 (Command)
 101-105 GRASP: Indirection + polymorphism
 
 看一个需求
@@ -950,12 +950,218 @@ public class Client {
 # 8. 解释器模式 (Interpreter)
 131-135
 
-# 9. 状态模式 (State)
+# 9. :bangbang: 状态模式 (State)
 136-139
 
 https://refactoring.guru/design-patterns/state
 
+不知道redux是否也是利用类似的思想
 
+类图里也是一个常用的套路, 一个context类里聚合了抽象类/接口的实现类, 依靠套娃来实现更多功能. 让context类的行为可以根据state的不同, 而动态地变化, 尤其在面对复杂的状态行为逻辑时, 使用状态模式可以提高可读性, 可维护性
+
+
+
+
+
+基本介绍
+
+1) 状态模式(State Pattern):它主要用来解决对象在多种状态转换时，需要对外 输出不同的行为的问题。状态和行为是一一对应的，状态之间可以相互转换
+2) 当一个对象的内在状态改变时，允许改变其行为，这个对象看起来像是改变了其类 (e.g. 通过聚合别的抽象类/接口的实现类来实现)
+
+
+
+![](./src_md/state0.png)
+
+
+
+原理图
+
+<img src="./src_md/state1.png" style="zoom:50%;" />
+
+对原理类图的说明-即（状态模式的角色及职责）
+
+1) Context 类为环境角色，用于维护State实例，这个实例定义当前状态
+2) state是抽象状态角色，定义一个接口封装与Context 的一个特点接口相关行为
+3) ConcreteState 具体的状态角色，每个子类实现一个与Context 的一个状态相关行为
+
+
+
+
+
+## Demo1`: 抽奖
+
+不同的状态实现类具有不同的实现行为
+
+<img src="./src_md/state2.png" style="zoom:50%;" />
+
+可见, 想要获得某个class的行为, 最好的方法是把它聚合进来(套娃), 对外暴露的是统一的接口
+
+```java
+public class ClientTest {
+    public static void main(String[] args) {
+        RaffleActivity activity = new RaffleActivity(1);
+
+        for (int i = 0; i< 30; i++){
+            System.out.println("---------------第" + (i+1)+ "次抽奖------------------");
+
+            // 参加抽奖, 第一次先扣积分
+            activity.deductMoney();
+            // 第二部抽奖
+            activity.raffle();
+
+            System.out.println("剩余奖品数: " + activity.getCount());
+        }
+    }
+}
+```
+
+state管理类
+
++ State pattern的精髓所在, 即是套娃, 将包含有不同行为的state实现类聚合到state的管理类中, 然后用一个指针来指向当前的状态, 这个state管理类对外只暴露统一的接口
+
+```java
+public class RaffleActivity {
+    State state = null;     // pointer indicating the current state
+    int count = 0;          // 表示当前奖品的数量
+
+    // 以下4个属性, 代表4种状态
+    State noRaffleState = new NoRaffleState(this);
+    State canRaffleState = new CanRaffleState(this);
+    State dispenseState = new DispenseState(this);
+    State dispenseOutState = new DispenseOutState(this);
+
+    public RaffleActivity(int count ) {
+        this.state = getNoRaffleState();
+        this.count = count;
+    }
+
+    // activity作为包在state外的类, 同一化行为
+    public void deductMoney(){
+        state.deductMoney();
+    }
+
+    // 抽奖
+    public void raffle(){
+        if(state.raffle()){
+            //领取奖品
+            state.dispensePrize();;
+        }
+    }
+
+	// 各种 getter, setter
+
+}
+```
+
+state相关类
+
+```java
+public abstract class State {
+    // 行为1： 扣除积分
+    public abstract  void deductMoney();
+
+    // 行为2: 是否抽中奖品
+    public abstract boolean raffle();
+
+    // 行为3: 发放奖品
+    public abstract void dispensePrize();
+}
+
+// 这里只展示一个state 实现类
+public class DispenseState extends State{
+    RaffleActivity activity;
+
+    public DispenseState(RaffleActivity activity) {
+        this.activity = activity;
+    }
+
+
+    @Override
+    public void deductMoney() {
+        System.out.println("不能扣除积分");
+    }
+
+    @Override
+    public boolean raffle() {
+        System.out.println("不能抽奖");
+        return false;
+    }
+
+    @Override
+    public void dispensePrize() {
+        if(activity.getCount() > 0){
+            System.out.println("恭喜中奖了! 扣除1个奖品库存");
+            activity.setCount(activity.getCount()-1);
+            // 改变状态为不能抽奖
+            activity.setState(activity.getNoRaffleState());
+        } else {
+            System.out.println("恭喜中奖, 但奖品库存现在为0, 很遗憾, 奖品发放完了");
+            // 改变状态为奖品发送完毕, 后面activity声明周期结束
+            activity.setState(activity.getDispenseOutState());
+        }
+
+    }
+}
+```
+
+
+
+## Demo2: 借贷平台
+
+p138
+
+借贷平台的订单，有审核-发布-抢单等等步骤，随着操作的不同，会改变订单的 状态, 项目中的这个模块实现就会使用到状态模式
+
+通常通过if/else判断订单的状态，从而实现不同的逻辑，伪代码如下
+
+```java
+if(审核){ 
+  //审核逻辑
+}elseif(发布){ 
+  //发布逻辑 }
+elseif(接单){ 
+    //接单逻辑
+}
+```
+
+问题分析 : 这类代码难以应对变化，在添加一种状态时，我们需要手动添加if/else，在添加一种功能时，要对所有的状态进行判断。因此代码会变得越来越臃肿，并且一旦没有处理某个状态， 便会发生极其严重的BUG，难以维护
+
+需求对应的state machine diagram:
+
+<img src="./src_md/state3.png" style="zoom:50%;" />
+
+
+
+使用状态模式完成 借贷平台项目的审核模块:
+
++ 结合利用adapter pattern, 让concrete state 可以有选择性地去实现state interface中的方法
++ 其他方面和demo1 类似
+
+<img src="./src_md/state4.png" style="zoom:50%;" />
+
+
+
+代码略 => demo2_money, 有中文comment, encoding不太匹配
+
+
+
+## 注意事项
+
+p139
+
+状态模式的注意事项和细节
+
+1. 代码有很强的可读性。状态模式将每个状态的行为封装到对应的一个类中
+
+2. 方便维护。将容易产生问题的if-else语句删除了，如果把每个状态的行为都放到一 个类中，每次调用方法时都要判断当前是什么状态，不但会产出很多if-else语句，
+
+   而且容易出错
+
+3. 符合“开闭原则”。容易增删状态
+
+4. 会产生很多类。每个状态都要一个对应的类，当状态过多时会产生很多类，加大维 护难度
+
+5. 应用场景:当一个事件或者对象有很多种状态，状态之间会相互转换，对不同的状 态要求有不同的行为的时候，可以考虑使用状态模式
 
 
 
