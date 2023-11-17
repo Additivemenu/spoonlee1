@@ -944,8 +944,180 @@ public class Client {
 # 6. 中介者模式 (Mediator)
 123-126 
 
+
+
+
+
+
+
 # 7. 备忘录模式 (Memento)
 127-130
+
+ https://refactoring.guru/design-patterns/memento
+
+主打一个(部分)克隆然后异地存储
+
+
+
+总结:
+
+1. 给用户提供了一种可以恢复状态的机制，可以使用户能够比较方便地回到某个历史 的状态
+
+2. 实现了信息的封装，使得用户不需要关心状态的保存细节
+
+3. 如果类的成员变量过多，势必会占用比较大的资源，而且每一次保存都会消耗一定
+
+   的内存, 这个需要注意
+
+4. 适用的应用场景: 后悔药, 打游戏时的存档, Windows 里的 ctri + z, IE 中的后退, 数据库的事务管理
+
+5. 为了节约内存，备忘录模式可以和原型模式配合使用
+
+
+
+
+
+游戏角色状态恢复问题
+
+游戏角色有攻击力和防御力，在大战Boss前保存自身的状态(攻击力和防御力)，当大 战Boss后攻击力和防御力下降，从备忘录对象恢复到大战前的状态
+
+传统方案: 
+
++ 每个角色都copy一个备份, 保存大战boss之前的状态, 结束后再恢复到大战前
+
+传统的方式的问题分析
+
+1) 一个对象，就对应一个保存对象状态的对象， 这样当我们游戏的对象很多时，不利于管理，开销也很大.
+2) 传统的方式是简单地做备份，new出另外一个对象出来，再把需要备份的数据放到 这个新对象，但这就暴露了对象内部的细节
+3) 解决方案 =>备忘录模式
+
+
+
+## 基本介绍
+
+p128
+
+1. 备忘录模式(Memento Pattern)在<span style="color: red">不破坏封装性的前提下，捕获一个对象的内部状态 (所以在需要被记录状态的对象内部来生成Memento instance)</span>，并在该<span style="color: red">对象之外 (即Caretaker)</span>保存这个状态。这样以后就可将该对象恢复到原先保存的状态
+2. 可以这里理解备忘录模式: 现实生活中的备忘录是用来记录某些要去做的事情，或者是记录已经达成的共同意见的事情，以防忘记了。而在软件层面，备忘录 模式有着相同的含义，<u>备忘录对象主要用来记录一个对象的某种状态，或者某 些数据，当要做回退时，可以从备忘录对象里获取原来的数据进行恢复操作</u>
+3. 备忘录模式属于行为型模式
+
+
+
+
+
+## Demo1
+
+
+
+<img src="./src_md/memento1.png" style="zoom:50%;" />
+
+1. Originator: 对象(需要保存状态的对象)
+2. Memento: 备忘对象, 承载对象(Originator)内部需要保存的信息
+3. Caretaker: 守护者对象, 负责保存多个备忘录对象, 使用集合管理提高效率
+4. 说明: 如果希望保存多个originator对象的不同时间的状态, 也可, 只需要用HashMap<String, List<Memento>> 
+
+
+
+为简单起见, demo中用String代表Originator的一个状态, 其实状态的表达也可很复杂 
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        Originator originator = new Originator();       // used to generate a Memento instance, represent player's current state
+        Caretaker caretaker = new Caretaker();          // used to store Memento instances
+
+        // generate Memento instance
+        originator.setState("state 1: attack point 100");
+        caretaker.add(originator.saveStateMemento());
+
+        // fighting boss
+        originator.setState("state 2: attack point 80");
+        caretaker.add(originator.saveStateMemento());
+
+        // killed boss
+        originator.setState("state 3: attack point 50");
+        caretaker.add(originator.saveStateMemento());
+
+        // now we hope to rollback to state 1
+        System.out.println("current state is: " + originator.getState());       // state 3: attack point 50
+        originator.getStateFromMemento(caretaker.get(0));
+        System.out.println("now state is: " + originator.getState());       // state 1
+    }
+}
+```
+
+```java
+
+public class Originator {
+    private String state;       // state info
+
+    // method that could keep state object Memento
+  	// 为了不破坏封装性, 所以在自己内部生成一个Memento instance
+    public Memento saveStateMemento(){
+        return new Memento(state);
+    }
+
+    // use Memento instance to restore state
+    public void getStateFromMemento(Memento memento){
+        state = memento.getState();
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+}
+
+public class Memento {
+    private String state;
+
+    public Memento(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+}
+
+public class Caretaker {
+    private List<Memento> mementoList = new ArrayList<>();
+
+    public void add(Memento memento) {
+        mementoList.add(memento);
+    }
+
+    // 从list中get到第index个Memento intance
+    public Memento get(int index){
+        return mementoList.get(index);
+    }
+}
+```
+
+
+
+
+
+## Demo2
+
+游戏角色恢复状态实例
+
+应用实例要求 游戏角色有攻击力和防御力，在大战Boss前保存自身的状态(攻击力和防御力)，当大战 Boss后攻击力和防御力下降，从备忘录对象恢复到大战前的状态
+
+<img src="./src_md/memento2.png" style="zoom:50%;" />
+
+代码和前面的类似, 略
+
+
+
+
+
+
+
+
 
 # 8. 解释器模式 (Interpreter)
 131-135

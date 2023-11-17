@@ -1,5 +1,11 @@
 References
-:book: [spring 官网](https://spring.io/)
+
+:bangbang::book: [spring 官网](https://spring.io/)
+
+:bangbang: [spring 全家桶文档](https://spring.io/projects/spring-boot)
+
++ 一手的spring全家桶文档与学习资料
+
 :book: [spring boot github](https://github.com/spring-projects/spring-boot)
 
 https://www.luv2code.com
@@ -30,6 +36,10 @@ https://www.udemy.com/course/microservices-with-spring-boot-and-spring-cloud/
 
 
 NEW- course hours: 31h
+
+本课程主要集中于使用Spring Data JPA去结合SQL database
+
+但其实还有Spring Data MongoDB, Spring Data Redis...
 
 
 
