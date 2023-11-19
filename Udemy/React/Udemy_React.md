@@ -92,7 +92,7 @@ React基础篇
 | 15                    | :star: Building custom react hooks                       |      |
 | 16                    | Working with forms & User input                          |      |
 | 17                    | :gem: Practice: adding HTTP & form to the food order app |      |
-| [18](./C18/README.md) | :bangbang: Redux (Alternative to Context)                |      |
+| [18](./C18/README.md) | :bangbang: Redux Basics(Alternative to Context)          |      |
 | [19](./C19/README.md) | :bangbang: Advanced Redux                                |      |
 | [20](./C20/README.md) | :bangbang:Build a Multi-Page SPA with React Router       |      |
 | 21                    | Adding Authentication to React Apps                      |      |
