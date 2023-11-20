@@ -87,15 +87,15 @@ React基础篇
 
 中级篇
 
-| [14](./C14/README.md) | :star: sending HTTP request                              |      |
-| --------------------- | -------------------------------------------------------- | ---- |
-| 15                    | :star: Building custom react hooks                       |      |
-| 16                    | Working with forms & User input                          |      |
-| 17                    | :gem: Practice: adding HTTP & form to the food order app |      |
-| [18](./C18/README.md) | :bangbang: Redux Basics(Alternative to Context)          |      |
-| [19](./C19/README.md) | :bangbang: Advanced Redux                                |      |
-| [20](./C20/README.md) | :bangbang:Build a Multi-Page SPA with React Router       |      |
-| 21                    | Adding Authentication to React Apps                      |      |
+| [14](./C14/README.md) | :star: sending HTTP request                              |                                                              |
+| --------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
+| 15                    | :star: Building custom react hooks                       |                                                              |
+| 16                    | Working with forms & User input                          |                                                              |
+| 17                    | :gem: Practice: adding HTTP & form to the food order app |                                                              |
+| [18](./C18/README.md) | :bangbang: Redux Basics(Alternative to Context)          | redux有点类似小后端的感觉 (command + observer pattern)       |
+| [19](./C19/README.md) | :bangbang: Advanced Redux                                | reducers should always be side-effects & async code free <br> => where to put side-effects & async code logics? <br>1. inside components <br>2. action creator <br> :gem: a  cart  demo managed by redux-toolkit |
+| [20](./C20/README.md) | :bangbang:Build a Multi-Page SPA with React Router       |                                                              |
+| 21                    | Adding Authentication to React Apps                      |                                                              |
 
 Ajax与Axios 见其他笔记
 

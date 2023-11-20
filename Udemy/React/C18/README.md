@@ -17,10 +17,11 @@ Redux is not React-Specific, it is a js lib for state management, Other programm
   + define reducer function & slices
   + Connect store with react app
   + extract data & dispatch actions in react componnet
+    + useSelector will automatically subscribe the component to redux store
 
 
 
-# Intro
+# 1. Intro
 
 managing cross-component / app-wide state with Redux
 
@@ -69,11 +70,11 @@ store informs the componenet state change
 
 
 
-# Project hands-on
+# 2. Project hands-on
 
 407-408
 
-## :gem: A glimpse on redux without react
+## 2.1 :gem: redux without react
 
 ```js
 npm i redux
@@ -124,7 +125,7 @@ store.dispatch({type: 'decrement'});            // dispatch an action, { counter
 
 
 
-## :gem: react-redux
+## 2.2 :gem: react-redux
 
 409-417
 
@@ -336,7 +337,7 @@ just skip
 
 
 
-## :full_moon: Redux Toolkit
+## 2.3 :full_moon: Redux Toolkit
 
 p418-
 
