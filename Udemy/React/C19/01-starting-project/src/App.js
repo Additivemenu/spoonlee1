@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
-import { uiActions } from "./store/ui-slice";
 import Notification from "./components/UI/Notification";
+import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 let isInitial = true;
 
@@ -16,53 +16,18 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
   // ! you just get the idea, never perform side-effects in reducers, but in components or action creators
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(
-        uiActions.showNotification({
-          status: "pending",
-          title: "Sending...",
-          message: "Sending cart data!",
-        })
-      );
-
-      const response = await fetch(
-        "https://react-redux-79df7-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json",
-        {
-          method: "PUT", // ! overwrite the existing data
-          body: JSON.stringify(cart),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Sending cart data failed.");
-      }
-
-      dispatch(
-        uiActions.showNotification({
-          status: "success",
-          title: "Success...",
-          message: "Sent cart data successfully!",
-        })
-      );
-    };
-
-    if(isInitial){
+    if (isInitial) {
       isInitial = false;
       return;
     }
 
-    // invoke the async code
-    sendCartData().catch((error) => {
-      dispatch(
-        uiActions.showNotification({
-          status: "error",
-          title: "Error...",
-          message: "Sending cart data failed!",
-        })
-      );
-    });
+    dispatch(sendCartData(cart)); // ! dispatch's argument is always an action object, also able to dispatch another dispatch function
   }, [cart, dispatch]); // dispatch is a dependency, but it is guaranteed to never change by redux
 
   return (
