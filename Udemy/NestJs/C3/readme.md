@@ -26,7 +26,10 @@ App goal: store and retrieve messages stored in a plain json file
 ## Hands-on
 
 ```js
-nest new <project-name>
+nest new <project-name> // this by default create a directory that is init as a git repo
+  
+nest new <project-name> --skip-git		// this will not
+
 ```
 
 
