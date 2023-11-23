@@ -2,13 +2,13 @@
 
 
 
-| Id                                  | Topic                  | Description          |
-| ----------------------------------- | ---------------------- | -------------------- |
-| [1](./FrontEnd/myFrontEndBasics.md) | FrontEnd Basics        | HTML, CSS, JS        |
-| [2](./BackEnd/myBackEnd.md)         | BackEnd                | Java, NodeJS, Python |
-| [3](./Database/myDatabase.md)       | Database               |                      |
-| [4](./Git/readme.md)                | version control: git   |                      |
-| [5](./WebDevTheory/myWebDevTheory.md)                                   | web development theory |                      |
+| Id                                    | Topic                  | Description                         |
+| ------------------------------------- | ---------------------- | ----------------------------------- |
+| [1](./FrontEnd/myFrontEndBasics.md)   | FrontEnd Basics        | HTML, CSS, JS, <br> TS, TailwindCSS |
+| [2](./BackEnd/myBackEnd.md)           | BackEnd                | Java, NodeJS, Python                |
+| [3](./Database/myDatabase.md)         | Database               |                                     |
+| [4](./Git/readme.md)                  | version control: git   |                                     |
+| [5](./WebDevTheory/myWebDevTheory.md) | web development theory |                                     |
 
 
 

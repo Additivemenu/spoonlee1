@@ -13,8 +13,8 @@ Resources:
 首先学习NestJs而不是SpringBoot的原因
 
 + JR的P3 Java组人越来越少, 到时不一定有靠谱的人可以组
-+ NestJs + TypeScript也要玩一些 OOP的东西, 如果将来要写AngularJS, 会打一些基础
-+ 前端必用React, 因而语言不用切换了
++ NestJs + TypeScript也要玩一些 OOP (源自于TypeScript)的东西, 如果将来要写AngularJS, 会打一些基础
++ 前端必用React, 因而语言不用切换了, JS写起来更加小清新
 
 + NestJs和SpringBoot非常类似, 不能说写了NestJs将来完全写不了SpringBoot
 
@@ -34,11 +34,11 @@ Part1: nestjs basics
 
 |      |                                                            |                        |
 | ---- | ---------------------------------------------------------- | ---------------------- |
-| 2    | Hello world Nest App                                       | Nest App的architecture |
-| 3    | Nest App with Nest CLI                                     |                        |
-| 4    | Validating Request Data with Pipes                         |                        |
-| 5    | :bangbang: Nest Architecture: services & repo              |                        |
-| 6    | :bangbang: Nest Architecture: Organizing code with Modules |                        |
+| [2](./C2/readme.md)    | Hello world Nest App                                       | Nest App的architecture |
+| [3-6](./C3/readme.md) | Nest App with Nest CLI <br>Validating Request Data with Pipes <br>:bangbang: Nest Architecture: services & repo <br>:bangbang: Nest Architecture: Organizing code with Modules |                        |
+|     |                          |                        |
+|     |               |                        |
+|     |  |                        |
 | 7    | Big project time                                           |                        |
 | 8    | :bangbang: Persisting Data with TypeORM                    |                        |
 | 9    | Creating and Saving User Data                              |                        |
