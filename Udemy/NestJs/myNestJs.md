@@ -15,6 +15,9 @@ Resources:
 + JR的P3 Java组人越来越少, 到时不一定有靠谱的人可以组
 + NestJs + TypeScript也要玩一些 OOP (源自于TypeScript)的东西, 如果将来要写AngularJS, 会打一些基础
 + 前端必用React, 因而语言不用切换了, JS写起来更加小清新
+  + Mongoose Schema用JS写起来更加地道
+
+  + Vscode -> copilot available
 
 + NestJs和SpringBoot非常类似, 不能说写了NestJs将来完全写不了SpringBoot
 

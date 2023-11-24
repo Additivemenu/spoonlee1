@@ -1,4 +1,19 @@
+# Key takeaway
+
+<img src="../C2/src_md/scratch2.png" style="zoom:50%;" />
+
++ Controlelr -> Service -> Repository
+  + Inversion of Conrtrol & Dependence Injection
+
+
+
+
+
+
+
 # Generating nest project using CLI
+
+C3
 
 ```js
 npm install -g @nestjs/cli
@@ -8,8 +23,6 @@ npm install -g @nestjs/cli
 
 
 App goal: store and retrieve messages stored in a plain json file
-
-
 
 <img src="../C2/src_md/scratch2.png" style="zoom:50%;" />
 
@@ -252,6 +265,269 @@ __decorate([
 # Services & Repositories 
 
 C5 1hr
+
+<img src="../C2/src_md/scratch2.png" style="zoom:50%;" />
+
+Services: it's a class
+
++ 1st place to put any <u>business logic</u>
++ One service might use one or more repositories to find or store data
+
+Repositories: it's a class
+
++ 1st place to put <u>storage-related logic</u>
++ Usually ends up being a `TypeORM` entity, a `Mongoose` schema, or similar
+
+
+
+We would frequently have similar method names in services & repositories
+
+```js
+// e.g. pseudo code
+MessageService{
+  findOne(id: string)
+  findAll()
+  create(message: string)
+}
+
+MessageRepository{
+  findOne(id: string)
+  findAll()
+  create(message: string)
+}
+```
+
+
+
+p22-27
+
+see final codes
+
+
+
+## :bangbang: IoC & Dependency Injection
+
+P28-30
+
+why dependency injection exist
+
++ in the above code, we have dependency chain like: controller -> service -> repository
+
+
+
+Inversion of Control principle for better code scalability, maintainability:
+
++ Classes shoud <u>not</u> create instances of its dependencies on its own
+  + 换言之, classes需要第三方来负责为其inject dependency, 这在SpringBoot里就是Container负责的
+
+
+
+bad example:
+
+```js
+import { MessagesRepository } from "./messages.repository";
+
+export class MessagesService{
+    private messagesRepo: MessagesRepository;
+
+  	// bad as not follow IoC:  class creating its dependency on its own
+    constructor(){
+        this.messagesRepo = new MessagesRepository();
+    }
+}
+```
+
+better example
+
++ inject a specific dependency
++ we followingly use this pattern
+
+```js
+import { MessagesRepository } from "./messages.repository";
+
+export class MessagesService{
+    private messagesRepo: MessagesRepository;
+
+		// better MessageService receives its dependency, but it specifically asks for 'MessageRepository'
+    constructor(messageRepo: MessageRepository){
+        this.messagesRepo = messagesRepo;       // ! dependency injection
+    }
+}
+```
+
+best example
+
++ inject a dependency that implements the interface. This could be beneficial to ensures open-close principle
+  + e.g. in test environment, we would need to create a fake Repository class that implement the same interface to simulate the behaviour of real Repository Class 
+
+```js
+interface Repository{
+  findOne(id: string);
+  findAll();
+  create(content: string);
+}
+
+export class MessagesService{
+  messageRepo: Repository;
+  // best: MessageService receives its dependency, and it doesn't specifically require 'MessagesRepository'  -> possibly to apply polymorphism, ensures open-close principle
+  constructor(repo: Repository){
+    this.messageRepo = repo;
+  }
+}
+```
+
+
+
+how dependency injection works
+
+p29
+
+<img src="./src_md/Nest_DI_Container1.png" style="zoom:50%;" />
+
+Nest DI Container Work Flow:
+
+1. At app startup, register all classes (except controller classes) with the container
+2. Container will figure out what each dependency each class has
+   + **Use the 'Injectable' decorator on each class and add them to the modules list of providers**
+3. We then ask the container to create an instance of a class (e.g. controller instance)for us
+4. Container creates all required dependencies and gives us the instance
+   + **Happens automatically - Nest will try to create controller instances for us**
+5. Container will hold onto the created dependency instances and reuse them if needed
+   + Flyweight Pattern, SpringBoot Bean container also does this
+
+
+
+## Refactor using DI
+
+P30-31
+
+message module
+
+```ts
+import { Module } from '@nestjs/common';
+import { MessagesController } from './messages.controller';
+import { MessagesService } from './messages.service';
+import { MessagesRepository } from './messages.repository';
+
+@Module({
+  controllers: [MessagesController],
+  providers: [MessagesService, MessagesRepository], // things that can be used as dependency for other classes (Bean in Spring)
+})
+export class MessagesModule {}
+```
+
+message controller
+
+```ts
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateMessageDto } from './dtos/create-message.dto';
+import { MessagesService } from './messages.service';
+
+@Controller('messages')
+export class MessagesController {
+  // private messageService: MessagesService;
+  // constructor(messageService: MessagesService) {
+  //   this.messageService = messageService;       // ! dependency injection
+  // }
+
+  // syntax sugar: equivalent to above
+  constructor(private messageService: MessagesService) {}
+
+  @Get()
+  listMessages() {
+    return this.messageService.findAll();
+  }
+
+  // how does Dto type preserved in javascript at runtime?
+  @Post()
+  createMessage(@Body() body: CreateMessageDto) {
+    return this.messageService.create(body.content);
+  }
+
+  @Get('/:id')
+  async getMessage(@Param('id') id: string) {
+    const message = await this.messageService.findOne(id);
+
+    if (!message) {
+      throw new NotFoundException('message not found!');
+    }
+    return message;
+  }
+}
+```
+
+message service
+
+```ts
+import { Injectable } from "@nestjs/common";
+import { MessagesRepository } from "./messages.repository";
+
+@Injectable()       // like @Bean in Spring
+export class MessagesService{
+
+    // private messagesRepo: MessagesRepository;
+    // constructor(messagesRepo: MessagesRepository){
+    //     this.messagesRepo = messagesRepo;       // ! dependency injection
+    // }
+
+    // syntax sugar: equivalent to above
+    constructor(private messagesRepo: MessagesRepository){} 
+
+    // 套娃
+    findOne(id: string){
+        return this.messagesRepo.findOne(id);
+    }
+
+    findAll(){
+        return this.messagesRepo.findAll();
+    }
+
+    create(content: string){
+        return this.messagesRepo.create(content);
+    }
+}
+```
+
+message repository
+
+```ts
+import { Injectable } from "@nestjs/common";
+import { readFile, writeFile } from "fs/promises";
+
+// here for simplicity,  we just use a json file as a database
+@Injectable()       // like @Bean in Spring
+export class MessagesRepository{
+    async findOne(id: string){
+        const contents = await readFile('messages.json', 'utf-8');
+        const messages = JSON.parse(contents);  // to js obj
+        return messages[id];
+    }
+
+    async findAll(){
+        const contents = await readFile('messages.json', 'utf-8');
+        const messages = JSON.parse(contents);  // to js obj
+        return messages;
+    }
+
+    async create(content: string){
+        const contents = await readFile('messages.json', 'utf-8');
+        const messages = JSON.parse(contents);  // to js obj
+        const id = Math.floor(Math.random() * 999);  
+
+        messages[id] = { id, content };
+
+        await writeFile('messages.json', JSON.stringify(messages));
+    }
+
+}
+```
 
 
 

@@ -1,5 +1,8 @@
 :computer: [尚硅谷李立超: TypeScript](https://www.bilibili.com/video/BV1Xy4y1v7S2/?spm_id_from=333.337.search-card.all.click&vd_source=c6866d088ad067762877e4b6b23ab9df)
 
+:book: [TS cheat sheet](https://www.typescriptlang.org/cheatsheets)
+
+
 :pencil: [chapter1: TS basics](./Chap1/README.md)
 
 :pencil: [chapter2: Ts编译选项](./Chap2/README.md)
