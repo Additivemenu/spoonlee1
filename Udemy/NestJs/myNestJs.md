@@ -42,7 +42,7 @@ Part1: nestjs basics
 |     |                          |                        |
 |     |               |                        |
 |     |  |                        |
-| 7    | Big project time                                           |                        |
+| [7](./C7/readme.md) | Big project time                                           |                        |
 | 8    | :bangbang: Persisting Data with TypeORM                    |                        |
 | 9    | Creating and Saving User Data                              |                        |
 | 10   | Custom Data Serialization                                  |                        |

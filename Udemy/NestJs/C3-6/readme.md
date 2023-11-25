@@ -4,14 +4,17 @@
 
 + Controlelr -> Service -> Repository
   + Inversion of Conrtrol & Dependence Injection
+    + why we use them
+  + NestJs Modules wiring up
+    + imports
+    + providers
+    + exports
 
 
 
 
 
-
-
-# Generating nest project using CLI
+# 1. Generating nest project using CLI
 
 C3
 
@@ -36,7 +39,7 @@ App goal: store and retrieve messages stored in a plain json file
 
 
 
-## Hands-on
+## :bangbang: Hands-on
 
 ```js
 nest new <project-name> // this by default create a directory that is init as a git repo
@@ -99,7 +102,7 @@ this generate messages controller under messages folder and wire it up to the me
 
 
 
-# Validating Request Data with Pipes 
+# 2. Validating Request Data with Pipes 
 
 C4
 
@@ -262,7 +265,7 @@ __decorate([
 
 
 
-# Services & Repositories 
+# 3. Services & Repositories 
 
 C5 1hr
 
@@ -535,6 +538,178 @@ export class MessagesRepository{
 
 
 
-# Organizing Code with modules 
+# 4. Organizing Code with modules 
 
 C6 30min
+
+just a simple demo to enhance understanding of modules
+
+
+
+```ts
+computer module
+	|- CPU module
+  		|- Power module
+  |- Disk module
+  		|- the same power module
+```
+
+
+
+create a new nest project: di
+
+---
+
+```ts
+// at root of di: 
+nest g module computer
+nest g module cpu
+nest g module disk
+nest g module power
+
+// generate service in each module
+nest g service power
+nest g service disk
+nest g service cpu
+  
+  
+// generate controller
+nest g controller computer
+  
+```
+
+
+
+code
+
+---
+
+power module
+
+```ts
+import { Module } from '@nestjs/common';
+import { PowerService } from './power.service';
+
+@Module({
+  providers: [PowerService],    // providers are only accessible inside the module
+  exports: [PowerService]   // we want to export the PowerService so that other modules can use it
+})
+export class PowerModule {}
+```
+
+```ts
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class PowerService {
+  supplyPower(watts: number) {
+    console.log(`Supplying ${watts} watts of power`);
+  }
+}
+```
+
+
+
+cpu module:
+
+```ts
+import { Module } from '@nestjs/common';
+import { CpuService } from './cpu.service';
+import { PowerModule } from 'src/power/power.module';
+
+@Module({
+  imports: [PowerModule],   // easy to see the module dependency
+  providers: [CpuService],
+  exports: [CpuService],
+})
+export class CpuModule {}
+```
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { PowerService } from 'src/power/power.service';
+
+@Injectable()
+export class CpuService {
+
+    constructor(private powerService: PowerService) {}
+
+    compute(a:number, b:number){
+        console.log('Drawing 10 watts of power from PowerService')
+        this.powerService.supplyPower(10);
+        return a + b;
+    }
+
+}
+```
+
+disk module
+
+```ts
+import { Module } from '@nestjs/common';
+import { DiskService } from './disk.service';
+import { PowerModule } from 'src/power/power.module';
+
+@Module({
+  imports: [PowerModule], // easy to see the module dependency
+  providers: [DiskService],
+  exports: [DiskService],
+})
+export class DiskModule {}
+```
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { PowerService } from 'src/power/power.service';
+
+@Injectable()
+export class DiskService {
+  constructor(private powerService: PowerService) {}
+
+  getData() {
+    console.log('Drawing 20 watts of power from PowerService');
+    this.powerService.supplyPower(20);
+    return 'data!';
+  }
+}
+```
+
+
+
+computer module:
+
+```ts
+import { Module } from '@nestjs/common';
+import { ComputerController } from './computer.controller';
+import { CpuModule } from 'src/cpu/cpu.module';
+import { DiskModule } from 'src/disk/disk.module';
+
+@Module({
+  imports: [CpuModule, DiskModule],
+  controllers: [ComputerController],
+})
+export class ComputerModule {}
+
+```
+
+```ts
+import { Controller, Get } from '@nestjs/common';
+import { CpuService } from 'src/cpu/cpu.service';
+import { DiskService } from 'src/disk/disk.service';
+
+@Controller('computer')
+export class ComputerController {
+  constructor(
+    private cpuService: CpuService,
+    private diskService: DiskService,
+  ) {}
+
+  @Get()
+  run() {
+    return [this.cpuService.compute(1, 2), this.diskService.getData()];
+  }
+}
+```
+
+visit localhost:3000/computer, see result
+
