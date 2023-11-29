@@ -9,6 +9,8 @@ C20 build SPA using React Router
 # Key takeaways
 
 + what is SPA ? why we need SPA
+  + react router  watches for URL changes. when URL changes, it prevents it from sending request(prevent browser default refresh), but render the components conditionally on the page so that it looks likes navigation but just a single page
+
 + defining routes & navigation header
   + nested pages: if multiple pages share a common component
 
@@ -22,6 +24,24 @@ C20 build SPA using React Router
 # 1. React Route basics
 
 multiple page in single-page application
+
+
+
+React Router is a standard library for routing in React applications. It enables the navigation among views of various components in a React Application, managing the browser history, and keeping the UI in sync with the URL.
+
+Here's a more detailed explanation:
+
+- **Watches for URL Changes**: React Router listens for changes in the browser's URL. It uses the HTML5 history API (or falls back to hash-based routing in older browsers) to keep the UI in sync with the URL.
+
+- **Prevents Default Browser Refresh**: When the URL changes (either due to a user clicking a link or programmatically), React Router intercepts this event and prevents the default behavior of the browser, which would be to send a new request to the server and reload the page.
+
+- **Renders Components Conditionally**: Based on the current URL, React Router renders certain components and not others. This is typically done using a `<Route>` component that renders a particular component when its path matches the current URL.
+
+- **Single Page Application (SPA) Navigation**: This conditional rendering creates the effect of navigating between different pages, but it's actually just the same single web page where different React components are being rendered. This is a key feature of Single Page Applications (SPAs), where a single HTML page is loaded, and navigation between views (components) is handled client-side without additional server requests for pages.
+
+- **Maintains Browser History**: React Router updates the browser’s history, so the forward and back buttons work as expected, giving the user a natural browsing experience.
+
+In summary, React Router enhances the user experience in a React application by enabling navigation among different components without reloading the entire page, creating an efficient, seamless web application.
 
 
 

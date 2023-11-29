@@ -1,4 +1,5 @@
 
+
 # what & why SPA?
 
 A Single-Page Application (SPA) is a web application or website that interacts with the user by dynamically rewriting the current page, rather than loading entire new pages from the server. This approach avoids interruption of the user experience between successive pages, making the application behave more like a desktop application.

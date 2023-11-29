@@ -105,10 +105,11 @@ Bonus篇
 
 | 22                    | Deploying react app                          |      |
 | --------------------- | -------------------------------------------- | ---- |
-| 23                    | :star: Introduction to Next.js               |      |
+| [23](./C23-NextJS/readme.md)                      | :star: Introduction to Next.js               |      |
 | 24                    | Animating React Apps                         |      |
 | 25                    | Replacing Redux with React Hooks             |      |
 | 26                    | :star: Test React Apps (Unit test)           |      |
 | [27](./C27/README.md) | React + Typescript                           |      |
 | 28                    | Optional: react hooks introduction & Summary |      |
 | 29                    | Optional: React summary                      |      |
+
