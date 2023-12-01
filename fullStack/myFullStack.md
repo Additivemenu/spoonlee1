@@ -9,6 +9,7 @@
 | [3](./Database/myDatabase.md)         | Database               |                                     |
 | [4](./Git/readme.md)                  | version control: git   |                                     |
 | [5](./WebDevTheory/myWebDevTheory.md) | web development theory |                                     |
+| [6](./CICD/myCICD.md) | CICD |                                     |
 
 
 

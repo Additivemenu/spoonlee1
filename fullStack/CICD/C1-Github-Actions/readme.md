@@ -129,7 +129,7 @@ on {evnet}
   + A job`is a set of *steps* in a workflow that is executed <u>on the same runner</u>. Each step is either <u>a shell script</u> that will be executed, or <u>an *action*</u> that will be run.
     + `Steps` are executed in order and are dependent on each other. Since each step is executed on the same runner, you can share data from one step to another. For example, you can have a step that builds your application followed by a step that tests the application that was built. 
 
-+ `action`
++ :bangbang: `action`
   + An *action* is a custom application for the GitHub Actions platform that performs a complex but frequently repeated task. Use an action to help reduce the amount of repetitive code that you write in your workflow files. 
   + e.g. actions
     + `actions/checkout `
@@ -147,7 +147,7 @@ https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-
 
 
 
-## Find & customize features
+## Find & customize actions
 
 https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions
 
