@@ -78,7 +78,7 @@ an up-to-date Next learning tutorial offered by vercel:
 
 https://nextjs.org/learn/dashboard-app
 
-see nextjs-dashboard folder
+see nextjs-dashboard repository ( as this tut will deploy the app on vercel )
 
 + Uses typescript, tailwind css / css module, eslint 
 
@@ -262,23 +262,158 @@ export default function NavLinks() {
 
 
 
-## adding database
+## adding database & intereact with DB directly
 
 setting up database 
 
 ---
 
-C6
-
- you'll be setting up a PostgreSQL database using `@vercel/postgres`
-
-+ nothing to do with next, but a vercel eco
+C6 
 
 https://nextjs.org/learn/dashboard-app/setting-up-your-database
 
 
 
+ you'll be 
 
++ deploy your app to vercel
+
++ setting up a PostgreSQL database on vercel, and seed it with some init data
+  + nothing to do with next, but a vercel eco
+  + vercel has its own middleware for interacting with postgresql database `@vercel/postgres`
+
+
+
+
+
+这个有点6, 直接一条龙
+
+
+
+fetching data
+
+---
+
+
+
+using server component to fetch data
+
+yes, in next.js app, you would be allow to query database directly without implementing a server logic  by yourself
+
++ Server Components support promises, providing a simpler solution for asynchronous tasks like data fetching. You can use `async/await` syntax without reaching out for `useEffect`, `useState` or data fetching libraries.
+
++ Server Components execute on the server, so you can keep expensive data fetches and logic on the server and only send the result to the client. As mentioned before, since Server Components execute on the server, you can query the database directly without an additional API layer.
+
+
+
+we will be fetching data for dashboard and visualize those data in the ui
+
+```ts
+import { Card } from '@/app/ui/dashboard/cards';
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+import { lusitana } from '@/app/ui/fonts';
+import {
+  fetchRevenue,
+  fetchLatestInvoices,
+  fetchCardData,
+} from '@/app/lib/data';		// !the data fetching logic using vercel/postgresql
+
+export default async function Page() {
+  const revenue = await fetchRevenue();
+  const latestInvoices = await fetchLatestInvoices();
+  const {
+    numberOfInvoices,
+    numberOfCustomers,
+    totalPaidInvoices,
+    totalPendingInvoices,
+  } = await fetchCardData();
+
+  return (
+    <main>
+      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        Dashboard
+      </h1>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+        <Card
+          title="Total Customers"
+          value={numberOfCustomers}
+          type="customers"
+        />
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChart revenue={revenue} />
+        <LatestInvoices latestInvoices={latestInvoices} />
+      </div>
+    </main>
+  );
+}
+```
+
+
+
+request warterfall vs. parallel data fetching
+
++ [request waterfall](https://nextjs.org/learn/dashboard-app/fetching-data#what-are-request-waterfalls)
+
++ [parallel data fetching](https://nextjs.org/learn/dashboard-app/fetching-data#parallel-data-fetching)
+
+
+
+
+
+## :bangbang: static & dynamic rendering
+
+---
+
+C8
+
+https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering
+
+In the previous chapter, you fetched data for the Dashboard Overview page. However, we briefly discussed two limitations of the current setup:
+
+1. The data requests are creating an unintentional waterfall.
+2. The dashboard is static, so any data updates will not be reflected on your application.
+
+we now look at the 2nd problem here
+
+
+
+[static rendering](https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering#what-is-static-rendering)
+
++ With static rendering, data fetching and rendering happens on the server at build time (when you deploy) or during [revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data). The result can then be distributed and cached in a [Content Delivery Network (CDN)](https://nextjs.org/docs/app/building-your-application/rendering/server-components#static-rendering-default).
++ Static rendering is useful for UI with **no data** or **data that is shared across users**
+
+
+
+[dynamic rendering](https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering#what-is-dynamic-rendering)
+
++ With dynamic rendering, content is rendered on the server for each user at **request time** (when the user visits the page). 
++  a good fit for a dashboard that has personalized data that is regularly updated.
++ challenge: 
+  + With dynamic rendering, **your application is only as fast as your slowest data fetch.**
+    + we simulated a slow fetch (takes about 3 s) for fetchRevenue(),  it took the dashboard page 3 s to be loaded after user type it in browser
+
+
+
+making the dashboard dynamic 
+
++ developer can control the rendering behaviour to be static or dynamic in the `server component`
+
+
+
+streaming
+
+---
+
+C9
+
+https://nextjs.org/learn/dashboard-app/streaming
+
+In the previous chapter, you made your dashboard page dynamic, however, we discussed how the slow data fetches can impact the performance of your application. Let's look at how you can improve the user experience when there are slow data requests.
 
 
 
