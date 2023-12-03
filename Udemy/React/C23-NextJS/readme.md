@@ -10,9 +10,17 @@ Intro to Next.js
 
 what is Nextjs? why
 
-file-based routing & Page pre-rendering
+file-based routing & Page pre-rendering  [routing in next](https://nextjs.org/docs/app/building-your-application/routing)
+
+
 
 data fetching & adding an API
+
++ Static & dynamic rendering
++ streaming
+  + granularity of loading dynamic component (e.g. components relying on data fetching)
+
+
 
 
 
@@ -405,15 +413,108 @@ making the dashboard dynamic
 
 
 
-streaming
+## :bangbang: streaming
 
----
-
-C9
+C9 这节更像是性能优化和提升用户体验(面对react的优化问题?), 控制不同dynamic component (e.g. 依赖fetching data的组件)的loading行为的granularity
 
 https://nextjs.org/learn/dashboard-app/streaming
 
 In the previous chapter, you made your dashboard page dynamic, however, we discussed how the slow data fetches can impact the performance of your application. Let's look at how you can improve the user experience when there are slow data requests.
+
+
+
+[what is streaming](https://nextjs.org/learn/dashboard-app/streaming#what-is-streaming)
+
++ Streaming is a data transfer technique that allows you to break down a route into smaller "chunks" and progressively stream them from the server to the client as they become ready. By streaming, you can prevent slow data requests from blocking your whole page. This allows the user to see and interact with parts of the page without waiting for all the data to load before any UI can be shown to the user. 
+  + 说人话就是允许并行fetch data, 先fetch好的dynamic component先呈现, 不必拘泥于"共同富裕"
+
+
+
+there are two ways of implementing streaming in nextjs: loading.tsx OR `<Suspense>`
+
+
+
+option1 at page level: another next special file- `loading.tsx`
+
++ `loading.tsx` is a special Next.js file built on top of Suspense, it allows you to create fallback UI to show as a replacement while page content loads.
++ Add loading skeleton
+  + [route group](https://nextjs.org/docs/app/building-your-application/routing/route-groups): organize the route without affecting the URL path. This helps to apply loading.tsx & page.tsx of dashboard only to the path /dashboard, not cascading downward further
+
+
+
+Option2 for specific component:  \<Suspense\>
+
++ this allows a streaming a specific component, 从而允许各个dynamic component独立地loading, fetch速度慢的component也不会影响fetch速度快的component的呈现, 提升用户体验
+
++ 2 steps to implement this
+  + Step1: wrapp the dynamic component with `<Suspense>`
+  + Step2: fetch the data inside dynamic component itself
++ it is also possible to group a few components together and then wrap with a `<Suspense>` to avoid staggered loading 
+  + e.g. a group of card can be grouped together
+
+
+
+
+
+decide the Suspense boundary?  - no right answer, depends on your reqirement
+
+- You could stream the **whole page** like we did with `loading.tsx`... but that may lead to a longer loading time if one of the components has a slow data fetch.
+- You could stream **every component** individually... but that may lead to UI *popping* into the screen as it becomes ready.
+- You could also create a *staggered* effect by streaming **page sections**. But you'll need to create wrapper components.
+
+Where you place your suspense boundaries will vary depending on your application. In general, it's good practice to move your data fetches down to the components that need it, and then wrap those components in Suspense. But there is nothing wrong with streaming the sections or the whole page if that's what your application needs.
+
+
+
+
+
+partial rendering (optional)
+
+---
+
+C10
+
+New experiment feature introduced in Next14, can be skipped 
+
+
+
+
+
+## adding search and pagenation
+
+C11
+
+In the previous chapter, you improved your dashboard's initial loading performance with streaming. Now let's move on to the `/invoices` page, and learn how to add search and pagination!
+
++ Learn how to use the Next.js APIs: `searchParams`, `usePathname`, and `useRouter`.
+
++ Implement search and pagination using URL search params.
+
+
+
+
+
+adding search
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+adding pagination
+
+---
+
+
 
 
 
