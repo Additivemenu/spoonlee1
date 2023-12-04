@@ -8,9 +8,28 @@ Intro to Next.js
 
 # key takeaways
 
-what is Nextjs? why
+:bangbang::bangbang::pencil:[what is Nextjs? why](./sub_topics/why_nextjs.md) 
 
-file-based routing & Page pre-rendering  [routing in next](https://nextjs.org/docs/app/building-your-application/routing)
+
+
+
+
+file-based routing & Page pre-rendering
+
++ [routing in next](https://nextjs.org/docs/app/building-your-application/routing)
+  + `<Link>`
+
+
+
+
+
+
+
+server component vs. client component
+
++ check C11 **When to use the `useSearchParams()` hook vs. the `searchParams` prop?**
+
+:bangbang::pencil: [server components vs. client components](./sub_topics/server_client_components.md)
 
 
 
@@ -19,8 +38,21 @@ data fetching & adding an API
 + Static & dynamic rendering
 + streaming
   + granularity of loading dynamic component (e.g. components relying on data fetching)
+    + `<Suspense>`
+    + loading.tsx
 
 
+
+use url search params
+
++ check C11
+
+
+
+best practice: debouncing  (a programming practice, nothing to do with Next.js)
+
++ implement it by yourself
++ use 3rd party lib e.g. `use-debounce`
 
 
 
@@ -484,6 +516,10 @@ New experiment feature introduced in Next14, can be skipped
 
 C11
 
+https://nextjs.org/learn/dashboard-app/adding-search-and-pagination
+
+
+
 In the previous chapter, you improved your dashboard's initial loading performance with streaming. Now let's move on to the `/invoices` page, and learn how to add search and pagination!
 
 + Learn how to use the Next.js APIs: `searchParams`, `usePathname`, and `useRouter`.
@@ -492,27 +528,49 @@ In the previous chapter, you improved your dashboard's initial loading performan
 
 
 
+to implement the searching, we [use url search param](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination#why-use-url-search-params)
 
 
-adding search
+
+[Adding the search functionality](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination#adding-the-search-functionality)
+
+---
+
+These are the Next.js client hooks that you'll use to implement the search functionality:
+
+- **`useSearchParams`**- Allows you to access the parameters of the current URL. For example, the search params for this URL `/dashboard/invoices?page=1&query=pending` would look like this: `{page: '1', query: 'pending'}`.
+- **`usePathname`** - Lets you read the current URL's pathname. For example, for the route `/dashboard/invoices`, `usePathname` would return `'/dashboard/invoices'`.
+- **`useRouter`** - Enables navigation between routes within client components programmatically. There are [multiple methods](https://nextjs.org/docs/app/api-reference/functions/use-router#userouter) you can use.
+
+```ts
+// steps to implement the searching
+1. Capture the user's input.
+2. Update the URL with the search params.
+3. Keep the URL in sync with the input field.
+4. Update the table to reflect the search query.
+```
+
+
+
+:moon: [best practice: debouncing](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination#best-practice-debouncing): a programming practice that limits the rate at which a function can fire. In our case, you only want to query the database when the user has stopped typing.
+
+```ts
+How Debouncing Works:
+
+1. Trigger Event: When an event that should be debounced (like a keystroke in the search box) occurs, a timer starts.
+2. Wait: If a new event occurs before the timer expires, the timer is reset.
+3. Execution: If the timer reaches the end of its countdown, the debounced function is executed.
+```
+
+
+
+[adding pagination](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination#adding-pagination)
 
 ---
 
+up here
 
 
-
-
-
-
-
-
-
-
-
-
-adding pagination
-
----
 
 
 
