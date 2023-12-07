@@ -14,10 +14,19 @@ notes made based on vercel docs and official tut
 
 
 
+
+
 file-based routing & Page pre-rendering
 
 + :bangbang: [routing in next](https://nextjs.org/docs/app/building-your-application/routing) (to be study in details )
   + `<Link>`
+
+```ts
+// vercel's next tutorial - file structure
+> app: for putting pages & layout, setting up the skeleton & navigation logic
+> ui: for putting detailed ui components
+> lib: some data fetching logics
+```
 
 
 

@@ -49,14 +49,6 @@ build fullstack app
 
 
 
-vercel's next tutorial - file structure
-
-```ts
-> app: for putting pages & layout, setting up the skeleton & navigation logic
-> ui: for putting detailed ui components
-> lib: some data fetching logics
-```
-
 
 
 
