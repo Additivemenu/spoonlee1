@@ -5,7 +5,7 @@
 | Id                                    | Topic                  | Description                         |
 | ------------------------------------- | ---------------------- | ----------------------------------- |
 | [1](./FrontEnd/myFrontEndBasics.md)   | FrontEnd Basics        | HTML, CSS, JS, <br> TS, TailwindCSS |
-| [2](./BackEnd/myBackEnd.md)           | BackEnd                | Java, NodeJS, Python                |
+| [2](./BackEnd/myBackEnd.md)           | BackEnd                | Java, NodeJS, Python <br> [另外, Spring的学习参考](https://www.pdai.tech/md/spring/spring.html) <br> |
 | [3](./Database/myDatabase.md)         | Database               |                                     |
 | [4](./Git/readme.md)                  | version control: git   |                                     |
 | [5](./WebDevTheory/myWebDevTheory.md) | web development theory |                                     |
@@ -47,8 +47,8 @@ Table of Contents:
 学习以跟做project为核心, 遇到不懂得再查书做笔记: 
 学习>做笔记>做项目>反思>循环
 
-
 **学习Tips:** 
+
 + YouTube上web project, 自己写出一遍以后可以尝试改变代码微调出自己想要的款式，如果出现问题尝试思考为什么会出现再解决它。
 + YouTube直接搜html, css, js, 有很多项目
 + 全身心投入学习(学习>做笔记>做项目>反思>循环) ，最后才能找到还不错的工作 

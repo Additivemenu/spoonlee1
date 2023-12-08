@@ -54,6 +54,12 @@ tailwind css
 
 
 
+Ui lib
+
++ 除了直接使用ui lib的组建, 还可以使用ui lib提供的tailwind className来为组件添加styling e.g. [shadcn: button](https://github.com/Additivemenu/nextjs-quill/blob/448b932c853c8522cb3b73583211a5541f19eebb/src/components/ui/button.tsx#L7-L35C2)
+
+
+
 # 1. Creating landing page
 
 snapshot: https://github.com/Additivemenu/nextjs-quill/tree/01-init-globalcss-tailwindcss-setup
@@ -222,6 +228,22 @@ up here
 
 
 
+:gem: [navbar code piece](https://github.com/Additivemenu/nextjs-quill/blob/03-adding-navbar/src/components/Navbar.tsx)
+
++ use it in [root layout](https://github.com/Additivemenu/nextjs-quill/blob/4ff3cea991d7e9b36706eee9bb4ab7811e6b3549/src/app/layout.tsx#L27C7-L27C18) as multiple pages would share it
+
++ note here we use `kinde-oss` [LoginLink & RegisterLink](https://github.com/Additivemenu/nextjs-quill/blob/4ff3cea991d7e9b36706eee9bb4ab7811e6b3549/src/components/Navbar.tsx#L29-L44) for quick authentication setup
+
+  + https://kinde.com/   authentication provider, we will use it in section4
+
+  + ```ts
+     npm i @kinde-oss/kinde-auth-nextjs
+    ```
+
++ 再次体会使用ui lib定义好的tailwind className来为组件直接添加styling [styling Link as Button](https://github.com/Additivemenu/nextjs-quill/blob/4ff3cea991d7e9b36706eee9bb4ab7811e6b3549/src/components/Navbar.tsx#L30-L33)
+
+
+
 
 
 # 4. Adding Authentication
@@ -230,7 +252,41 @@ up here
 
 
 
+just follow instructions when setting your kinde business,  
 
++ kinde不仅可以做Next.js app的auth, 还可以做react, express ...的auth
+
+
+
+.env setup
+
++ 定义好一些URL的环境变量与kinde的secret
+
+```ts
+KINDE_CLIENT_ID=...
+KINDE_CLIENT_SECRET=...
+KINDE_ISSUER_URL=https://nextquillshawn.kinde.com
+KINDE_SITE_URL=http://localhost:3000
+KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
+KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/dashboard
+```
+
+
+
+[kinde handle auth setup](https://github.com/Additivemenu/nextjs-quill/commit/37c014836fc1f0abf216ef048fbf5e94e1a26939#diff-2b1de504463c1dbf2fa0b12fb13400c339ef21e10a2aa4a08f42765574e1ddb5)
+
++ 将kinde auth 接入我们的app
+
+
+
+[LoginLink & RegisterLink](https://github.com/Additivemenu/nextjs-quill/blob/4ff3cea991d7e9b36706eee9bb4ab7811e6b3549/src/components/Navbar.tsx#L29-L44)
+
++ use kinde auth component out of the box
+  + when click on the LoginLink or RegisterLink, user will be directed to a page for login or signup, the data is hosted by kinde
+
+
+
+这都可以, 有点秀, 做authentication的话直接一步到位
 
 
 
@@ -240,15 +296,26 @@ up here
 
 
 
-creating dashboard
+## Creating dashboard
 
 1h28min-1h41min
+
+user login flow:
+
++ when first time login, user is redirect to dashboard page, there user is checked if they are in the database, if not sync user to database
+  + we will implement the sync in auth-callback [dashboard init pages](https://github.com/Additivemenu/nextjs-quill/blob/902b9e40bfd9ef90683f1a553cfa4fd9c132e1fd/src/app/dashboard/page.tsx#L9)
+
+<img src="./src_md/user-login-flow.png" style="zoom:50%;" />
 
 
 
 database syncing 
 
 1h41min-1h51min
+
+看到这里, 接着05 branch来写
+
+
 
 
 
@@ -264,7 +331,9 @@ create database
 
 
 
-perfecting dashboard
+
+
+## Perfecting dashboard
 
 2h24min-3h12min
 
