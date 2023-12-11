@@ -11,12 +11,18 @@ C20 build SPA using React Router
 + what is SPA ? why we need SPA
   + react router  watches for URL changes. when URL changes, it prevents it from sending request(prevent browser default refresh), but render the components conditionally on the page so that it looks likes navigation but just a single page
 
-+ defining routes & navigation header
-  + nested pages: if multiple pages share a common component
-
++ :bangbang: defining routes & navigation header
+  + layout component & page component -> very similar to next.js file-based navigation concept
+  + nested pages: if multiple pages share a common component - see e.g. in [3.0 practice](#3.0 :bangbang::gem: practice)
+  
 + navigate programmatically
-  + in react  navigation for react native, screens are registered and identified by screen name; parameters are passed into that screen when navigate programmatically 
-  + Similarly,  in react router for react web, <span style="color: yellow">a page is registered and identified by a url path</span>, parameters are passed into that page through the url's parameter
+  + in `react navigation` for `react native`, screens are registered and identified by screen name; parameters are passed into that screen when navigate programmatically 
+  + :bangbang: Similarly,  in `react router` for `react` web, <span style="color: yellow">a page is registered and identified by a url path</span>, parameters are passed into that page through the url's parameter
+
++ data fetching with react router
+  + `useLoader()` hook: use case - fetch data before navigating to and render target page
+
+
 
 
 
@@ -169,11 +175,13 @@ export default HomePage;
 
 
 
-## Layouts & nested routes
+## :bangbang: Layouts & nested routes
 
 307
 
 实现一个常见的navigation header
+
++ 这个结构和next.js的结构类似
 
 ```js
 App
@@ -219,6 +227,8 @@ export default App;
 
 Root.js
 
++ 
+
 ```js
 import { Outlet } from "react-router-dom";
 
@@ -243,6 +253,8 @@ export default RootLayout;
 ```
 
 MainNavigation.js
+
++ the nav bar component
 
 ```js
 import { Link } from "react-router-dom";
@@ -396,6 +408,8 @@ export default MainNavigation;
 
 
 
+## `useNavigate()`
+
 ```js
 useNavigate() // this hook works just like react navigation in react native
 ```
@@ -408,7 +422,7 @@ import { Link, useNavigate } from "react-router-dom";
 function HomePage() {
   const navigate = useNavigate();
   function navigateHandler() {
-    navigate("/products");
+    navigate("/products");			// navigate programmatically
   }
 
   return (
@@ -431,7 +445,7 @@ export default HomePage;
 
 
 
-## Dynamic Routes
+## Dynamic Routes: `useParams()`
 
 311-
 
@@ -596,7 +610,11 @@ function App() {
 
 
 
-# 2.5 :gem: practice
+# 3. Dive deeper 
+
+
+
+## 3.0 :bangbang::gem: practice
 
 456 
 
@@ -608,6 +626,17 @@ app.js
 
 + register pages with url 
 + nested: 使得多个page可以共享某个组件 
+
+```ts
+// represent following hierarchical tree, 
+"/": RootLayout  // its children will share some common comopments in Layout component
+	|--- index: HomePage
+	|--- "/events": EventRootLayout		// its children will share some common components in Layout 
+  			|--- index: EventPage
+				|--- ":eventId": EventDetailPage
+        |--- "new": NewEventPage
+        |--- ":eventId/edit": EditEventPage
+```
 
 ```js
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -671,15 +700,222 @@ export default EventsRootLayout;
 
 
 
-# 3. Dive deeper 
 
-接着2.5的practice做
+
+
+
+接下来接着3.0的practice做
 
 :gem: 03-dive-deeper-projects
 
-## 3.1 Loader 
+## 3.1 Data fetching with `loader()`
 
-459-
+460-461
+
+
+
+before using `loader()`
+
+---
+
+
+
+src > pages > Event.js
+
++ what we fetch data tranditionally in previous learning - we leave the data fetching logic inside the page, the problem is that the page will firstly rendered without the data then fetch the data and then re-render the page with fetched data. 
+  + how about we firstly fetch data, when the fetched data is ready, then we render the component? => that is to use `loader()`
+
+````js
+import { useEffect, useState } from 'react';
+
+import EventsList from '../components/EventsList';
+
+function EventsPage() {
+  // hooks ==========================================
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchedEvents, setFetchedEvents] = useState();
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    async function fetchEvents() {
+      setIsLoading(true);
+      const response = await fetch('http://localhost:8080/events');   // send to dummy backend 
+
+      if (!response.ok) {
+        setError('Fetching events failed.');
+      } else {
+        const resData = await response.json();
+        setFetchedEvents(resData.events);
+      }
+      setIsLoading(false);
+    }
+
+    fetchEvents();
+  }, []);
+
+  // jsx ============================================
+  return (
+    <>
+      <div style={{ textAlign: 'center' }}>
+        {isLoading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+      </div>
+      
+      {!isLoading && fetchedEvents && <EventsList events={fetchedEvents} />}
+    </>
+  );
+}
+
+export default EventsPage;
+````
+
+
+
+
+
+after using `laoder()`
+
+---
+
+App.js
+
++ we define a loader function when registering the `<EventPage/>`, everytime just before we navigate to that page, the loader function will get run and return data to that component. This will makes data fetching code cleaner and improve the performance
+
+```js
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import HomePage from "./pages/Home";
+import EventsPage from "./pages/Events";
+import EventDetailPage from "./pages/EventDetail";
+import NewEventPage from "./pages/NewEvent";
+import EditEventPage from "./pages/EditEvent";
+import RootLayout from "./pages/Root";
+import EventsRootLayout from "./pages/EventsRoot";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      {
+        path: "events",
+        element: <EventsRootLayout />,
+        children: [
+          {
+            index: true,
+            element: <EventsPage />,
+            loader: async () => {
+              const response = await fetch("http://localhost:8080/events"); // send to dummy backend
+
+              if (!response.ok) {
+                // ... we will look at error handling later
+              } else {
+                const resData = await response.json();
+                return resData.events;   // this is the data that will be passed to the EventsPage component by react router
+              }
+
+            },
+          },
+          { path: ":eventId", element: <EventDetailPage /> },
+          { path: "new", element: <NewEventPage /> },
+          { path: ":eventId/edit", element: <EditEventPage /> },
+        ],
+      },
+    ],
+  },
+]);
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+```
+
+src > pages > `Event.js` 
+
++ modified version, we just use `useLoaderData()` to extract the data passed by loader, this time we don't need to manage loading state and code gets cleaner!
+
+```js
+import {useLoaderData} from "react-router-dom";
+
+import EventsList from "../components/EventsList";
+
+function EventsPage() {
+  // hooks ==========================================
+
+  const events = useLoaderData();   // here react router will automatically resolve the promise returned by the loader function
+
+  // jsx ============================================
+  return <>{<EventsList events={events} />}</>;
+}
+
+export default EventsPage;
+
+```
+
+
+
+where can `useLoader()` be used ? 
+
+P462
+
++ 在register page component时, 绑定上loader的page component, e.g. 上面例子里的`<EventsPage>`
++ 以及这个page component内部的sub-component. e.g. 上面例子里的`<EventsList>`
+
+
+
+where should the loader function be store?
+
+P463
+
++ to keep the registering page code clean, simply store the loader function code inside the page component file, and export it 
+
+
+
+when are loader() function executed?
+
+p464
+
++ before navigating to target page component. Only when load() function completed can the page component be rendered => so there will be stagnent page when user click on a Link, but we will discuss how to relieve this later
+
+
+
+reflecting the current navigation state in the UI
+
+p465
+
++ one way of workaround is to use `navigation ` 's  state porperty (returned by `useNavigation()` ) to check if there is ongoing navigation action occuring, and then use this state info to conditionally render a popup message in  a layout component 
+
+```ts
+import React from "react";
+import { Outlet, useNavigation } from "react-router-dom";
+import MainNavigation from "../components/MainNavigation";
+
+const RootLayout = () => {
+	
+  const navigation = useNavigation();
+  
+  return (
+    <>
+     <MainNavigation />
+      <main>
+        {navigation.state === 'loading' && <p>loading...</p>} 
+        <Outlet />
+      </main>
+    </>
+  );
+};
+
+export default RootLayout;
+```
+
+
+
+
+
+### returning responses in loader()
+
+p466
 
 看到这里
 
@@ -687,6 +923,8 @@ export default EventsRootLayout;
 
 
 
+
+
 ## 3.2 Data Submission
 
-472-
+p473-
