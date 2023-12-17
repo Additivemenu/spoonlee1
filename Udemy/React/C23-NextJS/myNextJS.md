@@ -806,3 +806,7 @@ https://nextjs.org/learn/dashboard-app/next-steps
 
 
 
+:[Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
+
+
+
