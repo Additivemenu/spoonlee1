@@ -2,12 +2,8 @@ Intro to Next.js 3hrs
 
 
 
-:pencil: [learn nextjs from vercel officially](./myNextJS.md)
+:bangbang::pencil: [learn nextjs from vercel officially](./myNextJS.md)
 + just check out on this, no need to look at this md
-
-
-
-
 
 
 

@@ -2,6 +2,20 @@ notes made based on vercel docs and official tut
 
 
 
+
+
+:bangbang: see Next.js basics at, should make notes for these
+
+https://nextjs.org/docs/app/building-your-application/routing
+
+ https://nextjs.org/docs/app/building-your-application/data-fetching
+
+https://nextjs.org/docs/app/building-your-application/rendering
+
+
+
+
+
 # 0. key takeaways
 
 :bangbang::bangbang::pencil:[what is Nextjs? why](./sub_topics/why_nextjs.md) 
@@ -50,6 +64,8 @@ data fetching & adding an API
 
 
 
+
+
 :bangbang: use url search params, instead of using client state in react.js way
 
 + next.js client hooks (`useSearchParams`, `usePathname`, `useRouter`) to read & manipulate the URL <span style="color: red">directly in browser in real-time</span>, insead of saving user input as client state
@@ -57,12 +73,22 @@ data fetching & adding an API
   + 其实想想, URL中的query信息也是state, 在react app中我们是利用react state来表达这种信息的, 只是这里更进一步将这种特殊的状态信息做成了hook, 这样在开发时对URL的info进行CRUD时会更加便捷 (e.g. 我全局的组件都可以利用这些next 的hook 来获取同一个URL里的query info, 而不是还得通过定义react state并在组件间传递这些react state), C11中涉及到query database的状态参数都是直接从URL里拿的. [当然还有其他的好处](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination#why-use-url-search-params) .
     + :question: <u>我怀疑当URL改变时, 涉及到使用这3个hooks的component都得re-redner</u>
 
+
+
 best practice: debouncing  (a programming practice, nothing to do with Next.js)
 
 + you can implement it by yourself OR
 + use 3rd party lib e.g. `use-debounce`
 
 
+
+
+
+C11-C12 总而言之, CRUD这种操作就分两步
+
++ Step1: allows user to input data and submit the data
++ Step2: capture user input data and launch request to CUD in db
+  + 只不过这步在next.js里可以用server action来实现, 相关code集中放在lib>actions.ts
 
 
 
@@ -470,6 +496,10 @@ New experiment feature introduced in Next14, can be skipped
 
 ## CRUD invoice data 
 
+for data fetching in Next.js fashion (directly fetch from database in server component)
+
+see official docs at:  https://nextjs.org/docs/app/building-your-application/data-fetching
+
 
 
 ### R: Adding search and pagenation
@@ -557,7 +587,7 @@ Just similar to adding seach, we still use url search parameters instead of clie
 
 实现分页的原理
 
-+ table底部的分页元素本质是`<Link>`, 点击就触发navigate到绑定的URL, 具体如何实现navigation的看 [routing in next](https://nextjs.org/docs/app/building-your-application/routing)
++ table底部的页码本质是`<Link>`, 点击就触发navigate到绑定的URL, 具体如何实现navigation的看 [routing in next](https://nextjs.org/docs/app/building-your-application/routing)
 
 
 
@@ -575,13 +605,130 @@ In the previous chapter, you implemented search and pagination using URL Search 
 
 Now let's do CUD (R just done) invoices
 
+:bangbang: note we will still be using url state to directly extract and manipulate with url
+
+
+
+总而言之, CUD这种操作就分两步
+
++ Step1: allows user to input data and submit the data
++ Step2: capture user input data and launch request to CUD in db
+  + 只不过这步在next.js里可以用server action来实现, 相关code集中放在lib>actions.ts
+
+
+
+server actions  
+
+learn more athttps://nextjs.org/docs/app/building-your-application/data-fetching
+
++ React Server Actions allow you to run asynchronous code directly on the server. They eliminate the need to create API endpoints to mutate your data.
++ React Server Actions also provide security solutions
+
+
+
+#### creating an invoice
+
+Here are the steps you'll take to create a new invoice (其实就是用next的fashion来提交一个form的post request):
+
+大多数情况下都可沿用如下步骤
+
+
+
+step1: setup component to intake user's input
+
+[code piece1](https://github.com/Additivemenu/nextjs-dashboard/blob/6e74ab2da2e7ccb0ea33d38d15f6f0a2d6d241cb/app/dashboard/invoices/create/page.tsx#L22)
+
++ Create a form to capture the user's input.
+  + Code
+
++ Create a Server Action and invoke it from the form. [code piece2](https://github.com/Additivemenu/nextjs-dashboard/blob/6e74ab2da2e7ccb0ea33d38d15f6f0a2d6d241cb/app/ui/invoices/create-form.tsx#L15)
+  + create a server function in a standalone file (for the sake of cohesion), and attach it to `<form>`
+
+
+
+step2: get and parase form data, insert them to db
+
+ [code piece](https://github.com/Additivemenu/nextjs-dashboard/blob/6e74ab2da2e7ccb0ea33d38d15f6f0a2d6d241cb/app/lib/actions.ts#L20-L34)
+
++ Inside your Server Action, extract the data from the `formData` object.
+
+  + Code
+
++ Validate and prepare the data to be inserted into your database.
+
+  + ensures Type safety => use [zod](https://zod.dev/):  a TypeScript-first validation library 
+
++ Insert the data into database and handle any errors (we actually handle errors in next class!)
+
+  + using sql database facade  in next.js
+
+  
+
+step3: post-work to do 
+
+[code piece](https://github.com/Additivemenu/nextjs-dashboard/blob/6e74ab2da2e7ccb0ea33d38d15f6f0a2d6d241cb/app/lib/actions.ts#L36-L38)
+
++ Revalidate the cache and redirect the user back to invoices page.
+  + this is the after-work to do, it may differ case-to-case
+
+
+
+
+
+#### updating an invoice 
+
+
+
+These are the steps you'll take to update an invoice:
+
+
+
+sdefine how to navigate to invoices editing page with specific id as param
+
++ Create a new dynamic route segment with the invoice `id`. 
+  + just add corresponding files path to form a new url route
+    + [code piece 1](https://github.com/Additivemenu/nextjs-dashboard/blob/C12-mutating-data/app/dashboard/invoices/%5Bid%5D/edit/page.tsx)
+    + [update link in invoice table](https://github.com/Additivemenu/nextjs-dashboard/blob/28d19a7ac2da68bb99c46ee4fa8baf8fb06c6fb4/app/ui/invoices/table.tsx#L50) > [button's link to the edit invoices url](https://github.com/Additivemenu/nextjs-dashboard/blob/28d19a7ac2da68bb99c46ee4fa8baf8fb06c6fb4/app/ui/invoices/buttons.tsx#L19)
+  + [dynamic route in next](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
+
++ when navigating to edit invoice page,
+
+  +  get the invoice id from url state
+    + [code piece 1](https://github.com/Additivemenu/nextjs-dashboard/blob/28d19a7ac2da68bb99c46ee4fa8baf8fb06c6fb4/app/dashboard/invoices/%5Bid%5D/edit/page.tsx#L6C1-L8C24)
+
+  + Fetch the specific invoice from your database. & Pre-populate the 'edit a invoice form' with the invoice data.
+    + [code piece 2](https://github.com/Additivemenu/nextjs-dashboard/blob/28d19a7ac2da68bb99c46ee4fa8baf8fb06c6fb4/app/dashboard/invoices/%5Bid%5D/edit/page.tsx#L9-L12)
+    + uuid vs. auto-incrementing id 
+
+
+
+step2: after user populated the updating form with data, we then
+
++ Update the invoice data in your database once user submit the form
+  + [define server action](https://github.com/Additivemenu/nextjs-dashboard/blob/28d19a7ac2da68bb99c46ee4fa8baf8fb06c6fb4/app/lib/actions.ts#L42-L62)
+  + [bound the server action to form action](https://github.com/Additivemenu/nextjs-dashboard/blob/C12-mutating-data/app/ui/invoices/edit-form.tsx#L25)
+    + Instead, you can pass `id` to the Server Action using JS `bind`. 
+
+
+
+
+
+#### deleting an invoice 
+
++ [server action for deleting an invoice](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/lib/actions.ts#L66-L69)
++ [get url params and bind server action with a form](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/ui/invoices/buttons.tsx#L28-L39)
+
+
+
+
+
 
 
 
 
 ## Error handling & improving accessibility
 
-
+看到这里
 
 
 

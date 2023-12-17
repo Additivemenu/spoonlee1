@@ -46,6 +46,16 @@ Landing Page & Navigation -> Auth -> Functionality -> Payment & Launch
 
 
 
+
+
+Next,js
+
++ file system based routing - 
+  + "_trpc" under app folder the underscore would tell next don't treat this directory as a route
+  + "[dynamic_route]" 
+
+
+
 tailwind css
 
 + 可以使用globals.css与tailwind.config.ts 来为tailwind添加(或修改)自定义的utility class
@@ -250,6 +260,8 @@ up here
 
 1h21min-1h28min
 
+https://github.com/Additivemenu/nextjs-quill/tree/04-adding-authentication
+
 
 
 just follow instructions when setting your kinde business,  
@@ -294,26 +306,34 @@ KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/dashboard
 
 ~2hrs
 
+https://github.com/Additivemenu/nextjs-quill/tree/05-creating-dashboard
+
 
 
 ## Creating dashboard
 
-1h28min-1h41min
+1h28min-1h42min no code, just explaining for what we will do in this section
 
 user login flow:
 
-+ when first time login, user is redirect to dashboard page, there user is checked if they are in the database, if not sync user to database
++ when first time login, user is redirect to dashboard page, there user is checked if their user info are in the database, if not sync user to database
   + we will implement the sync in auth-callback [dashboard init pages](https://github.com/Additivemenu/nextjs-quill/blob/902b9e40bfd9ef90683f1a553cfa4fd9c132e1fd/src/app/dashboard/page.tsx#L9)
 
 <img src="./src_md/user-login-flow.png" style="zoom:50%;" />
 
 
 
-database syncing 
+### tRPC 
 
-1h41min-1h51min
+tRPC explaining  
 
-看到这里, 接着05 branch来写
+1h42min-1h46min
+
+:pencil: [tRPC](./sub_topics/tRPC.md)
+
++ tRPC mainly aims for type safety across frontend and backend
+
+<img src="./Src_md/tRPC1.png" style="zoom:50%;" />
 
 
 
@@ -321,13 +341,39 @@ database syncing
 
 tRPC setup
 
-1h51min-2h
+1h46min-2h06min
+
+https://trpc.io/docs/client/nextjs/setup
 
 
 
-create database
+key setup steps
 
-2h-2h24min
+```ts
+get trpc instance
+define trpc routes
+wireup trpc to app/api
+```
+
+
+
+
+
+route handlers for wiring up tRPC router with api
+
+https://trpc.io/docs/server/adapters/nextjs#route-handlers
+
+
+
+
+
+### create database
+
+2h06min-2h24min
+
+use prisma 
+
+:pencil: [prisma](./sub_topics/prisma.md)
 
 
 
