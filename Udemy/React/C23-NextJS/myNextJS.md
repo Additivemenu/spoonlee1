@@ -92,6 +92,10 @@ C11-C12 总而言之, CRUD这种操作就分两步
 
 
 
+C13 Error handling & fallback ui in Next.js
+
+
+
 
 
 # 1. :gem: Demo: nextjs-dashboard
@@ -494,7 +498,7 @@ New experiment feature introduced in Next14, can be skipped
 
 
 
-## CRUD invoice data 
+## :full_moon: CRUD invoice data 
 
 for data fetching in Next.js fashion (directly fetch from database in server component)
 
@@ -599,7 +603,7 @@ Just similar to adding seach, we still use url search parameters instead of clie
 
 ### CUD: Mutating data
 
-C12
+C12 https://github.com/Additivemenu/nextjs-dashboard/tree/C12-mutating-data
 
 In the previous chapter, you implemented search and pagination using URL Search Params and Next.js APIs. 
 
@@ -716,17 +720,55 @@ step2: after user populated the updating form with data, we then
 #### deleting an invoice 
 
 + [server action for deleting an invoice](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/lib/actions.ts#L66-L69)
-+ [get url params and bind server action with a form](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/ui/invoices/buttons.tsx#L28-L39)
++ [get url params and bind the server action with a form](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/ui/invoices/buttons.tsx#L28-L39)
 
 
 
 
 
+## :moon: Error handling & improving accessibility
+
+C13 https://nextjs.org/learn/dashboard-app/error-handling
+
+
+
+就记住: nest有一些特殊的file(e.g. error.tsx, not-found.tsx ...)可以当做fallback ui如果主体ui (page.tsx) throw error 
 
 
 
 
-## Error handling & improving accessibility
+
+[code piece: add try catch block for server action](https://github.com/Additivemenu/nextjs-dashboard/blob/0cb217a6ee6bca0a53cac5c48d311334f0ab5218/app/lib/actions.ts#L31-L40)
+
+
+
+Option1: How to use the special `error.tsx` file to catch errors in your route segments, and show a fallback UI to the user.
+
++ [error.tsx](https://github.com/Additivemenu/nextjs-dashboard/blob/0cb217a6ee6bca0a53cac5c48d311334f0ab5218/app/dashboard/invoices/error.tsx#L9-L10)
+  + note error.tsx is a client component
+  + 应该是接收往下sub-route throw的error并作为fallback ui呈现
+  + note its property: error, reset
+
+
+
+Option2: How to use the `notFound` function and `not-found` file to handle 404 errors (for resources that don’t exist).
+
++ [not-found.tsx](https://github.com/Additivemenu/nextjs-dashboard/blob/C13-error-handling-when-CRUD/app/dashboard/invoices/%5Bid%5D/edit/not-found.tsx)
+  + [how is it triggered in page.tsx](https://github.com/Additivemenu/nextjs-dashboard/blob/0cb217a6ee6bca0a53cac5c48d311334f0ab5218/app/dashboard/invoices/%5Bid%5D/edit/page.tsx#L14-L16)
+
++ That's something to keep in mind, `notFound` will take precedence over `error.tsx`, so you can reach out for it when you want to handle more specific errors!
+
+
+
+more reading at https://nextjs.org/learn/dashboard-app/error-handling#further-reading
+
+
+
+
+
+## Improving Accessibility
+
+C14 https://nextjs.org/learn/dashboard-app/improving-accessibility
 
 看到这里
 
@@ -736,7 +778,7 @@ step2: after user populated the updating form with data, we then
 
 ## Adding authentication
 
-
+C15 https://nextjs.org/learn/dashboard-app/adding-authentication
 
 
 
@@ -745,6 +787,12 @@ step2: after user populated the updating form with data, we then
 
 
 ## Adding metadata
+
+C16 https://nextjs.org/learn/dashboard-app/adding-metadata
+
+
+
+
 
 
 
