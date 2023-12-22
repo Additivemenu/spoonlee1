@@ -1,6 +1,6 @@
 跳转
 
-+ [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
++ :pencil: [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
 
 
 
@@ -27,7 +27,10 @@
 
 [mozilla CSS](https://developer.mozilla.org/en-US/docs/Web)
 
----
+
+
+
+
 # 0. BEM命名规范
 
 BEM命名规范用来提高代码可读性, 用来命名class, 分为三部分:
@@ -220,7 +223,7 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + `::selection`:  applies styles to the part of a document that has been highlighted by the user (such as clicking and dragging the mouse across text).
 
 
-# 2. CSS基本语法与特性
+# 2. :bangbang: CSS基本语法与特性
 
 ## 2.1 施加CSS的三种方式
 + 行内样式(只控制一个标签)
@@ -237,20 +240,30 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 + 外部样式表(可以控制多个页面, 最常用)
   在HTML文件的`<head>`下挂载`<link>`
 
-## 2.2 :full_moon: CSS三大特性
+## 2.2 CSS三大特性
 ### 2.1 层叠性
 + 样式冲突，后定义的覆盖之前定义的
 + 样式不冲突，不会重叠
 
 :gem: [CSS层叠性](./CSS_Sample/CSS_3Features/26-css%E5%B1%82%E5%8F%A0%E6%80%A7.html)
 
-### 2.2 继承性
+
+
+### 2.2 :bangbang:继承性
+
 + 子标签会继承父标签的**text相关样式**，比如Text-, font-, line-和color属性会继承。
 + 高度和盒模型内外边距(margin, padding)等**则不会**继承
 
 :gem: [CSS继承性](./CSS_Sample/CSS_3Features/27-css%E7%BB%A7%E6%89%BF%E6%80%A7.html)
 
-### 2.3 优先级(权重)
+
+
+:pencil: [postition & dimension inheritance in css](./sub_topics/css_inheritance.md)
+
+
+
+### 2.3 :bangbang: 优先级(权重)
+
 当一个标签的同一个属性在不同的选择器中被同时定义了多次时, 由优先级来确定到底启用哪一个被定义的属性.
 
 除去层叠性带来的优先级(后定义的覆盖之前定义的), 以下优先级等级(权重)也被用来解决定义属性冲突的问题:
@@ -279,7 +292,13 @@ a:active|鼠标单击hyperlink, 但未释放时的状态| a:active {color:#999;}
 
 :gem: [权重的叠加](./CSS_Sample/CSS_3Features/30-%E6%9D%83%E9%87%8D%E7%9A%84%E5%8F%A0%E5%8A%A0.html)
 
-## 2.3 :full_moon: :full_moon: 元素模式的转化
+
+
+
+
+
+
+## 2.3 :bangbang:元素模式的转化
 :book: [w3: element-level](https://www.w3schools.com/html/html_blocks.asp)
 
 [myHTMLNotes: #1. HTML basic tags](../HTML/myHTMLNotes.md)
@@ -314,7 +333,12 @@ text-indent:2em;
 
 ```
 
+
+
+
+
 # 3. :moon: Block element
+
 即div tag
 ```html
 <div class="block1"></div>

@@ -14,6 +14,13 @@ https://nextjs.org/docs/app/building-your-application/rendering
 
 
 
+:bangbang: understand Next.js works https://www.youtube.com/watch?v=d2yNsZd5PMs
+
++ Next is still SPA framework, but facilitating the initial rendering by SSR. Once the intial paint is load, then it is still a react app 
++ Next and SPA are not mutually exclusive!
+
+
+
 
 
 # 0. key takeaways
