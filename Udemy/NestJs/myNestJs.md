@@ -35,17 +35,14 @@ Part1: nestjs basics
 
 6 hrs
 
-|      |                                                            |                        |
+| Id | Topic | Description |
 | ---- | ---------------------------------------------------------- | ---------------------- |
 | [2](./C2/readme.md)    | Hello world Nest App                                       | Nest App的architecture |
-| [3-6](./C3/readme.md) | Nest App with Nest CLI <br>Validating Request Data with Pipes <br>:bangbang: Nest Architecture: services & repo <br>:bangbang: Nest Architecture: Organizing code with Modules |                        |
+| [3-6](./C3-6/readme.md) | Nest App with Nest CLI <br>Validating Request Data with Pipes <br>:bangbang: Nest Architecture: services & repo <br>:bangbang: Nest Architecture: Organizing code with Modules | see code in :gem: messages folder |
 |     |                          |                        |
 |     |               |                        |
 |     |  |                        |
-| [7](./C7/readme.md) | Big project time                                           |                        |
-| 8    | :bangbang: Persisting Data with TypeORM                    |                        |
-| 9    | Creating and Saving User Data                              |                        |
-| 10   | Custom Data Serialization                                  |                        |
+| [7-11](./C7/readme.md) | My car pricing App       |                        |
 
 
 
@@ -55,7 +52,7 @@ Part2:
 
 |      |                            |      |
 | ---- | -------------------------- | ---- |
-| 11   | Authentications            |      |
+|      |                            |      |
 | 12   | unit testing               |      |
 | 13   | integration testing        |      |
 | 14   | managing app config        |      |
@@ -64,7 +61,7 @@ Part2:
 | 17   | query builder with TypeORM |      |
 | 18   | production development     |      |
 
-
+​	
 
 Part3: bonus
 

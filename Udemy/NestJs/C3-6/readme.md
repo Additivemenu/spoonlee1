@@ -1,14 +1,50 @@
 # Key takeaway
 
+MVC workflow:
+
 <img src="../C2/src_md/scratch2.png" style="zoom:50%;" />
 
 + Controlelr -> Service -> Repository
+  + Pipe & Dto
   + Inversion of Conrtrol & Dependence Injection
     + why we use them
-  + NestJs Modules wiring up
-    + imports
-    + providers
-    + exports
+
++ NestJs Modules wiring up
+  + project is build based on several modules, each module has its own controller, services, repositories. And one module can depends on another module
+
+
+```ts
+import { Module } from '@nestjs/common';
+import { DiskService } from './disk.service';
+import { PowerModule } from 'src/power/power.module';
+
+@Module({
+  imports: [PowerModule], // easy to see the module dependency
+  providers: [DiskService],	// declare dependencies used to construct the controller of this module
+  exports: [DiskService],	// make some classes publically available to other modules
+})
+export class DiskModule {}
+```
+
++ nest CLI
+
+```js
+// nest cli
+npm install -g @nestjs/cli
+
+// generate a nest project
+nest new <project-name> // this by default create a directory that is init as a git repo
+nest new <project-name> --skip-git		// this will not
+
+// at root path of the project: generate a new module
+nest generate module <module-name>
+  
+// at root path of the project:  generate a new controller inside that new module
+nest generate controller messages/messages --flat
+
+// and there are also cli for generating new service & repository classes
+
+```
 
 
 
@@ -129,9 +165,9 @@ steps to set up automatic validation
 
 1. tell nest to use global validation
 2. create a class that describes the different properties that the request body should have
-   + Dto (data transfer object)
-3. add validation rules to the class
-4. apply that class to the request handler
+   + that is -> Dto (data transfer object)
+3. add validation rules to the Dto class
+4. apply that Dto class  to the request handler in typescript
 
 写法和SpringBoot如出一辙
 
@@ -237,7 +273,7 @@ specific Dto instance --class-validator-->
 
 
 
-how type info of typescript is perserved when running compiled javascript code
+side notes: how type info of typescript is perserved when running compiled javascript code
 
 ---
 
@@ -318,14 +354,14 @@ why dependency injection exist
 
 
 
-Inversion of Control principle for better code scalability, maintainability:
+<span style="color:yellow">Inversion of Control principle</span> for better code scalability, maintainability:
 
-+ Classes shoud <u>not</u> create instances of its dependencies on its own
++ <span style="color:yellow">Classes shoud not create instances of its dependencies on its own</span>
   + 换言之, classes需要第三方来负责为其inject dependency, 这在SpringBoot里就是Container负责的
 
 
 
-bad example:
+a bad example:
 
 ```js
 import { MessagesRepository } from "./messages.repository";
@@ -333,7 +369,7 @@ import { MessagesRepository } from "./messages.repository";
 export class MessagesService{
     private messagesRepo: MessagesRepository;
 
-  	// bad as not follow IoC:  class creating its dependency on its own
+  	// bad as not following IoC:  class creating its dependency on its own
     constructor(){
         this.messagesRepo = new MessagesRepository();
     }
@@ -343,7 +379,7 @@ export class MessagesService{
 better example
 
 + inject a specific dependency
-+ we followingly use this pattern
++ we will use this pattern
 
 ```js
 import { MessagesRepository } from "./messages.repository";
@@ -394,17 +430,23 @@ Nest DI Container Work Flow:
    + **Use the 'Injectable' decorator on each class and add them to the modules list of providers**
 3. We then ask the container to create an instance of a class (e.g. controller instance)for us
 4. Container creates all required dependencies and gives us the instance
-   + **Happens automatically - Nest will try to create controller instances for us**
+   + **<span style="color:yellow">Happens automatically - Nest will try to create controller instances for us</span>**
 5. Container will hold onto the created dependency instances and reuse them if needed
    + Flyweight Pattern, SpringBoot Bean container also does this
 
 
 
-## Refactor using DI
+## :gem: Refactor using DI
 
 P30-31
 
+see di folder
+
+
+
 message module
+
++ declare class relationships inside this module
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -420,6 +462,8 @@ export class MessagesModule {}
 ```
 
 message controller
+
++ Routing
 
 ```ts
 import {
@@ -468,6 +512,8 @@ export class MessagesController {
 
 message service
 
++ business logic
+
 ```ts
 import { Injectable } from "@nestjs/common";
 import { MessagesRepository } from "./messages.repository";
@@ -499,6 +545,8 @@ export class MessagesService{
 ```
 
 message repository
+
++ db access, here for the sake of simplicity we just store data in a file
 
 ```ts
 import { Injectable } from "@nestjs/common";
@@ -543,6 +591,8 @@ export class MessagesRepository{
 C6 30min
 
 just a simple demo to enhance understanding of modules
+
+:gem: see code demo in 'di' folder
 
 
 
