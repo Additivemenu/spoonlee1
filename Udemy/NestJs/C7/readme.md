@@ -8,7 +8,7 @@
 
 C7
 
-start to build a new project
+start to build a new project with simple CRUD
 
 
 
@@ -283,9 +283,313 @@ setting up body validation for create-user
 
 C9
 
-up here
+CRUD user apis
 
 
+
+## Create
+
+controller -> service -> repository
+
+
+
+in user service, we define business logic how to create a user
+
++ Note we use user repository to create a new user instance, instead of mannually create one using `new`, because it is safer in this way
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+
+@Injectable()
+export class UsersService {
+  private repo: Repository<User>;
+
+  constructor(@InjectRepository(User) repo: Repository<User>) {
+    this.repo = repo; // dependency injection
+  }
+
+  create(email: string, password: string) {
+    const user = this.repo.create({ email, password });     // create a new user instance using repo (this is safer as validation rule is applied), but not persist it to DB
+    return this.repo.save(user);
+  }
+}
+```
+
+
+
+review on the workflow
+
+P52
+
+<img src="./src_md/create-user-flow1.png" style="zoom:50%;" />
+
+
+
+hooks to entity
+
+P53
+
+:bangbang: a good practice: create entity instance and save the entity instance, don't create plain instance as you may lose some code logic like hooks in an Entity
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+
+@Injectable()
+export class UsersService {
+  private repo: Repository<User>;
+
+  constructor(@InjectRepository(User) repo: Repository<User>) {
+    this.repo = repo; // dependency injection
+  }
+
+  create(email: string, password: string) {
+    const user = this.repo.create({ email, password });     // create a new user instance using repo (this is safer as validation rule is applied), but not persist it to DB
+    return this.repo.save(user);        // this saves a User Entity instance to db, not a plain user object, so hooks to the entity will be called
+  }
+}
+```
+
+
+
+e.g. we can add additional hooks to entity 
+
+```ts
+import {
+  AfterInsert,
+  AfterRemove,
+  AfterUpdate,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+
+  // like AOP in spring, this is a hook that will be called after insert
+  @AfterInsert()
+  logInsert() {
+    console.log('Inserted User with id', this.id);
+  }
+
+  @AfterUpdate()
+  logUpdate() {
+    console.log('Updated User with id', this.id);
+  }
+
+  @AfterRemove()
+  logRemove() {
+    console.log('Removed User with id', this.id);
+  }
+}
+```
+
+
+
+
+
+## Query 
+
+P55
+
+
+
+
+
+
+
+## :bangbang:Update
+
+P56
+
+Save() vs insert() & update() 
+
++ Save()
+  + also can be applied on entity instance => hooks to that entity enabled
+  + but less efficient as it need 2 trips: retieve entity from db, update it, then save it back to db
++ insert() & update()
+  + can only be applied on plain instance
+  + 1 trip to db, more efficient
+
+
+
+in user service class:
+
+```ts
+  // Partial comes from typescript, it declares a type consisting of any partial fields of User, providing flexibilities
+  async update(id: number, attrs: Partial<User>) {
+    const user = await this.findOne(id);        // entity
+    if (!user) {
+      throw new Error('user not found!');
+    }
+
+    Object.assign(user, attrs);     // assign partial fields to user
+    return this.repo.save(user);    // save entity, apply hooks
+  }
+```
+
+
+
+
+
+## Remove
+
+P57
+
+Again: remove() vs. delete()
+
++ remove() is for removing entity
+  + Entity -> hooks enabled
+  + but less efficient as 2 way trip to db
++ Delete() is more flexible for plain instance
+
+
+
+```ts
+  async remove(id: number) {
+    const user = await this.findOne(id);        // entity
+    if (!user) {
+      throw new Error('user not found!');
+    }
+    return this.repo.remove(user);    // remove entity, apply hooks
+  }
+```
+
+
+
+
+
+
+
+
+
+## Adding service to contoller
+
+P58
+
+
+
+user controller
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from './users.service';
+
+@Controller('auth') // prefix for all routes inside this controller
+export class UsersController {
+  constructor(private usersService: UsersService) {}
+
+  @Post('/signup')
+  createUser(@Body() body: CreateUserDto) {
+    //! here we validate the body using CreateUserDto
+    // create a new user
+    this.usersService.create(body.email, body.password);
+  }
+
+  @Get('/:id')
+  findUser(@Param('id') id: string) {
+    return this.usersService.findOne(parseInt(id));
+  }
+
+  @Get()
+  findAllUsers(@Query('email') email: string) {
+    return this.usersService.find(email);
+  }
+
+  @Delete('/:id')
+  removeUser(@Param('id') id: string) {
+    return this.usersService.remove(parseInt(id));
+  }
+
+  @Patch('/:id')
+  updateUser(@Param('id') id: string, @Body() attrs: UpdateUserDto) {
+    return this.usersService.update(parseInt(id), attrs);
+  }
+}
+```
+
+
+
+## :bangbang: Exceptions handling
+
+usually, the expcetion is return back to controller from service
+
+
+
+<img src="./src_md/exception1.png" style="zoom:50%;" />
+
+
+
+e.g. in user service 
+
++ we throw a specific type of HTTP exception, instead of just `throw new Error('')`
+  + :bangbang: note but protocols other than HTTP (e.g. WebSocket, gRPC) ´might not know how to handle http exceptions,  you would need to use protocol specific exception or implement your own exception filters 
+
+```ts
+ 
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+
+
+@Injectable()
+export class UsersService {
+  private repo: Repository<User>;
+
+  constructor(@InjectRepository(User) repo: Repository<User>) {
+    this.repo = repo; // dependency injection
+  }
+  
+  
+  // ........
+  
+// Partial comes from typescript, it declares a type consisting of any partial fields of User, providing flexibilities
+  async update(id: number, attrs: Partial<User>) {
+    const user = await this.findOne(id);        // entity
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+
+    Object.assign(user, attrs);     // assign partial fields to user
+    return this.repo.save(user);    // save entity, apply hooks
+  }
+
+  async remove(id: number) {
+    const user = await this.findOne(id);        // entity
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return this.repo.remove(user);    // remove entity, apply hooks
+  }
+  
+}
+```
 
 
 
