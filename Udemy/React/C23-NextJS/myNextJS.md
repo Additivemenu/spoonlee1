@@ -743,8 +743,6 @@ C13 https://nextjs.org/learn/dashboard-app/error-handling
 
 
 
-
-
 [code piece: add try catch block for server action](https://github.com/Additivemenu/nextjs-dashboard/blob/0cb217a6ee6bca0a53cac5c48d311334f0ab5218/app/lib/actions.ts#L31-L40)
 
 
@@ -805,7 +803,7 @@ C16 https://nextjs.org/learn/dashboard-app/adding-metadata
 
 
 
-# 2. Next for learning Next.js!
+# 2. :full_moon: Next for learning Next.js!
 
 https://nextjs.org/learn/dashboard-app/next-steps
 
@@ -813,7 +811,7 @@ https://nextjs.org/learn/dashboard-app/next-steps
 
 
 
-:[Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
+:pencil: [Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
 
 
 

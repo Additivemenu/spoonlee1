@@ -59,7 +59,7 @@ Part2:
 | 15   | relations with TypeORM     |      |
 | 16   | a basic permission system  |      |
 | 17   | query builder with TypeORM |      |
-| 18   | production development     |      |
+| 18   | production deployment      |      |
 
 ​	
 

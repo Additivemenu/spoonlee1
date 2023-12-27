@@ -4,6 +4,18 @@
 
 
 
+
+
+# key takeaways
+
++ TypeORM apis
+
+  + some api supports passing entity as argument, this will enabled hooks in Entity but less efficient as 2 trips to db
+
+  + some api do not support entity as argument but just plain object, this will not enabled hooks in Entity, but more efficient as 1 trip to db
+
+    
+
 # Project Intro
 
 C7
@@ -597,7 +609,35 @@ export class UsersService {
 
 # Custom data serialization
 
+C10
 
+This means to customize what field of entity is accessible by response data
+
+
+
+## one way is to use Interceptors
+
+p62
+
+
+
+demo code
+
+
+
+## solution to serialization
+
+P63
+
+custom interceptor:  use dto to define how to serialize an entity for a particular route handler
+
+
+
+build custom interceptor
+
+P64
+
+看到这里
 
 
 
