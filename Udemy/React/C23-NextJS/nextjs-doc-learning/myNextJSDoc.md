@@ -8,6 +8,13 @@ https://nextjs.org/docs/app/building-your-application
 
 
 
+in next, features are heavily replied on URL path
+
++ file-system based routing  in app folder
++ use url as state to directly extract or manipulate state change
+
+
+
 Part1: basics of next.js
 
 |      |               | Description |

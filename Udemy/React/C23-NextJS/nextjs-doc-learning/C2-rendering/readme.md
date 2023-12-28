@@ -4,6 +4,18 @@
 
 
 
+# key takeaways
+
+in next, components are default rendered by server, interleaving server and client component is possible, a good practice is to just keep the interactive component as client component
+
+
+
+server component has no access to react hooks and browser api
+
+client component is just like normal react component
+
+
+
 # Intro
 
 https://nextjs.org/docs/app/building-your-application/rendering
@@ -34,12 +46,14 @@ https://nextjs.org/docs/app/building-your-application/rendering/server-component
 
 https://nextjs.org/docs/app/building-your-application/rendering/server-components#benefits-of-server-rendering
 
-+ performance
-  + data fetching
-  + Caching
-  + bundle size
++ Performance
+  + Move data fetching to server
+  
+  + Caching rendered results
+  + :bangbang: javascript bundle size
+  + **Initial Page Load and [First Contentful Paint (FCP)](https://web.dev/fcp/)**
   + Streaming
-+ security
++ Security
 + SEO optimization
 
 
@@ -157,9 +171,9 @@ https://nextjs.org/docs/app/building-your-application/rendering/client-component
 Client Components are rendered differently depending on whether the request is:
 
 + Full page load https://nextjs.org/docs/app/building-your-application/rendering/client-components#full-page-load
-  + just similar to server rendering
+  + just similar to server rendering as in section 1.3
 + subsequent navigations
-  + On subsequent navigations, Client Components are rendered entirely on the client, without the server-rendered HTML. This means the Client Component JavaScript bundle is downloaded and parsed. Once the bundle is ready, React will use the RSC Payload to reconcile the Client and Server Component trees, and update the DOM.
+  + <span style="color:yellow">On subsequent navigations, Client Components are rendered entirely on the client,</span> without the server-rendered HTML. This means the Client Component JavaScript bundle is downloaded and parsed. Once the bundle is ready, React will use the RSC Payload to reconcile the Client and Server Component trees, and update the DOM.
 
 
 
