@@ -7,12 +7,14 @@
 
 |Chapter |Topic |Description |
 |------ |------ |------ |
-|[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>array |
-|[C2](./C2_Object/JS_object.md) | JS object | |
-|:moon: [C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
-|:full_moon: [C4](./C4_CoupingWithHTMLCSS/README.md) |DOM |DOM <br/>event |
+|[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>:bangbang: Arrays API |
+|[C2](./C2_Object/JS_object.md) | JS object, class, inheritance with prototype chain | |
+|[C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
+|[C4](./C4_CoupingWithHTMLCSS/README.md) |:bangbang: DOM |DOM <br/>event |
 |[C5](./C5_Debug/README.md) | JS debug & Exception | |
-|:moon: [ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | |
+|[ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | async <br> |
+|[C7](./C7_Memory_Management/readme.md) | memory management |  |
+|[C8](./C8_EventLoop/readme.md) | JS runtime concepts <br>Event Loop <br> |  |
 
 
 
