@@ -7,7 +7,7 @@
 
 |Chapter |Topic |Description |
 |------ |------ |------ |
-|[C1](./C1_JS_Basics/README.md)   | JS basics | |
+|[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>array |
 |[C2](./C2_Object/JS_object.md) | JS object | |
 |:moon: [C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
 |:full_moon: [C4](./C4_CoupingWithHTMLCSS/README.md) |DOM |DOM <br/>event |

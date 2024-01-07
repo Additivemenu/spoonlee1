@@ -296,7 +296,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 
 
 
-## Link
+## 2.1 Link
 
 `<Link>` is a built-in component that extends the HTML `<a>` tag to provide [prefetching](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#1-prefetching) and client-side navigation between routes. 
 
@@ -314,7 +314,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 
 
 
-## useRouter hook
+## 2.2 useRouter hook
 
 The `useRouter` ([api reference](https://nextjs.org/docs/app/api-reference/functions/use-router)) hook allows you to <u>programmatically</u> change routes.
 
@@ -330,7 +330,7 @@ The `useRouter` ([api reference](https://nextjs.org/docs/app/api-reference/funct
 
 
 
-## :question: Dive deeper into navigation
+## 2.3:question: Dive deeper into navigation
 
 https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works
 
@@ -350,7 +350,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 
 
 
-## Route groups (foldername)
+## 3.1 Route groups (foldername)
 
 https://nextjs.org/docs/app/building-your-application/routing/route-groups
 
@@ -374,7 +374,7 @@ A route group can be created by wrapping a folder's name in parenthesis: `(folde
 
 
 
-## Dynamic route [foldername]
+## 3.2 Dynamic route [foldername]
 
 https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
 
@@ -398,7 +398,7 @@ A Dynamic Segment can be created by wrapping a folder's name in square brackets:
 
 
 
-## Parallel routes - slot @foldername
+## 3.3 :bangbang:Parallel routes - slot @foldername
 
 https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
 
@@ -460,7 +460,7 @@ below
 
 
 
-## :question: Intercepting routes (..)
+## 3.4:question: Intercepting routes (..)
 
 https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes
 
@@ -505,13 +505,27 @@ For example, you can intercept the `photo` segment from within the `feed` segmen
 
 
 
-## Route handlers
+
+
+# 4. Next reqeust & response
+
+## 4.1 :question: Route handlers - route.tsx
 
 https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 
 
 
-## middleware
+serves a bit like axios?
+
+
+
+
+
+Route Handlers allow you to create custom request handlers for a given route using the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs.
+
+
+
+## 4.2 :question: Middleware
 
 https://nextjs.org/docs/app/building-your-application/routing/middleware
 
@@ -519,7 +533,7 @@ https://nextjs.org/docs/app/building-your-application/routing/middleware
 
 
 
-# 4. :moon: Project organization
+# 5. :moon: Project organization
 
 https://nextjs.org/docs/app/building-your-application/routing/colocation
 

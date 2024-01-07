@@ -1,0 +1,29 @@
+.tableContainer {
+    overflow-x: auto;
+}
+
+.draggableTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.headerCell,
+.dataCell {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.headerCell {
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+.dataRow:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.dataRow:hover {
+    background-color: #f1f1f1;
+}
+

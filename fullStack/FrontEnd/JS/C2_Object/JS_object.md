@@ -1,15 +1,8 @@
-- 
-- [1. 对象的调用](#1-对象的调用)
-  - [1.1 对象属性的调用](#11-对象属性的调用)
-  - [1.2 对象方法的调用](#12-对象方法的调用)
-- [2. Object Destructuring](#2-object-destructuring)
-  - [2.1 Destructuring a null object](#21-destructuring-a-null-object)
-  - [2.2 Nested object destructuring](#22-nested-object-destructuring)
-  - [2.3 Destructuring function arguments](#23-destructuring-function-arguments)
+JavaScript object
 
 
 
----
+
 
 ```js
 let star = {
@@ -22,7 +15,10 @@ let star = {
 }
 ```
 
+
+
 # 1. 对象的调用
+
 ## 1.1 对象属性的调用 
 ```js
 console.log(star.name);

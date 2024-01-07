@@ -163,7 +163,7 @@ Images without dimensions and web fonts are common causes of <u>layout shift</u>
 
 
 
-## :bangbang: layout, pages & navigations in next
+## 1.1 :bangbang: layout, pages & navigations in next
 
 
 
@@ -295,7 +295,7 @@ export default function NavLinks() {
 
 
 
-## adding database & intereact with DB directly
+## 1.2 Adding database & intereact with DB directly
 
 setting up database 
 
@@ -398,9 +398,7 @@ request warterfall vs. parallel data fetching
 
 
 
-## :bangbang: static & dynamic rendering
-
----
+## 1.3 :bangbang: static & dynamic rendering
 
 C8
 
@@ -438,7 +436,7 @@ making the dashboard dynamic
 
 
 
-## :bangbang: streaming
+## 1.4 :bangbang: streaming
 
 C9 这节更像是性能优化和提升用户体验(面对react的优化问题?), 控制不同dynamic component (e.g. 依赖fetching data的组件)的loading行为的granularity
 
@@ -505,7 +503,7 @@ New experiment feature introduced in Next14, can be skipped
 
 
 
-## :full_moon: CRUD invoice data 
+## 1.5 :full_moon: CRUD invoice data 
 
 for data fetching in Next.js fashion (directly fetch from database in server component)
 
@@ -733,7 +731,7 @@ step2: after user populated the updating form with data, we then
 
 
 
-## :moon: Error handling & improving accessibility
+## 1.6 :moon: Error handling & improving accessibility
 
 C13 https://nextjs.org/learn/dashboard-app/error-handling
 
@@ -771,17 +769,90 @@ more reading at https://nextjs.org/learn/dashboard-app/error-handling#further-re
 
 
 
-## Improving Accessibility
+## 1.7 Improving Accessibility
 
 C14 https://nextjs.org/learn/dashboard-app/improving-accessibility
+
+form validation -> Let's see how to implement server-side validation with Server Actions, and how you can show form errors using the `useFormState` hook - while keeping accessibility in mind!
+
+
+
+using eslint accessibility plugin
+
+---
+
+```ts
+npm run lint 		// after adding next lint script in package.json
+```
+
+
+
+
+
+
+
+### Form Validation 
+
+client side validation
+
+---
+
+simple one, just add 'required' attributes to a \<input\> tag
+
+```ts
+<input
+  id="amount"
+  name="amount"
+  type="number"
+  placeholder="Enter USD amount"
+  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+  required
+/>
+```
+
+
+
+
+
+server side validation
+
+---
+
+[Server-Side validation](https://nextjs.org/learn/dashboard-app/improving-accessibility#server-side-validation)
+
+
+
+By validating forms on the server, you can:
+
+- Ensure your data is in the expected format before sending it to your database.
+- Reduce the risk of malicious users bypassing client-side validation.
+- Have one source of truth for what is considered *valid* data.
+
+woc好长
+
+
+
+create-form.tsx
+
++ bound error state to a conditionally rendered error message 
+
+
+
+action.ts
+
++ update form schema 
+
+
+
+
+
+:gem: Practice: adding aria labels
 
 看到这里
 
 
 
-
-
-## Adding authentication
+## 1.8 Adding authentication
 
 C15 https://nextjs.org/learn/dashboard-app/adding-authentication
 
@@ -791,7 +862,7 @@ C15 https://nextjs.org/learn/dashboard-app/adding-authentication
 
 
 
-## Adding metadata
+## 1.9 Adding metadata
 
 C16 https://nextjs.org/learn/dashboard-app/adding-metadata
 
@@ -806,8 +877,6 @@ C16 https://nextjs.org/learn/dashboard-app/adding-metadata
 # 2. :full_moon: Next for learning Next.js!
 
 https://nextjs.org/learn/dashboard-app/next-steps
-
-
 
 
 

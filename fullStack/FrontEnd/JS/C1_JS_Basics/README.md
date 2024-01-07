@@ -671,7 +671,7 @@ while, for loop语法和Java基本一致
 
 
 
-# 5. Array
+# 5. :bangbang: Array
 
 :book: [MDN: Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
@@ -735,7 +735,7 @@ console.log(array[101]);    // now array[101].name displayed
 
 
 
-## 5.4 :full_moon: JS array API
+## 5.4 :bangbang: JS array API
 本质上还是for loop实现某种功能, 只不过封装好代码更加简洁, 直接对array操作
 
 以下API中用到的function()一般为了简洁采用箭头函数
@@ -820,6 +820,53 @@ array1.forEach((element, i) => console.log(element, i));
 // expected output: "b" 1
 // expected output: "c" 2
 ```
+
+
+
+### more 
+
+JavaScript arrays come with a variety of methods that can be used to manipulate, iterate over, and transform array data. Here are some of the most commonly used array methods in JavaScript:
+
+1. **`push()`**: Adds one or more elements to the end of an array and returns the new length of the array.
+
+2. **`pop()`**: Removes the last element from an array and returns that element. This method changes the length of the array.
+
+3. **`shift()`**: Removes the first element from an array and returns that removed element. This method changes the length of the array.
+
+4. **`unshift()`**: Adds one or more elements to the beginning of an array and returns the new length of the array.
+
+5. **`forEach()`**: Executes a provided function once for each array element.
+
+6. **`map()`**: Creates a new array populated with the results of calling a provided function on every element in the calling array.
+
+7. **`filter()`**: Creates a new array with all elements that pass the test implemented by the provided function.
+
+8. **`reduce()`**: Executes a reducer function on each element of the array, resulting in a single output value.
+
+9. **`slice()`**: Returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) where start and end represent the index of items in that array. The original array will not be modified.
+
+10. :bangbang: **`splice()`**: Changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
+    + It can add, remove, and replace elements within an array.
+
+11. **`find()`**: Returns the value of the first element in the provided array that satisfies the provided testing function.
+
+12. **`indexOf()`**: Returns the first index at which a given element can be found in the array, or -1 if it is not present.
+
+13. **`includes()`**: Determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+
+14. **`join()`**: Joins all elements of an array into a string and returns this string.
+
+15. **`concat()`**: Is used to merge two or more arrays. This method does not change the existing arrays but instead returns a new array.
+
+16. **`sort()`**: Sorts the elements of an array in place and returns the sorted array.
+
+17. **`reverse()`**: Reverses an array in place. The first array element becomes the last, and the last array element becomes the first.
+
+18. **`every()`**: Tests whether all elements in the array pass the test implemented by the provided function.
+
+19. **`some()`**: Tests whether at least one element in the array passes the test implemented by the provided function.
+
+Each of these methods can be incredibly useful for various operations involving arrays, from simple manipulation to more complex data handling and transformation tasks. They are fundamental tools in the JavaScript programmer's toolkit.
 
 
 
