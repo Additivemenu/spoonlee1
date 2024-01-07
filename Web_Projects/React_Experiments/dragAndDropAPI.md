@@ -15,7 +15,8 @@ The core idea of the HTML5 Drag and Drop API is to provide an easy and interacti
    - `dragend`: Fired when the drag action ends (either by dropping the element or cancelling the action).
 3. :bangbang: **Drop Targets**: Areas where draggable elements can be dropped are defined as drop targets. For an element to become a drop target, you generally need to prevent the default handling of certain events, particularly the `dragover` event.
    + **Handling the Drop**: When an element is dropped onto a target, the `drop` event is fired. In the event handler for this event, you typically retrieve the data from the `DataTransfer` object and perform the desired action, like moving an element in the DOM.
-4. :bangbang: **Data Transfer**: The `DataTransfer` object is a crucial part of this API. <u>It is used to hold the data that is being dragged during a drag-and-drop operation.</u> This object is accessible from the drag event and is used to transfer data from the source element (where the drag started) to the target element (where the element is dropped).
+4. :bangbang::bangbang: **Data Transfer**: The `DataTransfer` object is a crucial part of this API. <span style="color:yellow">It is used to hold the data that is being dragged during a drag-and-drop operation.</span>  This object is accessible from the drag event and is used to transfer data from the source element (where the drag started) to the target element (where the element is dropped). 
+   + e.g. use cases:  categorize the drop zone (only a certain type of drag will trigger a certain type of drop handler)
 5. **Feedback and Effects**: The API also allows for visual feedback during a drag-and-drop operation. For example, you can set a custom drag image or use the `dropEffect` property to control the cursor's appearance, indicating the type of operation that's taking place (like copy, move, or link).
 
 

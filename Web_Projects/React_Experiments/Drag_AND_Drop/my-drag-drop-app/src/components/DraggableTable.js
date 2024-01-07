@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import styles from './DraggableTable.module.css';
+import styles from "./DraggableTable.module.css";
 
+/**
+ * @returns  an interactive table that allows user to re-order the columns and rows via DAD
+ * TODO: try hierarchical data 
+ */
 function DraggableTable() {
   const initialColumns = ["ID", "Name", "Email", "Grades"];
   const initialData = [
@@ -22,8 +26,9 @@ function DraggableTable() {
 
   const [columns, setColumns] = useState(initialColumns); // columns name
   const [data, setData] = useState(initialData); // real data about students
-  const [draggedColIndex, setDraggedColIndex] = useState(null);
 
+  // column DAD -------
+  const [draggedColIndex, setDraggedColIndex] = useState(null);
   const handleDragStart = (index) => {
     setDraggedColIndex(index);
   };
@@ -32,12 +37,39 @@ function DraggableTable() {
     e.preventDefault();
   };
 
-  const handleDrop = (index) => {
-    const newColumns = [...columns];
-    const draggedColumn = newColumns.splice(draggedColIndex, 1)[0];
-    newColumns.splice(index, 0, draggedColumn);
-    setColumns(newColumns);
-    setDraggedColIndex(null);
+  const handleColumnDrop = (e, index) => {
+    const type = e.dataTransfer.getData("type");
+
+    if (type === "column") {
+      const newColumns = [...columns];
+      const draggedColumn = newColumns.splice(draggedColIndex, 1)[0];
+      newColumns.splice(index, 0, draggedColumn);
+      setColumns(newColumns);
+      setDraggedColIndex(null);
+    } else {
+      alert(`unmatched DAD type!`);
+    }
+  };
+
+  //  row DAD -------
+  const [draggedRowIndex, setDraggedRowIndex] = useState(null);
+
+  const handleRowDragStart = (index) => {
+    setDraggedRowIndex(index);
+  };
+
+  const handleRowDrop = (e, index) => {
+    const type = e.dataTransfer.getData("type");
+
+    if (type === "row") {
+      const newData = [...data];
+      const draggedRow = newData.splice(draggedRowIndex, 1)[0]; // remove dragged row from data
+      newData.splice(index, 0, draggedRow); // insert dragged row to new position
+      setData(newData);
+      setDraggedRowIndex(null);
+    } else {
+      alert(`unmatched DAD type!`);
+    }
   };
 
   return (
@@ -50,9 +82,12 @@ function DraggableTable() {
               <th
                 key={col}
                 draggable
-                onDragStart={() => handleDragStart(index)}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("type", "column"); // restrict the DAD to column only (self-defined)
+                  handleDragStart(index);
+                }}
                 onDragOver={handleDragOver}
-                onDrop={() => handleDrop(index)}
+                onDrop={(e) => handleColumnDrop(e, index)}
                 className={styles.headerCell}
               >
                 {col}
@@ -61,12 +96,43 @@ function DraggableTable() {
           </tr>
         </thead>
 
-        <tbody>
+        {/* tbody that only supports column re-ordering via DAD */}
+        {/* <tbody>
           {data.map((student, rowIndex) => (
             <tr key={rowIndex} className={styles.dataRow}>
               {columns.map((col, colIndex) => {
                 const value = student[col.toLowerCase().replace(/\s+/g, "")]; // ! find student's data field by column name
-                return <td key={colIndex} className={styles.dataCell}>{value}</td>;
+                return (
+                  <td key={colIndex} className={styles.dataCell}>
+                    {value}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody> */}
+
+        {/*  tbody that supports both column re-ordering and row re-ordering via DAD */}
+        <tbody>
+          {data.map((student, rowIndex) => (
+            <tr
+              key={rowIndex}
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData("type", "row"); // ! restrict the DAD to row only (self-defined)
+                handleRowDragStart(rowIndex);
+              }}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleRowDrop(e, rowIndex)}
+              className={styles.dataRow}
+            >
+              {columns.map((col, colIndex) => {
+                const value = student[col.toLowerCase().replace(/\s+/g, "")]; // ! find student's data field by column name
+                return (
+                  <td key={colIndex} className={styles.dataCell}>
+                    {value}
+                  </td>
+                );
               })}
             </tr>
           ))}
