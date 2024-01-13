@@ -354,7 +354,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 
 https://nextjs.org/docs/app/building-your-application/routing/route-groups
 
-定义不影响route path tree的folder
+<span style="color:yellow">一句话总结: 定义不影响route path tree的folder</span>
 
 
 
@@ -378,7 +378,7 @@ A route group can be created by wrapping a folder's name in parenthesis: `(folde
 
 https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
 
-往route path里加参数
+<span style="color:yellow">一句话总结: 往route path里加参数</span>
 
 
 
@@ -404,13 +404,15 @@ https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
 
 
 
-感觉是为了能把一个page作为prop传递给一个layout, 而不影响url的structure, 从而使多个page可以simultaneously or conditioanlly rendered on the same layout (感觉这点在vanilla react里很容易实现) 
+<span style="color:yellow">一句话总结: 感觉是为了能把一个page作为prop传递给一个layout, 而不影响url的structure, 从而使多个page可以simultaneously or conditioanlly rendered on the same layout (感觉这点在vanilla react里很容易实现) </span>
 
-之前我们都是一个url对应一条tree path (从root到page所处在component tree的底部的leaf node 所形成的path), 这个tree path定义了页面的渲染结构, 但是这条tree path是只能一直往下不能在一个节点同时分叉的, 即一个url对应的页面只能渲染处在component tree某个level的一个page
+> 之前我们都是一个url对应一条tree path (从root到page所处在component tree的底部的leaf node 所形成的path), 这个tree path定义了页面的渲染结构, 但是这条tree path是只能一直往下不能在一个节点同时分叉的, 即一个url对应的页面只能渲染处在component tree某个level的一个page
+>
+> 而引入parallel routes之后, 就相当于tree path可以在一个节点同时分叉了, 这样就可以在一个layout中simultaneously or conditionally 渲染多个page 
+>
+> 再次理解 `parallel route`的含义, 其实parallel就是说 tree path 可以同时拥有多个分支呗, 之前的route 其实都是sequential route, 对应component tree不能有多于1个分支
 
-而引入parallel routes之后, 就相当于tree path可以在一个节点同时分叉了, 这样就可以在一个layout中simultaneously or conditionally 渲染多个page 
 
-再次理解 `parallel route`的含义, 其实parallel就是说 tree path 可以同时拥有多个分支呗, 之前的route 其实都是sequential route, 对应component tree不能有多于1个分支
 
 
 
@@ -466,7 +468,7 @@ https://nextjs.org/docs/app/building-your-application/routing/intercepting-route
 
 
 
-没完全理解到底是什么意思
+<span style="color:yellow">一句话总结: 没完全理解到底是什么意思</span>>
 
 
 
@@ -509,19 +511,41 @@ For example, you can intercept the `photo` segment from within the `feed` segmen
 
 # 4. Next reqeust & response
 
-## 4.1 :question: Route handlers - route.tsx
+## 4.1 :question: Route handlers - route.ts
 
 https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 
-
-
-serves a bit like axios?
-
+<span style="color: yellow">一句话: Route Handlers allow you to create custom request handlers for a given route using the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs.</span>
 
 
 
+> **Good to know**: Route Handlers are only available inside the `app` directory. They are the equivalent of [API Routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) inside the `pages` directory meaning you **do not** need to use API Routes and Route Handlers together.
 
-Route Handlers allow you to create custom request handlers for a given route using the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs.
+
+
+
+
+### conventions
+
+Route Handlers are defined in a [`route.js|ts` file](https://nextjs.org/docs/app/api-reference/file-conventions/route) inside the `app` directory:
+
+```ts
+// app/items/route.ts: 
+export const dynamic = 'force-dynamic' // defaults to auto
+export async function GET(request: Request) {}
+```
+
+Route Handlers can be nested inside the `app` directory, similar to `page.js` and `layout.js`. But there **cannot** be a `route.js` file at the same route segment level as `page.js`.
+
+
+
+
+
+### [Examples](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#examples)
+
+
+
+
 
 
 

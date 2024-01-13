@@ -1,29 +1,18 @@
 notes made based on vercel docs and official tut
 
+next steps after this tut https://nextjs.org/learn/dashboard-app/next-steps
 
++ :pencil: [my notes on Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
 
-
-
-:bangbang: see Next.js basics at, should make notes for these
-
-https://nextjs.org/docs/app/building-your-application/routing
-
- https://nextjs.org/docs/app/building-your-application/data-fetching
-
-https://nextjs.org/docs/app/building-your-application/rendering
-
-
-
-:bangbang: understand Next.js works https://www.youtube.com/watch?v=d2yNsZd5PMs
-
-+ Next is still SPA framework, but facilitating the initial rendering by SSR. Once the intial paint is load, then it is still a react app 
-+ Next and SPA are not mutually exclusive!
+check out project: https://www.youtube.com/watch?v=pUNSHPyVryU&t=5150s
 
 
 
 
 
-# 0. key takeaways
+
+
+# key takeaways
 
 :bangbang::bangbang::pencil:[what is Nextjs? why](./sub_topics/why_nextjs.md) 
 
@@ -105,7 +94,13 @@ C13 Error handling & fallback ui in Next.js
 
 
 
-# 1. :gem: Demo: nextjs-dashboard
+
+
+
+
+
+
+# 1. nextjs-dashboard: get started
 
 an up-to-date Next learning tutorial offered by vercel: 
 
@@ -115,11 +110,18 @@ see nextjs-dashboard repository ( as this tut will deploy the app on vercel )
 
 + Uses typescript, tailwind css / css module, eslint 
 
-
-
 Next official doc https://nextjs.org/docs/getting-started/project-structure
 
 
+
+:bangbang: understand Next.js works https://www.youtube.com/watch?v=d2yNsZd5PMs
+
++ Next is still SPA framework, but facilitating the initial rendering by SSR. Once the intial paint is load, then it is still a react app 
++ Next and SPA are not mutually exclusive!
+
+
+
+:white_check_mark: in this section, we only look at some most basic features provided by next!
 
 Getting started
 
@@ -128,8 +130,6 @@ Getting started
 C1
 
 project file structure
-
-
 
 
 
@@ -295,15 +295,13 @@ export default function NavLinks() {
 
 
 
-## 1.2 Adding database & intereact with DB directly
+# 2. Add & intereact with DB 
 
-setting up database 
 
----
 
-C6 
+## 2.1 Setting up database 
 
-https://nextjs.org/learn/dashboard-app/setting-up-your-database
+C6 https://nextjs.org/learn/dashboard-app/setting-up-your-database
 
 
 
@@ -317,25 +315,77 @@ https://nextjs.org/learn/dashboard-app/setting-up-your-database
 
 
 
-
-
 这个有点6, 直接一条龙
 
 
 
-fetching data
+
+
+## 2.2 :bangbang: fetching data from DB
 
 ---
 
+C7 https://nextjs.org/learn/dashboard-app/fetching-data
 
 
-using server component to fetch data
 
-yes, in next.js app, you would be allow to query database directly without implementing a server logic  by yourself
 
-+ Server Components support promises, providing a simpler solution for asynchronous tasks like data fetching. You can use `async/await` syntax without reaching out for `useEffect`, `useState` or data fetching libraries.
 
-+ Server Components execute on the server, so you can keep expensive data fetches and logic on the server and only send the result to the client. As mentioned before, since Server Components execute on the server, you can query the database directly without an additional API layer.
+:pencil::bangbang: [ways to fetch data in next](./sub_topics/ways_to_fetch_data_in_next.md)
+
++ note: api layer is just one way to fetch data from db
+
+see more details at [nextjs doc: data fetching](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating)
+
+
+
+
+
+[API layer](https://nextjs.org/learn/dashboard-app/fetching-data#api-layer)
+
+---
+
+APIs are an intermediary layer between your application code and database. There are a few cases where you might use an API:
+
+- If you're using 3rd party services that provide an API.
+- If you're fetching data from the client, you want to have an API layer that runs on the server to avoid exposing your database secrets to the client.
+
+In Next.js, you can create API endpoints using [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+
+
+
+
+[Database queries](https://nextjs.org/learn/dashboard-app/fetching-data#database-queries)
+
+---
+
+When you're creating a full-stack application, you'll also need to write logic to interact with your database. 
+
+There are a few cases where you have to write database queries:
+
+- When creating your API endpoints, you need to write logic to interact with your database.
+- If you are using React Server Components (fetching data on the server), you can skip the API layer, and query your database directly without risking exposing your database secrets to the client.
+
+
+
+
+
+
+
+[Using Server Components to fetch data](https://nextjs.org/learn/dashboard-app/fetching-data#using-server-components-to-fetch-data)
+
+---
+
+By default, Next.js applications use **React Server Components**. Fetching data with Server Components is a relatively new approach and there are a few benefits of using them:
+
+- Server Components support promises, providing a simpler solution for asynchronous tasks like data fetching. You can use `async/await` syntax without reaching out for `useEffect`, `useState` or data fetching libraries.
+- Server Components execute on the server, so you can keep expensive data fetches and logic on the server and only send the result to the client.
+- As mentioned before, since Server Components execute on the server, you can query the database directly without an additional API layer.
+
+
+
+
 
 
 
@@ -390,6 +440,8 @@ export default async function Page() {
 
 request warterfall vs. parallel data fetching
 
+---
+
 + [request waterfall](https://nextjs.org/learn/dashboard-app/fetching-data#what-are-request-waterfalls)
 
 + [parallel data fetching](https://nextjs.org/learn/dashboard-app/fetching-data#parallel-data-fetching)
@@ -398,11 +450,21 @@ request warterfall vs. parallel data fetching
 
 
 
-## 1.3 :bangbang: static & dynamic rendering
+# 3. Server component rendering
 
-C8
+This section only talks about sever component rendering strategies (see more at [nextjs doc: server component rendering](https://nextjs.org/docs/app/building-your-application/rendering/server-components))
 
-https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering
++ there are also client component rendering, not covered in this tut
+
+
+
+
+
+## 3.1 :bangbang: Static & Dynamic rendering
+
+C8 https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering
+
+
 
 In the previous chapter, you fetched data for the Dashboard Overview page. However, we briefly discussed two limitations of the current setup:
 
@@ -436,7 +498,7 @@ making the dashboard dynamic
 
 
 
-## 1.4 :bangbang: streaming
+## 3.2 :bangbang: Streaming
 
 C9 这节更像是性能优化和提升用户体验(面对react的优化问题?), 控制不同dynamic component (e.g. 依赖fetching data的组件)的loading行为的granularity
 
@@ -503,7 +565,7 @@ New experiment feature introduced in Next14, can be skipped
 
 
 
-## 1.5 :full_moon: CRUD invoice data 
+# 4. :full_moon: CRUD invoices data 
 
 for data fetching in Next.js fashion (directly fetch from database in server component)
 
@@ -511,7 +573,7 @@ see official docs at:  https://nextjs.org/docs/app/building-your-application/dat
 
 
 
-### R: Adding search and pagenation
+## R: Adding search and pagenation
 
 C11
 
@@ -606,7 +668,7 @@ Just similar to adding seach, we still use url search parameters instead of clie
 
 
 
-### CUD: Mutating data
+## CUD: Mutating data
 
 C12 https://github.com/Additivemenu/nextjs-dashboard/tree/C12-mutating-data
 
@@ -635,7 +697,7 @@ learn more athttps://nextjs.org/docs/app/building-your-application/data-fetching
 
 
 
-#### creating an invoice
+### creating an invoice
 
 Here are the steps you'll take to create a new invoice (其实就是用next的fashion来提交一个form的post request):
 
@@ -684,7 +746,7 @@ step3: post-work to do
 
 
 
-#### updating an invoice 
+### updating an invoice 
 
 
 
@@ -722,7 +784,7 @@ step2: after user populated the updating form with data, we then
 
 
 
-#### deleting an invoice 
+### deleting an invoice 
 
 + [server action for deleting an invoice](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/lib/actions.ts#L66-L69)
 + [get url params and bind the server action with a form](https://github.com/Additivemenu/nextjs-dashboard/blob/47c7e9eed09702ba330dfd96626e961dc9ecff6e/app/ui/invoices/buttons.tsx#L28-L39)
@@ -731,7 +793,7 @@ step2: after user populated the updating form with data, we then
 
 
 
-## 1.6 :moon: Error handling & improving accessibility
+# 5. :bangbang: Error handling 
 
 C13 https://nextjs.org/learn/dashboard-app/error-handling
 
@@ -769,7 +831,7 @@ more reading at https://nextjs.org/learn/dashboard-app/error-handling#further-re
 
 
 
-## 1.7 Improving Accessibility
+# 6. Improving Accessibility
 
 C14 https://nextjs.org/learn/dashboard-app/improving-accessibility
 
@@ -791,7 +853,7 @@ npm run lint 		// after adding next lint script in package.json
 
 
 
-### Form Validation 
+## Form Validation 
 
 client side validation
 
@@ -852,7 +914,13 @@ action.ts
 
 
 
-## 1.8 Adding authentication
+
+
+
+
+
+
+# 7. Adding authentication
 
 C15 https://nextjs.org/learn/dashboard-app/adding-authentication
 
@@ -862,7 +930,7 @@ C15 https://nextjs.org/learn/dashboard-app/adding-authentication
 
 
 
-## 1.9 Adding metadata
+# 8. Adding metadata
 
 C16 https://nextjs.org/learn/dashboard-app/adding-metadata
 
@@ -874,13 +942,7 @@ C16 https://nextjs.org/learn/dashboard-app/adding-metadata
 
 
 
-# 2. :full_moon: Next for learning Next.js!
 
-https://nextjs.org/learn/dashboard-app/next-steps
-
-
-
-:pencil: [Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
 
 
 
