@@ -2,7 +2,7 @@ Resource:
 
 https://www.youtube.com/watch?v=ucX2zXAZ1I0&t=509s
 
- [https://github.com/joschan21/quill](https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqazBVdkR3MHFabFVSZ1dITDhreFJJeFlIUGE2Z3xBQ3Jtc0tsSWM5SUsxSUdaNnVTSnVlMWYxX0hJVktLLXZra214cTl5ZWxIUVpXMW1NN1JuSVpyYWllSE84RnhYdnBfWjFQU05nZkQ3eVlKVmVHZU5DTEtGdGVON0s1VV9hbU9MOS1JM3ptMHR3WnFCOVhfNnNmRQ&q=https%3A%2F%2Fgithub.com%2Fjoschan21%2Fquill&v=ucX2zXAZ1I0)
+[https://github.com/joschan21/quill](https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqazBVdkR3MHFabFVSZ1dITDhreFJJeFlIUGE2Z3xBQ3Jtc0tsSWM5SUsxSUdaNnVTSnVlMWYxX0hJVktLLXZra214cTl5ZWxIUVpXMW1NN1JuSVpyYWllSE84RnhYdnBfWjFQU05nZkQ3eVlKVmVHZU5DTEtGdGVON0s1VV9hbU9MOS1JM3ptMHR3WnFCOVhfNnNmRQ&q=https%3A%2F%2Fgithub.com%2Fjoschan21%2Fquill&v=ucX2zXAZ1I0)
 
 
 
@@ -67,6 +67,10 @@ tailwind css
 Ui lib
 
 + 除了直接使用ui lib的组建, 还可以使用ui lib提供的tailwind className来为组件添加styling e.g. [shadcn: button](https://github.com/Additivemenu/nextjs-quill/blob/448b932c853c8522cb3b73583211a5541f19eebb/src/components/ui/button.tsx#L7-L35C2)
+
+
+
+
 
 
 
@@ -234,7 +238,9 @@ grainy effect
 
 snapshot: https://github.com/Additivemenu/nextjs-quill/tree/03-adding-navbar
 
-up here
+
+
+
 
 
 
@@ -304,26 +310,40 @@ KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/dashboard
 
 # 5. Dashboard
 
-~2hrs
+this part is ~2hrs in total
 
 https://github.com/Additivemenu/nextjs-quill/tree/05-creating-dashboard
 
 
 
-## Creating dashboard
+## 5.1 Creating dashboard
+
+
+
+### overview of work 
 
 1h28min-1h42min no code, just explaining for what we will do in this section
 
 user login flow:
 
 + when first time login, user is redirect to dashboard page, there user is checked if their user info are in the database, if not sync user to database
-  + we will implement the sync in auth-callback [dashboard init pages](https://github.com/Additivemenu/nextjs-quill/blob/902b9e40bfd9ef90683f1a553cfa4fd9c132e1fd/src/app/dashboard/page.tsx#L9)
+  + we will implement the sync in auth-callback by redirecting from :gem:[dashboard pages](https://github.com/Additivemenu/nextjs-quill/blob/902b9e40bfd9ef90683f1a553cfa4fd9c132e1fd/src/app/dashboard/page.tsx#L9)
 
 <img src="./src_md/user-login-flow.png" style="zoom:50%;" />
 
 
 
+
+
+
+
 ### tRPC 
+
+now we would like to do the sync user to db process using trpc to ensure fullstack safety 
+
++ it's just like use axios to issue network communication, but in tRPC way
+
+
 
 tRPC explaining  
 
@@ -332,6 +352,9 @@ tRPC explaining
 :pencil: [tRPC](./sub_topics/tRPC.md)
 
 + tRPC mainly aims for type safety across frontend and backend
+  + regular nextjs: type not safe, data type in response is 'any'
+  + tRPC: fullstack type safe
+
 
 <img src="./Src_md/tRPC1.png" style="zoom:50%;" />
 
@@ -343,11 +366,13 @@ tRPC setup
 
 1h46min-2h06min
 
-https://trpc.io/docs/client/nextjs/setup
+
 
 
 
 key setup steps
+
+https://trpc.io/docs/client/nextjs/setup, just follow this link to setup
 
 ```ts
 get trpc instance
@@ -357,11 +382,59 @@ wireup trpc to app/api
 
 
 
+edit file including: 
+
+```ts
+// dependency: 
+Provider.tsx -> client.ts -> index.ts -> trpc.ts
+
+```
 
 
-route handlers for wiring up tRPC router with api
 
-https://trpc.io/docs/server/adapters/nextjs#route-handlers
+component folder > 
+
++ [provider.tsx](https://github.com/Additivemenu/nextjs-quill/blob/5d41a067939aee7fd0380dc5cdf7952a6919a030/src/components/Providers.tsx#L31) 
+  + wrapper component for enabling trpc in component tree
+    + just wrap this to <body> in the root layout.tsx
+  + here we also use react-query
+
+
+
+app folder > _trpc folder (not a route) > 
+
++ [client.ts](https://github.com/Additivemenu/nextjs-quill/blob/05-creating-dashboard/src/app/_trpc/client.ts)
+  + Wrap up trpc methods in react, it acts just like react context provider: shipping a few objects for use in wrapped component 
+
+
+
+trpc folder  >
+
++  [index.ts](https://github.com/Additivemenu/nextjs-quill/blob/05-creating-dashboard/src/trpc/index.ts)
+  + where you define your router and write your api logic centrally: `appRouter`
+  + :bangbang: act like backend, we do want to check with database to see if user is in db here, we will create database in following section
++ [trpc.ts](https://github.com/Additivemenu/nextjs-quill/blob/05-creating-dashboard/src/trpc/trpc.ts)
+  + get trpc init instance here
+  + return some trpc config instance for further configuration in trpc `appRouter`
+
+
+
+app folder > api folder > trpc > [trpc] > 
+
++ [route.ts](https://github.com/Additivemenu/nextjs-quill/blob/05-creating-dashboard/src/app/api/trpc/%5Btrpc%5D/route.ts) 
+
+  + :bangbang: note dynamic route here
+
+  + see setup at https://trpc.io/docs/server/adapters/nextjs#route-handlers
+  + this wires trpc `appRouter` to app/api
+
+
+
+now we have set tRPC right, let's issue network communication (sync user to db) using tRPC
+
++ app > auth-callback > [page.tsx](https://github.com/Additivemenu/nextjs-quill/blob/05-creating-dashboard/src/app/auth-callback/page.tsx) 
+  + remember we are redirected to this route path from dashboard page
+  + note this page.tsx is a client component as we use next url  hooks 
 
 
 
@@ -371,15 +444,79 @@ https://trpc.io/docs/server/adapters/nextjs#route-handlers
 
 2h06min-2h24min
 
-use prisma 
+use prisma for accessing database
 
 :pencil: [prisma](./sub_topics/prisma.md)
 
 
 
+```ts
+npm install prisma
+npx prisma init 
+```
+
+this will create prisma folder in our project, and add database url as environment variable in .env file, replace that db url link with a one under your control (here we just create one using planet scale)
 
 
-## Perfecting dashboard
+
+
+
+config and create model like 
+
+```ts
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id String @id @unique   // matches kinde user id
+  email String @unique
+
+  stripeCustomerId String? @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId String? @unique @map(name: "stripe_subscription_id")
+  stripePriceId String? @unique @map(name: "stripe_price_id")
+  stipeCurrentPeroid DateTime? @map(name: "stripe_current_period_end")
+}
+```
+
+
+
+then run
+
+```ts
+npx prisma db push   // a convenient tool for developers to quickly sync their database with their Prisma schema during the development phase. 
+
+npx prisma generate  // creating a tailored and type-safe database client based on your schema, 
+```
+
+
+
+
+
+then after we having the db, we continue to write the tRPC api to complete what we want to do in the work overview
+
+2h14min-
+
+# 接着这看
+
+
+
+test what we have  done so far
+
+2h 22min- 2h24min
+
+
+
+## 5.2 Perfecting dashboard
 
 2h24min-3h12min
 

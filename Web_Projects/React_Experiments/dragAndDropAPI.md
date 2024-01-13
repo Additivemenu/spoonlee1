@@ -1,8 +1,16 @@
+
+
+drag & drop 本质上是为draggable element bound callback function on drag & drop event
+
+
+
+
+
+# HTML 5 DAD API
+
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 重点看MDN中对以下:bangbang:的内容的解释
-
-
 
 
 
@@ -28,3 +36,11 @@ The Drag and Drop API is versatile and can be used for a variety of purposes, <s
 
 
 For more detailed information, you can refer to the resources provided earlier from MDN Web Docs, W3Schools, and LogRocket Blog.
+
+
+
+
+
+# React Beautiful DAD
+
+https://egghead.io/courses/beautiful-and-accessible-drag-and-drop-with-react-beautiful-dnd

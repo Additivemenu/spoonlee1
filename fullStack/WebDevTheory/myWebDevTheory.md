@@ -69,3 +69,40 @@ When you make a request using Axios, a popular JavaScript HTTP client, the respo
 7. **Axios-specific fields**: Axios may include additional fields for internal use or for providing extended functionality.
 
 It's important to note that when handling responses in Axios, especially in the context of asynchronous operations like promises or async/await, you need to correctly manage and interpret these fields to effectively utilize the response data and handle errors or specific response scenarios.
+
+
+
+## JWT token
+
+JWT, or JSON Web Token, is a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.
+
+JWTs are used in various scenarios, such as:
+
+1. **Authentication**: After a user logs in, a JWT can be issued, which can be used for subsequent requests to authenticate the user. It's a common method in Single Sign-On (SSO) as it allows the user to be authenticated by different services and applications without logging in multiple times.
+
+2. **Information Exchange**: JWTs are a good way of securely transmitting information between parties. Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are and the contents haven't been tampered with.
+
+
+
+A JWT typically consists of three parts:
+
+- **Header**: The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.
+
+- **Payload**: The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+- **Signature**: To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+JWTs are a popular choice in modern web applications for their simplicity, ease of use, and scalability in handling authentication and authorization processes.
+
+
+
+https://blog.logrocket.com/how-to-implement-jwt-authentication-nestjs/
+
+
+
+
+
+
+
+
+

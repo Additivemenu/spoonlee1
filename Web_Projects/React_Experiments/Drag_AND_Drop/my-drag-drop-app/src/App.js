@@ -1,4 +1,5 @@
 import "./App.css";
+import ComplexDraggableTable from "./components/ComplexDraggableTable";
 import DragDropChangePositionDemo from "./components/DragDropChangePositionDemo";
 import DragDropDemo from "./components/DragDropDemo";
 import DraggableGrid from "./components/DraggableGrid";
@@ -10,7 +11,8 @@ function App() {
       {/* <DragDropDemo /> */}
       {/* <DragDropChangePositionDemo /> */}
       {/* <DraggableGrid /> */}
-      <DraggableTable />
+      {/* <DraggableTable /> */}
+      <ComplexDraggableTable />
     </div>
   );
 }
