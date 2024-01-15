@@ -24,9 +24,11 @@ project intro
 
 # layout 
 
-basic project setup
+## basic project setup
 
 5min -30min
+
+
 
 写页头的text和image, 
 
@@ -38,11 +40,22 @@ basic project setup
 
 
 
-30-47minutes layout
-
-Shared component - footer 
 
 
+## layout
+
+30-47minutes
+
+https://github.com/Additivemenu/nextjs-carhub/commit/47c03b924bbdc10f7b366e50591fe4078bf5e1d6
+
+
+
+Shared component in root [Layout.tsx](https://github.com/Additivemenu/nextjs-carhub/commit/47c03b924bbdc10f7b366e50591fe4078bf5e1d6#diff-eca96d2c09f31517696a26e1d0be4070e1fbab02831481bed006e275741d030b)
+
++ [Navbar.tsx](https://github.com/Additivemenu/nextjs-carhub/commit/47c03b924bbdc10f7b366e50591fe4078bf5e1d6#diff-e7b4dc7397284cbc0d49c6bc13d16309470409bda06a199aa6eb9d9d61b573b8)
++ [Footer.tsx](https://github.com/Additivemenu/nextjs-carhub/commit/47c03b924bbdc10f7b366e50591fe4078bf5e1d6#diff-4f34a078049f572f5ebcdf8a3b771ce47c64ec9808cf3acf95a04e1ab72c214d)
+
+> 注意其中用到的常见的tailwind utility class
 
 
 
