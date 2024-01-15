@@ -1,0 +1,148 @@
+<!-- path/filename: /mnt/data/table-demo.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table Demo</title>
+    <style>
+      /* Basic reset for styling */
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      /* Table styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #dbdbdb;
+
+        padding: 8px;
+        text-align: left;
+      }
+
+      /* Header styling */
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Spanning row for branch icon */
+      .branch-icon {
+        background: url("path-to-branch-icon.png") no-repeat center center;
+        background-size: contain;
+      }
+
+      /* Specific cell styling */
+      .highlight {
+        background-color: #00f; /* placeholder color */
+        color: #fff;
+      }
+
+      /* Wo/W changes and Rank styling */
+      .negative {
+        color: red;
+      }
+
+      .positive {
+        color: green;
+      }
+
+      .start-td {
+        border-left: 2px solid black;
+      }
+
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2" rowspan="4" style="position: relative">
+            <span style="position: absolute; right: 8px; top: 8px"
+              >Product</span
+            >
+            <span style="position: absolute; left: 8px; bottom: 8px"
+              >brand</span
+            >
+          </th>
+        </tr>
+        <tr>
+          <th colspan="4" style="">variable</th>
+          <th colspan="4" style="">fixed</th>
+        </tr>
+        <tr>
+          <th colspan="4" style="left: 60%" style="position: relative">
+            <span>Offset</span>
+          </th>
+          <th colspan="4"></th>
+        </tr>
+        <tr>
+          <td>Intro</td>
+          <td>Basic</td>
+          <td class="highlight">non-package</td>
+          <td>package</td>
+          <td>1 year</td>
+          <td>2 year</td>
+          <td class="highlight">3 year</td>
+          <td>4 year</td>
+        </tr>
+      </thead>
+
+      <!-- tbody-->
+      <tbody>
+        <!-- the abstracted component for drag and drop -->
+        <div>
+          <tr>
+            <th rowspan="4" class="branch-icon">brand icon</th>
+          </tr>
+          <tr>
+            <td>Rate</td>
+
+            <td class="start-td">3.45</td>
+            <td>3.6</td>
+            <td class="highlight">5.5</td>
+            <td>5.6</td>
+
+            <td class="start-td">3.45</td>
+            <td>3.6</td>
+            <td class="highlight">5.5</td>
+            <td>5.6</td>
+          </tr>
+          <!-- row3: wow change -->
+          <tr>
+            <td>WoW Change</td>
+
+            <td class="negative start-td">(0.05)</td>
+            <td class="negative">-0.02</td>
+            <td class="highlight negative">(0.05)</td>
+            <td class="negative">(0.05)</td>
+
+            <td class="negative start-td">(0.05)</td>
+            <td class="negative">-0.02</td>
+            <td class="highlight negative">(0.05)</td>
+            <td class="negative">(0.05)</td>
+          </tr>
+          <!-- row4: Rank -->
+          <tr>
+            <td>Rank</td>
+
+            <td class="start-td">2</td>
+            <td>2</td>
+            <td class="highlight">1</td>
+            <td>2</td>
+
+            <td class="start-td">2</td>
+            <td>2</td>
+            <td class="highlight">1</td>
+            <td>2</td>
+          </tr>
+        </div>
+      </tbody>
+    </table>
+  </body>
+</html>

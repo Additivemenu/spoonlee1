@@ -1,5 +1,5 @@
 import "./App.css";
-import ComplexDraggableTable from "./components/ComplexDraggableTable";
+import ComplexDraggableTable from "./components/ComplexDraggableTable/ComplexDraggableTable";
 import DragDropChangePositionDemo from "./components/DragDropChangePositionDemo";
 import DragDropDemo from "./components/DragDropDemo";
 import DraggableGrid from "./components/DraggableGrid";
