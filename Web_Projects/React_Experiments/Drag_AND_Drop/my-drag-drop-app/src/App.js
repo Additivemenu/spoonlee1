@@ -12,7 +12,9 @@ function App() {
       {/* <DragDropChangePositionDemo /> */}
       {/* <DraggableGrid /> */}
       {/* <DraggableTable /> */}
-      <ComplexDraggableTable />
+      <div style={{ width: "1000px"}}>
+        <ComplexDraggableTable />
+      </div>
     </div>
   );
 }

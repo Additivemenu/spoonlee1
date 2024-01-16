@@ -1,115 +1,63 @@
 import React, { useState } from "react";
 import styles from "./ComplexDraggableTable.module.css";
+import BrandItem from "./BrandItem";
+import BrandGroup from "./BrandGroup";
 
 // import { DUMMY_DATA } from "./DUMMY_DATA";
 /**
  * @returns  an interactive & hierarchical table that allows user to re-order the columns and rows via DAD
  */
 function ComplexDraggableTable() {
-  const initialColumns = ["ID", "Name", "Email", "Grades"];
-  const initialData = [
-    {
-      name: "Alice Johnson",
-      id: "1",
-      email: "alice.johnson@example.com",
-      grades: "A",
-      className: "class1", // level 2 hierarchical data
-      classTier: "tier1", // level 1 hierarchical data
-    },
-    {
-      name: "Bob Smith",
-      id: "2",
-      email: "bob.smith@example.com",
-      grades: "B",
-      className: "class1",
-      classTier: "tier1",
-    },
-    {
-      name: "Charlie Davis",
-      id: "3",
-      email: "charlie.davis@example.com",
-      grades: "C",
-      className: "class2",
-      classTier: "tier1",
-    },
-    {
-      name: "David Trump",
-      id: "4",
-      email: "david.trump@example.com",
-      grades: "D",
-      className: "class2",
-      classTier: "tier1",
-    },
-    {
-      name: "Elena Gilbert",
-      id: "5",
-      email: "elena.gilbert@example.com",
-      grades: "B",
-      className: "class3",
-      classTier: "tier2",
-    },
-    // ... more data
-  ];
-
-
-
   return (
     <div className={styles.tableContainer}>
       <table className={styles.draggableTable}>
-        {/*  drag column header to another column header to re-order the column sequence */}
-        <thead></thead>
+        {/* ---------------- header ------------------ */}
+        <thead>
+          {/* 1 */}
+          <tr>
+            <th colSpan="2" rowSpan="4" style={{ position: "relative" }}>
+              <span
+                style={{ position: "absolute", right: "20px", top: "20px" }}
+              >
+                Product
+              </span>
+              <span
+                style={{ position: "absolute", left: "20px", bottom: "20px" }}
+              >
+                brand
+              </span>
+            </th>
+          </tr>
+          {/* 2 */}
+          <tr>
+            <th colSpan="4">variable</th>
+            <th colSpan="4">fixed</th>
+          </tr>
+          {/* 3 */}
+          <tr>
+            <th colSpan="4">
+              <span>Offset</span>
+            </th>
+            <th colSpan="4"></th>
+          </tr>
+          {/* 4 */}
+          <tr>
+            <td>Intro</td>
+            <td>Basic</td>
+            <td class="highlight">non-package</td>
+            <td>package</td>
+            <td>1 year</td>
+            <td>2 year</td>
+            <td class="highlight">3 year</td>
+            <td>4 year</td>
+          </tr>
+        </thead>
 
-        {/*  tbody that supports both column re-ordering and row re-ordering via DAD */}
-        <tbody>
-          <div>
-            <tr>
-              <th rowspan="4" class="branch-icon">
-                brand icon
-              </th>
-            </tr>
-            <tr>
-              <td>Rate</td>
-
-              <td class={styles.startTd}>3.45</td>
-              <td>3.6</td>
-              <td class="highlight">5.5</td>
-              <td>5.6</td>
-
-              <td class={styles.startTd}>3.45</td>
-              <td>3.6</td>
-              <td class="highlight">5.5</td>
-              <td>5.6</td>
-            </tr>
-
-            <tr>
-              <td>WoW Change</td>
-
-              <td class={styles.startTd}>(0.05)</td>
-              <td class="negative">-0.02</td>
-              <td class="highlight negative">(0.05)</td>
-              <td class="negative">(0.05)</td>
-
-              <td class={styles.startTd}>(0.05)</td>
-              <td class="negative">-0.02</td>
-              <td class="highlight negative">(0.05)</td>
-              <td class="negative">(0.05)</td>
-            </tr>
-
-            <tr>
-              <td>Rank</td>
-
-              <td class={styles.startTd}>2</td>
-              <td>2</td>
-              <td class="highlight">1</td>
-              <td>2</td>
-
-              <td class={styles.startTd}>2</td>
-              <td>2</td>
-              <td class="highlight">1</td>
-              <td>2</td>
-            </tr>
-          </div>
-        </tbody>
+        {/* ------------------ table content ------------------ */}
+        {/* TODO: add a filter state as props to pass down each group */}
+        <BrandGroup title="Major Banks" itemCount={1} />
+        <BrandGroup title="Regional Banks" itemCount={2} />
+        <BrandGroup title="Online Banks" itemCount={3} />
       </table>
     </div>
   );

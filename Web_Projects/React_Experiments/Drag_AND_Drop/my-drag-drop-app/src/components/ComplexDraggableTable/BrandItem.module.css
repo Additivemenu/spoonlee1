@@ -1,0 +1,51 @@
+/* ! for table body --------------------------- */
+
+
+
+.brandItemBody:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+/* .branchIcon {
+  background: url("../../../assets/nab.jpeg") no-repeat center center;
+  background-size: contain;
+} */
+
+th,
+td {
+  border: 1px solid #dbdbdb;
+
+  padding: 8px;
+  text-align: left;
+}
+
+/* Header styling */
+th {
+  background-color: #f2f2f2;
+}
+
+/* Specific cell styling */
+.highlight {
+  background-color: #00f; /* placeholder color */
+  color: #fff;
+}
+
+/* Wo/W changes and Rank styling */
+.negative {
+  color: red;
+}
+
+.positive {
+  color: green;
+}
+
+.startTd {
+  border-left: 2px solid black;
+}
+
+.providerGroupTitle {
+  background-color: #c2bebe;
+  font-weight: bold;
+}
