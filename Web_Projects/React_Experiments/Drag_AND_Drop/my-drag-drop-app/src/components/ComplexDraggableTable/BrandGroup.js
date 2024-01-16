@@ -1,7 +1,7 @@
-import React from 'react';
-import BrandItem from './BrandItem'; // Assuming BrandItem is a separate component
+import React from "react";
+import BrandItem from "./BrandItem"; // Assuming BrandItem is a separate component
 
-import styles from './BrandGroup.module.css';
+import styles from "./BrandGroup.module.css";
 
 const BrandGroup = ({ title, itemCount }) => {
   return (
@@ -10,8 +10,11 @@ const BrandGroup = ({ title, itemCount }) => {
         className={styles.providerGroupTitle}
         onClick={() => alert(`You got the ${title} group!`)}
       >
-        <tr><td>{title}</td></tr>
+        <tr>
+          <td colSpan="10">{title}</td>
+        </tr>
       </thead>
+
       {Array.from({ length: itemCount }, (_, index) => (
         <BrandItem key={index} />
       ))}

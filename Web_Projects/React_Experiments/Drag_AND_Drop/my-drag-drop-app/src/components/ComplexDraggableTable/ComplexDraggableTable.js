@@ -35,7 +35,8 @@ function ComplexDraggableTable() {
           </tr>
           {/* 3 */}
           <tr>
-            <th colSpan="4">
+            <th colSpan="2"></th>
+            <th colSpan="2">
               <span>Offset</span>
             </th>
             <th colSpan="4"></th>
