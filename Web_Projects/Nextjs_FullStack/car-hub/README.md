@@ -8,7 +8,19 @@ https://github.com/adrianhajdin/project_next13_car_showcase
 a demo project that showcasing an array of car models 
 
 
+
+
+
+# Key takeaways
+
+to use some ui libs, you have to use in client component
+
+
+
+
+
 # Intro
+
 0-5min
 project intro
 
@@ -66,7 +78,21 @@ Shared component in root [Layout.tsx](https://github.com/Additivemenu/nextjs-car
 
 
 
+
+
+
+
 ## car catalogue
+
+47min-1h16min
+
+
+
+
+
+headless ui
+
+看至1h02min-
 
 
 

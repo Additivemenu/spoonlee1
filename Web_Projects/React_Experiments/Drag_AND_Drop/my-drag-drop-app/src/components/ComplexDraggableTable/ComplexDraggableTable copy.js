@@ -10,17 +10,8 @@ import BrandGroup from "./BrandGroup";
 function ComplexDraggableTable() {
   return (
     <div className={styles.tableContainer}>
-      {/* ---------------- header ------------------ */}
       <table className={styles.draggableTable}>
-        {/* column selection */}
-        <colgroup>
-          <col span="4" />
-          <col span="1" style={{ backgroundColor: "#D6EEEE" }} />
-          <col span="2" />
-          <col span="1" style={{ backgroundColor: "#D6EEEE"}} />
-        </colgroup>
-
-    
+        {/* ---------------- header ------------------ */}
         <thead>
           {/* 1 */}
           <tr>
@@ -54,22 +45,19 @@ function ComplexDraggableTable() {
           <tr>
             <td>Intro</td>
             <td>Basic</td>
-            <td>non-package</td>
+            <td class="highlight">non-package</td>
             <td>package</td>
             <td>1 year</td>
             <td>2 year</td>
-            <td>3 year</td>
+            <td class="highlight">3 year</td>
             <td>4 year</td>
           </tr>
         </thead>
 
         {/* ------------------ table content ------------------ */}
         {/* TODO: add a filter state as props to pass down each group */}
-
         <BrandGroup title="Major Banks" itemCount={1} />
-
         <BrandGroup title="Regional Banks" itemCount={2} />
-
         <BrandGroup title="Online Banks" itemCount={3} />
       </table>
     </div>

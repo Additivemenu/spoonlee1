@@ -25,7 +25,7 @@ const BrandItem = () => {
 
         <td className={styles.startTd}>3.45</td>
         <td>3.6</td>
-        <td className="highlight">5.5</td>
+        <td className="highlight" style={{backgroundColor: "yellow"}}>5.5</td>
         <td>5.6</td>
 
         <td className={styles.startTd}>3.45</td>
