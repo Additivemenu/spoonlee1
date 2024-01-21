@@ -78,19 +78,17 @@ Shared component in root [Layout.tsx](https://github.com/Additivemenu/nextjs-car
 
 
 
-
-
-
-
 ## car catalogue
 
 47min-1h16min
 
+https://github.com/Additivemenu/nextjs-carhub/commit/a291fce8ec6a37fc7d6d83cd20e9aea9cc942865
 
 
 
+we use ui lib: [headless ui](https://headlessui.com/react/combobox#combobox-option)  for some components
 
-headless ui
++ a good thing is that headless ui supports tailwind
 
 看至1h02min-
 
@@ -99,6 +97,10 @@ headless ui
 
 
 ## Rapid API cars
+1h16min-
+
+
+
 we get data from this api call https://rapidapi.com/apininjas/api/cars-by-api-ninjas?utm_source=youtube.com%2FJavaScriptMastery&utm_medium=referral&utm_campaign=DevRel
 
 

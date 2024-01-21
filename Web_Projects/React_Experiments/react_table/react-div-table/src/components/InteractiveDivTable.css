@@ -1,0 +1,32 @@
+.divTable {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.divTableHeading,
+.divTableBody {
+    display: table-row-group;
+}
+
+.divTableRow {
+    display: table-row;
+}
+
+.divTableHead,
+.divTableCell {
+    display: table-cell;
+    padding: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.divTableHead {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.divTableRow.selected,
+.divTableHead.selected {
+    background-color: yellow; /* Light blue to indicate selection */
+}

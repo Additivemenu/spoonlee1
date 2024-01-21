@@ -20,7 +20,6 @@ function ComplexDraggableTable() {
           <col span="1" style={{ backgroundColor: "#D6EEEE"}} />
         </colgroup>
 
-    
         <thead>
           {/* 1 */}
           <tr>
