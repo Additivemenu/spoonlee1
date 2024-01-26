@@ -17,6 +17,26 @@ to use some ui libs, you have to use in client component
 
 
 
+some common used tailwind utility class
+
+```css
+w-full
+
+relative
+
+h-40
+
+my-2
+
+object-contain
+
+hidden group-hover:flex
+```
+
+
+
+
+
 
 
 # Intro
@@ -90,32 +110,51 @@ we use ui lib: [headless ui](https://headlessui.com/react/combobox#combobox-opti
 
 + a good thing is that headless ui supports tailwind
 
-看至1h02min-
+这里主要做了个search bar, 输入字母会有下拉选项 
 
 
 
 
 
 ## Rapid API cars
-1h16min-
-
-
+1h16min-1h44min
 
 we get data from this api call https://rapidapi.com/apininjas/api/cars-by-api-ninjas?utm_source=youtube.com%2FJavaScriptMastery&utm_medium=referral&utm_campaign=DevRel
 
 
 
+### CarCard
+
+fetching data using fetch api (in a typical react client component manner)
+
+map data into car card 
+
+adding more options to CustomButton
 
 
-## car detail modal
 
 
+
+
+
+### CarDetailModal
+
+1h44min-2h03min
+
+just the modal that adds on car card
+
+
+
+up here
 
 
 
 
 
 ## car image
+
+2h03min-2h10min
+
 
 
 # side functionality

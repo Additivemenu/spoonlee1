@@ -1,33 +1,64 @@
-跳转
-
-[my_CSS_notes](../myCSSNotes.md)
-
----
-content
-
-- [0. 一些SCSS相关的terminal指令](#0-一些scss相关的terminal指令)
-- [1. SCSS五大特性](#1-scss五大特性)
-  - [1.1 variable](#11-variable)
-  - [1.2 nesting](#12-nesting)
-  - [1.3 Mixin](#13-mixin)
-  - [1.4 Partials](#14-partials)
-  - [1.5 Extend/Inheritance](#15-extendinheritance)
-- [2. SCSS function](#2-scss-function)
-
-
----
-
 学习资源
 
-[sass官方](https://sass-lang.com/)
+:book: ​ [sass official doc](https://sass-lang.com/)
 
----
+
+
+
+
+
+
+
+
+# Intro
+
+
+
+## why scss?
 
 SCSS是一种改良版的CSS写法, 可以实现一些额外的具有类似programming language特性的简洁语法, 通过把.scss文件编译为.css文件, 可以大大提高CSS的coding效率
 
 
 
-# 0. 一些SCSS相关的terminal指令
+### scss vs. css 
+
+SCSS Modules and CSS Modules both serve to modularize and encapsulate styles in a web application, particularly useful in frameworks like React. However, SCSS Modules offer several distinct advantages over plain CSS Modules due to the additional features provided by SCSS (Sass):
+
+1. **Preprocessing Capabilities**: SCSS is a preprocessor language that offers features like variables, nesting, mixins, and inheritance, which are not available in plain CSS. This allows for more dynamic and reusable styling.
+
+2. **Better Organization**: SCSS's ability to nest styles mimics the DOM structure, making it easier to manage and understand the relationship between styles.
+
+3. **Code Reusability and Maintainability**: With features like mixins and extend/inheritance, SCSS allows for more reusable code, which can lead to cleaner and more maintainable stylesheets.
+
+4. **Advanced Functionality**: SCSS provides functions, loops, and conditionals, allowing for more complex and programmatically generated styles, which is not possible with plain CSS.
+
+5. **Compatibility with CSS**: SCSS is fully compatible with CSS, which means any valid CSS is also valid SCSS. This makes transitioning to SCSS modules easier for teams already familiar with CSS.
+
+In summary, while CSS Modules offer the core benefit of scope isolation, SCSS Modules extend this by adding powerful preprocessing capabilities, leading to more maintainable, scalable, and readable styles.
+
+
+
+
+
+### scss vs. scss modules in react
+
+The key difference between using SCSS and SCSS Modules lies in how styles are scoped and managed:
+
+1. <span style="color:yellow">**Local Scope with Modules**: SCSS Modules provide locally scoped class names, meaning the styles you define in a module are only applied to the component that imports them. This reduces the risk of style conflicts across your application.</span>
+
+2. **Modular and Component-Specific Styling**: With SCSS Modules, each component can have its own styling file, making the styles easier to manage and understand in the context of each component. This is particularly beneficial in large applications where maintaining a global stylesheet can be challenging.
+
+3. **Codebase Organization**: SCSS Modules help in organizing the codebase by keeping the styling closely tied to the respective components. This encapsulation makes it easier to understand and maintain the styling for each component.
+
+4. **Easy Maintenance and Refactoring**: When using modules, refactoring or updating styles for a specific component becomes easier since you only need to modify the styles in one place, without worrying about unintended side-effects elsewhere.
+
+5. **Combining Global and Local Styles**: SCSS Modules allow you to combine global styles (defined in regular SCSS files) with local styles (defined in module files), giving you flexibility in how you apply styling throughout your application.
+
+In essence, while regular SCSS provides the preprocessing features like variables, mixins, and nesting, SCSS Modules add an extra layer of organization by locally scoping these styles to specific components, thereby enhancing maintainability and reducing style conflicts.
+
+
+
+# some cmd to scss
 
 [how to install node.js and npm on Mac](https://treehouse.github.io/installation-guides/mac/node-mac.html
 )
@@ -51,6 +82,11 @@ sass SCSS/style.scss:CSS/style.css
 // 自动编译
 sass --watch SCSS/style.scss:CSS/style.css
 ```
+
+
+
+
+
 
 
 # 1. SCSS五大特性 
@@ -97,6 +133,10 @@ h2.page-header {
 ```
 
 ## 1.2 nesting
+用的最多!
+
+
+
 结合BEM(block__element--modifier) class name的命名规范, nesting让标签结构同HTML相比更加一目了然
 
 ```scss
@@ -251,6 +291,7 @@ mixin的返回值就是`{ }`括起来的代码.
 ## 1.4 Partials
 
 `@import`: import其他scss文件
+
 ```scss
 // partials @import, import其他scss文件
 // import 一般写在scss文件开头
@@ -334,7 +375,9 @@ body {
 ```
 
 
+
 # 2. SCSS function
+
 SCSS定义了很多函数可供直接调用, 以@function为例, 颜色函数 lighten为减淡, darken为加深:
 ```scss
 lighten($color, $amount)    // 颜色, 颜色变化百分比
@@ -348,5 +391,4 @@ body{
   color: lighten($gray, 10%)
 }
 ```
-
 

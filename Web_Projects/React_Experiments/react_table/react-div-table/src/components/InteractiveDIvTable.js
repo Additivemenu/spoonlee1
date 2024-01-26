@@ -9,9 +9,11 @@ const InteractiveDivTable = () => {
         // ... more data
     ];
 
+    // hooks -----------------------------
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectedColumns, setSelectedColumns] = useState([]);
 
+    // handler -----------------------------
     const toggleRowSelection = (id) => {
         alert("toggleRowSelection");
         setSelectedRows((prevSelectedRows) =>
@@ -30,8 +32,10 @@ const InteractiveDivTable = () => {
         );
     };
 
+    // jsx -----------------------------
     return (
         <div className="divTable">
+            {/*  header  */}
             <div className="divTableHeading">
                 <div className="divTableRow">
                     {['id', 'name', 'age'].map((columnName) => (
@@ -45,6 +49,7 @@ const InteractiveDivTable = () => {
                     ))}
                 </div>
             </div>
+            {/* body */}
             <div className="divTableBody">
                 {data.map((row) => (
                     <div
