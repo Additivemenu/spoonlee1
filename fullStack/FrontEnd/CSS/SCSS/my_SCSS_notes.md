@@ -91,9 +91,15 @@ sass --watch SCSS/style.scss:CSS/style.css
 
 # 1. SCSS五大特性 
 
+[sass doc: styling](https://sass-lang.com/documentation/style-rules/)
+
+
+
 ## 1.1 variable
 
 + 用`$`前缀来标识变量. 注意声明和引用变量都得用`$`
+  + 同样, 结合nesting, variable具有自己的作用域
+
 
 ```scss
 // scss

@@ -4,12 +4,6 @@ Src:
 
 
 
-Notes: 
-
-+ :pencil: [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
-
-
-
 # key takeaway
 
 一个选择器内的CSS属性大致分为4类:
@@ -31,19 +25,25 @@ Notes:
 
 
 
+# contents
 
 
 
+css
 
 | id | Topic | Description |
 | ---- | ------------------------- | ---- |
 | [1](./C1.md)    | :bangbang: ​css selector  |      |
 | [2](./C2.md)    | basic css                 |      |
-| [3](./C3.md)    | :bangbang::full_moon: block element & box model | box model <br>positioning<br>flex box<br>grid |
+| [3](./C3.md)    | :bangbang::full_moon: block element & box model | box model <br>positioning<br>flex box layour<br>grid layout |
 | [4](./C4.md)    | :bangbang: ​usual css properties | text <br>background |
 | [5](./C5.md)    | css animation             |      |
 
 
+
+scss
+
+:pencil: [my_SCSS_notes](./SCSS/my_SCSS_notes.md)
 
 
 
