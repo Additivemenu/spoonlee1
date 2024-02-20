@@ -10,12 +10,16 @@ https://johnstyle.medium.com/getting-started-with-nestjs-a-step-by-step-example-
 
 
 
+
+
+:link: [JR21 fullstack notes](https://github.com/australiaitgroup/FullStack-21-Note)
+
 | Id                                    | Topic                  | Description                         |
 | ------------------------------------- | ---------------------- | ----------------------------------- |
 | [1](./FrontEnd/myFrontEndBasics.md)   | FrontEnd Basics        | HTML, CSS, JS, <br> TS, TailwindCSS |
 | [2](./BackEnd/myBackEnd.md)           | BackEnd                | Java, NodeJS, Python <br> [另外, Spring的学习参考](https://www.pdai.tech/md/spring/spring.html) <br> |
 | [3](./Database/myDatabase.md)         | Database               |                                     |
-| [4](./Git/readme.md)                  | version control: git   |                                     |
+| [4](../Udemy/Git/Udemy_Git.md)                  | version control: git   |                                     |
 | [5](./WebDevTheory/myWebDevTheory.md) | :bangbang: web development theory |                                     |
 | [6](./CICD/myCICD.md) | CICD |                                     |
 

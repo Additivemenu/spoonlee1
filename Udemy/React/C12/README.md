@@ -533,7 +533,7 @@ export default App;
 
 
 
-## State updates & scheduling
+## :bangbang: ​State updates & scheduling
 
 193
 
@@ -588,7 +588,9 @@ function Counter() {
 
 In the above code, you might expect the `count` to increase by 2 when the button is clicked, but because of how React batches updates, it will only increase by 1. This is because both `setCount` calls use the same stale value of `count` during the batched update.
 
-**Example using updater function for correct batching:**
+
+
+:gem: ​**Example using updater function for correct batching:**
 
 ```javascript
 function handleIncrement() {
