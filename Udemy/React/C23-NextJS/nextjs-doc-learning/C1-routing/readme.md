@@ -463,8 +463,6 @@ A Dynamic Segment can be created by wrapping a folder's name in square brackets:
 
 ## 3.3 :bangbang:Parallel routes - slot @foldername
 
-https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
-
 
 
 <span style="color:yellow">一句话总结: 感觉是为了能把一个page作为prop传递给一个layout, 而不影响url的structure, 从而使多个page可以simultaneously or conditioanlly rendered on the same layout (感觉这点在vanilla react里很容易实现) </span>
@@ -479,51 +477,84 @@ https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
 
 
 
-<span style="color:yellow">Parallel Routing allows you to <u>simultaneously</u> or <u>conditionally</u> render one or more pages <u>in the same layout</u>.</span>
+<span style="color:yellow">Parallel Routing allows you to <u>simultaneously</u> or <u>conditionally</u> render one or more pages <u>in the same `layout`</u>.</span>
 
-:gem: see 2 use cases at [2 use cases of parallel route]( https://nextjs.org/docs/app/building-your-application/routing/parallel-routes)
-
-+ Use Case1: simultaneous rendering of one or more pages
-  + and you can even define independent loading and error state for each page
-  + :gem: [Modals e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#modals)
-+ Use Case2: conditionally rendering of a page
-  + :gem: [Conditional Routes e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#conditional-routes)
-
-
-
-
-
-how to use it: 
-
-Parallel routes are created using named **`slots`**. <span style="color:yellow">Slots are defined with the `@folder` convention, and are passed to the same-level layout as props.</span> 
-
-> note: <span style="color:red">`Slots` are *not* route segments and *do not affect the URL structure*.</span> The file path `/@team/members` would be accessible at `/members`.
-
-see example at [Convention](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#convention)
-
-
-
-below
-
-+ team & analytics are pages but parallelly rendered in the same layout, note `@team` & `@analytics` folder don't affect URL structure
+e.g. team & analytics are pages but parallelly rendered in the same layout, note `@team` & `@analytics` folder don't affect URL structure
 
 <img src="./src_md/parallel-route1.png" style="zoom:50%;" />
 
 
 
-### :question: handling unmatched route - default.tsx
-
-[Unmatched Routes](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#unmatched-routes)
-
-没看太懂
 
 
+how to use it: => concept of `slots`
 
-[`useSelectedLayoutSegment(s)`](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#useselectedlayoutsegments))
+---
 
- this hook allows you to read the active route segment within that slot.
+Parallel routes are created using named **`slots`**. <span style="color:yellow">Slots are defined with the `@folder` convention, and are passed to the same-level layout as props.</span> 
 
-也没看懂
++ `slots` 这个说法很形象, parallel routes在其parent layout中就是一个slots的位置, 或者说subpage 在layout中就对应一个slot
+
+  + The `children` prop is an implicit slot that does not need to be mapped to a folder. This means `app/page.js` is equivalent to `app/@children/page.js`.
+
+  + :bangbang: ​ <span style="color:red">`Slots` are *not* route segments and *do not affect the URL structure*.</span> The file path `/@team/members` would be accessible at url path `/members`.
+
+
+
+[active state of slots & navigation ](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#active-state-and-navigation)
+
+---
+
+By default, Next.js keeps track of the active *state* (or subpage) for each slot. However, the content rendered within a slot will depend on the type of navigation:
+
+- [**Soft Navigation**](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#5-soft-navigation): During client-side navigation, Next.js will perform a [partial render](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#4-partial-rendering), changing the subpage within the slot, while maintaining the other slot's active subpages, even if they don't match the current URL.
+- **Hard Navigation**: After a full-page load (browser refresh), Next.js cannot determine the active state for the slots that don't match the current URL. Instead, it will render a [`default.js`](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#defaultjs) file for the unmatched slots, or `404` if `default.js` doesn't exist.
+  - see more explaination at https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#defaultjs
+
+
+
+
+
+:gem: see use cases at https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#examples
+
+---
+
+Use Case1: simultaneous rendering of one or more pages
+
++ and you can even define independent loading and error state for each page
++ :gem: [Modals e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#modals)
++ :gem:[Tab group e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#tab-groups)
++ :gem: ​[independent loading & error UI](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#loading-and-error-ui)
+
+
+
+Use Case2: conditionally rendering of a page
+
++ :gem: [Conditional Routes e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#conditional-routes)
+  + 是基于layout可以获得slots作为props时, 可以利用conditional rendering 来选择哪个slot被展示. 本质和react里conditional rendering没区别
+
+```tsx
+import { checkUserRole } from '@/lib/auth'
+ 
+export default function Layout({
+  user,
+  admin,
+}: {
+  user: React.ReactNode			// @user/page.js
+  admin: React.ReactNode		// @admin/page.js
+}) {
+  const role = checkUserRole()
+  return <>{role === 'admin' ? admin : user}</>
+}
+```
+
+
+
+may also check examples at https://www.builder.io/blog/nextjs-14-parallel-routes
+
+
+
+
 
 
 
@@ -533,7 +564,7 @@ https://nextjs.org/docs/app/building-your-application/routing/intercepting-route
 
 
 
-<span style="color:yellow">一句话总结: 没完全理解到底是什么意思</span>
+<span style="color:yellow">一句话总结: 没完全理解到底是什么意思 </span> maybe look at https://www.builder.io/blog/nextjs-14-intercepting-routes
 
 
 
@@ -575,6 +606,10 @@ For example, you can intercept the `photo` segment from within the `feed` segmen
 
 
 # 4. Next reqeust & response
+
+不是很理解为什么要讲这块, axios不就解决了吗?
+
+
 
 ## 4.1:question:Route handlers - route.ts
 
@@ -634,14 +669,18 @@ introudce how to organize files in next.js project
 
 [Safe colocation by default](https://nextjs.org/docs/app/building-your-application/routing/colocation#safe-colocation-by-default)
 
-+ nextjs的file hierachy => route segment 的金句
++ nextjs的file hierachy => route segment 的金句:  <u>even though route structure is defined through folders, a route is **not publicly accessible** until a `page.js` or `route.js` file is added to a route segment.</u>
 
 
 
 [Project organization features](https://nextjs.org/docs/app/building-your-application/routing/colocation#project-organization-features)
 
 + priavte folder
+  + Private folders can be created by prefixing a folder with an underscore: `_folderName`
+
 + route group
+  + see 3.1 
+
 + src directory
 + module path alias
 
@@ -654,3 +693,4 @@ https://nextjs.org/docs/app/building-your-application/routing/colocation#project
 
 
 usually we just pick strategy1: keep project files outside app folder, just leave app folder for routing purpose
+
