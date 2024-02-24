@@ -1,5 +1,13 @@
 # Key takeaway
 
+
+
+## key concepts in nest.js
+
+may also check on nest official doc: https://docs.nestjs.com/controllers
+
+
+
 MVC workflow:
 
 <img src="../C2/src_md/scratch2.png" style="zoom:50%;" />

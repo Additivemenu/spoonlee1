@@ -1,6 +1,6 @@
 1
 
-routing in next.js https://nextjs.org/docs/app/building-your-application/routing
+对应 routing in next.js https://nextjs.org/docs/app/building-your-application/routing
 
 
 
@@ -10,9 +10,42 @@ routing in next.js https://nextjs.org/docs/app/building-your-application/routing
 
 # key takeaways
 
-+ <span style="color: red">By default, components inside `app` are [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).</span> 
-+ A `page.js` file is required to make a route segment publicly accessible.
-+ Pages vs. Templates
+<span style="color: red">By default, components inside `app` are [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).</span> 
+
+
+
+一点关于Next.js中route & ui 的关系的理解
+
++ in Next.js, 提到route, 就想到一颗component tree, 一个route对应一条sequential path (no branching) from root node to a leaf node (a page.js), 这个sequential path所走过的node 会被渲染成ui呈现
+  + in parallel routes, 一个route 对应一条可以分叉的path, 同理, 这个path所走过的node会被渲染成ui呈现
+
+
+
++ basic concepts of routing in Next.js
+  + Folder & Files, route path & route segment, file path != url structure
+
++ Next.js special files
+  + commonly used special files
+    + Pages vs. Templates
+
+  + :bangbang: ​component hierarchy
+    + how the special next.js files are pared to react component
+    + A `page.js` file is required to make a route segment publicly accessible.
+      + `page.js` file is essentially a react component! 
+
+    + Colocation files under `app` directory
+
++ Navigation in Next.js
++ Advanced routing in Next.js
+  + :bangbang: ​parallel routes
+    + 2 Use Cases: 1) simultineously rendering one or more pages; 2) conditionally rendering a page
+
+  + intercepting routes
+  + Route groups
+  + dynamic route
+
+
++ request & response in Next.js 
 
 
 
@@ -20,29 +53,38 @@ routing in next.js https://nextjs.org/docs/app/building-your-application/routing
 
 
 
-# Intro
+
+
+# Overview 
+
+overview of next.js file-system based routing schema
+
+source: https://nextjs.org/docs/app/building-your-application/routing
 
 
 
 `app` route
 
-+ <span style="color: red">By default, components inside `app` are [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).</span> This is a performance optimization and allows you to easily adopt them, and you can also use [Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components).
++ <span style="color: red">By default, components inside `app` directory are [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).</span> This is a performance optimization and allows you to easily adopt them, and you can also use [Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components).
 
 
 
-## Folders and files
+## Key concepts
 
-+ **Folders** are used to define routes. 
+Folders & Files
+
++ **`Folders`** are used to define routes. 
   + A route is a single path of nested folders, following the file-system hierarchy from the **root folder** down to a final **leaf folder** that includes a `page.js` file.
-+ **Files** are used to create UI that is shown for a route segment. 
++ **`Files`** are used to create UI that is shown for a route segment. 
 
 
 
+[Route segment](https://nextjs.org/docs/app/building-your-application/routing#route-segments) <=> folder under app directory
 
++ Each folder in a route represents a **`route segment`**. Each route segment is mapped to a corresponding **segment** in a **URL path**.
++ :bangbang: but note file path does not 100% equivalent to URL path  (e.g. parallel routes @slot not affecting url structure)​
 
-Route segment
-
-https://nextjs.org/docs/app/building-your-application/routing#route-segments
+<img src="./src_md/route-segments1.png" style="zoom:50%;" />
 
 
 
@@ -54,11 +96,13 @@ https://nextjs.org/docs/app/building-your-application/routing#nested-routes
 
 
 
-## file conventions
+## File conventions in next.js
 
 https://nextjs.org/docs/app/building-your-application/routing#file-conventions
 
 special files under `app` directory: 
+
++ :bangbang: other files under `app` directory are not treated as react components by Next
 
 | file name                                                    | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -74,10 +118,6 @@ special files under `app` directory:
 
 
 
-:bangbang: other files under `app` directory are not treated as react components by Next
-
-
-
 see colocation: https://nextjs.org/docs/app/building-your-application/routing#colocation
 
 + while folders define routes, only the contents returned by `page.js` or `route.js` are publicly addressable. 就是说, folder对应route segment, 但是只有具有page.js 或者 route.js的folder对应的route, 才routable 可到达
@@ -86,19 +126,44 @@ see colocation: https://nextjs.org/docs/app/building-your-application/routing#co
 
 
 
-## component hierarchy
+## :bangbang: ​component hierarchy
 
-上述folder, files是如何被next.js转化为对应的react component tree的
-
-https://nextjs.org/docs/app/building-your-application/routing#component-hierarchy
+揭示Next.js 本质的
 
 
 
+上述一系列的folder, files是如何被next.js转化为对应的react component hierarchy的 https://nextjs.org/docs/app/building-your-application/routing#component-hierarchy
+
++ 尽管在同一个folder里, file写起来是平行的, 但其实它们在形成react component 时是有hierarhcy的
++ 了解这个有助于理解next是如何build component hierarchy的, 进而build html element
 
 
-# 1. :full_moon: Pages & Layouts
+
+simple route
+
+<img src="./src_md/component-hierarchy1.png" style="zoom:50%;" />
+
+nested route
+
++ In a nested route, the components of a segment will be nested **inside** the components of its parent segment.
+
+<img src="./src_md/component-hierarchy2.png" style="zoom:50%;" />
 
 
+
+## colocation
+
+前面提到, app directory下是对应真正的ui 页面的routing的, 但是next,js也允许我们在app directory下 colocate our own files (e.g. components, styles, tests ...). This is because while folders define routes, only the contents returned by `page.js` or `route.js` are publicly addressable.
+
+<img src="./src_md/colocation1.png" style="zoom:50%;" />
+
+
+
+
+
+# 1. :full_moon: Specical next.js files
+
+most basic and most frequently used next.js files
 
 
 
@@ -164,8 +229,6 @@ Unlike layouts that persist across routes and maintain state, <span style="color
 
 
 ## 1.4  loading.tsx & loading state
-
-
 
 [Instant Loading States](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#instant-loading-states): An instant loading state is fallback UI that is shown immediately upon navigation. 
 
@@ -346,7 +409,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 
 # 3. Advanced routing concepts
 
-这些concepts最好边做一些项目边体会
+这些concepts最好边做一些项目边体会, 单独看比较晦涩
 
 
 
@@ -420,15 +483,17 @@ https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
 
 :gem: see 2 use cases at [2 use cases of parallel route]( https://nextjs.org/docs/app/building-your-application/routing/parallel-routes)
 
-+ simultaneous rendering of one or more pages
++ Use Case1: simultaneous rendering of one or more pages
   + and you can even define independent loading and error state for each page
   + :gem: [Modals e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#modals)
-+ conditionally rendering of a page
++ Use Case2: conditionally rendering of a page
   + :gem: [Conditional Routes e.g.](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes#conditional-routes)
 
 
 
 
+
+how to use it: 
 
 Parallel routes are created using named **`slots`**. <span style="color:yellow">Slots are defined with the `@folder` convention, and are passed to the same-level layout as props.</span> 
 
@@ -468,7 +533,7 @@ https://nextjs.org/docs/app/building-your-application/routing/intercepting-route
 
 
 
-<span style="color:yellow">一句话总结: 没完全理解到底是什么意思</span>>
+<span style="color:yellow">一句话总结: 没完全理解到底是什么意思</span>
 
 
 
@@ -511,7 +576,7 @@ For example, you can intercept the `photo` segment from within the `feed` segmen
 
 # 4. Next reqeust & response
 
-## 4.1 :question: Route handlers - route.ts
+## 4.1:question:Route handlers - route.ts
 
 https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 
@@ -549,7 +614,7 @@ Route Handlers can be nested inside the `app` directory, similar to `page.js` an
 
 
 
-## 4.2 :question: Middleware
+## 4.2:question:Middleware
 
 https://nextjs.org/docs/app/building-your-application/routing/middleware
 

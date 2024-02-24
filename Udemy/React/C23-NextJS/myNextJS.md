@@ -1,12 +1,18 @@
 notes made based on vercel docs and official tut
 
-next steps after this tut https://nextjs.org/learn/dashboard-app/next-steps
+=> next steps after this tut https://nextjs.org/learn/dashboard-app/next-steps
 
 + :pencil: [my notes on Next.js doc](./nextjs-doc-learning/myNextJSDoc.md)
 
 check out project: https://www.youtube.com/watch?v=pUNSHPyVryU&t=5150s
 
 
+
+
+
+
+
+Next.js environment variable setup https://refine.dev/blog/next-js-environment-variables/#using-environment-variables-in-the-browser
 
 
 

@@ -19,8 +19,8 @@ Part1: basics of next.js
 
 |      |               | Description |
 | ---- | ------------- | ---- |
-| [1](./C1-routing/readme.md)    | :bangbang: Routing | the core next feature: <br>+ specical next files family <br>+ navigation in next <br>+ advanced routing concepts: parallel, interception <br>+ route handler & middleware in next |
-| [2](./C2-rendering/readme.md)    | :bangbang: Rendering | crucial for understanding how next works <br>+ server component: next has its own api for state, data fetching <br>+ client component: more like vanilla react <br>+ interleaving server & client component |
+| [1](./C1-routing/readme.md)    | :bangbang: Routing | the core next.js feature: <br>+ component hierarchy in next.js<br>+ specical next.js files family <br>+ navigation in next <br>+ advanced routing concepts: parallel, interception <br>+ route handler & middleware in next.js |
+| [2](./C2-rendering/readme.md)    | :bangbang: Rendering | crucial for understanding how next.js works <br>+ server component: next has its own api for state, data fetching <br>+ client component: more like vanilla react <br>+ interleaving server & client component |
 | [3](./C3-data-fetching/readme.md)    | :bangbang: data fetching | crucial in data communication |
 | [4](./C4-styling/readme.md)    | styling       |      |
 | [5](./C5-caching/readme.md) | Caching | |

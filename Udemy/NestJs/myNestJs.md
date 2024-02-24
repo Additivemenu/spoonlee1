@@ -6,10 +6,11 @@ udemy nestjs + typescript
 
 Additional Learning Resources:
 
-+ :book: ​nest offical doc](https://docs.nestjs.com/)
+:pencil:[nest official doc learning](./nest-official-doc/nestOfficialDocLearning.md)
+
++ :book: ​[nest offical doc](https://docs.nestjs.com/)
   + :book: ​[quick overview](https://docs.nestjs.com/first-steps)
   + :book: ​[nest fundamentals](https://docs.nestjs.com/fundamentals/custom-providers)
-
 
 
 
@@ -34,7 +35,12 @@ but... seems more tutorials and resources online for react + springboot fullstac
 
 
 
+
+
+
 Drawio graph is in google drive: 转码 > 
+
+
 
 
 
@@ -45,11 +51,8 @@ Part1: nestjs basics
 | Id | Topic | Description |
 | ---- | ---------------------------------------------------------- | ---------------------- |
 | [2](./C2/readme.md)    | Hello world Nest App                                       | Nest App的architecture |
-| [3-6](./C3-6/readme.md) | Nest App with Nest CLI <br>Validating Request Data with Pipes <br>:bangbang: Nest Architecture: services & repo <br>:bangbang: Nest Architecture: Organizing code with Modules | see code in :gem: messages folder |
-|     |                          |                        |
-|     |               |                        |
-|     |  |                        |
-| [7-11](./C7/readme.md) | My car pricing App       |                        |
+| [3-6](./C3-6/readme.md) | Nest.js quick overview <br>see code in :gem: messages folder | Nest App with Nest CLI <br/>Validating Request Data with Pipes <br/>:bangbang: Nest Architecture: services & repo <br/>:bangbang: Nest Architecture: Organizing code with Module |
+| [7-11](./C7/readme.md) | My car pricing App |                        |
 
 
 
@@ -57,16 +60,16 @@ Part2:
 
 7 hrs
 
-|      |                            |      |
-| ---- | -------------------------- | ---- |
-|      |                            |      |
-| 12   | unit testing               |      |
-| 13   | integration testing        |      |
-| 14   | managing app config        |      |
-| 15   | relations with TypeORM     |      |
-| 16   | a basic permission system  |      |
-| 17   | query builder with TypeORM |      |
-| 18   | production deployment      |      |
+|      |                                       |      |
+| ---- | ------------------------------------- | ---- |
+|      |                                       |      |
+| 12   | :star: ​unit testing                   |      |
+| 13   | integration testing                   |      |
+| 14   | managing app config                   |      |
+| 15   | relations with TypeORM                |      |
+| 16   | :star: ​a basic permission system      |      |
+| 17   | :bangbang: ​query builder with TypeORM |      |
+| 18   | :star: ​production deployment          |      |
 
 ​	
 
