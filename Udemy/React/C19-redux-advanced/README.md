@@ -4,11 +4,19 @@ Redux - Advanced
 
 2hrs 
 
+:book: [redux official doc](https://redux.js.org/introduction/getting-started)
+
 
 
 
 
 # Key takeaways
+
+
+
+
+
+
 
 handling async tasks with redux
 
@@ -23,6 +31,24 @@ handling async tasks with redux
 + redux DevTools
 
 
+
+
+
+
+
+let's firstly review how react context api works
+
++ 3 steps to create a context and its provider
+
+```tsx
+// 1. create context obj
+
+// 2. define context provider component
+
+// 3. define the hook to allow other component to use the context
+```
+
++ then inside the children component of the context provider, we could use the use context hook to access the global state
 
 
 
@@ -55,6 +81,8 @@ npm i @reactjs/toolkit react-redux
 
 + click on My Cart to toggle visibility of shopping cart
 + Add item to cart
+
+this needs management of global states
 
 
 
@@ -103,7 +131,7 @@ P433-435
 store > ui-slice.js
 
 + 管理general ui相关的state
-  + notification 弹窗
+  + e.g. notification 弹窗
 
 ```js
 import { createSlice } from "@reduxjs/toolkit";
@@ -176,7 +204,6 @@ function App() {
           body: JSON.stringify(cart),
         }
       );
-
       if (!response.ok) {
         throw new Error("Sending cart data failed.");
       }
@@ -195,7 +222,7 @@ function App() {
       return;
     }
 
-    // invoke the async code
+    // invoke the async code inside the useEffect
     sendCartData().catch((error) => {
       dispatch(
         uiActions.showNotification({
@@ -390,6 +417,10 @@ export const fetchCartData = () => {
   };
 };
 ```
+
+
+
+定义好store中的状态转移的代码后, 我们直接在component中调用
 
 App.js
 

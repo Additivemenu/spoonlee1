@@ -85,19 +85,40 @@ React基础篇
 | [12](./C12/README.md) | :bangbang: Scene behind react & Optimization <br> mainly for performance optimization | state or props change of a component => re-evaluation of this component<br>:bangbang: re-evaluation of a component !== re-rendering the real DOM <br> `React.memo()` <br> `useCallback()`  for memorizing callback function across render cycle<br> `useMemo()`  for memorizing data across render cycle |
 | 13                    | Alternative way: class component                             | Skip                                                         |
 
-中级篇
+
+
+network communication in React
+
++ Ajax与Axios 见其他笔记
 
 | [14](./C14/README.md) | :star: sending HTTP request                              |                                                              |
 | --------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
 | 15                    | :star: Building custom react hooks                       |                                                              |
 | 16                    | Working with forms & User input                          |                                                              |
 | 17                    | :gem: Practice: adding HTTP & form to the food order app |                                                              |
-| [18](./C18/README.md) | :bangbang: Redux Basics(Alternative to Context)          | redux有点类似小后端的感觉 (command + observer pattern)       |
-| [19](./C19/README.md) | :bangbang: Advanced Redux                                | reducers should always be side-effects & async code free <br> => where to put side-effects & async code logics? <br>1. inside components <br>2. action creator <br> :gem: a  cart  demo managed by redux-toolkit |
-| [20](./C20-react-router/README.md) | :bangbang:Build a Multi-Page SPA with React Router       |                                                              |
-| 21                    | Adding Authentication to React Apps                      |                                                              |
 
-Ajax与Axios 见其他笔记
+:bangbang: ​Redux
+
+| id                                   | Topic                                            | Comments                                                     |
+| ------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------ |
+| [18](./C18-redux-basics/README.md)   | :bangbang: Redux Basics (Alternative to Context) | basic concepts in Redux <br>redux 痛点&  redux tookit 如何解决这些痛点 <br> 3 demos on redux, vanilla redux in react, redux toolkit in react |
+| [19](./C19-redux-advanced/README.md) | :bangbang: Advanced Redux                        | reducers should always be side-effects & async code free <br/> => where to put side-effects & async code logics? <br/>1. inside components <br/>2. action creator <br/> :gem: a  cart  demo managed by redux-toolkit |
+
+:bangbang: ​React Router
+
+|                                    |                                                    |      |
+| ---------------------------------- | -------------------------------------------------- | ---- |
+| [20](./C20-react-router/README.md) | :bangbang:Build a Multi-Page SPA with React Router |      |
+
+Authentication in React
+
+|      |                                     |      |
+| ---- | ----------------------------------- | ---- |
+| 21   | Adding Authentication to React Apps |      |
+
+
+
+
 
 
 

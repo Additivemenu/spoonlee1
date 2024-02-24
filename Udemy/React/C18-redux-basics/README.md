@@ -8,32 +8,81 @@ Redux is not React-Specific, it is a js lib for state management, Other programm
 
 
 
+:bangbang: redux = command + observer pattern​
+
+---
+
+see intro at https://redux.js.org/introduction/getting-started#basic-example:
+
+"The whole global state of your app is stored in an object tree inside <span style="color: yellow">a single *store*</span>. The only way to change the state tree is to create an *<span style="color:yellow">action</span>*, an object describing what happened, and *<span style="color:yellow">dispatch</span>* it to the store. To specify how state gets updated in response to an action, you write pure <span style="color:yellow">*reducer* functions</span> that calculate a new state based on the old state and the action."
+
+<img src="./src_md/redux1.png" style="zoom:50%;" />
+
+:star: brief sum: in my opinion, redux is like a 'backend' on the frontend side, whenver a component want to issue a state change, it needs to dispatch an action (just like we send http request to backend) to reducer, and reducer will execute function to make the actual state change in data(state) store,   then the state change will automatically propogate to the components by subscription
+
+```ts
+// analogy:
+components -> frontend
+dispatch action with payload -> send http request with payload
+Reducer Function -> backend 
+central data(state) store -> database
+subscription -> backend send response back to frontend
+```
+
+再打个比方, redux的执行过程就像是用遥控器换台, reducer function相当于遥控器, 而dispatch action就像是按遥控器上的按钮
+
+
+
+:bangbang: ​redux vs. redux toolkit
+
+---
+
 + 本质上redux是command + observer pattern
 + redux不是只局限于react, 是一种状态管理的lib, 基于redux往上还有redux-toolkit
   + 每个react app只有1个redux store, 每个redux store只能绑定1个reducer function, 每个reducer function只能对应1个state object  => leads to bloated state object & reducer function
   + that's where redux-toolkit comes in:
     + allowing state slices 
-+ 分三步
-  + define reducer function & slices
-  + Connect store with react app
-  + extract data & dispatch actions in react componnet
-    + useSelector will automatically subscribe the component to redux store
+    + allowing mutating state obj 
+    + allowing action name as function name to avoid typo
+
+
+
+:bangbang: ​分三步使用Redux (Redux toolkit)管理状态
+
+---
+
++ define reducer function & slices
++ Connect store with react app
++ extract data & dispatch actions in react componnet
+  + useSelector() will automatically subscribe the component to redux store
+
+<img src="./src_md/redux1.png" style="zoom:50%;" />
 
 
 
 # 1. Intro
 
-managing cross-component / app-wide state with Redux
+managing cross-component / app-wide state with Redux. 
 
-+ local state: state belongs to a single component
-  + e.g. listening to user input field
-  + should be managed inside the component via `useState` OR `useReducer`
-+ cross-component state: state affecting multiple components
-  + open/close a modal overlay
-  + requires props chain / context API
-+ app-wide state: state affecting the entire app
-  + user authentication status or chosen theme
-  + requires props chain / context API
+there are 3 types of states: 
+
+1. local state: state belongs to a single component
+
+   + e.g. listening to user input field
+
+   + should be managed inside the component via `useState` OR `useReducer`
+
+2. cross-component state: state affecting multiple components
+
+   + open/close a modal overlay
+
+   + requires props chain / context API
+
+3. app-wide state: state affecting the entire app
+
+   + user authentication status or chosen theme
+
+   + requires props chain / context API
 
 
 
@@ -41,7 +90,7 @@ managing cross-component / app-wide state with Redux
 
 p404
 
-cons of context API for managing large scale complex states
+Limitations of using react context API to manage large scale complex states
 
 + leads to deeply nested providers
 + leads to large complex provider, hard to maintain
@@ -197,7 +246,7 @@ export default store;
 
 ### :bangbang: Important
 
-never mutate existing state in reducer, always overwrite it by returning a new state object
+never mutate existing state in the reducer, always overwrite it by returning a new state object
 
 ```js
 const counterReducer = (state = initialState, action) => {
@@ -337,7 +386,7 @@ just skip
 
 
 
-## 2.3 :full_moon: Redux Toolkit
+## 2.3 :bangbang::full_moon: Redux Toolkit
 
 p418-
 
@@ -501,9 +550,34 @@ export default Counter;
 
 依然分三步走
 
-+ 定义reducers
-+ connect store with app
++ define reducers
+  + like 定义好遥控器上的功能
+
++ connect store with components
+  + 类似react context api的做法
+
 + dispatch actions in component
+  + 按遥控器上的按钮
+
+
+
+
+file structure:
+
+```ts
+src
+	app.js
+	index.js
+	index.css
+	> components
+		...your react component here
+	> store
+		index.js		// register slices to redux. 其实背后应该还是把众多slice写在这里
+		authSlice.js		// 关于auth 的global state managemnet
+		counterSlice.js		// 关于counter的global state management
+```
+
+
 
 
 
