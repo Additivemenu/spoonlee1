@@ -76,20 +76,27 @@ Part4: Some common API
 + Typescript & NodeJs
 + Deno
 
-| Class                 | Title                                                        | Description                  |
-| --------------------- | ------------------------------------------------------------ | ---------------------------- |
-| [24](./C24/README.md) | :star::star: REST API basics                                 | decouping Frontend & Backend |
-| [25](./C25/README.md) | :star::star: Advanced REST API Features: :gem: a practical app |                              |
-| [26](./C26/README.md) | Using async-await                                            |                              |
-| [27](./C27/README.md) | :star: Websocket & Socket.io                                 |                              |
-| [28](./C28/README.md) | GraphQL (in parallel to REST API)                            |                              |
-| [29](./C29/README.md) | Deployment                                                   |                              |
-| 30                    | :star: Testing Node.js                                       |                              |
-| 31                    | Node.js as building tool & using npm                         |                              |
-| 32                    | Modern Javascript & Nodejs                                   |                              |
-| 33                    | :star: NodeJS & Typescript                                   |                              |
-| 34                    | An introduction to Deno                                      |                              |
-| 35                    | Deno CRUD & Database                                         |                              |
+| Class                         | Title                                                        | Description                  |
+| ----------------------------- | ------------------------------------------------------------ | ---------------------------- |
+| [24](./C24/README.md)         | :star::star: REST API basics                                 | decouping Frontend & Backend |
+| [25](./C25/README.md)         | :star::star: Advanced REST API Features: :gem: a practical app |                              |
+| [26](./C26/README.md)         | Using async-await                                            |                              |
+| [27](./C27/README.md)         | :star: Websocket & Socket.io                                 |                              |
+| [28](./C28-graphQL/README.md) | :star: GraphQL (in parallel to REST API)                     |                              |
+| [29](./C29/README.md)         | Deploying our App                                            |                              |
+| 30                            | :bangbang: Testing Node.js                                   |                              |
+| 31                            | Node.js as building tool & using npm                         |                              |
+
+
+
+Modern Node.js
+
+| Class | Title                      | Description |
+| ----- | -------------------------- | ----------- |
+| 32    | Modern Javascript & Nodejs |             |
+| 33    | :star: NodeJS & Typescript |             |
+| 34    | An introduction to Deno    |             |
+| 35    | Deno CRUD & Database       |             |
 
 
 

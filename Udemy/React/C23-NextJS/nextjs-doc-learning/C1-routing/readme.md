@@ -182,7 +182,7 @@ A page is UI that is **unique** to a route. You can define pages by exporting a 
 
 https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts
 
-A layout is UI that is **shared** between multiple pages. 
+A layout is UI that is **shared** between multiple pages.  It provides slots for its children or parallel routing slots
 
 + <span style="color:red">On navigation (route changing), layouts preserve state, remain interactive, and do not re-render.</span> Layouts can also be [nested](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#nesting-layouts).
 
@@ -194,9 +194,7 @@ A layout is UI that is **shared** between multiple pages.
 
 
 
-Root layout
-
----
+### Root layout
 
 https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
 
@@ -206,11 +204,16 @@ https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#
 
 
 
-nested layout
-
----
+### :bangbang: ​Nested layout
 
 https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#nesting-layouts
+
+​e.g. :gem:
+
++ in app / layout.js, we have 3 slots, one slot is for {children}
+  + in app / dashboard / layout.js, we defined the nested layout, which is the {children} in its parent layout. When user visit  url of address/dashboard,  the active file path is app / layout.js => app / dashboard / layout.js,  the page is rendered
+
+<img src="./src_md/nested-layout1.png" style="zoom:50%;" />
 
 
 
