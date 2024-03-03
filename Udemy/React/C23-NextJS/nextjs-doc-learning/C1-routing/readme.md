@@ -208,7 +208,7 @@ https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#
 
 https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#nesting-layouts
 
-​e.g. :gem:
+e.g. :gem:
 
 + in app / layout.js, we have 3 slots, one slot is for {children}
   + in app / dashboard / layout.js, we defined the nested layout, which is the {children} in its parent layout. When user visit  url of address/dashboard,  the active file path is app / layout.js => app / dashboard / layout.js,  the page is rendered
@@ -303,9 +303,19 @@ export default function Posts() {
 
 https://nextjs.org/docs/app/building-your-application/routing/error-handling
 
+also check out at
 
++  https://www.sitepoint.com/next-js-error-handling-app-router/#:~:text=be%20activated%20often.-,Server%20Errors,tsx%20boundary.
+
++ https://stackoverflow.com/questions/76796529/next-js-13-errors-tsx
+
+
+
+:question: if I get a nested error.tsx, will  error poped from a leaf page be forward to its parent page's error.tsx ?​
 
 :bangbang: error.tsx has to be client component!
+
++ an intance of Error in page.tsx will be forward to error.tsx located at the same file hierarhcy level
 
 
 

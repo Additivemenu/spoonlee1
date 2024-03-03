@@ -1,93 +1,8 @@
-C28 GraphQL
-
-
-
-REST on Steroids
-
-
-
-# Intro
-
-
-
-+ what is 
-+ GraphQL vs REST
-+ how to use GraphQL
-
-
-
-what is GraphQL?
-
-REST API: stateless, client-independent API for exchanging data
-
-GraphQL API: stateless, client-independent API for exchanging data with higher query flexibility
-
-
-
-REST API limitations: data format returned from a REST API is fixed
-
-+ We may just want a part of the info extract from a REST API 
-  + Solution1:  create more REST API endpoint => lots of endpoints => not flexible, hard to maintain
-  + Solution2: add query parameters => API becomes hard to understand
-  + Solution3: use GraphQL
-
-
-
-How does GraphQL work?
-
-graphQL query is similar to database query language, just declare the data structure should be returned
-
-+ single endpoint if using graphQL (POST/graphql)
-
-<img src="./src_md/graphql-intro1.png" style="zoom:50%;" />
-
-
-
-graphQL Analogy to REST apis
-
-use POST because Request Body defines Data Structure of retrieved data (the data should be returned)
-
-+ Type definition
-+ Query
-+ Mutation
-+ Subscription
-+ ...
-
-<img src="./src_md/graphql-intro2.png" style="zoom:50%;" />
-
-
-
-+ server-side resolver analyses request body, fetches and prepares and returns data
-
-<img src="./src_md/graphql-intro3.png" style="zoom:50%;" />
-
-
-
-
-
-
-
-# Hands-on
-
-
-
-## setup
-
-learn more GraphQL at https://graphql.org
-
-```shell
-npm i --save graphql express-graphql
-```
-
-
-
-:gem: ​Hello world demo
-
-```js
 const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const multer = require("multer");
 
 const { graphqlHTTP } = require("express-graphql"); // To expose our graphql endpoint to public
@@ -97,6 +12,34 @@ const graphqlSchema = require("./graphql/schema");
 const graphqlResolver = require("./graphql/resolvers");
 
 const app = express();
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+// app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
+app.use(bodyParser.json()); // application/json
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // middleware for response headers ---------------
 app.use((req, res, next) => {
@@ -154,19 +97,13 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(8080);
-```
 
-
-
-vist server address at browser to check on graphQL interface
-
-
-
-
-
-## Defining a Mutation Schema
-
-
-
-
-
+//! DB Connection
+// mongoose
+//   .connect(
+//     "mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/messages?retryWrites=true"
+//   )
+//   .then((result) => {
+//     app.listen(8080);
+//   })
+//   .catch((err) => console.log(err));

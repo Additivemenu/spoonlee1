@@ -20,11 +20,16 @@ There are four ways you can fetch data in next:
 
 
 
-# Server actions and mutations
+# Server Actions and Mutations
+
+`Server Actions` are **asynchronous functions** that are executed on the server. They can be used <span style="color:red">in Server and Client Components</span> to handle form submissions and data mutations in Next.js applications.
+
++ `RPC` (remote procedure call) is the mechanism behind `Server Action`
++ you can see `Server Action` as a way of communication, just like REST api, GraphQL...
 
 
 
-
+:book: read more how react server component fetch data at ​https://vercel.com/blog/understanding-react-server-components#what-do-react-server-components-do
 
 
 
