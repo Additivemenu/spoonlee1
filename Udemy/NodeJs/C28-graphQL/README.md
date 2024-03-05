@@ -162,11 +162,55 @@ vist server address at browser to check on graphQL interface
 
 
 
+## Mutation
+
+### Defining a Mutation Schema
 
 
-## Defining a Mutation Schema
+
+```js
+const { buildSchema } = require("graphql");
+
+module.export = buildSchema(`
+
+    type Post{
+        _id: ID!
+        title: String!
+        content: String!
+        imageUrl: String!
+        creator: User!
+        createdAt: String!
+        updatedAt: String!
+    }
+
+    type User{
+        _id: ID!
+        email: String!
+        name: String!
+        password: String
+        status: String!
+        posts: [Post!]!
+    }
+
+    input UserInputData{
+        email: String!
+        name: String!
+        password: String!
+    }
+
+    type RootMutation{
+        createUser(userInput: UserInputData): User!
+    }
+
+    schema{
+        mutation: RootMutation
+    }
+`);
+```
 
 
 
+### Adding a Mutation Resolver
 
+up here
 
