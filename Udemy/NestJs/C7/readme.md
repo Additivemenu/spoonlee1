@@ -611,7 +611,7 @@ export class UsersService {
 
 # Custom data serialization
 
-C10
+C10 (diagrams in draw.io file 10)
 
 This means to customize what field of entity is accessible by response data
 
@@ -623,23 +623,543 @@ p62
 
 
 
-demo code
+<img src="./src_md/no-interceptor1.png" style="zoom:50%;" />
+
++ what we do before, controller just return entity instance straightaway
 
 
 
-## solution to serialization
+<img src="./src_md/with-interceptor1.png" style="zoom:50%;" />
+
++ with class serializer interceptor, we intercept the process when serializing the entity instance by adding addtional logic that controlls how to serialize the entity instance (e.g.exclude a certain field)
+  + :bangbang: but this is not the most ideal way to allow customized reponse field
+
+
+
+:gem: e.g. when get user by id, we don;t want its password being returned:
+
+```ts
+import {
+  AfterInsert,
+  AfterRemove,
+  AfterUpdate,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { Exclude } from 'class-transformer';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+	// ...
+
+  @Column()
+  @Exclude()    // this applies when converting this entity instance to a plain object
+  password: string;
+
+	// ...
+}
+```
+
+
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  NotFoundException,
+  
+  UseInterceptors,
+  ClassSerializerInterceptor
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from './users.service';
+
+@Controller('auth') // prefix for all routes inside this controller
+export class UsersController {
+  constructor(private usersService: UsersService) {}
+	
+  // ...
+	
+  @UseInterceptors(ClassSerializerInterceptor)      // this will hide the password field in the response
+  @Get('/:id')
+  async findUser(@Param('id') id: string) {
+    const user = await this.usersService.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return user;
+  }
+
+	// ...
+}
+```
+
+
+
+
+
+## solution to serialization: DTO
 
 P63
 
-custom interceptor:  use dto to define how to serialize an entity for a particular route handler
+`custom interceptor`:  use dto to define how to serialize an entity for a particular route handler
+
+check more at https://docs.nestjs.com/interceptors, interceptor is based on AOP
 
 
 
-build custom interceptor
+:gem: ​e.g. we have 2 different route that both access UserService.findOne() that returns a User Entity Instance, but we want the 2 route return 2 different plain object that has different fields 
+
+<img src="./src_md/eg-use-case1.png" style="zoom:50%;" />
+
+To do so, we could use custom interceptor to define DTO class, which describes how to serialize a user for a particular route handler
+
+<img src="./src_md/custom-interceptor1.png" style="zoom:50%;" />
+
+
+
+### build custom interceptor
 
 P64
 
-看到这里
+firstly look at 'what is interceptor' (similar to middleware in express.js)
+
+:bangbang: note ​**Interceptors can be applied to **
+
++ **a single handler, **
++ **all the handlers in a controller, **
++ **or globally**
+
+<img src="./src_md/interceptor1.png" style="zoom:50%;" />
+
+
+
+
+
+define an Interceptor class
+
+```ts
+import {
+  UseInterceptors,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { plainToClass } from 'class-transformer';
+
+export class SerializerInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    handler: CallHandler,
+  ): Observable<any> | Promise<Observable<any>> {
+    // run something before a request is handled by the request handler
+    console.log('Im running before the handler', context);
+
+    return handler.handle().pipe(
+      map((data: any) => {
+        // run something before the response is sent out
+        console.log('Im running before the response is sent out', data);
+      }),
+    );
+  }
+}
+```
+
+source code of NestInterceptor interface: 
+
+```ts
+/**
+ * Interface describing implementation of an interceptor.
+ *
+ * @see [Interceptors](https://docs.nestjs.com/interceptors)
+ *
+ * @publicApi
+ */
+export interface NestInterceptor<T = any, R = any> {
+    /**
+     * Method to implement a custom interceptor.
+     *
+     * @param context an `ExecutionContext` object providing methods to access the
+     * route handler and class about to be invoked.
+     * @param next a reference to the `CallHandler`, which provides access to an
+     * `Observable` representing the response stream from the route handler.
+     */
+    intercept(context: ExecutionContext, next: CallHandler<T>): Observable<R> | Promise<Observable<R>>;
+}
+
+```
+
+
+
+
+
+apply the interceptor to a handler 
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  NotFoundException,
+  UseInterceptors,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from './users.service';
+import { SerializerInterceptor } from 'src/interceptors/serialize.interceptor';
+
+@Controller('auth') // prefix for all routes inside this controller
+export class UsersController {
+  constructor(private usersService: UsersService) {}
+
+	// ...
+  
+  @UseInterceptors(SerializerInterceptor) // apply the interceptor to this handler ******
+  @Get('/:id')
+  async findUser(@Param('id') id: string) {
+    console.log('handler is now running');
+
+    const user = await this.usersService.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return user;
+  }
+  
+  // ...
+}
+```
+
+Now, when you run the get user by id request, you see
+
+```shell
+Im running before the handler ExecutionContextHost {
+  args: [
+    IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: null,
+      aborted: false,
+      upgrade: false,
+      url: '/auth/4',
+      method: 'GET',
+      statusCode: null,
+      statusMessage: null,
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      next: [Function: next],
+      baseUrl: '',
+      originalUrl: '/auth/4',
+      _parsedUrl: [Url],
+      params: [Object],
+      query: {},
+      res: [ServerResponse],
+      body: {},
+      route: [Route],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 14,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Socket],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [IncomingMessage],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      statusCode: 200,
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    [Function: next]
+  ],
+  constructorRef: [class UsersController],
+  handler: [AsyncFunction: findUser],
+  contextType: 'http'
+}
+handler is now running
+Im running before the response is sent out User { id: 4, email: 'adfs123@gmail.com', password: 'password2' }
+```
+
+
+
+
+
+### Adding serialization logic inside interceptor
+
+接上一步
+
+p65
+
+
+
+<img src="./src_md/dto-in-interceptor1.png" style="zoom: 33%;" />
+
+Dto:
+
+```ts
+import { Expose } from 'class-transformer';
+
+export class UserDto {
+  @Expose()
+  id: number;
+
+  @Expose()
+  email: string;
+}
+```
+
+in interceptor, we define the serialization logic using the dto
+
++ but it is hardcoded for plainToClass that only UserDto can be transformed, we want it to be more reusable. 
+
+```ts
+import {
+  UseInterceptors,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { UserDto } from 'src/users/dtos/user.dto';
+import { plainToClass } from 'class-transformer';
+
+export class SerializerInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    handler: CallHandler,
+  ): Observable<any> | Promise<Observable<any>> {
+      
+    return handler.handle().pipe(
+      map((data: any) => {
+        // ! data is the return value from the handler. but not yet serialized
+        return plainToClass(UserDto, data, {
+          excludeExtraneousValues: true, // setup: only @Expose() fields in dto will be returned
+        });
+      }),
+    );
+  }
+}
+```
+
+
+
+### Refactor
+
+use dependency injection to pass dto down to interceptor so that we can reuse the dto serialization logic
+
+---
+
+P66
+
+Controller
+
+```ts
+  @UseInterceptors(new SerializerInterceptor(UserDto)) // apply the interceptor to this handler
+  @Get('/:id')
+  async findUser(@Param('id') id: string) {
+    console.log('handler is now running');
+
+    const user = await this.usersService.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return user;
+  }
+```
+
+Interceptor
+
+```ts
+export class SerializerInterceptor implements NestInterceptor {
+  constructor(private dto: any) {} // dependency injection
+
+  intercept(
+    context: ExecutionContext,
+    handler: CallHandler,
+  ): Observable<any> | Promise<Observable<any>> {
+    return handler.handle().pipe(
+      map((data: any) => {
+        // ! data is the return value from the handler. but not yet serialized
+        return plainToClass(this.dto, data, {
+          excludeExtraneousValues: true, // setup: only @Expose() fields will be returned
+        });
+      }),
+    );
+  }
+}
+```
+
+
+
+use custom decorate for cleaner code
+
+---
+
+P67
+
+interceptor
+
++ add a customized decorate 
+
+```ts
+// a custom decorator
+export function Serialize(dto: any) {
+  return UseInterceptors(new SerializerInterceptor(dto));
+}
+```
+
+controller
+
++ apply the decorator to a handler
+
+```ts
+  @Serialize(UserDto) // apply the interceptor to this handler
+  @Get('/:id')
+  async findUser(@Param('id') id: string) {
+    console.log('handler is now running');
+
+    const user = await this.usersService.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return user;
+  }
+```
+
+
+
+
+
+Controller-wide sesrialization
+
+---
+
+P68
+
+controller 
+
++ just move `@Serialize(UserDto)` onto the top of the controller so that it is applied onto all route handlers inside
+  + if you want different rotue handler having different output format, just apply interceptor with different dto onto the respective route handler 
+
+```ts
+@Controller('auth') // prefix for all routes inside this controller
+@Serialize(UserDto) // apply the interceptor to this handler
+export class UsersController {
+  constructor(private usersService: UsersService) {}
+
+  @Post('/signup')
+  createUser(@Body() body: CreateUserDto) {
+    //! here we validate the body using CreateUserDto
+    // create a new user
+    this.usersService.create(body.email, body.password);
+  }
+
+  @Get('/:id')
+  async findUser(@Param('id') id: string) {
+    console.log('handler is now running');
+
+    const user = await this.usersService.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+    return user;
+  }
+
+	// .. other route handlers
+}
+```
+
+
+
+
+
+type safety
+
+---
+
+P69
+
+interceptor
+
++ just add a little more constraint on dependency injection type
+
+```ts
+interface ClassConstructor {
+  new (...args: any[]): {};
+}
+
+// a custom decorator
+export function Serialize(dto: ClassConstructor) {
+  return UseInterceptors(new SerializerInterceptor(dto));
+}
+```
 
 
 

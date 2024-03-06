@@ -8,14 +8,16 @@ import {
   Param,
   Query,
   NotFoundException,
-  UseInterceptors,
-  ClassSerializerInterceptor
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+
+import { UserDto } from './dtos/user.dto';
 
 @Controller('auth') // prefix for all routes inside this controller
+@Serialize(UserDto) // apply the interceptor to this handler
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
@@ -26,9 +28,10 @@ export class UsersController {
     this.usersService.create(body.email, body.password);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)      // this will hide the password field in the response
   @Get('/:id')
   async findUser(@Param('id') id: string) {
+    console.log('handler is now running');
+
     const user = await this.usersService.findOne(parseInt(id));
     if (!user) {
       throw new NotFoundException('user not found!');

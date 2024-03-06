@@ -6,7 +6,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
+
 
 @Entity()
 export class User {
@@ -17,7 +17,6 @@ export class User {
   email: string;
 
   @Column()
-  @Exclude()    // this applies when 
   password: string;
 
   // like AOP in spring, this is a hook that will be called after insert
