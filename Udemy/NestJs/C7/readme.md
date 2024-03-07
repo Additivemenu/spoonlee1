@@ -14,6 +14,16 @@
 
   + some api do not support entity as argument but just plain object, this will not enabled hooks in Entity, but more efficient as 1 trip to db
 
++ interceptor
+  + runs before an incoming request is proceeded to a route handler
+
++ decorator
+  + can be seen as a function that gets runned at the beginning of a route handler in controller
+
++ gurard
+  + guard controller if a request is not satisfying a specific requirement
+
+
 
 
 
@@ -1166,3 +1176,512 @@ export function Serialize(dto: ClassConstructor) {
 
 
 # Authentication starts from scratch
+
+C11 just sign up & sign in (using session)
+
+
+
+## Auth intro
+
+<img src="./src_md/auth-intro1.png" style="zoom: 50%;" />
+
+where to add sign up and sign in logic?
+
++ Option1: put everthing related to user in UserService
+  + feasible when app is small, but when app grows, the UserService will become bloated
++ Option2: create a new Service: AuthService that is dependent on UserService
+  + more modular, feasible for large app
+
+
+
+
+
+Coding
+
+P71
+
+wire up the file like this
+
+<img src="./src_md/user-module1.png" style="zoom:50%;" />
+
+
+
+
+
+## Sign up
+
+P72-75
+
+
+
+password hashing process understanding
+
+(Optional)
+
++ authentication workflow without salt (web security 学过了)
+
++ Hash function -> dictionary attack -> salt (web security学过了)
+  + authentication workflow with salt 
+
+
+
+AuthService > signup
+
++ we implemented hashed + salted password
+
+```ts
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UsersService } from './users.service';
+
+import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
+
+const scrypt = promisify(_scrypt);
+
+@Injectable()
+export class AuthService {
+  constructor(private usersService: UsersService) {}
+
+  async signup(email: string, password: string) {
+    // 1. see if email is in use
+    const users = await this.usersService.find(email);
+    if (users.length) {
+      throw new BadRequestException('email in use');
+    }
+
+    // 2. Hash the user's password
+    // generate a salt
+    const salt = randomBytes(8).toString('hex');
+    // hash password + salt
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    // join hashed result + salt
+    const result = salt + '.' + hash.toString('hex');
+
+    // 3. Create a new user and save it
+    const user = await this.usersService.create(email, result);
+
+    // 4. return the user
+    return user;
+  }
+
+  signin() {
+    //...
+  }
+}
+
+```
+
+
+
+## Sign in
+
+p76-
+
+AuthService:
+
+```ts
+ async signin(email: string, password: string) {
+    const [user] = await this.usersService.find(email);
+    if (!user) {
+      throw new NotFoundException('user not found!');
+    }
+
+    const [salt, storedHash] = user.password.split('.');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    if (storedHash !== hash.toString('hex')) {
+      throw new BadRequestException('bad password');
+    }
+    
+    return user;
+  }
+```
+
+
+
+
+
+
+
+### setup session
+
+p77-
+
+
+
+workflow of manipulating session
+
+<img src="./src_md/cookie-session1.png" style="zoom:50%;" />
+
+
+
+```shell
+npm i cookie-session @types/cookie-session
+```
+
+
+
+main.ts
+
++ setup middleware of cookie session in our app
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+const cookieSession = require('cookie-session'); // old way of importing
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+	
+  // ********************
+  app.use(
+    cookieSession({
+      keys: ['asdfgh'],
+    }),
+  );
+  // ********************
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // stripe out any other fields that is not defined in the DTO
+    }),
+  );
+  
+  await app.listen(3000);
+}
+bootstrap();
+
+```
+
+
+
+
+
+toy api to see how to access and manipulate session (reflects the workflow above)
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  Session,
+  NotFoundException,
+} from '@nestjs/common';
+// ... imports
+
+@Controller('auth') // prefix for all routes inside this controller
+@Serialize(UserDto) // ! apply the interceptor to this handler
+export class UsersController {
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
+
+  // toy api to see how to access session ----------------------------
+  @Get('/colors/:color')
+  setColor(@Param('color') color: string, @Session() session: any) {
+    session.color = color;
+  }
+  @Get('/colors')
+  getColor(@Session() session: any) {
+    return session.color;
+  }
+  // ----------------------------------------------------------------
+
+ 	// other router handlers ... 
+}
+```
+
+
+
+### Controller
+
+P79-81 
+
+
+
+add route in user controller: 
+
++ note the mechanism when server will attach the set-cookie header in response header - only when server operation changes (数值上) existing session, and this is done automatically
++ run script like sign up -> sign in -> who am I -> sign out -> who am i to check out results
+
+```ts
+   @Post('/signout')
+  signOut(@Session() session: any) {
+    session.userId = null;
+  }
+
+  @Get('/whoami')
+  whoAmI(@Session() session: any) {
+    return this.usersService.findOne(session.userId);
+  }
+
+  @Post('/signup')
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    //! here we validate the body using CreateUserDto
+    const { email, password } = body;
+
+    const user = await this.authService.signup(email, password);
+    session.userId = user.id; //! only when session gets changed, it will be sent back to the client in response header
+    return user;
+  }
+
+  @Post('/signin')
+  async signin(@Body() body: CreateUserDto, @Session() session: any) {
+    const { email, password } = body;
+    const user = await this.authService.signin(email, password);
+    session.userId = user.id; //! only when session gets changed, it will be sent back to the client in response header
+    return user;
+  }
+```
+
+
+
+## :bangbang: ​Two more auth task
+
+
+
+Task1: automatically tell a route handler who the currently signed in user is  -> need interceptor & decorator
+
+Task2: reject requests to certain route handlers if the user is not signed in -> need guard
+
+
+
+### Task1
+
+P82-88
+
+automatically tell a route handler who the currently signed in user is  -> need interceptor & decorator
+
+<img src="src_md/current-user-decorator1.png" style="zoom:50%;" />
+
+
+
+communicating from interceptor to decorator
+
+<img src="./src_md/current-user-decorator2.png" style="zoom:50%;" />
+
+
+
+interceptor runs first, then decorator runs
+
+
+
+users > interceptors > current-user.interceptor.ts
+
++ adds new field `currentUser` to request object
++ interceptor could be injectable, also need to wire it up to the module to be able to use it as a provider (Bean)
+
+```ts
+import {
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Injectable,
+} from '@nestjs/common';
+
+import { UsersService } from '../users.service';
+
+@Injectable()
+export class CurrentUserInterceptor implements NestInterceptor {
+  constructor(private usersService: UsersService) {}
+
+  /**
+   *
+   * @param context " ExecutionContext is like a wrapper around incoming request"
+   * @param handler "CallHandler is reference to a route handler"
+   */
+  async intercept(context: ExecutionContext, handler: CallHandler) {
+    const request = context.switchToHttp().getRequest();
+    const { userId } = request.session || {};
+
+    if (userId) {
+      const user = await this.usersService.findOne(userId);
+      request.currentUser = user; // ! this is passing info to decorator
+    }
+
+    return handler.handle(); // proceed to route handler execution
+  }
+}
+```
+
+then, we could extract `currentUser` param from the request object using a customized param decorator
+
+users > decorators > current-user.decorator.ts 
+
++ param decorator is like a tool that we could use to extract param info from the request object
++ decorators are not injectable
+
+```ts
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+export const CurrentUser = createParamDecorator(
+  // data is the arg we provided for this decorator
+  // context is like a wrapper around incoming request
+  (data: never, context: ExecutionContext) => {
+    const request = context.switchToHttp().getRequest();
+    return request.currentUser;     // ! this will be the param in controller when using this decorator
+  },
+);
+```
+
+
+
+user controller
+
++ apply the `CurrentUserInterceptor` to the controller
++ then use ` @CurrentUser() ` to extract param info from request object
+  + 可以认为param decorator其实是在route handler的开头加了一些extracting param info的code (作为function来执行), 本质上它内部的逻辑还是在route handler里跑的, 但interceptor定义的逻辑是在route handler执行之前跑的
+  + 同理, 其实也可以不用`@CurrentUser()`这个customized param decorator, 使用`@request` decorator来extract `currentUser` info, 但是这样代码可读性下降
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  Session,
+  NotFoundException,
+  UseInterceptors,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from './users.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+
+import { User } from './user.entity';
+import { UserDto } from './dtos/user.dto';
+import { AuthService } from './auth.server';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+
+@Controller('auth') // prefix for all routes inside this controller
+@Serialize(UserDto) // ! apply the interceptor to all route handlers in this handler
+@UseInterceptors(CurrentUserInterceptor) // this adds a new field currentUser to the request object
+export class UsersController {
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
+
+	// other route handlers ...
+
+  @Get('whoami')
+  whoAmI(@CurrentUser() user: User) {
+    return user;
+  }
+  
+  // other route handlers ...
+
+}
+```
+
+now that, it could be more easy to get the user instance who is logged in (just in 1 line of code in controller)
+
+
+
+>  here we just apply the customized interceptor `CurrentUserInterceptor` to one controller. If we have many controllers, then applying the interceptor one by one could be somewhat tedious. 
+>
+> It is possible that we could also apply the interceptor to the whole application although there might be some overkills as some controllers might not need `CurrentUserInterceptor`. But we are not gonna show code how to do this, just check this online. 
+
+
+
+### Task2
+
+P89
+
+ reject requests to certain route handlers if the user is not signed in -> need guard
+
+
+
+similar to interceptor, we could apply a Guard at 3 levels: app, controller, or a route handler
+
+<img src="./src_md/auth-guard1.png" style="zoom:50%;" />
+
+
+
+Src > guards > auth.guard.ts
+
+```ts
+import { CanActivate, ExecutionContext } from '@nestjs/common';
+
+export class AuthGuard implements CanActivate {
+  /**
+   *
+   * @param context : ExecutionContext is like a wrapper around incoming request
+   * @returns
+   */
+  canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+    return request.session.userId;
+  }
+}
+```
+
+
+
+
+
+UserController
+
++ add the `AuthGuard` to a route hander, if user is not signed-in, then return response with status code of 403
+
+```ts
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  Session,
+  NotFoundException,
+  UseInterceptors,
+  UseGuards,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from './users.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+
+import { User } from './user.entity';
+import { UserDto } from './dtos/user.dto';
+import { AuthService } from './auth.server';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { AuthGuard } from 'src/guards/auth.guard';
+
+@Controller('auth') // prefix for all routes inside this controller
+@Serialize(UserDto) // ! apply the interceptor to all route handlers in this handler
+@UseInterceptors(CurrentUserInterceptor) // this adds a new field currentUser to the request object
+export class UsersController {
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
+
+	// ... other route handlers
+  
+  @Get('whoami')
+  @UseGuards(AuthGuard)	
+  whoAmI(@CurrentUser() user: User) {
+    return user;
+  }
+  
+  // ... other route handlers
+
+}
+```
+

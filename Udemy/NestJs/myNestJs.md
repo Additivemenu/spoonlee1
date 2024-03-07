@@ -6,15 +6,11 @@ udemy nestjs + typescript
 
 Additional Learning Resources:
 
-:pencil:[nest official doc learning](./nest-official-doc/nestOfficialDocLearning.md)
+:pencil: :bangbang: ​[nest official doc learning](./nest-official-doc/nestOfficialDocLearning.md)
 
 + :book: ​[nest offical doc](https://docs.nestjs.com/)
   + :book: ​[quick overview](https://docs.nestjs.com/first-steps)
   + :book: ​[nest fundamentals](https://docs.nestjs.com/fundamentals/custom-providers)
-
-
-
-
 
 
 
@@ -36,13 +32,11 @@ but... seems more tutorials and resources online for react + springboot fullstac
 
 
 
-
-
-Drawio graph is in google drive: 转码 > 
-
+Drawio graph is in google drive: 转码 
 
 
 
+# Udemy course
 
 Part1: nestjs basics
 
@@ -52,7 +46,7 @@ Part1: nestjs basics
 | ---- | ---------------------------------------------------------- | ---------------------- |
 | [2](./C2/readme.md)    | Hello world Nest App                                       | Nest App的architecture |
 | [3-6](./C3-6/readme.md) | Nest.js quick overview <br>see code in :gem: messages folder | Nest App with Nest CLI <br/>Validating Request Data with Pipes <br/>:bangbang: Nest Architecture: services & repo <br/>:bangbang: Nest Architecture: Organizing code with Module |
-| [7-11](./C7/readme.md) | My car pricing App | Interceptor <br>authentication |
+| [7-11](./C7/readme.md) | My car pricing App | Interceptor & customising decorator <br>authentication |
 
 
 
@@ -82,4 +76,8 @@ Part3: bonus
 | 19   | TypeScript |      |
 |      |            |      |
 |      |            |      |
+
+
+
+
 

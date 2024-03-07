@@ -17,6 +17,10 @@ export class UsersService {
   }
 
   findOne(id: number) {
+    if (!id) {
+      return null;
+    }
+
     return this.repo.findOneBy({ id });
   }
 
@@ -26,21 +30,21 @@ export class UsersService {
 
   // Partial comes from typescript, it declares a type consisting of any partial fields of User, providing flexibilities
   async update(id: number, attrs: Partial<User>) {
-    const user = await this.findOne(id);        // entity
+    const user = await this.findOne(id); // entity
     if (!user) {
       throw new NotFoundException('user not found!');
     }
 
-    Object.assign(user, attrs);     // assign partial fields to user
-    return this.repo.save(user);    // save entity, apply hooks
+    Object.assign(user, attrs); // assign partial fields to user
+    return this.repo.save(user); // save entity, apply hooks
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id);        // entity
+    const user = await this.findOne(id); // entity
     if (!user) {
       throw new NotFoundException('user not found!');
     }
-    return this.repo.remove(user);    // remove entity, apply hooks
+    return this.repo.remove(user); // remove entity, apply hooks
   }
 }
 
