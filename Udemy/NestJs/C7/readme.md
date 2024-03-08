@@ -14,13 +14,24 @@
 
   + some api do not support entity as argument but just plain object, this will not enabled hooks in Entity, but more efficient as 1 trip to db
 
-+ interceptor
-  + runs before an incoming request is proceeded to a route handler
-
-+ decorator
++ `interceptor`
+  
+  + runs before an incoming request is proceeded to a route handler 
+  
+    + e.g. use to add some customized field in request body
+  
+  + or before an outgoing response is sent out
+  
+    + e.g. used to customize entity data structure in the response
+  
+    
+  
++ `decorator`
+  
   + can be seen as a function that gets runned at the beginning of a route handler in controller
-
-+ gurard
+  
++ `gurard`
+  
   + guard controller if a request is not satisfying a specific requirement
 
 
@@ -89,7 +100,7 @@ nest g service reports
 
 
 
-# Persisting data with TypeORM
+# 1. Persisting data with TypeORM
 
 C8
 
@@ -303,7 +314,7 @@ setting up body validation for create-user
 
 
 
-# Creating & Saving User data
+# 2. Creating & Saving User data
 
 C9
 
@@ -619,7 +630,7 @@ export class UsersService {
 
 
 
-# Custom data serialization
+# 3. Custom data serialization
 
 C10 (diagrams in draw.io file 10)
 
@@ -1175,7 +1186,7 @@ export function Serialize(dto: ClassConstructor) {
 
 
 
-# Authentication starts from scratch
+# 4. Authentication starts from scratch
 
 C11 just sign up & sign in (using session)
 

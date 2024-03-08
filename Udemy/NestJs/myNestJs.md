@@ -46,7 +46,7 @@ Part1: nestjs basics
 | ---- | ---------------------------------------------------------- | ---------------------- |
 | [2](./C2/readme.md)    | Hello world Nest App                                       | Nest App的architecture |
 | [3-6](./C3-6/readme.md) | Nest.js quick overview <br>see code in :gem: messages folder | Nest App with Nest CLI <br/>Validating Request Data with Pipes <br/>:bangbang: Nest Architecture: services & repo <br/>:bangbang: Nest Architecture: Organizing code with Module |
-| [7-11](./C7/readme.md) | My car pricing App | Interceptor & customising decorator <br>authentication |
+| [7-11](./C7/readme.md) | My car pricing App | CRUD with TypeORM <br>Interceptor & customising decorator <br>authentication |
 
 
 
@@ -54,16 +54,16 @@ Part2:
 
 7 hrs
 
-|      |                                       |                |
-| ---- | ------------------------------------- | -------------- |
-|      |                                       |                |
-| 12   | :star: ​unit testing                   |                |
-| 13   | integration testing                   |                |
-| 14   | managing app config                   |                |
-| 15   | relations with TypeORM                |                |
-| 16   | :star: ​a basic permission system      | access control |
-| 17   | :bangbang: ​query builder with TypeORM |                |
-| 18   | :star: ​production deployment          |                |
+|      |                                        |                |
+| ---- | -------------------------------------- | -------------- |
+|      |                                        |                |
+| 12   | :star: ​unit testing (1.5hr)            |                |
+| 13   | integration testing (30min)            |                |
+| 14   | managing app config (30min)            |                |
+| 15   | relations with TypeORM (1hr)           |                |
+| 16   | :star: ​a basic permission system (1hr) | access control |
+| 17   | :bangbang: ​query builder with TypeORM  |                |
+| 18   | :star: ​production deployment (1hr)     |                |
 
 ​	
 
