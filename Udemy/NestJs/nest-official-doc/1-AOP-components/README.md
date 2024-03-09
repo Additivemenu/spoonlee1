@@ -2,6 +2,15 @@
 
 # Key Takeaways
 
+AOP-based Nest components: 
+
++ Middleware
++ Exception Filters
+  + throw standard HTTP exception
++ Guard
++ Interceptor
++ Pipe
+
 
 
 
@@ -214,6 +223,7 @@ export class UserResolver {
 })
 export class AppModule {}
 
+// AOP components ---------------------------------------------------------------------
 // Authentication guard
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -307,6 +317,8 @@ export class UserController {
 })
 export class AppModule {}
 
+
+// AOP components ---------------------------------------------------------------------
 // Authentication guard
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -365,6 +377,63 @@ When a client makes an HTTP GET request to the `/users/:id` endpoint, the follow
 This REST API version demonstrates how interceptors, guards, and pipes can be used in a similar way as the GraphQL version to handle cross-cutting concerns such as authentication, logging, and input validation.
 
 The main difference is that instead of applying the decorators to GraphQL resolvers, they are applied to the controller methods in the REST API.
+
+
+
+### Analogue: REST vs. GraphQL
+
+Certainly! Let's draw an analogy between the classes and concepts used in the GraphQL and REST examples in Nest.js:
+
+GraphQL:
+1. `@ObjectType()` and `@Field()` decorators:
+   - These decorators are used to define the structure of a GraphQL object type.
+   - They are used to create a schema that describes the shape of the data that can be queried.
+   - Analogous to defining a DTO (Data Transfer Object) or an entity class in a REST API.
+
+2. `@Resolver()` decorator:
+   - Used to define a GraphQL resolver class that contains methods to resolve GraphQL queries and mutations.
+   - Analogous to a controller class in a REST API, which handles incoming HTTP requests.
+
+3. `@Query()` and `@Mutation()` decorators:
+   - Used to define GraphQL query and mutation methods within a resolver class.
+   - Analogous to defining HTTP endpoint methods (e.g., `@Get()`, `@Post()`) in a controller class of a REST API.
+
+4. `@Args()` decorator:
+   - Used to define arguments for a GraphQL query or mutation method.
+   - Analogous to using `@Param()`, `@Query()`, or `@Body()` decorators in a REST API to extract data from the request.
+
+REST:
+1. Entity classes:
+   - Used to define the structure and properties of a resource in a REST API.
+   - Analogous to defining an `@ObjectType()` in GraphQL to represent the shape of the data.
+
+2. Controller classes:
+   - Used to define a group of related HTTP endpoints in a REST API.
+   - Analogous to a resolver class in GraphQL, which groups related query and mutation methods.
+
+3. HTTP endpoint decorators (`@Get()`, `@Post()`, etc.):
+   - Used to define HTTP endpoints within a controller class.
+   - Analogous to defining query and mutation methods using `@Query()` and `@Mutation()` decorators in a GraphQL resolver.
+
+4. Parameter decorators (`@Param()`, `@Query()`, `@Body()`, etc.):
+   - Used to extract data from the HTTP request in a REST API endpoint method.
+   - Analogous to using the `@Args()` decorator in a GraphQL query or mutation method to accept arguments.
+
+
+
+Both GraphQL and REST APIs in Nest.js use similar decorators and concepts for handling cross-cutting concerns:
+
+- `@UseGuards()`: Used to apply guard classes for authentication and authorization.
+- `@UseInterceptors()`: Used to apply interceptor classes for request/response interception and modification.
+- `@UsePipes()`: Used to apply pipe classes for input validation and transformation.
+
+The main difference lies in how the data is structured and accessed:
+- In GraphQL, the schema defines the structure of the data, and clients can query specific fields they need.
+- In REST, the endpoints define the structure of the data, and clients typically retrieve the entire resource.
+
+Despite these differences, the underlying concepts of controllers (resolvers), guards, interceptors, and pipes remain similar in both GraphQL and REST APIs built with Nest.js.
+
+The analogy helps to understand how the classes and decorators in GraphQL and REST APIs serve similar purposes and how they can be used to build structured and reusable code in Nest.js.
 
 
 
@@ -591,6 +660,162 @@ await app.listen(3000);
 
 # 2. Exception Filters
 
+Nest comes with a built-in **exceptions layer** which is responsible for processing all unhandled exceptions across an application. When an exception is not handled by your application code, it is caught by this layer, which then automatically sends an appropriate user-friendly response.
+
+Out of the box, this action is performed by a built-in **global exception filter**, which handles exceptions of type `HttpException` (and subclasses of it). When an exception is **unrecognized** (is neither `HttpException` nor a class that inherits from `HttpException`), the built-in exception filter generates the following default JSON response:
+
+```ts
+{
+  "statusCode": 500,
+  "message": "Internal server error"
+}
+```
+
+
+
+
+
+## Throwing standard exception
+
+Nest provides a built-in `HttpException` class, exposed from the `@nestjs/common` package. For typical HTTP REST/GraphQL API based applications, it's best practice to send standard HTTP response objects when certain error conditions occur.
+
+```ts
+// cats.controller.ts
+@Get()
+async findAll() {
+  throw new HttpException('Forbidden', 
+                          HttpStatus.FORBIDDEN);
+}
+```
+
+The `HttpException` constructor takes two required arguments which determine the response:
+
+- The `response` argument defines the JSON response body. It can be a `string` or an `object` as described below.
+- The `status` argument defines the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+
+
+
+## Built-in HTTP Exceptions
+
+Nest provides a set of standard exceptions that inherit from the base `HttpException`. These are exposed from the `@nestjs/common` package, and represent many of the most common HTTP exceptions:
+
+- `BadRequestException`
+- `UnauthorizedException`
+- `NotFoundException`
+- `ForbiddenException`
+- `NotAcceptableException`
+- `RequestTimeoutException`
+- `ConflictException`
+- `GoneException`
+- `HttpVersionNotSupportedException`
+- `PayloadTooLargeException`
+- `UnsupportedMediaTypeException`
+- `UnprocessableEntityException`
+- `InternalServerErrorException`
+- `NotImplementedException`
+- `ImATeapotException`
+- `MethodNotAllowedException`
+- `BadGatewayException`
+- `ServiceUnavailableException`
+- `GatewayTimeoutException`
+- `PreconditionFailedException`
+
+All the built-in exceptions can also provide both an error `cause` and an error description using the `options` parameter:
+
+```ts
+throw new BadRequestException('Something bad happened', 
+                              { cause: new Error(), description: 'Some error description' })
+```
+
+Using the above, this is how the response would look:
+
+```ts
+{
+  "message": "Something bad happened",
+  "error": "Some error description",
+  "statusCode": 400,
+}
+
+```
+
+
+
+
+
+Custom exceptions
+
+---
+
+In many cases, you will not need to write custom exceptions, and can use the built-in Nest HTTP exception.   
+
+If you do need to create customized exceptions, it's good practice to create your own **exceptions hierarchy**, where your custom exceptions inherit from the base `HttpException` class. 
+
+
+
+
+
+## :moon: Exception Filter
+
+
+
+While the base (built-in) exception filter can automatically handle many cases for you, you may want **full control** over the exceptions layer. For example, you may want to add logging or use a different JSON schema based on some dynamic factors. **`Exception filters`** are designed for exactly this purpose. They let you control the exact flow of control and the content of the response sent back to the client.
+
+> In Nest.js, Exception Filters are implemented as a form of AOP. They allow you to intercept and handle exceptions that occur within your application in a centralized and declarative manner, without modifying the core business logic of your controllers or services.
+
+
+
+It's important to note that <span style="color:red">if an exception is thrown within an Interceptor, Guard, or Pipe before reaching the Controller method, the Exception Filter will still be executed first, followed by any remaining Interceptors.</span>
+
+To summarize:
+
+- In a normal request-response cycle without exceptions, Interceptors are executed before and after the Controller method.
+- When an exception is thrown, the Exception Filter is executed first, followed by any remaining Interceptors.
+
+
+
+
+
+step1: define Exception Filter
+
++ The `@Catch(HttpException)` decorator binds the required metadata to the exception filter, telling Nest that this particular filter is looking for exceptions of type `HttpException` and nothing else. The `@Catch()` decorator may take a single parameter, or a comma-separated list. This lets you set up the filter for several types of exceptions at once.
+
+```ts
+// http-exception.filter.ts
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import { Request, Response } from 'express';
+
+@Catch(HttpException)
+export class HttpExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
+    const status = exception.getStatus();
+
+    response
+      .status(status)
+      .json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+      });
+  }
+}
+```
+
+Step2: apply the exception filter to a route handler
+
++ Exception Filter can also be binded to controller or on a gloabal scope, but essentinally it applies to route handler
+
+```ts
+// inside controller
+@Post()
+@UseFilters(new HttpExceptionFilter())
+async create(@Body() createCatDto: CreateCatDto) {
+  throw new ForbiddenException();
+}
+```
+
 
 
 
@@ -601,12 +826,16 @@ A pipe is a class annotated with the `@Injectable()` decorator, which implements
 
 Pipes have two typical use cases:
 
-- **Transformation**: transform input data to the desired form (e.g., from string to integer)
+- **Data Transformation**: transform input data to the desired form (e.g., from string to integer)
 - **Validation**: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception
 
 
 
 >  Pipes run inside the exceptions zone. This means that when a Pipe throws an exception it is handled by the exceptions layer (global exceptions filter and any [exceptions filters](https://docs.nestjs.com/exception-filters) that are applied to the current context). Given the above, it should be clear that when an exception is thrown in a Pipe, no controller method is subsequently executed. 
+
+
+
+看到这里
 
 
 
