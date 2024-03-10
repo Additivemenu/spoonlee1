@@ -1,21 +1,41 @@
 
 
+
+
 # Key Takeaways
 
 AOP-based Nest components: 
 
-+ Middleware
++ Middlewares
 + Exception Filters
   + throw standard HTTP exception
-+ Guard
-+ Interceptor
-+ Pipe
++ Guards
++ Interceptors
+  + more general-purpose for intercepting and modifying incoming request & outgoing response, but note exception filter, guards, pipes are not based on interceptor
+  + modify incoming request or outgoing response
+  + :bangbang: ​inject dependendency via contructor. e.g. inject a service to an interceptor 
+  + many use cases: logging & monitoring, response transformation, caching, authentication & authorisation ...
++ Pipes
 
 
 
 
 
 # :bangbang: ​AOP components 
+
+
+
+AOP intro
+
+https://www.bilibili.com/video/BV1w3411s7ur?p=6&vd_source=c6866d088ad067762877e4b6b23ab9df
+
++ but in Spring
+
+https://medium.com/@maciejsikorski/aspect-oriented-programming-with-nestjs-a2e420d9980e
+
+https://flowframework.readthedocs.io/en/7.3/TheDefinitiveGuide/PartIII/AspectOrientedProgramming.html
+
+
 
 
 
@@ -816,7 +836,7 @@ async create(@Body() createCatDto: CreateCatDto) {
 }
 ```
 
-
+看完了
 
 
 
@@ -843,13 +863,356 @@ Pipes have two typical use cases:
 
 # 4. :full_moon: Guard
 
+看到这里
+
+
+
+
+
+# 5. :full_moon::bangbang: Interceptor
+
+https://docs.nestjs.com/interceptors
+
+最直接用AOP的nest component
+
+
+
+An interceptor is a class annotated with the `@Injectable()` decorator and implements the `NestInterceptor` interface.
+
+Interceptors have a set of useful capabilities which are inspired by the [Aspect Oriented Programming](https://en.wikipedia.org/wiki/Aspect-oriented_programming) (AOP) technique. They make it possible to:
+
+- bind extra logic before / after method execution
+- transform the result returned from a function
+- transform the exception thrown from a function
+- extend the basic function behavior
+- completely override a function depending on specific conditions (e.g., for caching purposes)
+
+
+
+## 5.1 Basics
+
+Each interceptor implements the `intercept()` method, which takes two arguments: Execution Context & Call Handler
+
+> Interceptors, like controllers, providers, guards, and so on, can **inject dependencies** through their `constructor`.
+
+
+
+### Execution Context
+
+---
+
+The first one is the `ExecutionContext` instance (exactly the same object as for [guards](https://docs.nestjs.com/guards)). The `ExecutionContext` inherits from `ArgumentsHost`. We saw `ArgumentsHost` before in the exception filters chapter. There, we saw that it's a wrapper around arguments that have been passed to the original handler, and contains different arguments arrays based on the type of the application. You can refer back to the [exception filters](https://docs.nestjs.com/exception-filters#arguments-host) for more on this topic.
+
+By extending `ArgumentsHost`, `ExecutionContext` also adds several new helper methods that provide additional details about the current execution process. These details can be helpful in building more generic interceptors that can work across a broad set of controllers, methods, and execution contexts. Learn more about `ExecutionContext`[here](https://docs.nestjs.com/fundamentals/execution-context).
+
+
+
+### Call Handler 
+
+---
+
+The second argument is a `CallHandler`. The `CallHandler` interface implements the `handle()` method, which you can use to invoke the route handler method at some point in your interceptor. If you don't call the `handle()` method in your implementation of the `intercept()` method, the route handler method won't be executed at all. <span style="color:yellow">This approach means that the `intercept()` method effectively **wraps** the request/response stream. As a result, you may implement custom logic **both before and after** the execution of the final route handler.</span> 
+
++ It's clear that you can write code in your `intercept()` method that executes **before** calling `handle()`, 
++ but how do you affect what happens afterward? Because the `handle()` method returns an `Observable`, we can use powerful [RxJS](https://github.com/ReactiveX/rxjs) operators to further manipulate the response. 
+
+Using Aspect Oriented Programming terminology, the invocation of the route handler (i.e., calling `handle()`) is called a [Pointcut](https://en.wikipedia.org/wiki/Pointcut), indicating that it's the point at which our additional logic is inserted.
+
+
+
+Consider, for example, an incoming `POST /cats` request. This request is destined for the `create()` handler defined inside the `CatsController`. If an interceptor which does not call the `handle()` method is called anywhere along the way, the `create()` method won't be executed. Once `handle()` is called (and its `Observable` has been returned), the `create()` handler will be triggered. And once the response stream is received via the `Observable`, additional operations can be performed on the stream, and a final result returned to the caller.
+
+
+
+## 5.2 :gem: ​Common Use Cases
+
+these use cases are independent to the business logic
+
+
+
+:bangbang: most of the examples provided here are in REST api​
+
+Interceptors, on the other hand, provide a more general-purpose mechanism for intercepting and modifying incoming requests and outgoing responses. They can be used for cross-cutting concerns like logging, monitoring, response transformation, and more.
+
+It's important to note that while interceptors can be used to handle exceptions, transform responses, or perform authentication and authorization, it's generally recommended to use the dedicated concepts (exception filters, pipes, and guards) for those specific purposes to maintain a clear separation of concerns and promote code modularity and reusability.
+
+
+
+### Logging & monitoring
+
+:gem: e.g.1​
+
+```ts
+// logging.interceptor.ts
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable()
+export class LoggingInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    console.log('Before...');
+
+    const now = Date.now();
+    return next
+      .handle()
+      .pipe(
+        tap(() => console.log(`After... ${Date.now() - now}ms`)),
+      );
+  }
+}
+```
+
+Since `handle()` returns an RxJS `Observable`, we have a wide choice of operators we can use to manipulate the stream. In the example above, we used the `tap()` operator, which invokes our anonymous logging function upon graceful or exceptional termination of the observable stream, but doesn't otherwise interfere with the response cycle.
+
+
+
+bind interceptor
+
+---
+
+In order to set up the interceptor, we use the `@UseInterceptors()` decorator imported from the `@nestjs/common`package. Like [pipes](https://docs.nestjs.com/pipes) and [guards](https://docs.nestjs.com/guards), interceptors can be controller-scoped, method-scoped, or global-scoped.
+
+```ts
+// cats.controller.ts: bind interceptor to controller-level
+@UseInterceptors(new LoggingInterceptor())
+export class CatsController {}
+```
+
+
+
+:gem: e.g.2
+
+```ts
+@Injectable()
+export class LoggingInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    const method = request.method;
+    const url = request.url;
+    const now = Date.now();
+
+    return next.handle().pipe(
+      tap(() => {
+        const response = context.switchToHttp().getResponse();
+        const statusCode = response.statusCode;
+        const responseTime = Date.now() - now;
+        console.log(`[${method}] ${url} ${statusCode} - ${responseTime}ms`);
+      }),
+    );
+  }
+}
+```
+
+
+
+
+
+### Modify incoming request
+
+---
+
+:gem: e.g.1
+
+get current user of the incoming request (udemy nest.js course C11)
+
++ firstly inject a UserService to the interceptor
++ then look up the user by userId, attach the user entity to the request object
++ then use param decorator to extract the currentUser field in the request object
 
 
 
 
 
 
-# 5. :full_moon: Interceptor
+
+### Response Transformation
+
+---
+
+We already know that `handle()` returns an `Observable`. The stream contains the value **returned** from the route handler, and thus we can easily mutate it using RxJS's `map()` operator.
+
+
+
+:gem: e..g.1​
+
+Let's create the `TransformInterceptor`, which will modify each response in a trivial way to demonstrate the process. It will use RxJS's `map()` operator to assign the response object to the `data` property of a newly created object, returning the new object to the client.
+
+```ts
+// transform.itertceptor.ts
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Response<T> {
+  data: T;
+}
+
+@Injectable()
+export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
+    return next.handle().pipe(map(data => ({ data })));
+  }
+}
+```
+
+With the above construction, when someone calls the `GET /cats` endpoint, the response would look like the following (assuming that route handler returns an empty array `[]`):
+
+```ts
+{
+  "data": []
+}
+```
+
+
+
+:gem: e.g.2​
+
+````ts
+@Injectable()
+export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
+    return next.handle().pipe(
+      map((data) => ({
+        success: true,
+        data,
+      })),
+    );
+  }
+}
+````
+
+
+
+
+
+
+
+### Exception Mapping
+
+---
+
+Another interesting use-case is to take advantage of RxJS's `catchError()` operator to override thrown exceptions:
+
+:bangbang: it is recommended to use Exception FIlter to hanlde exceptions​
+
+```ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  BadGatewayException,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+export class ErrorsInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next
+      .handle()
+      .pipe(
+        catchError(err => throwError(() => new BadGatewayException())),
+      );
+  }
+}
+```
+
+
+
+
+
+### Cache 
+
+---
+
+There are several reasons why we may sometimes want to completely prevent calling the handler and return a different value instead. An obvious example is to implement a cache to improve response time. Let's take a look at a simple **cache interceptor** that returns its response from a cache. In a realistic example, we'd want to consider other factors like TTL, cache invalidation, cache size, etc., but that's beyond the scope of this discussion. Here we'll provide a basic example that demonstrates the main concept.
+
+```ts
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
+
+@Injectable()
+export class CacheInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const isCached = true;
+    if (isCached) {
+      return of([]);
+    }
+    return next.handle();
+  }
+}
+```
+
+Our `CacheInterceptor` has a hardcoded `isCached` variable and a hardcoded response `[]` as well. The key point to note is that we return a new stream here, created by the RxJS `of()` operator, therefore the route handler **won't be called** at all. When someone calls an endpoint that makes use of `CacheInterceptor`, the response (a hardcoded, empty array) will be returned immediately. 
+
+In order to create a generic solution, you can take advantage of `Reflector` and create a custom decorator. The `Reflector` is well described in the [guards](https://docs.nestjs.com/guards) chapter.
+
+
+
+### Handle Timeout 
+
+---
+
+The possibility of manipulating the stream using RxJS operators gives us many capabilities. Let's consider another common use case. Imagine you would like to handle **timeouts** on route requests. When your endpoint doesn't return anything after a period of time, you want to terminate with an error response. The following construction enables this:
+
+```ts
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, RequestTimeoutException } from '@nestjs/common';
+import { Observable, throwError, TimeoutError } from 'rxjs';
+import { catchError, timeout } from 'rxjs/operators';
+
+@Injectable()
+export class TimeoutInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(
+      timeout(5000),
+      catchError(err => {
+        if (err instanceof TimeoutError) {
+          return throwError(() => new RequestTimeoutException());
+        }
+        return throwError(() => err);
+      }),
+    );
+  };
+};
+```
+
+After 5 seconds, request processing will be canceled. You can also add custom logic before throwing `RequestTimeoutException` (e.g. release resources).
+
+
+
+
+
+### Authentication & Authorisation
+
+Interceptors can be used to perform authentication and authorization checks before allowing the request to proceed to the route handler.
+
+:bangbang: it is recommended to use guards to do authentication & authorisation​
+
+```ts
+@Injectable()
+export class AuthInterceptor implements NestInterceptor {
+  constructor(private readonly authService: AuthService) {}
+
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers.authorization;
+    
+    if (!token) {
+      throw new UnauthorizedException('Missing authentication token');
+    }
+    
+    try {
+      const user = this.authService.validateToken(token);
+      request.user = user;
+      return next.handle();		// proceed to route handler
+    } catch (error) {
+      throw new UnauthorizedException('Invalid authentication token');
+    }
+  }
+}
+```
 
 
 
