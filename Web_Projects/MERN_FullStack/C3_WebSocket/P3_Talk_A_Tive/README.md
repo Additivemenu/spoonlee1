@@ -6,11 +6,15 @@ mainly to learn mongoDB and web socket (socket io)
 
 
 
-his code is not really elegant and readble, practice to rebuild the app in your own way
+check out features at https://www.youtube.com/watch?v=3vRcB0P84t4&list=PLKhlp2qtUcSZsGkxAdgnPcHioRr-4guZf
+
+
+
+his code is not really elegant and readble, practice to rebuild the app in your own way. By doing so, you could make it your own project on your resume!
 
 + Not using any UI lib
 + make the code more elegant and readable
-+ use typescript
++ use typescript, next.js, nest.js
 + use S3 to upload image
 + use AWS to deploy app
 

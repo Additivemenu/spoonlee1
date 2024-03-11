@@ -1,26 +1,4 @@
-跳转
-
-+ :pencil: [JS与Java语法区别](./JS_Vs_Java.md)
-+ :pencil: [steve的JS笔记](./Js.md)
-
----
-
-|Chapter |Topic |Description |
-|------ |------ |------ |
-|[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>:bangbang: Arrays API |
-|[C2](./C2_Object/JS_object.md) | JS object, class, inheritance with prototype chain | |
-|[C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
-|[C4](./C4_CoupingWithHTMLCSS/README.md) |:bangbang: DOM |DOM <br/>event |
-|[C5](./C5_Debug/README.md) | JS debug & Exception | |
-|[ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | async <br> |
-|[C7](./C7_Memory_Management/readme.md) | memory management |  |
-|[C8](./C8_EventLoop/readme.md) | JS runtime concepts <br>Event Loop <br> |  |
-
-
-
-
-
-## 学习资源
+Resources: 
 
 1. [b站尚硅谷JS视频笔记](https://github.com/limingzhong61/LearningNotes/blob/master/JSNote/JavaScript/JavaScript.md) 
    可以从中窥探JS重点框架, 先浏览这个再去看MDN文档
@@ -37,6 +15,32 @@
 4. <<JavaScript高级程序设计>> 4th edition (红宝书)
 
    - 作为补充性质的参考书目
+
+
+
+跳转
+
++ :pencil: [JS与Java语法区别](./JS_Vs_Java.md)
++ :pencil: [steve的JS笔记](./Js.md)
+
+
+
+Contents
+
+|Chapter |Topic |Description |
+|------ |------ |------ |
+|[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>:bangbang: Arrays API |
+|[C2](./C2_Object/JS_object.md) | JS object, class, inheritance with prototype chain | |
+|[C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
+|[C4](./C4_CoupingWithHTMLCSS/README.md) |:bangbang: DOM |DOM <br/>event |
+|[C5](./C5_Debug/README.md) | JS debug & Exception | |
+|[ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | async <br> |
+|[C7](./C7_Memory_Management/readme.md) | memory management |  |
+|[C8](./C8_EventLoop/readme.md) | JS runtime concepts <br>Event Loop <br> |  |
+
+
+
+
 
 
 

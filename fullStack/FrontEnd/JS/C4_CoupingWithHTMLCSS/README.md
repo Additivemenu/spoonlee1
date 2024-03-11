@@ -39,7 +39,7 @@ node指代HTML文档中的某个标签元素. 在HTML文档中, document节点�
 </body>
 
 ```
-### 1.1.1 document.querySelector()
+### document.querySelector()
 
 ```js
 // get a single node ------------------------
@@ -53,7 +53,7 @@ console.log(content);
 
 
 
-### 1.1.2 document.querySelectorAll()
+### document.querySelectorAll()
 + querySelectorAll(): 选中所有满足条件的node, 并返回对应的NodeList
 
 ```js
@@ -86,6 +86,8 @@ console打印结果:
     // 添加节点:
     node.appendChild(nodeToBeAdded);
     ```
+
+
 
 ### e.g.1: 
 

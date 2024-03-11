@@ -677,7 +677,14 @@ while, for loop语法和Java基本一致
 
 [Array.js](./Array.js)
 
-## 5.1 初始化Array
+
+
+## 5.1 basic grammar
+
+初始化Array
+
+---
+
 要点:
 + 用square bracket
 + index starts from 0
@@ -694,7 +701,10 @@ console.table(array);
 
 <img src="../Src/JS_array1.png" width=80%>
 
-## 5.2 定义新的数组元素
+定义新的数组元素
+
+---
+
 要点:
 + JS的数组是动态数组, 可以改变长度
 + 超出数组长度的为undefined
@@ -716,7 +726,10 @@ console.log(array.length);  // now length of array is 101
 
 <img src="../Src/js_array_addElement.png" width=80%>
 
-### 5.2.1 为Array加入object元素
+为Array加入object元素
+
+---
+
 要点:
 + 必须先指定哪个元素为object type, 再instantiate该object
 + 不能直接为某个元素instantiate
@@ -729,13 +742,17 @@ console.log(array[101]);    // now array[101].name displayed
 ```
 <img src="../Src/JS_array_addObject.png" width=100%>
 
-## 5.3 :moon: Array Decomposition
+
+
+ :moon: Array Decomposition
+
+---
 
 :gem: [Demo: array decomposition](./11-arrayDecomposition.html)
 
 
 
-## 5.4 :bangbang: JS array API
+## 5.2 :bangbang: JS array API
 本质上还是for loop实现某种功能, 只不过封装好代码更加简洁, 直接对array操作
 
 以下API中用到的function()一般为了简洁采用箭头函数
@@ -785,7 +802,7 @@ function(currentValue, index, arr){
 
 
 
-### 5.4.3 reduce()
+### reduce()
 
 从一个array中提取aggregate信息
 
@@ -870,22 +887,26 @@ Each of these methods can be incredibly useful for various operations involving 
 
 
 
-# 5.5 shadowCopy & deepCopy
+## 5.3 shadowCopy & deepCopy
 
 针对object或array
 
-+ shadow copy
-  复制体和本体share address, 相互关联. 
-  + `Object.assign()`
-  + `Array.from()`
-  + `[...arr]`
+shadow copy
+复制体和本体share address, 相互关联. 
 
-  :gem: [shadow copy](./23-shadowCopy.html)
++ `Object.assign()`
++ `Array.from()`
++ `[...arr]`
 
-+ deep copy
-  复制体和本体在内存中各自独立, 相互不影响
-  + `JSON.parse(JSON.stringify(obj))`
-    + 但这个方法在copy时会忽略undefine, symbol, function的值 
-  + lodash的库方法(更常用): `cloneDeep`
-  + browser自带的方法: `structuredClone()`
-  :gem: [deep copy](./24-deepCopy.html)
+:gem: [shadow copy](./23-shadowCopy.html)
+
+
+
+deep copy
+复制体和本体在内存中各自独立, 相互不影响
+
++ `JSON.parse(JSON.stringify(obj))`
+  + 但这个方法在copy时会忽略undefine, symbol, function的值 
++ lodash的库方法(更常用): `cloneDeep`
++ browser自带的方法: `structuredClone()`
+:gem: [deep copy](./24-deepCopy.html)
