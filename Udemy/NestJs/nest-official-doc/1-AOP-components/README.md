@@ -7,6 +7,8 @@
 AOP-based Nest components: 
 
 + Middlewares
+  + middleware in NestJS is aware of the broader context of an HTTP request (such as headers, body, query parameters, etc.) because it interacts directly with the `Request` and `Response` objects, similar to middleware in Express. But when it comes to the richer, more detailed execution context that includes controller and method-specific information, that level of detail is reserved for the components that operate at a higher level in the request lifecycle, like Guards and Interceptors.
+
 + Exception Filters
   + throw standard HTTP exception
 + Guards
@@ -116,6 +118,90 @@ By using these components based on AOP principles, Nest.js allows you to modular
 AOP provides benefits such as improved modularity, reusability, and maintainability. It allows you to handle cross-cutting concerns in a centralized and declarative way, making your code more organized and easier to understand.
 
 Nest.js leverages the power of AOP through these components to provide a flexible and extensible framework for building scalable and modular applications.
+
+
+
+
+
+### ExecutionContext 
+
+Aspect-Oriented Programming (AOP) in Nest.js allows for the separation of concerns, particularly for cross-cutting concerns like logging, security, or transaction management. AOP components enhance modularity by allowing the separation of these concerns from the main business logic. In Nest.js, the `ExecutionContext` provides detailed context about the current request, and certain AOP components can interact with it:
+
+1. **Guards**
+   - Use Case: Determining whether a specific request should proceed.
+   - Access: Guards have access to `ExecutionContext`, enabling them to make decisions based on the current request context, including the incoming request, response, and route handler details.
+
+```javascript
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+
+@Injectable()
+export class MyGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    // Implement logic based on the request
+    return true; // or false
+  }
+}
+```
+
+2. **Interceptors**
+   - Use Case: Modifying the request/response or executing additional logic before/after the handler.
+   - Access: Interceptors have access to `ExecutionContext` and can manipulate the request or response, add logging, handle caching, etc.
+
+```javascript
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class MyInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    // Access and modify the request/response here
+    return next.handle();
+  }
+}
+```
+
+3. **Pipes**
+   - Use Case: Transforming input data or performing validation.
+   - Access: Pipes can access `ExecutionContext` when used as method-scoped pipes, allowing them to perform transformations or validations with context awareness.
+
+```javascript
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+
+@Injectable()
+export class MyPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    // Access ExecutionContext through metadata if available
+    return transformedValue;
+  }
+}
+```
+
+4. **Filters**
+   - Use Case: Handling exceptions.
+   - Access: Exception filters can access `ArgmentsHost` (which is the parent class of `ExecutionContext`), enabling them to tailor error responses based on the context of the error, such as the request URL or HTTP method.
+
+```javascript
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import { Request, Response } from 'express';
+
+@Catch(HttpException)
+export class HttpExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
+
+    // Custom error response based on the request and exception
+  }
+}
+```
+
+These AOP components allow for modular and clean code organization, especially for handling cross-cutting concerns across your application, by leveraging the `ExecutionContext` to gain insight into the current request cycle.
+
+
+
+
 
 
 
@@ -842,6 +928,8 @@ async create(@Body() createCatDto: CreateCatDto) {
 
 # 3.​ :moon: ​Pipe
 
+https://docs.nestjs.com/pipes
+
 A pipe is a class annotated with the `@Injectable()` decorator, which implements the `PipeTransform` interface.
 
 Pipes have two typical use cases:
@@ -851,25 +939,546 @@ Pipes have two typical use cases:
 
 
 
->  Pipes run inside the exceptions zone. This means that when a Pipe throws an exception it is handled by the exceptions layer (global exceptions filter and any [exceptions filters](https://docs.nestjs.com/exception-filters) that are applied to the current context). Given the above, it should be clear that when an exception is thrown in a Pipe, no controller method is subsequently executed. 
+>  Pipes run inside the exceptions zone. This means that when a Pipe throws an exception it is handled by the exceptions layer (global exceptions filter and any [exceptions filters](https://docs.nestjs.com/exception-filters) that are applied to the current context). Given the above, <span style="color:red">it should be clear that when an exception is thrown in a Pipe, no controller method is subsequently executed.</span> 
 
 
 
-看到这里
+## 3.1 Pipe basics
+
+### Built-in pipes
+
+Nest comes with nine pipes available out-of-the-box (You can find full details, along with lots of examples [here](https://docs.nestjs.com/techniques/validation)): 
+
+validation pipe:
+
+- `ValidationPipe`
+
+data transformation pipe:
+
+- `ParseIntPipe`
+- `ParseFloatPipe`
+- `ParseBoolPipe`
+- `ParseArrayPipe`
+- `ParseUUIDPipe`
+- `ParseEnumPipe`
+- `DefaultValuePipe`
+- `ParseFilePipe`
+
+They're exported from the `@nestjs/common` package.
+
+> Apart from these built-in pipes, we can also customise a pipe (But under most  circumstances, it is unnecessary)
 
 
 
 
 
-# 4. :full_moon: Guard
+### Binding pipes
 
-看到这里
+To use a pipe, we need to bind an instance of the pipe class to the appropriate context. In our `ParseIntPipe` example, we want to associate the pipe with a particular route handler method, and make sure it runs before the method is called. 
+
+```ts
+@Get(':id')
+async findOne(@Param('id', ParseIntPipe) id: number) {
+  return this.catsService.findOne(id);
+}
+```
+
+This ensures that one of the following two conditions is true: either the parameter we receive in the `findOne()` method is a number (as expected in our call to `this.catsService.findOne()`), or an exception is thrown before the route handler is called. For example, assume the route is called like:
+
+```ts
+GET localhost:3000/abc
+```
+
+Nest will throw an exception like this:
+
+```ts
+{
+  "statusCode": 400,
+  "message": "Validation failed (numeric string is expected)",
+  "error": "Bad Request"
+}
+```
+
+
+
+Passing an in-place instance is useful if we want to customize the built-in pipe's behavior by passing options:
+
+```ts
+@Get(':id')
+async findOne(
+  @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+  id: number,
+) {
+  return this.catsService.findOne(id);
+}
+```
 
 
 
 
 
-# 5. :full_moon::bangbang: Interceptor
+### custom pipes
+
+https://docs.nestjs.com/pipes#custom-pipes
+
+
+
+usually built-in pipes are enough, check out custom pipes when needed 
+
+
+
+### Option1: Schema-based validation
+
+we probably would like to ensure that the post body object is valid before attempting to run our service method.
+
+```ts
+// controller
+@Post()
+async create(@Body() createCatDto: CreateCatDto) {
+  this.catsService.create(createCatDto);
+}
+
+// dto
+export class CreateCatDto {
+  name: string;
+  age: number;
+  breed: string;
+}
+```
+
+
+
+
+
+#### Object-schema validation
+
+There are several approaches available for doing object validation in a clean, [DRY](https://en.wikipedia.org/wiki/Don't_repeat_yourself) way. One common approach is to use **schema-based** validation. 
+
+The [Zod](https://zod.dev/) library allows you to create schemas in a straightforward way, with a readable API. Let's build a validation pipe that makes use of Zod-based schemas.
+
+Start by installing the required package:
+
+```ts
+$ npm install --save zod
+```
+
+
+
+In the code sample below, we create a simple class that takes a schema as a `constructor` argument. We then apply the `schema.parse()` method, which validates our incoming argument against the provided schema.
+
+As noted earlier, a **validation pipe** either returns the value unchanged or throws an exception.
+
+```ts
+import { PipeTransform, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+import { ZodSchema  } from 'zod';
+
+export class ZodValidationPipe implements PipeTransform {
+  constructor(private schema: ZodSchema) {}
+
+  transform(value: unknown, metadata: ArgumentMetadata) {
+    try {
+      const parsedValue = this.schema.parse(value);
+      return parsedValue;
+    } catch (error) {
+      throw new BadRequestException('Validation failed');
+    }
+  }
+}
+
+```
+
+
+
+schema 
+
+```ts
+import { z } from 'zod';
+
+export const createCatSchema = z
+  .object({
+    name: z.string(),
+    age: z.number(),
+    breed: z.string(),
+  })
+  .required();
+
+export type CreateCatDto = z.infer<typeof createCatSchema>;
+```
+
+apply validation pipe & schema to the route handler
+
+```ts
+// cats.controller.ts
+@Post()
+@UsePipes(new ZodValidationPipe(createCatSchema))
+async create(@Body() createCatDto: CreateCatDto) {
+  this.catsService.create(createCatDto);
+}
+```
+
+
+
+### :bangbang: ​Option2: Decorator-based validation
+
+Alternative way of doing validation to shema-based validation (I like this one)
+
+
+
+Nest works well with the [class-validator](https://github.com/typestack/class-validator) library. This powerful library allows you to use `decorator-based validation`. Decorator-based validation is extremely powerful, especially when combined with Nest's **Pipe** capabilities since we have access to the `metatype` of the processed property. Before we start, we need to install the required packages:
+
+```shell
+$ npm i --save class-validator class-transformer
+```
+
+Once these are installed, we can add a few decorators to the `CreateCatDto` class. Here we see a significant advantage of this technique: the `CreateCatDto` class remains the single source of truth for our Post body object (rather than having to create a separate validation class).
+
+```ts
+import { IsString, IsInt } from 'class-validator';
+
+export class CreateCatDto {
+  @IsString()
+  name: string;
+
+  @IsInt()
+  age: number;
+
+  @IsString()
+  breed: string;
+}
+```
+
+
+
+Now we can create a `ValidationPipe` class that uses these annotations.
+
++ `plainToInstance()`: plain vanilla object -> decorated object
+  + The reason we must do this is that the incoming post body object, when deserialized from the network request, does **not have any type information** (this is the way the underlying platform, such as Express, works). Class-validator needs to use the validation decorators we defined for our DTO earlier, so we need to perform this transformation to treat the incoming body as an appropriately decorated object, not just a plain vanilla object.
++ since this is a **validation pipe** it either returns the value unchanged, or throws an exception.
+
+```ts
+import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+
+@Injectable()
+export class ValidationPipe implements PipeTransform<any> {
+  async transform(value: any, { metatype }: ArgumentMetadata) {
+    if (!metatype || !this.toValidate(metatype)) {
+      return value;
+    }
+    
+    const object = plainToInstance(metatype, value); //  transform our plain JavaScript argument object into a typed object so that we can apply validation
+    
+    const errors = await validate(object);
+    if (errors.length > 0) {
+      throw new BadRequestException('Validation failed');
+    }
+    return value;
+  }
+
+  private toValidate(metatype: Function): boolean {
+    const types: Function[] = [String, Boolean, Number, Array, Object];
+    return !types.includes(metatype);
+  }
+}
+```
+
+
+
+finally, we use the validation pipe to a route handler
+
++ Pipes can be parameter-scoped, method-scoped, controller-scoped, or global-scoped. 
+
+```ts
+@Post()
+async create(
+  @Body(new ValidationPipe()) createCatDto: CreateCatDto,
+) {
+  this.catsService.create(createCatDto);
+}
+```
+
+
+
+
+
+## 3.2 :gem: common use cases​
+
+Pipes in Nest.js are essential for handling data validation and transformation, enhancing the robustness and reliability of your application. Let's delve into each use case with examples:
+
+1. :bangbang: ​**Validation with Class Validator**
+   - Use Case: Ensuring incoming request data meets your application's criteria before processing.
+   - Example: Using `ValidationPipe` to automatically validate DTOs (Data Transfer Objects).
+
+```javascript
+import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateUserDto } from './create-user.dto';
+
+@Controller('users')
+export class UsersController {
+  @Post()
+  @UsePipes(new ValidationPipe())
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    // createUserDto is validated by the ValidationPipe
+    return 'User created';
+  }
+}
+```
+
+2. :bangbang: ​**Transformation**
+   - Use Case: Converting request data to a specific type or format.
+   - Example: Transforming query parameters from strings to integers.
+
+```javascript
+import { Controller, Get, Query, ParseIntPipe } from '@nestjs/common';
+
+@Controller('events')
+export class EventsController {
+  @Get()
+  getEvents(@Query('page', ParseIntPipe) page: number) {
+    // 'page' query parameter is parsed to a number
+    return `Events page: ${page}`;
+  }
+}
+```
+
+3. **Default Values**
+   - Use Case: Providing default values for missing data in requests.
+   - Example: Custom pipe that assigns a default page number if not provided in the query.
+
+```javascript
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+
+@Injectable()
+export class DefaultPagePipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    return value || 1; // Default to page 1 if undefined
+  }
+}
+```
+
+4. **Parameter Parsing**
+   - Use Case: Ensuring URL parameters are of the correct type.
+   - Example: Parsing an ID from a route parameter to a number.
+
+```javascript
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+
+@Controller('users')
+export class UsersController {
+  @Get(':id')
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    // 'id' parameter is guaranteed to be a number
+    return `User ID: ${id}`;
+  }
+}
+```
+
+5. **Complex Object Construction**
+   - Use Case: Constructing complex types from incoming data.
+   - Example: Using pipes to transform plain objects into class instances.
+
+```javascript
+import { Body, Controller, Post } from '@nestjs/common';
+import { TransformPipe } from './transform.pipe';
+import { User } from './user.entity';
+
+@Controller('users')
+export class UsersController {
+  @Post()
+  createUser(@Body(TransformPipe) user: User) {
+    // 'user' is an instance of User class, transformed by TransformPipe
+    return user;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+# 4. :full_moon: Guards
+
+A guard is a class annotated with the `@Injectable()` decorator, which implements the `CanActivate` interface.
+
+Guards have a **single responsibility**. They determine whether a given request will be handled by the route handler or not, depending on certain conditions (like permissions, roles, ACLs, etc.) present at run-time. This is often referred to as **authorization**.
+
+
+
+> why guards over middleware ?  
+>
+> Authorization (and its cousin, **authentication**, with which it usually collaborates) has typically been handled by [middleware](https://docs.nestjs.com/middleware) in traditional Express applications. Middleware is a fine choice for authentication, since things like token validation and attaching properties to the `request` object are not strongly connected with a particular route context (and its metadata).
+>
+> But middleware, by its nature, is dumb. It doesn't know which handler will be executed after calling the `next()` function. On the other hand, **Guards** have access to the `ExecutionContext` instance, and thus know exactly what's going to be executed next. They're designed, much like exception filters, pipes, and interceptors, to let you interpose processing logic at exactly the right point in the request/response cycle, and to do so declaratively. This helps keep your code DRY and declarative.
+
+
+
+## 4.1 Guard basics
+
+### Authorisation guard
+
+---
+
+As mentioned, **authorization** is a great use case for Guards because specific routes should be available only when the caller (usually a specific authenticated user) has sufficient permissions. 
+
+The `AuthGuard` that we'll build now assumes an authenticated user (and that, therefore, a token is attached to the request headers). It will extract and validate the token, and use the extracted information to determine whether the request can proceed or not:
+
+```ts
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
+    return validateRequest(request);
+  }
+}
+```
+
+Every guard must implement a `canActivate()` function. This function should return a boolean, indicating whether the current request is allowed or not. It can return the response either synchronously or asynchronously (via a `Promise` or `Observable`). Nest uses the return value to control the next action:
+
+- if it returns `true`, the request will be processed.
+- if it returns `false`, Nest will deny the request.
+
+
+
+Note that behind the scenes, when a guard returns `false`, the framework throws a `ForbiddenException`. If you want to return a different error response, you should throw your own specific exception. For example:
+
+```typescript
+throw new UnauthorizedException();
+```
+
+Any exception thrown by a guard will be handled by the [exceptions layer](https://docs.nestjs.com/exception-filters) (global exceptions filter and any exceptions filters that are applied to the current context).
+
+
+
+
+
+### Execution Context
+
+---
+
+The `canActivate()` function takes a single argument, the `ExecutionContext` instance. The `ExecutionContext` inherits from `ArgumentsHost`. We saw `ArgumentsHost` previously in the exception filters chapter. In the sample above, we are just using the same helper methods defined on `ArgumentsHost` that we used earlier, to get a reference to the `Request` object. You can refer back to the **Arguments host** section of the [exception filters](https://docs.nestjs.com/exception-filters#arguments-host) chapter for more on this topic.
+
+By extending `ArgumentsHost`, `ExecutionContext` also adds several new helper methods that provide additional details about the current execution process. These details can be helpful in building more generic guards that can work across a broad set of controllers, methods, and execution contexts. Learn more about `ExecutionContext`[here](https://docs.nestjs.com/fundamentals/execution-context).
+
+
+
+### Bind guard
+
+---
+
+Like pipes and exception filters, guards can be **controller-scoped**, method-scoped, or global-scoped. Below, we set up a controller-scoped guard using the `@UseGuards()` decorator.
+
+```ts
+@Controller('cats')
+@UseGuards(new RolesGuard())
+export class CatsController {}
+```
+
+
+
+## 4.​2 :gem: use cases​
+
+Let's create a simple authorization guard that checks if a user has the required role to access a route. This example will demonstrate how to restrict access to certain parts of your application based on user roles.
+
++ in this demo, role is attached to a certain route handler
+
+
+
+1. **Define User Roles**: Assume we have defined user roles as an enumeration for clarity and reuse throughout the application.
+
+```javascript
+// roles.enum.ts
+export enum Role {
+  Admin = 'admin',
+  Editor = 'editor',
+  User = 'user',
+}
+```
+
+2. **Create the Roles Decorator**: We'll use a custom decorator to annotate our route handlers with the required roles.
+
+```javascript
+// roles.decorator.ts
+import { SetMetadata } from '@nestjs/common';
+
+export const ROLES_KEY = 'roles';
+export const Roles = (...roles: Role[]) => SetMetadata(ROLES_KEY, roles);
+```
+
+3. **Implement the Authorization Guard**: The guard will extract roles from the route's custom metadata and verify if the user's role matches any of the required roles.
+
+```javascript
+// roles.guard.ts
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { ROLES_KEY } from './roles.decorator';
+import { Role } from './roles.enum';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.get<Role[]>(ROLES_KEY, context.getHandler());
+    if (!requiredRoles) {
+      return true; // If no roles are required, allow access.
+    }
+    const request = context.switchToHttp().getRequest();
+    const user = request.user; // Assuming the user object is attached to the request (e.g., by a previous authentication middleware).
+
+    return requiredRoles.some((role) => user.roles?.includes(role));
+  }
+}
+```
+
+4. **Apply the Guard to Your Application**: Use the guard at the controller or route handler level, and annotate the handlers with the required roles.
+   + role is given per route handler 
+
+```javascript
+// app.controller.ts
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
+import { Role } from './roles.enum';
+
+@Controller('dashboard')
+@UseGuards(RolesGuard) // Applying the guard at the controller level
+export class DashboardController {
+
+  @Get()
+  @Roles(Role.Admin) // Only users with the 'admin' role can access this route
+  findAll() {
+    return 'This route is restricted to administrators.';
+  }
+
+  @Get('editor-section')
+  @Roles(Role.Editor, Role.Admin) // Both 'editor' and 'admin' roles can access this route
+  findEditorSection() {
+    return 'This route is accessible to editors and administrators.';
+  }
+}
+```
+
+5. **Ensure the User Object is Available**: This example assumes that a user object, including roles, is attached to the request object, typically by an authentication strategy earlier in the request processing pipeline.
+
+By following these steps, you implement an authorization mechanism in Nest.js using guards, custom decorators, and role checking to protect routes based on user roles.
+
+
+
+
+
+# 5. :full_moon: Interceptor
 
 https://docs.nestjs.com/interceptors
 
@@ -889,7 +1498,7 @@ Interceptors have a set of useful capabilities which are inspired by the [Aspect
 
 
 
-## 5.1 Basics
+## 5.1 :bangbang: ​Basics
 
 Each interceptor implements the `intercept()` method, which takes two arguments: Execution Context & Call Handler
 

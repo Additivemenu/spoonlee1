@@ -8,9 +8,7 @@ Additional Learning Resources:
 
 :pencil: :bangbang: ​[nest official doc learning](./nest-official-doc/nestOfficialDocLearning.md)
 
-+ :book: ​[nest offical doc](https://docs.nestjs.com/)
-  + :book: ​[quick overview](https://docs.nestjs.com/first-steps)
-  + :book: ​[nest fundamentals](https://docs.nestjs.com/fundamentals/custom-providers)
+
 
 
 
