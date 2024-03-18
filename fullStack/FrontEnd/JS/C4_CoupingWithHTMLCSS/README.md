@@ -185,3 +185,93 @@ Results: 点击click me 会toggle 'div'元素的类名(className), 从而达到�
 
 <img src="../Src/JS_attachNodeUnderBody2.png" width=40%>
 <img src="../Src/JS_clickEvent.png" width=40%>
+
+
+
+
+
+
+
+
+
+
+
+# Event
+
+
+
+## :gem: e.g. event with <input>​
+
+Certainly! The `<input>` element in HTML interacts with users and the web application through various events. Here are some commonly used event-related properties for `<input>` elements:
+
+
+
+Keyboard Events
+
+---
+
+- **`onkeydown`**: Fires when a key is pressed down over an `<input>` element.
+- **`onkeyup`**: Occurs when a key is released over an `<input>` element.
+- **`onkeypress`**: Triggered when a key that produces a character value is pressed down; deprecated in many modern browsers and replaced with `keydown`.
+
+
+
+Mouse Events
+
+---
+
+- **`onclick`**: Fired when the `<input>` element is clicked.
+- **`ondblclick`**: Occurs when the `<input>` element is double-clicked.
+- **`onmousedown`**: Triggered when the mouse button is pressed down over the `<input>` element.
+- **`onmouseup`**: Fires when a mouse button is released over the `<input>` element.
+- **`onmousemove`**: Occurs when the mouse pointer moves while it is over the `<input>` element.
+- **`onmouseover`**: Fired when the mouse pointer is moved onto the `<input>` element.
+- **`onmouseout`**: Triggered when the mouse pointer moves out of the `<input>` element.
+
+
+
+Form Events
+
+---
+
+- **`onchange`**: Occurs when the value of the `<input>` element is changed and then loses focus. This event is especially useful for input validation.
+- **`oninput`**: Fires immediately when the value of the `<input>` element changes, making it ideal for real-time feedback on user input.
+- **`onfocus`**: Triggered when the `<input>` element gains focus.
+- **`onblur`**: Occurs when the `<input>` element loses focus.
+- **`onsubmit`**: This event is associated with the form that the `<input>` is part of; it fires when the form is submitted, but it's not specific to the `<input>` element itself.
+
+
+
+Clipboard Events
+
+---
+
+- **`oncopy`**: Fired when the user initiates a copy action on the `<input>`'s value.
+- **`oncut`**: Occurs when the user cuts content from the `<input>`.
+- **`onpaste`**: Triggered when the user pastes content into the `<input>`.
+
+
+
+Drag Events
+
+---
+
+Although less commonly used with `<input>` elements, drag events can be applicable, especially for input types that handle files.
+
+- **`ondrag`**: Occurs when an element or text selection is being dragged over the `<input>`.
+- **`ondrop`**: Fired when a dragged item is dropped on the `<input>`.
+
+
+
+Touch Events
+
+---
+
+Useful for touch devices:
+
+- **`ontouchstart`**: Occurs when a touch is initiated on the `<input>`.
+- **`ontouchmove`**: Fires when a touch point is moved across the screen.
+- **`ontouchend`**: Triggered when a touch point is removed from the touch surface.
+
+These events can be handled using JavaScript to create interactive and responsive web applications. Remember, the specific use and support for these events can vary depending on the browser and the `<input>` type (e.g., text, checkbox, radio).
+
