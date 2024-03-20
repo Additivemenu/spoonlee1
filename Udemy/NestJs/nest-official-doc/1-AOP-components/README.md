@@ -4,26 +4,66 @@
 
 # Key Takeaways
 
-AOP-based Nest components: 
+AOP-based Nest components
 
-+ Middlewares
+---
+
+the sequences of execution: 
+
+```ts
+// if no execption is thrown
+Request --> Middleware --> Guards --> Interceptors (before) --> Pipes --> Route Handler --> Interceptors (after) --> Exception Filters --> Response
+
+```
+
+```ts
+// if an exception is thrown half way: Exception Filters are the next step in the execution sequence after the point of failure.
+Middleware --> Exception thrown --> Exception Filters --> Response
+
+Middleware --> Guards --> Exception thrown --> Exception Filters --> Response
+
+Middleware --> Guards --> Interceptors (before) --> Exception thrown --> Exception Filters --> Response
+
+Middleware --> Guards --> Interceptors (before) --> Pipes --> Exception thrown --> Exception Filters --> Response
+
+```
+
+
+
++ `Middlewares`
   + middleware in NestJS is aware of the broader context of an HTTP request (such as headers, body, query parameters, etc.) because it interacts directly with the `Request` and `Response` objects, similar to middleware in Express. But when it comes to the richer, more detailed execution context that includes controller and method-specific information, that level of detail is reserved for the components that operate at a higher level in the request lifecycle, like Guards and Interceptors.
-
-+ Exception Filters
++ `Exception Filters`
   + throw standard HTTP exception
-+ Guards
-+ Interceptors
-  + more general-purpose for intercepting and modifying incoming request & outgoing response, but note exception filter, guards, pipes are not based on interceptor
-  + modify incoming request or outgoing response
-  + :bangbang: ​inject dependendency via contructor. e.g. inject a service to an interceptor 
+    + Exception Filters are the next step in the execution sequence after the point of failure.
+    + If there are global, controller, or handler-specific exception filters, they will handle the exception based on the context in which they were applied. If no custom exception filters are provided or if they don't catch the specific type of exception thrown, NestJS falls back to its default exception filter, which handles the exception and sends an appropriate response to the client.
++ `Guards`
++ `Interceptors`
+  + more general-purpose for intercepting and <span style="color:yellow">modifying incoming request & outgoing response</span>, but note exception filter, guards, pipes are not based on interceptor
+  + :bangbang: ​possible to inject dependendency (e.g. service) via contructor in an interceptor.  
   + many use cases: logging & monitoring, response transformation, caching, authentication & authorisation ...
-+ Pipes
++ `Pipes`
+  + used for data transformation & data validation
+
+
+
+
+`Param decorator` & `custom decorator`
+
+---
+
++ <span style="color: yellow">used to extract information from request object</span>
+  + able to extract specific field of an attached object to request object
+  + able to work with pipe to validate custom attached object to request object
+  + able to composite decorator 
++ in conjunction with interceptor, we could use custom decorator to extract additional information attached on request object (e.g. given token, attach Current login user to request object using interceptor, then extract current login user using custom decorator)
 
 
 
 
 
-# :bangbang: ​AOP components 
+
+
+# 0.:bangbang: ​AOP components 
 
 
 
@@ -123,7 +163,11 @@ Nest.js leverages the power of AOP through these components to provide a flexibl
 
 
 
-### ExecutionContext 
+### :bangbang: ​ExecutionContext 
+
+<u>see more detailed notes on ExecutionContext in [3](../1-fundamentals/readme.md)</u>
+
+
 
 Aspect-Oriented Programming (AOP) in Nest.js allows for the separation of concerns, particularly for cross-cutting concerns like logging, security, or transaction management. AOP components enhance modularity by allowing the separation of these concerns from the main business logic. In Nest.js, the `ExecutionContext` provides detailed context about the current request, and certain AOP components can interact with it:
 
@@ -1833,3 +1877,137 @@ export class AuthInterceptor implements NestInterceptor {
 
 
 
+[reading: decorator in ES2016](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)
+
+
+
+> An ES2016 decorator is an expression which returns a function and can take a target, name and property descriptor as arguments. You apply it by prefixing the decorator with an `@` character and placing this at the very top of what you are trying to decorate. Decorators can be defined for either a class, a method or a property.
+
+
+
+
+
+## param decorators
+
+Nest provides a set of useful **param decorators** that you can use together with the HTTP route handlers. Below is a list of the provided decorators and the plain Express (or Fastify) objects they represent
+
++ these param decorator is used to extract info from request object, you would ususally use them in the argument of a route handle - i.e. the extraction logic run inside a route handeler  
+
+| `@Request(), @Req()`       | `req`                                |
+| -------------------------- | ------------------------------------ |
+| `@Response(), @Res()`      | `res`                                |
+| `@Next()`                  | `next`                               |
+| `@Session()`               | `req.session`                        |
+| `@Param(param?: string)`   | `req.params` / `req.params[param]`   |
+| `@Body(param?: string)`    | `req.body` / `req.body[param]`       |
+| `@Query(param?: string)`   | `req.query` / `req.query[param]`     |
+| `@Headers(param?: string)` | `req.headers` / `req.headers[param]` |
+| `@Ip()`                    | `req.ip`                             |
+| `@HostParam()`             | `req.hosts`                          |
+
+
+
+
+
+## custom decorator
+
+
+
+e.g. use interceptor to attach User entity to an incoming request object, then use a custom decorator to extract the User entity from request object in a route handler 
+
+
+
+
+
+### passing data
+
+if we attach a complex data structure to a request object in our authentication layer,
+
+```ts
+{
+  "id": 101,
+  "firstName": "Alan",
+  "lastName": "Turing",
+  "email": "alan@email.com",
+  "roles": ["admin"]
+}
+```
+
+we could define a custom decorator that extract only a fraction of the data structure
+
+```ts
+// user.decorator.ts
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+export const User = createParamDecorator(
+  (data: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user;		// get the user obj from request obj
+
+    return data ? user?.[data] : user;
+  },
+);
+```
+
+we just extract firstName from the data structure. We can use this same decorator with different keys to access different properties. If the `user` object is deep or complex, this can make for easier and more readable request handler implementations.
+
+```ts
+// user.controller.ts
+@Get()
+async findOne(@User('firstName') firstName: string) {
+  console.log(`Hello ${firstName}`);
+}
+```
+
+
+
+
+
+### working with pipes
+
+as suggested in pipe section, pipe can be used for data validation, of course we can use it along with a custom decorator
+
+
+
+Nest treats custom param decorators in the same fashion as the built-in ones (`@Body()`, `@Param()` and `@Query()`). This means that pipes are executed for the custom annotated parameters as well (in our examples, the `user` argument). Moreover, you can apply the pipe directly to the custom decorator:
+
+```typescript
+@Get()
+async findOne(
+  @User(new ValidationPipe({ validateCustomDecorators: true }))
+  user: UserEntity,
+) {
+  console.log(user);
+}
+```
+
+> Note that `validateCustomDecorators` option must be set to true. `ValidationPipe` does not validate arguments annotated with the custom decorators by default.
+
+
+
+
+
+### decorator composition
+
+for the sake of simplicity, you may want to build a decorator that contains a pack of other decorators. For example, suppose you want to combine all decorators related to authentication into a single decorator. This could be done with the following construction:
+
+```ts
+import { applyDecorators } from '@nestjs/common';
+
+export function Auth(...roles: Role[]) {
+  return applyDecorators(
+    SetMetadata('roles', roles),
+    UseGuards(AuthGuard, RolesGuard),
+    ApiBearerAuth(),
+    ApiUnauthorizedResponse({ description: 'Unauthorized' }),
+  );
+}
+```
+
+```ts
+@Get('users')
+@Auth('admin')
+findAllUsers() {}
+```
+
+This has the effect of applying all four decorators with a single declaration.

@@ -910,3 +910,212 @@ deep copy
 + lodash的库方法(更常用): `cloneDeep`
 + browser自带的方法: `structuredClone()`
 :gem: [deep copy](./24-deepCopy.html)
+
+
+
+
+
+# 6. Data structure 
+
+
+
+## Stack & Queue
+
+```ts
+let stack = [];
+
+// Pushing elements onto the stack
+stack.push("Apple");
+stack.push("Banana");
+stack.push("Cherry");
+
+console.log(stack); // Output: [ 'Apple', 'Banana', 'Cherry' ]
+
+// Popping the top element off the stack
+let topElement = stack.pop();
+
+console.log(topElement); // Output: Cherry
+console.log(stack); // Output: [ 'Apple', 'Banana' ]
+
+```
+
+
+
+```ts
+let queue = [];
+
+// Adding elements to the queue
+queue.push("Apple");
+queue.push("Banana");
+queue.push("Cherry");
+
+console.log(queue); // Output: [ 'Apple', 'Banana', 'Cherry' ]
+
+// Removing the first element from the queue
+let firstElement = queue.shift();
+
+console.log(firstElement); // Output: Apple
+console.log(queue); // Output: [ 'Banana', 'Cherry' ]
+
+```
+
+
+
+## Map
+
+- **Key Uniqueness**: In a `Map`, each key is unique. If you add a key-value pair and the key already exists, the corresponding value will be updated.
+- **Order of Keys**: The keys in a `Map` are ordered. When iterating over a `Map`, keys are returned in the order of insertion.
+- **Size**: The number of key/value pairs in the `Map` can be retrieved through its `size` property.
+
+```ts
+let map = new Map();
+
+// Adding elements to the Map
+map.set('apple', 'green');
+map.set('banana', 'yellow');
+map.set('cherry', 'red');
+
+console.log(map.size); // 3
+
+// Getting a value
+console.log(map.get('banana')); // yellow
+
+// Checking existence
+if (map.has('apple')) {
+    console.log('Apple is in the map');
+}
+
+// Iterating over Map entries in 3 ways
+map.forEach((value, key) => {
+    console.log(`${key}: ${value}`);
+});
+// Output:
+// apple: green
+// banana: yellow
+// cherry: red
+for ([key, value] of map) {
+  console.log(key, value);
+}
+const iter = map.entries();
+console.log(iter.next().value);
+console.log(iter.next().value);
+console.log(iter.next().value);
+const iter2 = map.keys();
+console.log(iter2.next().value);
+console.log(iter2.next().value);
+console.log(iter2.next().value);
+const iter3 = map.values();
+console.log(iter3.next().value);
+console.log(iter3.next().value);
+console.log(iter3.next().value);
+
+
+// Deleting an element
+map.delete('banana');
+console.log(map.size); // 2
+
+// Clearing the Map
+map.clear();
+console.log(map.size); // 0
+
+```
+
+
+
+
+
+
+
+WeakMap
+
+
+
+
+
+## Set
+
+- **Uniqueness**: Each element in a `Set` must be unique; duplicate elements are ignored.
+- **Value Types**: A `Set` can hold any type of value, whether primitive values or object references.
+- **Element Order**: Elements in a `Set` are iterated in the order of insertion.
+
+```ts
+let mySet = new Set();
+
+// Adding values
+mySet.add("apple");
+mySet.add("banana");
+mySet.add("cherry");
+
+// Duplicates are not added
+mySet.add("apple");
+
+console.log(mySet.size); // 3
+
+// Checking for existence
+if (mySet.has("banana")) {
+    console.log("Banana is in the set");
+}
+
+// Iterating over Set values
+for (let item of mySet) {
+    console.log(item);
+}
+// Output:
+// apple
+// banana
+// cherry
+
+// Deleting an element
+mySet.delete("banana");
+console.log(mySet.size); // 2
+
+// Clearing the Set
+mySet.clear();
+console.log(mySet.size); // 0
+
+```
+
+
+
+
+
+
+
+
+
+## WeakMap & WeakSet
+
+
+
+- **eakly Referenced Keys**: The keys are weakly referenced, allowing for garbage collection if there are no other references to the key object.
+- **Non-Enumerable**: You cannot iterate over the keys or values of a `WeakMap` or `WeakSet`with methods like `forEach` or `for...of`. The elements of a `WeakMap` or `WeakSet` are not enumerable.
+- **Key Type**: Only objects can be used as keys. Primitive data types are not allowed.
+
+
+
+```ts
+let weakMap = new WeakMap();
+let obj = {};
+
+// Adding a new key-value pair
+weakMap.set(obj, { key: 'value' });
+
+console.log(weakMap.has(obj)); // true
+console.log(weakMap.get(obj)); // { key: 'value' }
+
+// Object can be garbage collected if there are no other references to it
+obj = null; // Now `weakMap` might be empty
+
+let weakSet = new WeakSet();
+let obj2 = {};
+
+// Adding an object
+weakSet.add(obj2);
+
+console.log(weakSet.has(obj2)); // true
+
+// Object can be garbage collected if there are no other references to it
+obj2 = null; // Now `weakSet` might be empty
+
+```
+

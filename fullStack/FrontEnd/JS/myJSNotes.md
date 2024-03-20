@@ -30,9 +30,9 @@ Contents
 |Chapter |Topic |Description |
 |------ |------ |------ |
 |[C1](./C1_JS_Basics/README.md)   | JS basics | Operator <br>control flow <br>:bangbang: Arrays API |
-|[C2](./C2_Object/JS_object.md) | JS object, class, inheritance with prototype chain | |
+|[C2](./C2_Object/JS_object.md) | JS object, class, :bangbang: inheritance with prototype chain | |
 |[C3](./C3_Function/README.md) |JS function (1st class object in JS) |arrow function <br/>:bangbang: inner function & Closure |
-|[C4](./C4_CoupingWithHTMLCSS/README.md) |:bangbang: DOM & event |DOM <br/>event |
+|[C4](./C4_CoupingWithHTMLCSS/README.md) |c​l​ie​nt​ ​s​id​e ​we​b​ ​A​P​I​ |DOM <br/>event |
 |[C5](./C5_Debug/README.md) | JS debug & Exception | |
 |[ES6: Promose](./Promise/myPromise.md) | Promise<br>:bangbang: async-await | async <br> |
 |[C7](./C7_Memory_Management/readme.md) | memory management |  |

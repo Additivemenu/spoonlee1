@@ -4,6 +4,10 @@
 
 
 
+more comprehensive: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
+
+
+
 # 1. JS操纵HTML
 
 ## 1.1 JS抓取node

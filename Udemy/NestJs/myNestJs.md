@@ -52,16 +52,16 @@ Part2:
 
 7 hrs
 
-|      |                                        |                |
-| ---- | -------------------------------------- | -------------- |
-|      |                                        |                |
-| 12   | :star: ​unit testing (1.5hr)            |                |
-| 13   | integration testing (30min)            |                |
-| 14   | managing app config (30min)            |                |
-| 15   | relations with TypeORM (1hr)           |                |
-| 16   | :star: ​a basic permission system (1hr) | access control |
-| 17   | :bangbang: ​query builder with TypeORM  |                |
-| 18   | :star: ​production deployment (1hr)     |                |
+|                       |                                        |                |
+| --------------------- | -------------------------------------- | -------------- |
+|                       |                                        |                |
+| [12](./C12/readme.md) | :star: ​unit testing (1.5hr)            |                |
+| 13                    | integration testing (30min)            |                |
+| 14                    | managing app config (30min)            |                |
+| 15                    | relations with TypeORM (1hr)           |                |
+| 16                    | :star: ​a basic permission system (1hr) | access control |
+| 17                    | :bangbang: ​query builder with TypeORM  |                |
+| 18                    | :star: ​production deployment (1hr)     |                |
 
 ​	
 

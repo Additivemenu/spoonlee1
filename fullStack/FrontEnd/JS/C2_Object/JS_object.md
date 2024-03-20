@@ -400,3 +400,52 @@ Constructors
 
 
 ## Inspecting prototypes
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Property Descriptor
+
+A Property Descriptor is an object in JavaScript that provides detailed information about a property on an object. It's part of the ECMAScript specification and is used extensively in object manipulation and introspection. Property Descriptors are used by several low-level object manipulation methods such as `Object.defineProperty()`, `Object.defineProperties()`, and `Object.getOwnPropertyDescriptor()`.
+
+A Property Descriptor may contain the following fields:
+
+- **value**: The value associated with the property. Can be any valid JavaScript value (number, object, function, etc.).
+- **writable**: A Boolean indicating whether the value of the property can be changed. If set to `false`, the property is said to be "read-only".
+- **enumerable**: A Boolean indicating whether the property is enumerated in a `for...in` loop and `Object.keys()` or not.
+- **configurable**: A Boolean indicating whether the property can be deleted from the object and whether its attributes (other than `value` and `writable`) can be changed.
+- **get**: A function, which serves as a getter for the property, or `undefined` if there is no getter. When accessed, the property will call this function and return its return value.
+- **set**: A function, which serves as a setter for the property, or `undefined` if there is no setter. When the property is assigned a new value, this function is called with the new value as its argument.
+
+Note that a Property Descriptor must be either a data descriptor or an accessor descriptor:
+
+- **Data Descriptor**: It has a value and may also have `writable` attributes. This type of descriptor is used for properties that hold data.
+- **Accessor Descriptor**: It contains `get` and `set` functions. This type of descriptor is used for properties that are accessed through getters and setters.
+
+Here is an example of using `Object.defineProperty()` to define a property with a specific Property Descriptor:
+
+```javascript
+let obj = {};
+
+Object.defineProperty(obj, "a", {
+  value: 37,
+  writable: true,
+  enumerable: true,
+  configurable: true
+});
+
+console.log(obj.a); // 37
+```
+
+This example defines a property `a` on the object `obj` with a value of `37`. The property is writable, enumerable, and configurable, meaning it can be modified, enumerated over with a `for...in` loop or `Object.keys()`, and deleted or changed in terms of its descriptor attributes.
+
+Property Descriptors provide a powerful way to control and manage object properties in JavaScript, offering fine-grained control over property behavior that goes well beyond the basic property assignment and retrieval.
