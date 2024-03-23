@@ -15,14 +15,14 @@ import {
 import { CreateUserDto } from './dtos/create-user-dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 
 import { User } from './user.entity';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.server';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('auth') // prefix for all routes inside this controller
 @Serialize(UserDto) // ! apply the interceptor to all route handlers in this handler
