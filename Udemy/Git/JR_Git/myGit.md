@@ -273,6 +273,12 @@ local 与 remote repo的branch name的匹配
 
 ### :full_moon: merge vs. rebase 3h-3h06min
 
+:bangbang: ​[git rebase workflow](./gitRebase.md)
+
+
+
+
+
 rebase, merge不要混用: 如果一个project刚开始就用rebase, 之后一直用rebase; 一个project一开始用merge, 之后一直用merge
 
 + `git merge`: commit之间是多线结构, 特点是保留所有的分支结构以及commit的时间顺序

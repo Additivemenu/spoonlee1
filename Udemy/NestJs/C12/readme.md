@@ -8,8 +8,6 @@ Continuing the app built in last section of course
 
 # Key takeaways
 
-
-
 3 steps for a unit test:
 
 ```ts
@@ -24,13 +22,13 @@ describe('UsersService', () => {
 
 
 
-
-
 most of time, we do unit test on service. Unit testing on controller is too easy!
 
-:bangbang: ​When setting up test module, Jest might not understand the root path alias, you need to config it
+> :bangbang: ​When setting up test module, Jest might not understand the root path alias, you need to config it
 
 
+
+for integration(e2e) test, we would like to seperate dev and test env, and we would also like to config app in app.module, to fit the environment 
 
 
 
@@ -559,10 +557,215 @@ describe('Authentication System (e2e)', () => {
 
 P117 + C14
 
+what we want to do in this part:
+
 + Dev database for developer to quick manual test
-+ test database for automatic testing, needs to be frequently wiped out every time when starting a new test 
++ Test database for automatic testing, needs to be frequently wiped out every time when starting a new test 
+
+so that we want to sepeate dev and test database
 
 
 
- 
+
+
+to do this, we want to 
+
+```ts 
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',			// ******** we want to customize this depending on in dev or test env
+      entities: [User, Report],
+      synchronize: true, // ! only in development mode, serves as the same purpose as database migration (this is a special case in TypeORM, normally you would use migrations in other ORM)
+    }),
+    UsersModule,
+    ReportsModule,
+  ],
+```
+
+
+
+see implementations below (can actually get instructions from GPT)
+
+---
+
+Add 2 env file under the project root:
+
+```ts
+// .env.test
+DB_NAME=test.sqlite
+```
+
+```ts
+// .env.development
+DB_NAME=db.sqlite
+```
+
+
+
+Then wire up the app.module to be able to read env variable from env file
+
+```ts
+npm install @nestjs/config
+```
+
+add ConfigModule and ConfigService to app.module in the imports: 
+
+```ts
+// app.module.ts
+import { ConfigModule, ConfigService } from '@nestjs/config';  
+
+
+imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // ! make the config module available globally
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+    TypeOrmModule.forRootAsync({
+      // use dependency injection to get the ConfigService
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'sqlite',
+        database: config.get<string>('DB_NAME'),
+        entities: [User, Report],
+        synchronize: true,
+      }),
+    }),
+    UsersModule,
+    ReportsModule,
+  ],
+```
+
+
+
+read env variable from different env files 
+
+```ts
+npm install cross-env
+```
+
+then rewrite the script:
+
++ `--maxWorkers=1` declares only run 1 test
+
+```ts
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "cross-env NODE_ENV=development nest start",
+    "start:dev": "cross-env NODE_ENV=development nest start --watch",
+    "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:watch": "cross-env NODE_ENV=test jest --watch --maxWorkers=1",
+    "test:cov": "cross-env NODE_ENV=test jest --coverage",
+    "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json  --maxWorkers=1"
+  },
+```
+
+
+
+then, we want to delete the database before running test 
+
+---
+
+src/jest-e2e.json
+
+```ts
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/setup.ts"]
+}
+```
+
+test/setup.ts
+
+```ts
+// this gets run before any tests are run
+import { rm } from 'fs/promises';
+import { join } from 'path';
+
+global.beforeEach(async () => {
+  try {
+    // ! remove the test database before each test
+    await rm(join(__dirname, '..', 'test.sqlite'));
+  } catch (e) {}
+});
+
+```
+
+
+
+at last, our auth.e2e-spec.ts looks like:
+
+---
+
++ we add 2nd test case
+
+```ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { AppModule } from './../src/app.module';
+
+describe('Authentication System (e2e)', () => {
+  // 1. variables ==================================================
+  let app: INestApplication;
+
+  // 2. setup =======================================================
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  // 3. test cases =================================================
+  // test case 1
+  it('handles a signup request', () => {
+    // simulating a user signing up process
+
+    const email = 'asdf123@asdf.com';
+
+    return request(app.getHttpServer())
+      .post('/auth/signup')
+      .send({ email, password: 'asdf' })
+      .expect(201)
+      .then((res) => {
+        const { id, email } = res.body;
+        expect(id).toBeDefined();
+        expect(email).toEqual(email);
+      });
+  });
+
+  // test case 2
+  it('sign up as new user then get the currently logged in user', async () => {
+    const email = 'asdf@asdf.com';
+
+    const res = await request(app.getHttpServer())
+      .post('/auth/signup')
+      .send({ email, password: 'asdf' })
+      .expect(201);
+
+    const cookie = res.get('Set-Cookie');
+
+    const { body } = await request(app.getHttpServer())
+      .get('/auth/whoami')
+      .set('Cookie', cookie)
+      .expect(200);
+
+    expect(body.email).toEqual(email);
+  });
+});
+
+```
 
