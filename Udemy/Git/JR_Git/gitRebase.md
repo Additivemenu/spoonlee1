@@ -14,6 +14,7 @@ Using `git rebase` in a development team can help maintain a clean and linear hi
 
 1. **Update Your Local Development Branch:**
    Before you start working on your feature, make sure your local `development` branch is up-to-date with the remote `development` branch.
+
    ```bash
    git checkout development
    git pull origin development
@@ -21,6 +22,7 @@ Using `git rebase` in a development team can help maintain a clean and linear hi
 
 2. **Create a New Feature Branch:**
    Create a new branch for your feature from the updated `development` branch.
+
    ```bash
    git checkout -b feature/my-feature
    ```
@@ -51,7 +53,17 @@ Using `git rebase` in a development team can help maintain a clean and linear hi
 5. **Test Your Changes:**
    After rebasing, it's important to test your changes again to ensure that everything works as expected.
 
-6. :star: ​**Squash Commits (optional):**  (<span style="color:yellow">this step could also be done via github desktop</span>)
+6. :bangbang: ​**Push Your Changes:**
+   Once you've tested your changes and are ready to merge, push your rebased feature branch to the remote repository. You may need to force-push if you've rewritten history during the rebase => so be careful and never do git rebase on a public branch
+
+   ```bash
+   git push origin feature/my-feature --force
+   ```
+
+7. **Create a Pull Request:**
+   Create a pull request from your feature branch to the `development` branch on the remote repository. Your team can review the changes before merging.
+
+8. :star: ​**Squash Commits (optional):**  (<span style="color:yellow">this step could also be done via github desktop</span>)
    Start an interactive rebase to squash your commits. For example, to squash the last 3 commits:
 
    ```bash
@@ -71,20 +83,20 @@ Using `git rebase` in a development team can help maintain a clean and linear hi
    + then **Create a New Commit Message:**
      Git will open a new editor window for you to write a commit message for the squashed commit. Write a message that summarizes the changes, save, and close the editor.
 
-7. :bangbang: ​**Push Your Changes:**
-   Once you've tested your changes and are ready to merge, push your rebased feature branch to the remote repository. You may need to force-push if you've rewritten history during the rebase => so be careful and never do git rebase on a public branch
-
-   ```bash
-   git push origin feature/my-feature --force
-   ```
-
-8. **Create a Pull Request:**
-   Create a pull request from your feature branch to the `development` branch on the remote repository. Your team can review the changes before merging.
-
 9. **Merge the Pull Request:**
    Once the pull request is approved, merge it into the `development` branch. Depending on your team's workflow, you may use a merge commit, squash merge, or rebase and merge.
 
 By following this workflow, you can ensure that your feature branch is up-to-date with the `development` branch and maintain a clean commit history.
+
+
+
+
+
+check log history
+
+```shell
+git log --graph --oneline --decorate
+```
 
 
 

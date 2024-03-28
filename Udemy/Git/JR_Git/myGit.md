@@ -271,7 +271,7 @@ local 与 remote repo的branch name的匹配
 
 
 
-### :full_moon: merge vs. rebase 3h-3h06min
+### :full_moon: :bangbang: ​merge vs. rebase 3h-3h06min
 
 :bangbang: ​[git rebase workflow](./gitRebase.md)
 
