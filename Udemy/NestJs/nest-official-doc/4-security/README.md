@@ -6,8 +6,6 @@ https://docs.nestjs.com/security/authentication
 
 
 
-
-
 # Key takeaway
 
 + Review: guards either return boolan or throw exception, all exception thrown by a guard will be handled by exception layer 
@@ -17,13 +15,11 @@ https://docs.nestjs.com/security/authentication
 
 
 
-# Authentication
+
+
+# 1. Authentication
 
 Let's flesh out our requirements. For this use case, clients will start by authenticating with a username and password. Once authenticated, the server will issue a JWT that can be sent as a [bearer token](https://tools.ietf.org/html/rfc6750) in an authorization header on subsequent requests to prove authentication. We'll also create a protected route that is accessible only to requests that contain a valid JWT.
-
-
-
-
 
 
 
@@ -34,8 +30,6 @@ https://jwt.io
 + to issue a jwt token, we need a secret to do digital signature, and this secret is stored on server 
 + use guard, we are able to extract the jwt token from header, and verify it (parse the jwt token string to payload ), then attach the parsed payload to request body so that later route handler can extract useful information from the payload
   + payload usually contains userId, userRole etc. important auth info
-
-
 
 
 
@@ -124,16 +118,14 @@ export const Public = () => SetMetadata(IS_PUBLIC_KEY, true); // ! custom decora
 
 
 
+Test: 
+
 ```ts
 curl -X POST http://localhost:3000/auth/login -d '{"username": "john", "password": "changeme"}' -H "Content-Type: application/json"
 
 
 curl http://localhost:3000/auth/profile -H "Authorization: Bearer <your jwt token here>"
 ```
-
-
-
-
 
 
 
@@ -147,7 +139,7 @@ https://docs.nestjs.com/recipes/passport
 
 
 
-# Authorisation
+# 2. Authorisation
 
 
 
@@ -233,13 +225,15 @@ export class CompositeAuthGuard implements CanActivate {
 
 
 
-## Basic RBAC
+## :bangbang: ​Basic RBAC
 
 similar to custom decorator we used to mark a route handler as public to skip authentication check, we still use setMetadata for a route handler to declare certain roles to that route handler, and then use guards to acheive RBAC
 
 
 
-example implementation is 
+:gem: ​example implementation is provided in the same directory
+
+
 
 AuthGuard (same as what we have in authentication)
 
@@ -340,7 +334,7 @@ https://docs.nestjs.com/security/authorization#advanced-implementing-a-policiesg
 
 
 
-# Protection
+# 3.Protection
 
 ## Encryption & Hashing
 

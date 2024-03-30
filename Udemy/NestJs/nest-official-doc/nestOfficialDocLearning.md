@@ -18,15 +18,22 @@ basics
 
 
 
+Techniques
+
+|                                |             |      |
+| ------------------------------ | ----------- | ---- |
+| [1](./2-validation/readme.md)  | Validation  |      |
+| [2](./2-queue/readme.md)       | Queue       |      |
+| [3](./2-logging/readme.md)     | Logging     |      |
+| [4](./2-file-upload/readme.md) | file upload |      |
+
 
 
 security related
 
-|                                    |                |      |
-| ---------------------------------- | -------------- | ---- |
-| [security](./4-security/README.md) | Authorization  |      |
-|                                    | Authentication |      |
-|                                    |                |      |
+|                                            |          |      |
+| ------------------------------------------ | -------- | ---- |
+| [part4 - security](./4-security/README.md) | security |      |
 
 
 
@@ -43,11 +50,11 @@ Api
 
 Microservices
 
-|      |      |      |
-| ---- | ---- | ---- |
-|      |      |      |
-|      |      |      |
-|      |      |      |
+|      |          |      |
+| ---- | -------- | ---- |
+|      | Overview |      |
+|      | Redis    |      |
+|      |          |      |
 
 
 
