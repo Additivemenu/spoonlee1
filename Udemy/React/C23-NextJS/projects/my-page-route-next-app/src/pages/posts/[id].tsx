@@ -6,6 +6,7 @@ type Props = {
   post: Post;
 };
 
+// SSR (Server Side Rendering) - Next.js will generate the page on each request
 export default function PostPage({ post }: Props) {
   return (
     <div>

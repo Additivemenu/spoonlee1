@@ -5,7 +5,7 @@ Intro to Next.js 3hrs
 :bangbang::pencil: [learn nextjs from vercel officially](./myNextJS.md)
 + just check out on this, no need to look at this md
 
-
+Next.js 13 published app rotuer, which is quite different from previous page router. A Next app with page route in provided in [here](./projects/my-page-route-next-app/README.md)
 
 
 

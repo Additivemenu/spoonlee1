@@ -7,14 +7,17 @@ type Props = {
   posts: Post[];
 };
 
+// SSG (Static Site Generation) - Next.js will generate the page at build time
 export default function Home({ posts }: Props) {
   return (
-    <div>
-      <h1>Blog</h1>
+    <div className="flex flex-col justify-center items-center">
+      <h1>Home Page</h1>
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <Link href={`/posts/${post.id}`}>{post.title}</Link>
+            <div className="border-solid border-2 border-black">
+              <Link href={`/posts/${post.id}`}>{post.title}</Link>
+            </div>
           </li>
         ))}
       </ul>
