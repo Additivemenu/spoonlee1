@@ -1,8 +1,4 @@
-Doc:
-
-
-
-
+Doc: https://docs.nestjs.com/graphql/quick-start
 
 
 
@@ -11,8 +7,6 @@ Doc:
 # Qucick start
 
 https://docs.nestjs.com/graphql/quick-start
-
-
 
 
 

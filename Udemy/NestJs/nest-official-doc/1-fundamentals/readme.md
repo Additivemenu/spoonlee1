@@ -8,7 +8,36 @@
 
 
 
-# :moon: ​Execution Context
+
+
+
+
+# Injection Scope
+
+https://docs.nestjs.com/fundamentals/injection-scopes
+
+For people coming from different programming language backgrounds, it might be unexpected to learn that in Nest, almost everything is shared across incoming requests. We have a connection pool to the database, singleton services with global state, etc. Remember that Node.js doesn't follow the request/response Multi-Threaded Stateless Model in which every request is processed by a separate thread. Hence, using singleton instances is fully **safe** for our applications.
+
+However, there are edge cases when request-based lifetime may be the desired behavior, for instance, per-request caching in GraphQL applications, request tracking, and multi-tenancy. Injection scopes provide a mechanism to obtain the desired provider lifetime behavior.
+
+
+
+A provider can have any of the following scopes:
+
+| `DEFAULT`   | A single instance of the provider is shared across the entire application. The instance lifetime is tied directly to the application lifecycle. Once the application has bootstrapped, all singleton providers have been instantiated. Singleton scope is used by default. |
+| ----------- | ------------------------------------------------------------ |
+| `REQUEST`   | A new instance of the provider is created exclusively for each incoming **request**. The instance is garbage-collected after the request has completed processing. |
+| `TRANSIENT` | Transient providers are not shared across consumers. Each consumer that injects a transient provider will receive a new, dedicated instance. |
+
+
+
+
+
+
+
+
+
+# :bangbang: ​Execution Context
 
 https://docs.nestjs.com/fundamentals/execution-context
 

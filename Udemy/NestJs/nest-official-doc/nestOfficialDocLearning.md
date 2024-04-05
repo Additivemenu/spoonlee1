@@ -8,7 +8,7 @@ official doc is always a good learning material
 
 
 
-basics
+Basics
 
 | Id                                | Topic                                                        | Description                                                  |
 | --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -20,16 +20,19 @@ basics
 
 Techniques
 
-|                                |             |      |
-| ------------------------------ | ----------- | ---- |
-| [1](./2-validation/readme.md)  | Validation  |      |
-| [2](./2-queue/readme.md)       | Queue       |      |
-| [3](./2-logging/readme.md)     | Logging     |      |
-| [4](./2-file-upload/readme.md) | file upload |      |
+|                                |                             |      |
+| ------------------------------ | --------------------------- | ---- |
+| [1](./2-validation/readme.md)  | Validation                  |      |
+| [2](./2-queue/readme.md)       | :bangbang: ​Queue (基本看完) | Bull |
+| [3](./2-logging/readme.md)     | Logging                     |      |
+| [4](./2-file-upload/readme.md) | file upload                 |      |
+|                                | Task Scheduling             |      |
+|                                | Caching                     |      |
+|                                |                             |      |
 
 
 
-security related
+Security Related
 
 |                                            |          |      |
 | ------------------------------------------ | -------- | ---- |
@@ -37,11 +40,11 @@ security related
 
 
 
-Api 
+Part 5 - Api 
 
 | id                         | topic     | Description |
 | -------------------------- | --------- | ----------- |
-| [1](./1-graphQL/README.md) | GraphQL   |             |
+| [1](./5-graphQL/README.md) | GraphQL   |             |
 |                            | WebSocket |             |
 
 
