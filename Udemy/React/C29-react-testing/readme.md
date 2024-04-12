@@ -18,6 +18,61 @@ we use Jest, react-test-lib to do unit testing on react component, very similar 
 
 
 
+
+
+
+
+## How to run unit test
+
+```ts
+npm run test -- -t 'test-name'		// Replace 'test-name' with the value used in the describe function in your test file 
+
+npm test --runTestsByPath "src/pages/parentpath/index.test.tsx"
+
+npm run test:watch	 // see this script in package.json
+```
+
+
+
+## Element query method
+
+Certainly! Let’s delve into the differences between these query methods in **React Testing Library**:
+
+1. **`getByText`**:
+   - This method is used to find an element based on its text content.
+   - It returns the **first matching node** for a query.
+   - If no elements match or <u>if more than one match is found, it **throws an error**.</u>
+   - [Use `getByText` when you’re **certain** the element should exist and want the test to fail if it doesn’t](https://testing-library.com/docs/queries/about/)[1](https://testing-library.com/docs/queries/about/).
+2. **`queryByText`**:
+   - Similar to `getByText`, it also returns the **first matching node** for a query.
+   - However, <u>if no elements match, it returns **`null`** instead of throwing an error.</u>
+   - [Use `queryByText` when you’re checking for the presence of an element that might not be there, and you want to assert that it’s **not present**](https://testing-library.com/docs/queries/about/)[2](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing).
+3. **`findByText`**:
+   - Unlike the previous two, <u>`findByText` returns a **promise**.</u>
+   - It resolves when a matching element is found.
+   - <u>If no elements match or if more than one match is found (after a default timeout of 1000 ms), the promise is **rejected**.</u>
+   - Use `findByText` when you’re waiting for an element to appear in the DOM due to its **asynchronous nature**.
+   - [It’s especially useful for scenarios where the element might be added to the DOM **after rendering**](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing)[2](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing)[3](https://workiva.github.io/react_testing_library/rtl.react/RenderResult/findAllByText.html).
+4. **`getAllByText`** (Not directly related to React Testing Library):
+   - This method is not part of React Testing Library but is commonly used with other testing libraries.
+   - It returns **all matching nodes** for a query.
+   - [If you need to find **multiple elements**, use `getAllByText`](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing)[2](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing).
+5. **`queryAllByText`** (Not directly related to React Testing Library):
+   - Similar to `queryByText`, it returns **all matching nodes** for a query.
+   - If no elements match, it returns an **empty array**.
+   - [Use `queryAllByText` when you want to assert that multiple elements are **not present**](https://testing-library.com/docs/queries/about/)[2](https://stackoverflow.com/questions/76705164/whats-the-difference-between-getbytext-vs-findbytext-vs-querybytext-in-testing).
+
+In summary:
+
+- Use `getByText` when you’re sure the element should exist.
+- Use `queryByText` when you’re checking for an element that might not be there.
+- Use `findByText` when you’re waiting for an element to appear asynchronously.
+- And remember, `getAllByText` and `queryAllByText` are not part of React Testing Library, but they serve similar purposes in other testing contexts.
+
+ 
+
+​              
+
 # 1. Intro
 
 P535-537
