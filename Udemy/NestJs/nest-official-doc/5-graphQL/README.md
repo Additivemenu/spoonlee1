@@ -50,3 +50,11 @@ Route handlers(REST) vs. resolvers(GraphQL)
 > - **Different:** In REST, you construct the shape of the response yourself. In GraphQL, the shape of the response is built up by the GraphQL execution library to match the shape of the query.
 >
 > Essentially, you can think of GraphQL as a system for calling many nested endpoints in one request. Almost like a multiplexed REST.
+
+
+
+GrapQL playground
+
+
+
+code first vs. shcema first
