@@ -2,7 +2,7 @@ import ChatBot from "react-chatbotify";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Params } from "react-chatbotify";
 
-export const RealTimeChatBot = () => {
+export const GeminiChatBot = () => {
   let api_key: string | null = null;
   let has_error = false;
 
