@@ -4,6 +4,7 @@ import { Params } from "react-chatbotify";
 
 import { ChatCompletionChunk } from "openai/resources";
 import OpenAI from "openai";
+import TripTribeLogo from "./triptribe_logo.svg";
 
 export const OpenAIInjectChatBot = () => {
   let api_key: string | null = null;
@@ -52,6 +53,23 @@ export const OpenAIInjectChatBot = () => {
   const flow = {
     start: {
       message: "Enter your OpenAI api key and start asking away!",
+      // render: (
+      //   <div
+      //     style={{
+      //       display: "flex",
+      //       alignItems: "center",
+      //       justifyContent: "center",
+      //       marginTop: 10,
+      //     }}
+      //   >
+      //     <button
+      //       className="secret-fav-color"
+      //       onClick={() => alert("it is very dark")}
+      //     >
+      //       Hint
+      //     </button>
+      //   </div>
+      // ),
       path: "api_key",
     },
     api_key: {
@@ -77,7 +95,12 @@ export const OpenAIInjectChatBot = () => {
   return (
     <ChatBot
       options={{
-        theme: { embedded: false },
+        theme: {
+          primaryColor: "#42b0c5",
+          secondaryColor: "#491d8d",
+          // secondaryColor: "grey",
+          embedded: false,
+        },
         chatHistory: { storageKey: "example_real_time_stream" },
         botBubble: { simStream: true },
         header: {
@@ -90,6 +113,10 @@ export const OpenAIInjectChatBot = () => {
             </h3>
           ),
           showAvatar: true,
+          avatar: TripTribeLogo,
+        },
+        chatButton: {
+          icon: TripTribeLogo, // TODO:
         },
       }}
       flow={flow}
