@@ -12,16 +12,18 @@ Additional Learning Resources:
 
 
 
-首先学习NestJs而不是SpringBoot的原因
+<details>
+  <summary>首先学习NestJs而不是SpringBoot的原因</summary>
+  <ul>
+    <li>JR的P3 Java组人越来越少, 到时不一定有靠谱的人可以组</li>
+    <li>NestJs + TypeScript也要玩一些 OOP (源自于TypeScript)的东西, 如果将来要写AngularJS, 会打一些基础</li>
+    <li>前端必用React, 因而语言不用切换了, JS写起来更加小清新</li>
+    <li> Mongoose Schema用JS写起来更加地道</li>
+    <li>NestJs和SpringBoot非常类似, 不能说写了NestJs将来完全写不了SpringBoot</li>
+  </ul>
+</details>
 
-+ JR的P3 Java组人越来越少, 到时不一定有靠谱的人可以组
-+ NestJs + TypeScript也要玩一些 OOP (源自于TypeScript)的东西, 如果将来要写AngularJS, 会打一些基础
-+ 前端必用React, 因而语言不用切换了, JS写起来更加小清新
-  + Mongoose Schema用JS写起来更加地道
-
-  + Vscode -> copilot available
-
-+ NestJs和SpringBoot非常类似, 不能说写了NestJs将来完全写不了SpringBoot
+  
 
 but... seems more tutorials and resources online for react + springboot fullstack projects
 
