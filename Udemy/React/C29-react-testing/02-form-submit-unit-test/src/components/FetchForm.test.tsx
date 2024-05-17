@@ -45,6 +45,7 @@ describe("FetchForm Component", () => {
     expect(
       await screen.findByText("Name field is required")
     ).toBeInTheDocument();
+    
     expect(
       await screen.findByText("Email field is required")
     ).toBeInTheDocument();

@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import React from "react";
@@ -112,12 +112,13 @@ it("should submit correct form data", async () => {
   await user.click(screen.getByRole("button", { name: /save/i }));
 
   // Assert the form data
-  setTimeout(() => {
+  // setTimeout or waitFor, because the saveData function is called asynchronously
+  await waitFor(() => {
     expect(mockSave).toHaveBeenCalledWith({
       name: "Test recipe",
       description: "Delicious recipe",
       amount: 4,
       ingredients: [{ name: "Flour", amount: "100 gr" }],
     });
-  }, 1000); //
+  });
 });
