@@ -1,22 +1,9 @@
-import EditCardModal from "./EditCardModal.js";
+class Card {
+  card;
 
-// app.js
-class CardManager {
-  constructor(containerId, modal, editModal) {
-    this.cardContainer = document.getElementById(containerId);
-    this.modal = modal;
-    this.editModal = editModal;
-  }
-
-  addCard(title = "New Card", description = "This is a new card.") {
-    const card = this.createCard(title, description);
-    this.cardContainer.append(card);
-  }
-
-  // ! this is basically the same to returning a jsx in react functional component
-  createCard(title, description) {
+  constructor(title, description) {
     // Create card elements
-    const card = document.createElement("div"); // just like declaring a variable
+    this.card = document.createElement("div"); // just like declaring a variable
     card.className = "card";
 
     const cardTitle = document.createElement("div");
@@ -33,13 +20,8 @@ class CardManager {
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     // editButton.onclick = () => this.editCard(cardTitle, cardDescription);    // same as below
-
     editButton.addEventListener("click", () =>
-      // this.editCard(cardTitle, cardDescription)
-      editModal.show(title, description, (newTitle, newDescription) => {
-        cardTitle.textContent = newTitle;
-        cardDescription.textContent = newDescription;
-      })
+      this.editCard(cardTitle, cardDescription)
     );
 
     const deleteButton = document.createElement("button");
@@ -54,11 +36,8 @@ class CardManager {
     card.append(cardTitle);
     card.append(cardDescription);
     card.append(cardActions);
-
-    return card;
   }
 
-  // ! this is similar to defining a handler in react functional component
   editCard(cardTitle, cardDescription) {
     const newTitle = prompt("Enter new title", cardTitle.textContent);
     const newDescription = prompt(
@@ -73,15 +52,8 @@ class CardManager {
   // ! this is similar to defining a handler in react functional component
   confirmDeleteCard(card) {
     this.modal.show("Are you sure you want to delete this card?", () =>
-      this.deleteCard(card)
+      //   this.deleteCard(card)
+      this.card.remove()
     );
   }
-  // ! this is similar to defining a handler in react functional component
-  deleteCard(card) {
-    // this.cardContainer.removeChild(card);
-    card.remove();
-  }
 }
-
-// ! Export the class for use in other files
-export default CardManager;

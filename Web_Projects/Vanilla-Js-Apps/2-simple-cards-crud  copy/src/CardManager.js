@@ -1,11 +1,8 @@
-import EditCardModal from "./EditCardModal.js";
-
 // app.js
 class CardManager {
-  constructor(containerId, modal, editModal) {
+  constructor(containerId, modal) {
     this.cardContainer = document.getElementById(containerId);
     this.modal = modal;
-    this.editModal = editModal;
   }
 
   addCard(title = "New Card", description = "This is a new card.") {
@@ -33,13 +30,8 @@ class CardManager {
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     // editButton.onclick = () => this.editCard(cardTitle, cardDescription);    // same as below
-
     editButton.addEventListener("click", () =>
-      // this.editCard(cardTitle, cardDescription)
-      editModal.show(title, description, (newTitle, newDescription) => {
-        cardTitle.textContent = newTitle;
-        cardDescription.textContent = newDescription;
-      })
+      this.editCard(cardTitle, cardDescription)
     );
 
     const deleteButton = document.createElement("button");
@@ -76,6 +68,7 @@ class CardManager {
       this.deleteCard(card)
     );
   }
+  
   // ! this is similar to defining a handler in react functional component
   deleteCard(card) {
     // this.cardContainer.removeChild(card);
