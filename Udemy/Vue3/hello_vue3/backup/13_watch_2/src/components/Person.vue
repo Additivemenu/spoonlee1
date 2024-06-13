@@ -1,6 +1,6 @@
 <template>
   <div class="person">
-    <h1>scenario3: watch for reactive-wrapped object-type variable</h1>
+    <h1>scenario2: watch for ref-wrapped object-type variable</h1>
     <h2>name: {{ person.name }}</h2>
     <h2>age: {{ person.age }}</h2>
     <button @click="changeName">change name</button>
@@ -11,37 +11,45 @@
 
 <!-- syntax sugar for setup: so that you don't have to return data and methods in a setup() method -->
 <script setup lang="ts" name="Person">
-import { reactive, watch } from "vue";
+import { ref, watch } from "vue";
 
 // data
-let person = reactive({
+let person = ref({
   name: "tom",
   age: 18,
 });
 
 // methods
 const changeName = () => {
-  person.name += "~"; // just change a field of the object
+  person.value.name += "~"; // just change a field of the object
 };
 const changeAge = () => {
-  person.age += 1; // just change a field of the object
+  person.value.age += 1; // just change a field of the object
 };
 
 const changePerson = () => {
-  // overwrite object field values (not change person address)
-  Object.assign(person, {
+  // change the whole object
+  person.value = {
     name: "jerry",
     age: 20,
-  });
+  };
 };
 
 // watch
 /**
- * watch for reactive wrapped object-type variable, deep watch by default (you cannot disable such deep watch)
+ * watch for ref wrapped object-type variable, actually it's watching for the reference of the object
+ * if you want to watch for inner properties of the object, you need to config the watch by passing the 3rd argument
+ * watch 1st argument: ref wrapped object-type variable
+ * watch 2nd argument: callback function
+ * watch 3rd argument: config object (deep, immediate ... etc)
  */
-watch(person, (newValue, oldValue) => {
-  console.log("person has changed!", newValue, oldValue);
-});
+watch(
+  person,
+  (newValue, oldValue) => {
+    console.log("person has changed!", newValue, oldValue);
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
