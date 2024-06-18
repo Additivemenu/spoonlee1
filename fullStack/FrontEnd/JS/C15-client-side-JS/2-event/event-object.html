@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Object Example</title>
+</head>
+<body>
+  <button id="myButton">Click Me!</button>
+  <script>
+    // Get the button element
+    const button = document.getElementById('myButton');
+
+    // Add an event listener for the 'click' event
+    button.addEventListener('click', function(event) {
+      // Access the event object
+      console.log(event);
+
+      // Display event type
+      console.log('Event type:', event.type);
+
+      // Display the target element (the element that triggered the event)
+      console.log('Event target:', event.target);
+
+      // Get the mouse coordinates relative to the viewport
+      console.log('Mouse X:', event.clientX);
+      console.log('Mouse Y:', event.clientY);
+
+      // Prevent the default action (if any) for this event
+      event.preventDefault();
+    });
+  </script>
+</body>
+</html>

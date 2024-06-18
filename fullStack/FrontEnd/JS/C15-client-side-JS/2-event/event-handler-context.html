@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event Handler Example</title>
+  </head>
+  <body>
+    <button id="myButton">Click me</button>
+
+    <script>
+      // Define an object with a method that registers an event handler
+      var myObject = {
+        button: document.getElementById("myButton"),
+        handleClick: function () {
+          console.log(this); // refers to myObject
+        },
+        init: function () {
+          this.button.addEventListener("click", this.handleClick.bind(this));
+        },
+      };
+
+      // Initialize the object to set up the event handler
+      myObject.init();
+    </script>
+  </body>
+</html>

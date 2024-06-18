@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="mybutton">Click me</button>
+
+    <script>
+      let b = document.querySelector("#mybutton");
+
+      b.onclick = function () {
+        console.log("Thanks for clicking me!");
+      };
+
+      // register different handler multiple times
+      b.addEventListener("click", () => {
+        console.log("Thanks again 1");
+      });
+      b.addEventListener("click", () => {
+        console.log("Thanks again 2");
+      });
+      b.addEventListener("click", () => {
+        console.log("Thanks again 3");
+      });
+
+      // register the same handler multiple times: only register once
+      const handler = () => {
+        console.log("Event handler");
+      };
+
+      b.addEventListener("click", handler);
+      b.addEventListener("click", handler); // (Only once, because the handler is registered only once)
+    </script>
+  </body>
+</html>
