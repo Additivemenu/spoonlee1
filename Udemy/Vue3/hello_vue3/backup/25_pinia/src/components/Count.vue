@@ -17,7 +17,7 @@ import { useCountStore } from "@/store/count";
 import { storeToRefs } from "pinia";
 
 const countStore = useCountStore();
-const { sum, bigSum } = storeToRefs(countStore); // deconstruct state from store (toRef is used to deconstruct the whole store)
+const { s       um, bigSum } = storeToRefs(countStore); // deconstruct state from store (toRef is used to deconstruct the whole store)
 
 let n = ref(1); // user chosen number
 

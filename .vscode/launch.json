@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/Udemy/NodeJs/C4/app.js",
+      "program": "${workspaceFolder}/fullStack/FrontEnd/JS/C99-JS-libs/lodash/Demo1-MergeComplexArray.js",
       "restart": true,
       "runtimeExecutable": "nodemon",           // this looks for global nodemon, not local nodemon in your package.json
       "console": "integratedTerminal"
