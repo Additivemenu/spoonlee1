@@ -24,7 +24,7 @@ audio {
 
 .container ul {
   /* 使css数值类属性连续变化 */
-  transition: 0.2s;
+  transition: 0.6s;
   list-style: none;
 }
 
@@ -34,7 +34,7 @@ audio {
   line-height: 30px;
 
   /* ! this transition only effect when selector is in effect */
-  transition: 0.2s;
+  transition: 0.6s;
 }
 
 .container li.active {
@@ -43,5 +43,5 @@ audio {
   /* font-size cause layout change -> reflow, not efficient */
   transform: scale(1.2);
   /* ! this transition only effect when selector is in effect -> when remove active class, this transition won't be in effect */
-  transition: 0.2s;
+  transition: 0.6s;
 }
