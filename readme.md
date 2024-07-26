@@ -1,3 +1,5 @@
+test git revert
+
 + [fullStack](./fullStack/myFullStack.md)
 + [udemy](./Udemy/udemy.md)
 + [CS basics](./CSCore/myCSCore.md)
