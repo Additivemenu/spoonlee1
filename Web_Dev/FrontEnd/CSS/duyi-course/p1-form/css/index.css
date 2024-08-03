@@ -1,0 +1,85 @@
+/* add this without thinking: */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: #081620;
+}
+
+.container {
+  background-color: white;
+  width: 400px;
+
+  /* ! mx: auto -> make in middle */
+  margin: 30px auto;
+
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-item{
+    margin-bottom: 10px;
+}
+
+
+/* text input style */
+.text{
+    /* cancel default focus outline style */
+    outline: none;
+
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.text:focus{
+    border-color: #007bff;
+}
+
+select.text{
+    height: 100px;
+    padding: 10px;
+}
+textarea.text{
+    height: 100px;
+    padding: 10px;
+
+    /* textarea not resizable */
+    resize: none;
+}
+
+/* button styles */
+button{
+    width: 150px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+/* pseudo-class */
+button:hover{
+    background: #5089c6;
+}
+button:disabled{
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* till p03 29min- */

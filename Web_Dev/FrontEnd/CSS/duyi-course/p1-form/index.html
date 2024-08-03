@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Sign up</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <!-- 1. form, input -> also compound component pattern 
+         2. experience: if you can wrap an element, then wrap it, it is easier to maintain and style 
+    -->
+    <form class="container">
+      <h1>User Sign up</h1>
+
+      <div class="form-item">
+        <input
+          class="text"
+          type="text"
+          maxlength="11"
+          placeholder="please input your 11 digits phone number"
+        />
+      </div>
+
+      <div class="form-item">
+        <input
+          class="text"
+          type="text "
+          placeholder="please fill verification code"
+        />
+
+        <!-- use button tag is more modern (we could add children in it), it is 'submit' type by default -->
+        <button class="btn" type="button">Get Code</button>
+      </div>
+
+      <div class="form-item">
+        <input
+          class="text"
+          type="password"
+          placeholder="please type in password"
+        />
+      </div>
+      <div class="form-item">
+        <input
+          class="text"
+          type="password"
+          placeholder="please re-type in password"
+        />
+      </div>
+
+      <div class="form-item">
+        <!-- boolean attribute to a tag -->
+        <select multiple class="text">
+          <option value="">hobby1</option>
+          <option value="">hobby2</option>
+          <option value="">hobby3</option>
+          <option value="">hobby4</option>
+          <option value="">hobby5</option>
+          <option value="">hobby6</option>
+          <option value="">hobby7</option>
+          <option value="">hobby8</option>
+          <option value="">hobby9</option>
+          <option value="">hobby10</option>
+        </select>
+      </div>
+
+      <div class="form-item">
+        <div class="title">gender</div>
+        <div>
+          <!-- label for: linking two element -->
+          <input type="radio" name="gender" checked id="male" />
+          <label for="male">male</label>
+
+          <input type="radio" name="gender" id="female" />
+          <label for="female">female</label>
+
+          <!-- this also links anything else inside the label to the input within -->
+          <label>
+            <input type="radio" name="gender" checked />
+            <span>X</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-item">
+        <textarea
+          class="text"
+          placeholder="please input personal introduction"
+        ></textarea>
+      </div>
+
+      <div class="form-item">
+        <label>
+          <input type="checkbox" />
+          <span>agree all terms</span>
+        </label>
+      </div>
+
+      <div class="form-item">
+        <!-- submit type by default -->
+        <button disabled>sign up</button>
+        <!-- reset type button -->
+        <button type="reset">reset</button>
+      </div>
+    </form>
+  </body>
+</html>
