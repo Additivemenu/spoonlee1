@@ -22,15 +22,15 @@
         />
       </div>
 
-      <div class="form-item">
+      <div class="form-item clearfix captcha">
         <input
-          class="text"
+          class="text left"
           type="text "
           placeholder="please fill verification code"
         />
 
         <!-- use button tag is more modern (we could add children in it), it is 'submit' type by default -->
-        <button class="btn" type="button">Get Code</button>
+        <button class="btn right" type="button">Get Code</button>
       </div>
 
       <div class="form-item">
@@ -64,15 +64,19 @@
         </select>
       </div>
 
-      <div class="form-item">
-        <div class="title">gender</div>
-        <div>
+      <div class="form-item clearfix">
+        <div class="title left">gender</div>
+        <div class="left">
           <!-- label for: linking two element -->
-          <input type="radio" name="gender" checked id="male" />
-          <label for="male">male</label>
+          <label>
+            <input type="radio" name="gender" checked id="male" />
+            <span>male</span>
+          </label>
 
-          <input type="radio" name="gender" id="female" />
-          <label for="female">female</label>
+          <label>
+            <input type="radio" name="gender" id="female" />
+            <span>female</span>
+          </label>
 
           <!-- this also links anything else inside the label to the input within -->
           <label>
@@ -89,7 +93,7 @@
         ></textarea>
       </div>
 
-      <div class="form-item">
+      <div class="form-item policy">
         <label>
           <input type="checkbox" />
           <span>agree all terms</span>

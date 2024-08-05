@@ -25,61 +25,107 @@ html {
   margin-bottom: 30px;
 }
 
-.form-item{
-    margin-bottom: 10px;
+.form-item {
+  margin-bottom: 10px;
 }
-
 
 /* text input style */
-.text{
-    /* cancel default focus outline style */
-    outline: none;
+.text {
+  /* cancel default focus outline style */
+  outline: none;
 
-    border: 1px solid #ccc;
-    width: 100%;
-    height: 40px;
-    border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
 
-    font-size: 14px;
-    padding: 0 10px;
+  font-size: 14px;
+  padding: 0 10px;
 }
 
-.text:focus{
-    border-color: #007bff;
+.text:focus {
+  border-color: #007bff;
 }
 
-select.text{
-    height: 100px;
-    padding: 10px;
+select.text {
+  height: 100px;
+  padding: 10px;
 }
-textarea.text{
-    height: 100px;
-    padding: 10px;
+textarea.text {
+  height: 100px;
+  padding: 10px;
 
-    /* textarea not resizable */
-    resize: none;
+  /* textarea not resizable */
+  resize: none;
 }
 
 /* button styles */
-button{
-    width: 150px;
-    height: 40px;
-    border: none;
-    outline: none;
-    background-color: #007bff;
-    color: white;
-    font-size: 14px;
-    border-radius: 5px;
+button {
+  width: 150px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 /* pseudo-class */
-button:hover{
-    background: #5089c6;
+button:hover {
+  background: #5089c6;
 }
-button:disabled{
-    background: #ccc;
-    cursor: not-allowed;
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 /* till p03 29min- */
+/* 浮动, css3 之前的方案 */
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+/* 使用浮动容易让高度坍塌, 利用伪元素来处理 */
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* 处理特殊样式 */
+.captcha .text {
+  width: 170px;
+}
+.title {
+  margin-right: 10px;
+}
+.policy {
+  font-size: 12px;
+  color: #666;
+}
+.policy span {
+  /* when you see 2 or more inline or inline-block element not aligning vertically, use this property and tune it until aligned  */
+  vertical-align: 2px;
+}
+
+label {
+  cursor: pointer;
+}
+/*  */
+label span {
+  color: #aaa;
+}
+/* css 伪类也可选中html元素的原生状态 */
+/* 单选或多选被选中的状态, ~ 选择兄弟元素 */
+label input:checked ~ span {
+  color: #333;
+}
+
+
+input::placeholder {
+  color: #ccc;
+}
