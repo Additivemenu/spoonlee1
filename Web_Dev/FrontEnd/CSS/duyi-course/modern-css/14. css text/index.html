@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        margin: 0;
+        padding: 30px;
+        text-align: center;
+        font-size: 90px;
+        color: skyblue;
+        -webkit-text-fill-color: #fff;
+      }
+      .shadow {
+        /* feels a lot jagged edges */
+        text-shadow: -5px 0, 5px 0, 0 -5px, 0 5px, -5px -5px, 5px 5px, -5px 5px,
+          5px -5px;
+      }
+      .stroke {
+        -webkit-text-stroke: 10px skyblue;
+      }
+      .weight::before {
+        /* smoother edges  */
+        content: attr(data-text);
+        position: absolute;
+        -webkit-text-stroke: 0px;
+      }
+      .text {
+        color: red;
+        -webkit-text-fill-color: skyblue;
+        writing-mode: vertical-rl;
+        text-orientation: sideways; /*控制文本展示方向*/
+      }
+      .text span {
+        text-emphasis: red dot;
+        text-emphasis-position: under right; /*水平排列, 竖直排列*/
+      }
+    </style>
+  </head>
+  <body>
+    <!-- a lot of jagged edges, not really good -->
+    <h1 class="shadow">文字阴影</h1>
+
+    <!-- 文字描边, changes text size -->
+    <h1 class="stroke">文字阴影</h1>
+
+    <!-- good, what we after -->
+    <h1 class="stroke weight" data-text="文字阴影">文字阴影</h1>
+
+    <div class="text">CSS 文本属性</div>
+  </body>
+</html>

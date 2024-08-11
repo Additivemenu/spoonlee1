@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @property --x {
+        syntax: "<length>";
+        inherits: false;
+        initial-value: 0px;
+      }
+      @property --y {
+        syntax: "<length>";
+        inherits: false;
+        initial-value: 0px;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-color: skyblue;
+        transform: translate(var(--x), var(--y));
+        animation: move 1s linear forwards;
+      }
+      /* g = 10 */
+      /* 5 * t * t */
+      @keyframes move {
+        10% {
+          --x: 30px;
+          --y: 5px;
+        }
+        20% {
+          --x: 60px;
+          --y: 20px;
+        }
+        30% {
+          --x: 90px;
+          --y: 45px;
+        }
+        40% {
+          --x: 120px;
+          --y: 80px;
+        }
+        50% {
+          --x: 150px;
+          --y: 125px;
+        }
+        60% {
+          --x: 180px;
+          --y: 180px;
+        }
+        70% {
+          --x: 210px;
+          --y: 245px;
+        }
+        80% {
+          --x: 240px;
+          --y: 320px;
+        }
+        90% {
+          --x: 270px;
+          --y: 405px;
+        }
+        100% {
+          --x: 300px;
+          --y: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

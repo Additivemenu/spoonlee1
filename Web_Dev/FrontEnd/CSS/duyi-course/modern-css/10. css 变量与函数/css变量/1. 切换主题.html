@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 300px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        color: var(--color);
+        background-color: var(--bg);
+        transition: all .3s;
+      }
+      .light-theme {
+        --color: #fac;
+        --bg: skyblue;
+      }
+      .dark-theme {
+        --color: #fff;
+        --bg: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box dark-theme">主题</div>
+    <script>
+      const box = document.querySelector(".box");
+      box.addEventListener("click", (e) => {
+        box.classList.toggle("dark-theme");
+        box.classList.toggle("light-theme");
+      });
+    </script>
+  </body>
+</html>

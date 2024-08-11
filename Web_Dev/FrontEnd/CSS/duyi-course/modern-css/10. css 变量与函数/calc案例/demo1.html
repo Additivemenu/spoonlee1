@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 300px;
+        height: 300px;
+        outline: 3px dashed skyblue;
+        position: absolute;
+        left: calc(50% - 150px);
+        top: calc(50% - 150px);
+      }
+      .item {
+        width: 8px;
+        height: 25px;
+        border-radius: 8px;
+        background-color: #000;
+        transform-origin: 0 150px;
+        position: absolute;
+        left: calc(50% - 4px);
+        transform: rotateZ(calc(var(--index) * var(--base-deg)));
+        animation: animate var(--time) linear infinite;
+        animation-delay: calc(var(--index) * 0.05s - var(--time) / 2);
+      }
+
+      @keyframes animate {
+        0%,
+        50% {
+          background: #050c09;
+          box-shadow: none;
+        }
+        51%,
+        100% {
+          background: #38d2dd;
+          box-shadow: 0 0 5px #38d2dd, 0 0 15px #38d2dd, 0 0 30px #38d2dd,
+            0 0 60px #38d2dd, 0 0 90px #38d2dd;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      const box = document.querySelector(".box");
+
+      const MAX_ITEM = 60;
+      const baseDeg = 360 / MAX_ITEM;
+      box.style.setProperty("--time", `${MAX_ITEM * 0.1}s`);
+      box.style.setProperty("--base-deg", `${baseDeg}deg`);
+
+      for (let i = 0; i < MAX_ITEM; i++) {
+        const div = document.createElement("div");
+        div.classList.add("item");
+        div.style.setProperty("--index", `${i}`);
+        box.appendChild(div);
+      }
+    </script>
+  </body>
+</html>

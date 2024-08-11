@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        /* background-color: #fca; */
+        border: 20px solid #fac;
+        margin: 100px 0 0 100px;
+        /* border-image: url(./assets/border-img.jpg) 33.3%; */
+        border-image-source: url(./assets/border-img.jpg);
+        border-image-slice: 33.3% 33.3%;
+        border-image-width: 20px;
+        /* border-image-outset: 20px; */
+        /* border-width */
+        border-image-repeat: space;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

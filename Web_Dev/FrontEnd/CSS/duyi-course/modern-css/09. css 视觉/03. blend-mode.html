@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+      .box {
+        width: 300px;
+        height: 200px;
+        background-image: url(https://img-qn.51miz.com/preview/photo/00/01/51/46/new-P-1514606-AED53C34O.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/300);
+      }
+      .box::before {
+        content: "";
+        display: block;
+        height: 150px;
+        background-image: linear-gradient(to right, #fff, #000);
+      }
+      .darken::before {
+        mix-blend-mode: darken;
+      }
+      .lighten::before {
+        mix-blend-mode: lighten;
+      }
+      .multiply::before {
+        mix-blend-mode: multiply;
+      }
+      .color-burn::before {
+        mix-blend-mode: color-burn;
+      }
+      .plus-lighter::before {
+        mix-blend-mode: plus-lighter;
+      }
+      .screen::before {
+        mix-blend-mode: screen;
+      }
+      .color-dodge::before {
+        mix-blend-mode: color-dodge;
+      }
+      .overlay::before {
+        mix-blend-mode: overlay;
+      }
+      .hard-light::before {
+        mix-blend-mode: hard-light;
+      }
+      .soft-light::before {
+        mix-blend-mode: soft-light;
+      }
+      .difference::before {
+        mix-blend-mode: difference;
+      }
+      .exclusion::before {
+        mix-blend-mode: exclusion;
+      }
+      .hue::before {
+        mix-blend-mode: hue;
+      }
+      .saturation::before {
+        mix-blend-mode: saturation;
+      }
+      .color::before {
+        mix-blend-mode: color;
+      }
+      .luminosity::before {
+        mix-blend-mode: luminosity;
+      }
+      .hue::before, .saturation::before, .color::before, .luminosity::before {
+        width: 100%;
+        height: 100%;
+        background-image: conic-gradient(
+          red,
+          yellow,
+          lime,
+          cyan,
+          blue,
+          magenta,
+          red
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <div class="item">
+        <h1>normal</h1>
+        <div class="box"></div>
+      </div>
+      <div class="item">
+        <h1>darken</h1>
+        <div class="box darken"></div>
+      </div>
+      <div class="item">
+        <h1>lighten</h1>
+        <div class="box lighten"></div>
+      </div>
+      <div class="item">
+        <h1>multiply</h1>
+        <div class="box multiply"></div>
+      </div>
+      <div class="item">
+        <h1>color-burn</h1>
+        <div class="box color-burn"></div>
+      </div>
+      <div class="item">
+        <h1>plus-lighter</h1>
+        <div class="box plus-lighter"></div>
+      </div>
+      <div class="item">
+        <h1>screen</h1>
+        <div class="box screen"></div>
+      </div>
+      <div class="item">
+        <h1>color-dodge</h1>
+        <div class="box color-dodge"></div>
+      </div>
+      <div class="item">
+        <h1>overlay</h1>
+        <div class="box overlay"></div>
+      </div>
+      <div class="item">
+        <h1>hard-light</h1>
+        <div class="box hard-light"></div>
+      </div>
+      <div class="item">
+        <h1>soft-light</h1>
+        <div class="box soft-light"></div>
+      </div>
+      <div class="item">
+        <h1>difference</h1>
+        <div class="box difference"></div>
+      </div>
+      <div class="item">
+        <h1>exclusion</h1>
+        <div class="box exclusion"></div>
+      </div>
+      <div class="item">
+        <h1>hue</h1>
+        <div class="box hue"></div>
+      </div>
+      <div class="item">
+        <h1>saturation</h1>
+        <div class="box saturation"></div>
+      </div>
+      <div class="item">
+        <h1>color</h1>
+        <div class="box color"></div>
+      </div>
+      <div class="item">
+        <h1>luminosity</h1>
+        <div class="box luminosity"></div>
+      </div>
+    </div>
+  </body>
+</html>

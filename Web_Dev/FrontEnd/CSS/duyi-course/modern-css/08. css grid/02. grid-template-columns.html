@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .grid-box {
+        display: grid;
+        width: 500px;
+        height: 500px;
+        /* 列宽 */
+        /* grid-template-columns: 50px 30px 50px 30px 50px 30px; */
+        grid-template-columns: [line-start] 50px [line-2] 50px [line-3] 50px [line-end];
+        grid-template-rows: 50px;
+        gap: 10px;
+      }
+      .item {
+        background-color: #fac;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-box">
+      <div class="item">1</div>
+      <div class="item">丁老师真帅</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+    </div>
+  </body>
+</html>

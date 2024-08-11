@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 620px;
+        height: 350px;
+        border: 2px dashed #fac;
+        margin: 0 auto;
+        overflow: scroll;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .box div {
+        width: 620px;
+        height: 350px;
+      }
+      .txt {
+        background-color: #fca;
+        text-align: center;
+        line-height: 350px;
+        font-size: 64px; 
+        color: #fff;
+      }
+      .bg {
+        background-size: 630px;
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      .bg1 {
+        background-image: url(./assets/attachment1.png);
+      }
+      .bg2 {
+        background-image: url(./assets/attachment2.png);
+      }
+      .bg3 {
+        background-image: url(./assets/attachment3.png);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="txt">一</div>
+      <div class="bg bg1"></div>
+      <div class="txt">二</div>
+      <div class="bg bg2"></div>
+      <div class="txt">三</div>
+      <div class="bg bg3"></div>
+    </div>
+  </body>
+</html>

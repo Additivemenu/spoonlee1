@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  user-select: none;
+}
+
+.container {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* border: 2px dashed skyblue; */
+}
+
+.like-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #eee;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+.like-btn i {
+  font-size: 32px;
+}
+
+.btn-scale {
+  animation: btnscale 0.2s linear;
+}
+
+@keyframes btnscale {
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.emo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 32px;
+}
+
+.emo-animate {
+  /* animation-name: emo-y, emo-opacity, emo-scale; */
+  animation-duration: 2s;
+  animation-timing-function: linear;
+}
+
+/* 
+  1. 上下变化
+  2. 透明度变化
+  3. 缩放变化
+  4. 左右变化
+*/
+
+@keyframes emo-y {
+    to {
+        top: -400px
+    }
+}
+
+@keyframes emo-opacity {
+    0%, 30% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes emo-scale {
+    0%, 10% {
+        transform: scale(.3);
+    }
+    to {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes emo-x {
+    from {
+        left: 0;
+    }
+    20% {
+        left: 15px;
+    }
+    50% {
+        left: -5px;
+    }
+    100% {
+        left: 20px;
+    }
+}
+/* @keyframes move {
+  from {
+    opacity: 1;
+    transform: scale(0.3);
+    left: 0px;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+    left: 5px;
+  }
+} */

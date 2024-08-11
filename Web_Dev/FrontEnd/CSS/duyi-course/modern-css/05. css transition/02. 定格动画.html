@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* state1 */
+        .box {
+            width: 50px;
+            height: 72px;
+            background-image: url(./assets/01.jpg);  /*  this doesn't support transition */
+            background-position-x: 0px;   /* but this once does support transition! */
+        }
+        /* state2 */
+        .box:hover {
+            transition: 2s steps(10);  /* duration: 2s, timing-function: step(10) */
+            background-position: -500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+</html>

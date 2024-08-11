@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-image: conic-gradient(skyblue, #ff0, skyblue);
+        }
+        .box1 {
+            animation: rotate1 2s linear;
+        }
+        .box2 {
+            animation: rotate1 2s linear;
+            animation-direction: reverse;
+            
+        }
+        @keyframes rotate1 {
+            from {
+                transform: rotate(0);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* @keyframes rotate2 {
+            to {
+                transform: rotate(0);
+            }
+            from {
+                transform: rotate(360deg);
+            }
+        } */
+    </style>
+</head>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+</body>
+</html>

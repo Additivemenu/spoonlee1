@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .content {
+        width: 1136px;
+        height: 642px;
+        margin: 0 auto;
+        background-color: #000;
+
+        background-color: #000;
+      }
+      img.mask {
+        --x: -150px;
+        --y: -150px;
+        mask-image: radial-gradient(
+          circle at var(--x) var(--y),
+          #fff 70px,
+          transparent 100px
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <img src="../assets/kun.PNG" alt="" class="mask" />
+    </div>
+    <script>
+      const mask = document.querySelector(".mask");
+      const content = document.querySelector(".content");
+      content.onmousemove = function (e) {
+        const { offsetX, offsetY } = e;
+        // console.log(offsetX, offsetY);
+        mask.style.setProperty("--x", offsetX + "px");
+        mask.style.setProperty("--y", offsetY + "px");
+      };
+      content.onmouseleave = function() {
+        mask.style.setProperty("--x", -150 + "px");
+        mask.style.setProperty("--y", -150  + "px");
+      }
+    </script>
+  </body>
+</html>

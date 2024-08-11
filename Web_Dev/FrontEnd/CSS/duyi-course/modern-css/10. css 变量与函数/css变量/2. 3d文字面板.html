@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        perspective: 800px;
+      }
+      .container {
+        display: grid;
+        width: 100vw;
+        height: 100vh;
+        place-items: center;
+        transform-style: preserve-3d;
+      }
+      .inner {
+        border-radius: 8px;
+        font-size: 40px;
+        padding: 20px 30px;
+        color: #fff;
+        background-image: linear-gradient(to right, skyblue, #e111ac);
+        transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+        transition: transform .3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner">CSS变量 CSS新世界</div>
+    </div>
+    <script>
+      const innerBox = document.querySelector(".inner");
+      const rect = innerBox.getBoundingClientRect();
+      innerBox.onmousemove = function (e) {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        innerBox.style.setProperty("--rx", `${-(y - rect.height / 2)}deg`);
+        innerBox.style.setProperty("--ry", `${(x - rect.width / 2)/15}deg`);
+      };
+      innerBox.onmouseleave = function(e) {
+        innerBox.style.setProperty('--rx', 0)
+        innerBox.style.setProperty('--ry', 0)
+      }
+    </script>
+  </body>
+</html>

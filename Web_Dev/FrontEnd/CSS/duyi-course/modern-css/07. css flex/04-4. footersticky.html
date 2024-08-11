@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .flex {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .header {
+        height: 100px;
+        background-color: #fac;
+      }
+      .footer {
+        height: 199px;
+        background-color: #cfa;
+      }
+      .main {
+        background-color: #acf;
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex">
+      <div class="header">HEADER</div>
+      <div class="main">MAIN</div>
+      <div class="footer">FOOTER</div>
+    </div>
+  </body>
+</html>

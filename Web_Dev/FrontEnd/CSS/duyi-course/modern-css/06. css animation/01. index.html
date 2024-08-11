@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #f00;
+
+        
+        animation: change;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-delay: 2s;
+
+        /* animation-name; */
+        /* duration */
+        /* timing-function */
+        /* delay */
+      }
+      @keyframes change {
+        0% {
+          transform: translateX(0px) translateY(0);
+        }
+        50% {
+          transform: translateX(300px) translateY(0);
+        }
+        100% {
+          transform: translateX(300px) translateY(300px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

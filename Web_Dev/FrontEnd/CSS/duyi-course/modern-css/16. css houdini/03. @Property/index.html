@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @property --per {
+        syntax: "<percentage>";
+        inherits: false;
+        initial-value: 15%;
+      }
+
+      .box {
+        /* --per: 15%; */
+        width: 200px;
+        height: 200px;
+        /* background-color: skyblue; */
+        background-image: conic-gradient(skyblue var(--per), transparent 15%);
+        border-radius: 50%;
+        margin: 0 auto;
+        transition-duration: 2s;
+        transition-property: --per;
+      }
+      .box:hover {
+        --per: 90%;
+      }
+      /* + 表示用空格分开的相同类型的数据 */
+      @property --margin-list {
+        syntax: "<length>+";
+        inherits: false;
+        initial-value: 20px 20px 20px 20px;
+      }
+      /*  # 表示用，分开的相同类型的数据 */
+      @property --gradient-list {
+        syntax: "<color>#";
+        inherits: false;
+        initial-value: red, blue, green;
+      }
+
+      /* width: 100px  20% auto */
+      @property --width {
+        syntax: "<length> | <percentage> | auto";
+        inherits: false;
+        initial-value: auto;
+      }
+
+      .box1 {
+        margin: var(--margin-list);
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(var(--gradient-list));
+      }
+      .box2 {
+        height: 100px;
+        background-color: skyblue;
+        width: var(--width);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <script>
+      CSS.registerProperty({
+        name: '--width',
+        syntax: "<length> | <percentage> | auto",
+        inherits: false,
+        initialValue: "auto",
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .flex-box {
+            width: 1000px;
+            height: 100px;
+            display: flex;
+        }
+        .item:nth-of-type(1) {
+            flex: 0 2 100px;
+            background-color: #f00;
+        }
+        .item:nth-of-type(2) {
+            flex: 0 1 100px;
+            background-color: #0f0;
+        }
+        .item:nth-of-type(3) {
+            flex: 0 0 100px;
+            background-color: #00f;
+        }
+        .item:nth-of-type(4) {
+            flex: 1 0 20px;
+            background-color: #ff0;
+        }
+        .item:nth-of-type(5) {
+            flex: 2 0 20px;
+            background-color: #0ff;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="flex-box">
+      <div class="item">老大</div>
+      <div class="item">老二</div>
+      <div class="item">老三</div>
+      <div class="item">老四</div>
+      <div class="item">老小</div>
+    </div>
+  </body>
+</html>

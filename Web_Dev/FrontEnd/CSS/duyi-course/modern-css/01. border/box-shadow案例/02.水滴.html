@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: aquamarine;
+      }
+      .water {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 200px;
+
+        height: 300px;
+        border-radius: 42% 58% 77% 23% / 40% 31% 69% 60%;
+        box-shadow: inset 10px 20px 30px rgba(0, 0, 0, 0.5),
+          inset -10px -10px 15px rgba(255, 255, 255, 0.8),
+          10px 10px 20px rgba(0, 0, 0, 0.3), 15px 20px 30px rgba(0, 0, 0, 0.05);
+      }
+      .water::before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 22%;
+        left: 48%;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 51% 49% 35% 65% / 40% 54% 46% 60%;
+      }
+      .water::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 28%;
+        left: 37%;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 51% 49% 35% 65% / 59% 54% 46% 41%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="water"></div>
+  </body>
+</html>

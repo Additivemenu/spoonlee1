@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .flex-box {
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        /* align-items: center; */
+        align-content: flex-start;
+        border: 2px dashed #fac;
+      }
+      .flex-item {
+        width: 100px;
+        height: 100px;
+        color: #fff;
+      }
+      .flex-item:nth-of-type(1) {
+        background-color: #fca;
+      }
+      .flex-item:nth-of-type(2) {
+        background-color: #fac;
+      }
+      .flex-item:nth-of-type(3) {
+        background-color: #acf;
+      }
+      .flex-item:nth-of-type(4) {
+        background-color: #afc;
+      }
+      .flex-item:nth-of-type(5) {
+        background-color: #caf;
+      }
+      .flex-item:nth-of-type(6) {
+        background-color: #cfa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-box"></div>
+    <script>
+      const flexBox = document.querySelector('.flex-box');
+      const arr = [-1, -6, 2, 5, 8, -3];
+      arr.forEach((item, index) => {
+        const ele = document.createElement('div');
+        ele.innerText = item;
+        flexBox.appendChild(ele);
+        ele.style.order = item;
+        ele.className = 'flex-item';
+
+      })
+    </script>
+  </body>
+</html>

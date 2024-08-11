@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        .grid {
+            display: grid;
+            width: 1226px;
+            height: 500px;
+            margin: 0 auto;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+        .lbt {
+            /* grid-row-start: 1;
+            grid-row-end: 3; */
+            /* grid-row: 1/3; */
+            /* grid-column-start: 1;
+            grid-column-end: 3; */
+            /* grid-column: 1 / span 2; */
+            grid-area: 1/2/3/4;
+            background-color: #ff0;
+        }
+        .item {
+            width: 250px;
+            height: 200px;
+            background-color: #0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="lbt">轮播图</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+        <div class="item">视频卡片</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        --dir: to right;
+        --start-color: skyblue 50%;
+        --end-color: #fac 50%;
+
+        color: var(--what, #0f0);
+        font-size: var(--what);
+        width: 100px;
+        height: 100px;
+        background-image: linear-gradient(
+          var(--dir),
+          var(--start-color),
+          var(--end-color)
+        );
+        --ab: 20px;
+        --abc: var(--ab);
+        font-size: var(--abc);
+        --color: red;
+        --size:30;
+      }
+      :root {
+        --color: #fac !important;
+      }
+      .bar {
+        color: var(--color);
+        font-size: calc(var(--size) * 1px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="foo">
+        <div class="bar">123</div>
+      </div>
+    </div>
+  </body>
+</html>

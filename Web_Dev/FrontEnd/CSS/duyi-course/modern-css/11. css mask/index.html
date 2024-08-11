@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      img {
+        /* mask-image: url(./assets/bird.png); */
+        /* mask-repeat: no-repeat; */
+        /* mask-size: 150px; */
+        /* mask-position: right center; */
+        /* mask-origin: content-box; */
+        /* mask-clip: padding-box;
+        border: 20px solid #fac; */
+        /* padding: 30px;
+        background-color: #cfa; */
+        mask-repeat: no-repeat;
+        mask-image: linear-gradient(#fff 50px, #fff 100px),
+          linear-gradient(#fff 50px, #fff 100px);
+        mask-size: 200px 200px;
+        mask-position: 0 0, 150px 150px;
+        mask-composite: exclude;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="./assets/xingkong.jpg" alt="" />
+  </body>
+</html>

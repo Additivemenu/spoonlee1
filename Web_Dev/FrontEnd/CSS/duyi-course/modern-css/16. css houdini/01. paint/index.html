@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 500px;
+        height: 500px;
+        /* background-image: linear-gradient(skyblue, red); */
+        background-image: paint(mypaint);
+        margin: 0 auto;
+        --gap: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      if (window.CSS) {
+        CSS.paintWorklet.addModule("./paint.js");
+      }
+    </script>
+  </body>
+</html>

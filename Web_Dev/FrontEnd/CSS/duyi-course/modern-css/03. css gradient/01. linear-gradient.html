@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 300px;
+        height: 300px;
+        border: 2px dashed #fac;
+        margin: 0 auto;
+        background-image: linear-gradient(to right, #ffffff, #6dd5fa, #2980b9);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .box0 {
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        background-image: repeating-linear-gradient(
+            transparent 0 10px,
+            skyblue 10px 20px
+          ),
+          repeating-linear-gradient(90deg, #fac 0 10px, transparent 10px 20px);
+      }
+      .box1 {
+        width: 300px;
+        height: 150px;
+        border: 10px solid;
+        margin: 0 auto;
+        border-image: repeating-linear-gradient(45deg, transparent 0 10px, skyblue 10px 20px) 20;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box0"></div>
+    <div class="box">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam eos
+      quisquam deleniti consectetur amet sunt vel nobis qui aperiam fugit quas
+      animi quaerat repellat illum, alias non aliquam corporis ad!
+    </div>
+    <div class="box1"></div>
+  </body>
+</html>

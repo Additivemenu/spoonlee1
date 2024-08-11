@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .flex-box {
+        display: flex;
+        height: 100px;
+      }
+      .flex-box div {
+        /* white-space: nowrap; */
+      }
+      .flex-item-1 {
+        flex-basis: fit-content;
+        width: 120px;
+        background-color: #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-box">
+      <div class="flex-item-1">设置width=120px，设置flex-basis=100px</div>
+    </div>
+    <!-- 
+        内容尺寸
+        flex设置的基础尺寸
+        width
+        max(min(width, 内容尺寸), flex-basis);
+        max(min(120, 117.8), 100);  117.8
+        max(min(110, 117.8), 100); 100
+        max(min(80, 117.8), 100);  100
+        flex-basis: auto;
+        flex-grow:
+        flex-shrink:
+
+        flex: 0 1 auto;
+         min-width/max-width》弹性尺寸（flex-grow, flex-shrink）》元素尺寸
+     -->
+  </body>
+</html>

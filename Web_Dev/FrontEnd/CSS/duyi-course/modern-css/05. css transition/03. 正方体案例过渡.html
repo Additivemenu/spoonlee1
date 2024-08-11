@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .wrapper {
+        perspective: 800px;
+      }
+      .content {
+        transform-style: preserve-3d;
+        width: 400px;
+        height: 400px;
+        margin: 200px auto 0;
+        position: relative;
+        /* transform: rotateY(45deg) rotateX(0deg); */
+        transition: 1s linear;
+      }
+      .content:hover {
+        /* transform: rotateY(360deg); */
+      }
+      .content li {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        line-height: 400px;
+        text-align: center;
+        font-size: 64px;
+        color: #fff;
+      }
+      .front {
+        background-color: #faca;
+        transform: translateZ(200px);
+      }
+      .back {
+        background-color: #fcaa;
+        transform: rotateY(180deg) translateZ(200px);
+      }
+      .left {
+        background-color: #cfaa;
+        transform: rotateY(90deg) translateZ(200px);
+      }
+      .right {
+        background-color: #cafa;
+        transform: rotateY(-90deg) translateZ(200px);
+      }
+      .top {
+        background-color: #acfa;
+        transform: rotateX(90deg) translateZ(200px);
+      }
+      .bottom {
+        background-color: #afca;
+        transform: rotateX(-90deg) translateZ(200px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <ul class="content">
+        <li class="front">1</li>
+        <li class="back">6</li>
+        <li class="left">2</li>
+        <li class="right">5</li>
+        <li class="top">3</li>
+        <li class="bottom">4</li>
+      </ul>
+    </div>
+
+    <div class="buttons">
+      <button class="lbtn">左转</button>
+      <button class="rbtn">右转</button>
+      <button class="tbtn">上转</button>
+      <button class="bbtn">下转</button>
+    </div>
+    <script>
+      const lbtn = document.querySelector(".lbtn");
+      const rbtn = document.querySelector(".rbtn");
+      const tbtn = document.querySelector(".tbtn");
+      const bbtn = document.querySelector(".bbtn");
+      const contentDom = document.querySelector(".content");
+      const ROTATE_DEG = 90;
+      let x_deg = 0;
+      let y_deg = 0;
+
+      lbtn.onclick = function () {
+        y_deg -= ROTATE_DEG;
+        contentDom.style.transform = `rotateX(${x_deg}deg) rotateY(${y_deg}deg)`;
+      };
+      rbtn.onclick = function () {
+        y_deg += ROTATE_DEG;
+        contentDom.style.transform = `rotateX(${x_deg}deg) rotateY(${y_deg}deg)`;
+      };
+      tbtn.onclick = function () {
+        x_deg += ROTATE_DEG;
+        contentDom.style.transform = `rotateX(${x_deg}deg) rotateY(${y_deg}deg)`;
+      };
+      bbtn.onclick = function () {
+        x_deg -= ROTATE_DEG;
+        contentDom.style.transform = `rotateX(${x_deg}deg) rotateY(${y_deg}deg)`;
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        .grid {
+            display: grid;
+            height: 100vh;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr 5fr 1fr;
+            grid-template-areas: 
+             "头部 头部 头部 头部"
+             "侧边栏 content content content"
+             ". footer footer ."
+            ;
+            /* grid-template: 1fr 5fr 1fr / repeat(4, 1fr); */
+            /* grid-template: 
+              "头部 头部 头部 头部" 1fr
+              "侧边栏 content content content" 5fr
+              ". footer footer ." 1fr
+              / 1fr 1fr 1fr 1fr;
+            ; */
+        }
+        .header {
+            grid-area: 头部;
+            background-color: aqua;
+        }
+        .sidebar {
+            grid-area: 侧边栏;
+            background-color: #ff0;
+        }
+        .content {
+            grid-area: content;
+            background-color: chartreuse;
+        }
+        .footer {
+            grid-area: footer;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="header"></div>
+        <div class="sidebar"></div>
+        <div class="content"></div>
+        <div class="footer"></div>
+    </div>
+</body>
+</html>

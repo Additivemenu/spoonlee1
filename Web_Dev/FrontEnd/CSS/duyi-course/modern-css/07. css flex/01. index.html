@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .flex-box {
+        width: 500px;
+        height: 200px;
+        background-color: #ff0;
+        display: flex;
+        /* margin: 0 auto; */
+      }
+      .flex-item {
+        width: 100px;
+        height: 100px;
+        background-color: #0ff;
+      }
+      .flex-item:nth-of-type(2) {
+        /* margin-right: auto; */
+        /* float: left; */
+        /* position: relative; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-box">
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .grid {
+        display: grid;
+        grid: [A-start] 100px [A-end B-start] 100px [B-end C-start] 100px [C-end] / [A-start] 100px [A-end B-start] 100px [B-end C-start] 100px [C-end] 
+      }
+      .item {
+        grid-column-start: A;
+        grid-column-end: B;
+        grid-row-start: 2;
+        grid-row-end: 4;
+        /* grid-column grid-row */
+        /* grid-area r-s / c-s / r-e /c-e*/
+
+        background-color: #f0f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <div class="item"></div>
+    </div>
+  </body>
+</html>

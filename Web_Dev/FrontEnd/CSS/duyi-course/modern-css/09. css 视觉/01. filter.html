@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .grid {
+        width: 1226px;
+        display: grid;
+        margin: 0 auto;
+        place-items: center;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .blur img {
+        filter: blur(10px);
+      }
+      .brightness img {
+        filter: brightness(0);
+      }
+      .contrast img {
+        filter: contrast(0%);
+      }
+      .drop-shadow img {
+        filter: drop-shadow(3px 3px 3px #00f);
+      }
+      .grayscale img {
+        filter: grayscale(1);
+      }
+      .hue-rotate img {
+        filter: hue-rotate(0deg);
+      }
+      .invert img {
+        filter: invert(50%);
+      }
+      .saturate img {
+        filter: saturate(50%);
+      }
+      .sepia img {
+        filter: saturate(0);
+      }
+      .opacity img {
+        filter: opacity(0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <div class="demo">
+        <h2>原始图片</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="blur">
+        <h2>Blur 模糊</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="brightness">
+        <h2>Brightness 亮度</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="contrast">
+        <h2>contrast 对比度</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="drop-shadow">
+        <h2>drop-shadow 阴影</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="grayscale">
+        <h2>grayscale 灰度</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="hue-rotate">
+        <h2>hue-rotate 色调</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="invert">
+        <h2>invert 色调</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="opacity">
+        <h2>opacity 透明度</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="saturate">
+        <h2>saturate 饱和度</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+      <div class="sepia">
+        <h2>sepia 褐色</h2>
+        <img src="https://picsum.photos/300/400" alt="" />
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        filter: contrast(20);
+        background-color: #fff;
+      }
+      .box1 {
+        width: 150px;
+        height: 150px;
+        background-color: #00f;
+        border-radius: 50%;
+        filter: blur(10px);
+        animation: move 2s linear infinite alternate-reverse;
+      }
+      .box2 {
+        width: 50px;
+        height: 50px;
+        background-color: #00f;
+        border-radius: 50%;
+        filter: blur(10px);
+        animation: move 2s linear infinite alternate;
+      }
+
+      @keyframes move {
+        from {
+            transform: translateY(-100px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box1"></div>
+      <div class="box2"></div>
+    </div>
+  </body>
+</html>

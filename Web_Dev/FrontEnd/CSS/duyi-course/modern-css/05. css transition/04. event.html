@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #f00;
+        transition: 2s 2s;
+      }
+      .box:hover {
+        background-color: #ff0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      const box = document.querySelector(".box");
+      box.ontransitionstart = function () {
+        console.log("过渡真的出发了");
+      };
+      box.ontransitionrun = function () {
+        console.log("过渡创建时触发");
+      };
+
+      box.ontransitionend = function () {
+        console.log("过渡结束");
+      };
+      box.ontransitioncancel = function () {
+        console.log("过渡被取消");
+      };
+    </script>
+  </body>
+</html>

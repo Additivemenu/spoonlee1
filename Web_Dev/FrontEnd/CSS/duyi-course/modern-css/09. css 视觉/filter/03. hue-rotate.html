@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        line-height: 100px;
+        text-align: center;
+        font-size: 36px;
+        -webkit-background-clip: text;
+        color: transparent;
+        width: 500px;
+        height: 100px;
+        background-image: linear-gradient(
+          to right,
+          #f00,
+          #ff0,
+          #0f0,
+          #0ff,
+          #00f,
+          #f0f,
+          #f00
+        );
+        animation: hue 2s linear infinite;
+      }
+      @keyframes hue {
+        from {
+          filter: hue-rotate(0deg);
+        }
+        to {
+          filter: hue-rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">这就是CSS炫酷的效果</div>
+  </body>
+</html>

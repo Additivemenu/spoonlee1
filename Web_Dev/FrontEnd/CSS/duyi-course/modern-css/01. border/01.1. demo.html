@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      div {
+        width: 200px;
+        height: 200px;
+        margin-left: 200px;
+        margin-top: 200px;
+      }
+
+      .box1 {
+        background-image: url(./assets/wyz.jpg);
+        background-size: cover;
+        border-radius: 69% 31% 37% 63% / 57% 33% 67% 43%;
+      }
+
+      .box2 {
+        border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%;
+        border: 20px solid #fac;
+      }
+      li {
+        width: 300px;
+        height: 60px;
+        line-height: 60px;
+        /* background-color: #fac; */
+        text-align: center;
+        position: relative;
+      }
+      li::before {
+        content: "1";
+        line-height: normal;
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: #fac;
+        border-bottom-right-radius: 100%;
+        color: #fff;
+      }
+
+      li:nth-of-type(1)::before {
+        content: "1";
+      }
+      li:nth-of-type(2)::before {
+        content: "2";
+      }
+      li:nth-of-type(3)::before {
+        content: "3";
+      }
+      .box4 {
+        position: relative;
+      }
+
+      .box4::before {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 100% 0;
+        border-top: 2px solid #fac;
+        border-left: 2px solid #fca;
+        border-right: 2px solid #cfa;
+        border-bottom: 2px solid #caf;
+      }
+      .box4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 0 100%;
+        border-left: 2px solid #afc;
+        border-bottom: 2px solid #acf;
+        border-right: 2px solid #f0f;
+        border-top: 2px solid #0ff;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 异形的头像 -->
+    <div class="box1"></div>
+    <!-- 异形的相框-->
+    <div class="box2"></div>
+    <!-- 标题角标 -->
+    <div class="box3">
+      <ul class="list">
+        <li class="item">我可太帅了</li>
+        <li class="item">我可太帅了</li>
+        <li class="item">我可太帅了</li>
+      </ul>
+    </div>
+    <div class="box4">
+        
+    </div>
+  </body>
+</html>

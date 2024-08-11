@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #000;
+      }
+      .box {
+        width: 200px;
+        height: 200px;
+        background-color: skyblue;
+        clip-path: polygon(
+          50% 0%,
+          61% 35%,
+          98% 35%,
+          68% 57%,
+          79% 91%,
+          50% 70%,
+          21% 91%,
+          32% 57%,
+          2% 35%,
+          39% 35%
+        );
+      }
+      .s-1 {
+        width: 200px;
+        height: 200px;
+        -webkit-box-reflect: right;
+      }
+      .s-2 {
+        -webkit-box-reflect: below;
+      }
+      .s-3 {
+        width: 400px;
+        height: 400px;
+        -webkit-box-reflect: right;
+      }
+      .s-4 {
+        -webkit-box-reflect: below;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="s-4">
+      <div class="s-3">
+        <div class="s-2">
+          <div class="s-1">
+            <div class="box"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

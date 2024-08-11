@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BorderRadius</title>
+    <style>
+      .box {
+        width: 350px;
+        height: 350px;
+        background-color: #fac;
+        /* border-radius: 50% 20% 10%; */
+        /* margin: 上右下左 */
+        /* border-radius: 左上，右上， 右下，左下 */
+        /* border-top-left-radius: 30px 40px; */
+        /* 水平半径 垂直半径 */
+        /* border-radius: 水平半径{1, 4} / 垂直半径{1, 4} */
+        /* border-radius: 170px 170px 0 0; */
+        /* 缩小系数 */
+        /* border-radius: a b c d/ e f g h; */
+        border-radius: 70%;
+
+        /* f = min(width/a+b, width/c+d, height/ e+f, height/g+h) */
+        /*  350/700 = .5  */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>
