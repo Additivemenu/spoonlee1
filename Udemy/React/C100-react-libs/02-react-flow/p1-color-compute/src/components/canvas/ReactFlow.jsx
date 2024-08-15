@@ -11,6 +11,7 @@ import "@xyflow/react/dist/style.css";
 import NumberInput from "./custom-nodes/NumberInput.jsx";
 import ColorPreview from "./custom-nodes/ColorPreview.jsx";
 import LightnessNode from "./custom-nodes/LightnessNode.jsx";
+import Log from "./custom-nodes/Log.jsx";
 
 /**
  * ! register the custom nodes
@@ -26,6 +27,7 @@ const nodeTypes = {
   NumberInput,
   ColorPreview,
   LightnessNode,
+  Log,
 };
 
 /**
@@ -55,7 +57,8 @@ const initialNodes = [
     type: "ColorPreview",
     id: "color",
     position: { x: 150, y: 50 },
-    data: { // ! magic here!
+    data: {
+      // ! magic here!
       label: "Color",
       value: { r: undefined, g: undefined, b: undefined },
     },
@@ -64,6 +67,18 @@ const initialNodes = [
     type: "LightnessNode",
     id: "lightness",
     position: { x: 350, y: 75 },
+  },
+  {
+    id: "log-1",
+    type: "Log",
+    position: { x: 500, y: 0 },
+    data: { label: "Use black font", fontColor: "black" },
+  },
+  {
+    id: "log-2",
+    type: "Log",
+    position: { x: 500, y: 140 },
+    data: { label: "Use white font", fontColor: "white" },
   },
 ];
 
@@ -94,6 +109,18 @@ const initialEdges = [
     id: "color-lightness",
     source: "color",
     target: "lightness",
+  },
+  {
+    id: "lightness-log-1",
+    source: "lightness",
+    sourceHandle: "light",
+    target: "log-1",
+  },
+  {
+    id: "lightness-log-2",
+    source: "lightness",
+    sourceHandle: "dark",
+    target: "log-2",
   },
 ];
 

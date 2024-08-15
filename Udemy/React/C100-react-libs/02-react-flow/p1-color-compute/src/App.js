@@ -12,7 +12,7 @@ function App() {
       }}
     >
       <div
-        style={{ width: "800px", height: "500px", border: "1px solid black" }}
+        style={{ width: "1200px", height: "500px", border: "1px solid black" }}
       >
         <ReactiveFlow />
       </div>
