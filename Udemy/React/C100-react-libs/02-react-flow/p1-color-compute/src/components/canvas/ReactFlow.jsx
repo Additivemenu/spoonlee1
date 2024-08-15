@@ -10,21 +10,22 @@ import "@xyflow/react/dist/style.css";
 
 import NumberInput from "./custom-nodes/NumberInput.jsx";
 import ColorPreview from "./custom-nodes/ColorPreview.jsx";
-
+import LightnessNode from "./custom-nodes/LightnessNode.jsx";
 
 /**
  * ! register the custom nodes
  * in custom nodes, we define:
- * 1. how the nodes look like 
+ * 1. how the nodes look like
  * 2. how they process input and output
- * 
- * you can consider the custom nodes as the building blocks of the flow 
+ *
+ * you can consider the custom nodes as the building blocks of the flow
  *  -> pretty similar to a function (handling input and output)
- * 
+ *
  */
 const nodeTypes = {
   NumberInput,
   ColorPreview,
+  LightnessNode,
 };
 
 /**
@@ -33,28 +34,36 @@ const nodeTypes = {
  */
 const initialNodes = [
   {
-    type: "NumberInput",  // custom node
+    type: "NumberInput",
     id: "1",
-    data: { label: "Red", value: 255 }, // magic here!
+    data: { label: "Red", value: 255 },
     position: { x: 0, y: 0 },
   },
   {
     type: "NumberInput",
     id: "2",
-    data: { label: "Green", value: 0 }, // magic here!
+    data: { label: "Green", value: 0 },
     position: { x: 0, y: 100 },
   },
   {
     type: "NumberInput",
     id: "3",
-    data: { label: "Blue", value: 115 }, // magic here!
+    data: { label: "Blue", value: 115 },
     position: { x: 0, y: 200 },
   },
   {
-    type: "ColorPreview",  // custom node
+    type: "ColorPreview",
     id: "color",
     position: { x: 150, y: 50 },
-    data: { label: "Color" }, // magic here!
+    data: { // ! magic here!
+      label: "Color",
+      value: { r: undefined, g: undefined, b: undefined },
+    },
+  },
+  {
+    type: "LightnessNode",
+    id: "lightness",
+    position: { x: 350, y: 75 },
   },
 ];
 
@@ -81,16 +90,21 @@ const initialEdges = [
     target: "color",
     targetHandle: "blue",
   },
+  {
+    id: "color-lightness",
+    source: "color",
+    target: "lightness",
+  },
 ];
 
 /**
  *  where we define the nodes and edges of our flow
  *  1. also including how nodes are connected
- * 
- * 
+ *
+ *
  * ! A question is:  what events triggers onNodesChange and onEdgesChange, onConnect?
- * 
- * 
+ *
+ *
  * @returns
  */
 

@@ -3,39 +3,61 @@ import {
   Position,
   useNodesData,
   useHandleConnections,
+  useReactFlow,
 } from "@xyflow/react";
 import { useEffect, useState } from "react";
 
 /**
  * an intermediate node that receives the RGB values and displays the color
+ * 
+ * ! the props of this custom node is from the data prop in the initialNodes
+ *  @props id: the id of this node instance
+ *  @props data: the data of this node instance
  *
  */
-function ColorPreview() {
-  const [color, setColor] = useState({ r: 0, g: 0, b: 0 });
+function ColorPreview({ id, data }) {
+  const { updateNodeData } = useReactFlow();
 
   return (
     <div
       className="node"
       style={{
-        background: `rgb(${color.r}, ${color.g}, ${color.b})`,
+        background: data.value
+          ? `rgb(${data.value.r}, ${data.value.g}, ${data.value.b})`
+          : "rgb(0, 0, 0)",
       }}
     >
-      {/* for id = red node, if its value gets changed, also update the color state */}
+      <span>{data.label}</span>
+      <span>{data.value.r}, {data.value.g}, {data.value.b}</span>
+      {/* for id = red node, if its value gets changed, also update node with id 's data  */}
       <CustomHandle
         id="red"
         label="R"
-        onChange={(value) => setColor((c) => ({ ...c, r: value }))}
+        onChange={(value) => {
+          updateNodeData(id, (node) => {
+            return { value: { ...node.data.value, r: value } };
+          });
+        }}
       />
       <CustomHandle
         id="green"
         label="G"
-        onChange={(value) => setColor((c) => ({ ...c, g: value }))}
+        onChange={(value) => {
+          updateNodeData(id, (node) => {
+            return { value: { ...node.data.value, g: value } };
+          });
+        }}
       />
       <CustomHandle
         id="blue"
         label="B"
-        onChange={(value) => setColor((c) => ({ ...c, b: value }))}
+        onChange={(value) => {
+          updateNodeData(id, (node) => {
+            return { value: { ...node.data.value, b: value } };
+          });
+        }}
       />
+      <Handle type="source" position={Position.Right} id="output" />
     </div>
   );
 }
