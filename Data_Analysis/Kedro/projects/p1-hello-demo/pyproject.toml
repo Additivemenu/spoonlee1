@@ -1,0 +1,34 @@
+[build-system]
+requires = [ "setuptools",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "p1_hello_demo"
+readme = "README.md"
+dynamic = [ "dependencies", "version",]
+
+[project.scripts]
+p1-hello-demo = "p1_hello_demo.__main__:main"
+
+[tool.kedro]
+package_name = "p1_hello_demo"
+project_name = "p1-hello-demo"
+kedro_init_version = "0.19.7"
+tools = [ "None",]
+example_pipeline = "False"
+source_dir = "src"
+
+[project.entry-points."kedro.hooks"]
+
+[tool.setuptools.dynamic.dependencies]
+file = "requirements.txt"
+
+[tool.setuptools.dynamic.version]
+attr = "p1_hello_demo.__version__"
+
+[tool.setuptools.packages.find]
+where = [ "src",]
+namespaces = false
+
+[tool.kedro_telemetry]
+project_id = "ca6e8016dbd747978daed0b8acbaeac1"
