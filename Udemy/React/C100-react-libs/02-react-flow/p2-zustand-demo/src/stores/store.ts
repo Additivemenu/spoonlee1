@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { addEdge, applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
 
+import { devtools } from "zustand/middleware";
+
 import initialNodes from "../constants/nodes";
 import initialEdges from "../constants/edges";
 import { AppState, ColorNode, AppNode } from "../types/types";
@@ -17,43 +19,47 @@ function isColorChooserNode(node: AppNode): node is ColorNode {
  * -> we are planning to use zustand to manage the state of the nodes and edges
  *
  * better use zustand devtools to inspect the store and see the changes
+ * + https://stackoverflow.com/questions/74223036/how-to-use-zustand-devtools-with-typescript
+ * + https://github.com/pmndrs/zustand#redux-devtools
  */
-const useStore = create<AppState>((set, get) => ({
-  nodes: initialNodes,
-  edges: initialEdges,
-  onNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges(changes, get().nodes),
-    });
-  },
-  onEdgesChange: (changes) => {
-    set({
-      edges: applyEdgeChanges(changes, get().edges),
-    });
-  },
-  onConnect: (connection) => {
-    set({
-      edges: addEdge(connection, get().edges),
-    });
-  },
-  setNodes: (nodes) => {
-    set({ nodes });
-  },
-  setEdges: (edges) => {
-    set({ edges });
-  },
-  updateNodeColor: (nodeId, color) => {
-    set({
-      nodes: get().nodes.map((node) => {
-        if (node.id === nodeId && isColorChooserNode(node)) {
-          // it's important to create a new object here, to inform React Flow about the cahnges
-          return { ...node, data: { ...node.data, color } };
-        }
+const useStore = create<AppState>()(
+  devtools((set, get) => ({
+    nodes: initialNodes,
+    edges: initialEdges,
+    onNodesChange: (changes) => {
+      set({
+        nodes: applyNodeChanges(changes, get().nodes),
+      });
+    },
+    onEdgesChange: (changes) => {
+      set({
+        edges: applyEdgeChanges(changes, get().edges),
+      });
+    },
+    onConnect: (connection) => {
+      set({
+        edges: addEdge(connection, get().edges),
+      });
+    },
+    setNodes: (nodes) => {
+      set({ nodes });
+    },
+    setEdges: (edges) => {
+      set({ edges });
+    },
+    updateNodeColor: (nodeId, color) => {
+      set({
+        nodes: get().nodes.map((node) => {
+          if (node.id === nodeId && isColorChooserNode(node)) {
+            // it's important to create a new object here, to inform React Flow about the cahnges
+            return { ...node, data: { ...node.data, color } };
+          }
 
-        return node;
-      }),
-    });
-  },
-}));
+          return node;
+        }),
+      });
+    },
+  }))
+);
 
 export default useStore;
