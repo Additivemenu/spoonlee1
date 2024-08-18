@@ -15,3 +15,4 @@ def process_data(data: pd.DataFrame) -> pd.DataFrame:
 
 def save_data(data: pd.DataFrame, filepath: str) -> None:
     data.to_csv(filepath, index=False)
+  
