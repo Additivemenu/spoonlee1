@@ -16,10 +16,10 @@ export default function FindEventSection() {
    */
   const { data, isLoading, isError, error } = useQuery({
     // ! dynamic query key -> react-query will refetch the data when the query key changes
-    queryKey: ["events", { search: searchTerm }],  // used internally by react-query to identify the query for caching ... 
-    queryFn: ({ signal }) => {
+    queryKey: ["events", { searchTerm: searchTerm }], // used internally by react-query to identify the query for caching ...
+    queryFn: ({ signal, queryKey }) => {
       // react-query by default passes some arguments to the queryFn, like queryKey, signal...
-      return fetchEvents({ signal, searchTerm });
+      return fetchEvents({ signal, ...queryKey[1] });
     },
     enabled: searchTerm !== undefined, // ! note this! we set searchTerm to undefined initially, so that the query is not enabled initially; but even if the searchTerm is set to "", then the query is enabled
   });

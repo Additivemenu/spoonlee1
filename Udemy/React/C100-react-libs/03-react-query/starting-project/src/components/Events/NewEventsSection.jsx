@@ -7,8 +7,10 @@ import { fetchEvents } from "../../util/http.js";
 
 export default function NewEventsSection() {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["events"], // used internally by react-query to identify the query for caching ...
-    queryFn: fetchEvents,  // ! react-query by default passes some arguments to the queryFn, like queryKey, queryClient, etc.
+    queryKey: ["events", { max: 3 }], // used internally by react-query to identify the query for caching ...
+    queryFn: ({ signal, queryKey }) => {
+      return fetchEvents({ signal, ...queryKey[1] });
+    }, // ! react-query by default passes some arguments to the queryFn, like queryKey, queryClient, etc.
     staleTime: 5000, // this is default 0, which means it will always refetch the data even with the cache in use, we now set it to 5 s so that it will refetch the data after 5 minutes
     // gcTime: 1000  // garbage collection time, actually the TTL of the cached data
   });
