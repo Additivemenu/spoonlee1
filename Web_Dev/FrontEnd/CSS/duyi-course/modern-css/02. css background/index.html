@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        .box {
-            width: 400px;
-            height: 400px;
-            margin: 0 auto;
-            background-color: #f00;
-            background-image: url(./assets/chai.webp), url(./assets/chai2.webp);
-            background-repeat: no-repeat;
-        }
+      .box {
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+
+        background-color: #f00; /* 背景色在最后一层, 被背景图片压着 */
+        background-image: url(./assets/chai.webp), url(./assets/chai2.webp); /* [{}, {}, {}] 写法*/
+        background-repeat: no-repeat; /* 默认是重复铺满且裁剪的*/
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="box"></div>
-</body>
+  </body>
 </html>
