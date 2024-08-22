@@ -11,11 +11,14 @@
         /* background-color: #fca; */
         border: 20px solid #fac;
         margin: 100px 0 0 100px;
+
+        /* border-image 同样 composite css property */
         /* border-image: url(./assets/border-img.jpg) 33.3%; */
         border-image-source: url(./assets/border-img.jpg);
-        border-image-slice: 33.3% 33.3%;
+        border-image-slice: 33.3% 33.3%; /*  决定九宫格怎么切的 --> slice the image provided by border-image-source, not element*/
         border-image-width: 20px;
         /* border-image-outset: 20px; */
+        
         /* border-width */
         border-image-repeat: space;
       }

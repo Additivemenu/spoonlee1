@@ -10,7 +10,10 @@
         height: 200px;
         background-color: #f20;
         margin: 0 auto;
-        box-shadow: inset 0px 0px 0 10px #0f0, 0px 0px 0 20px #00f;
+
+        /* 同样 composite css property, 且可以定义多个box-shadow --> 可以拿来做多边框 */
+        /* shadow可内(inset)可外, 即shadow是出现在border之内还是之外 */
+        box-shadow: inset 100px 100px 0 10px #0f0, 0px 0px 0 20px #00f;
         /* box-shadow:(inset) 水平偏移量 垂直偏移量 模糊半径 扩张半径 阴影颜色*/
       }
     </style>
