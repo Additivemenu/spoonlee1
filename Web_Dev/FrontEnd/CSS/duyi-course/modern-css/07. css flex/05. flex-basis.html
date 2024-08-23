@@ -16,30 +16,45 @@
         /* white-space: nowrap; */
       }
       .flex-item-1 {
-        flex-basis: fit-content;
+        flex-basis: 100px;
         width: 120px;
         background-color: #f00;
+      }
+      .flex-item-2 {
+        flex-basis: 100px;
+        width: 110px;
+        background-color: #0f0;
+      }
+      .flex-item-3 {
+        flex-basis: 100px;
+        width: 80px;
+        background-color: #00f;
       }
     </style>
   </head>
   <body>
     <div class="flex-box">
-      <div class="flex-item-1">设置width=120px，设置flex-basis=100px</div>
+      <div class="flex-item-1">设置width=120px, 设置flex-basis=100px</div>
+      <div class="flex-item-2">设置width=110px, 设置flex-basis=100px</div>
+      <div class="flex-item-3">设置width=80px, 设置flex-basis=100px</div>
     </div>
     <!-- 
         内容尺寸
-        flex设置的基础尺寸
+        flex设置的基础尺寸 (flex-basis)
         width
+
         max(min(width, 内容尺寸), flex-basis);
         max(min(120, 117.8), 100);  117.8
         max(min(110, 117.8), 100); 100
         max(min(80, 117.8), 100);  100
+
+
         flex-basis: auto;
         flex-grow:
         flex-shrink:
 
-        flex: 0 1 auto;
-         min-width/max-width》弹性尺寸（flex-grow, flex-shrink）》元素尺寸
+        flex: 0 1 auto;  /* 简写 */
+         min-width/max-width > 弹性尺寸（flex-grow, flex-shrink） >  元素尺寸
      -->
   </body>
 </html>

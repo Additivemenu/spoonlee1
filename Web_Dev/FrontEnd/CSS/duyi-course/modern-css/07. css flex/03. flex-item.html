@@ -12,10 +12,9 @@
         width: 500px;
         height: 500px;
         margin: 0 auto;
+
         display: flex;
-        flex-wrap: wrap;
-        /* align-items: center; */
-        align-content: flex-start;
+        align-items: center;
         border: 2px dashed #fac;
       }
       .flex-item {
@@ -25,6 +24,7 @@
       }
       .flex-item:nth-of-type(1) {
         background-color: #fca;
+        align-self: stretch;
       }
       .flex-item:nth-of-type(2) {
         background-color: #fac;
@@ -45,17 +45,18 @@
   </head>
   <body>
     <div class="flex-box"></div>
+
     <script>
-      const flexBox = document.querySelector('.flex-box');
-      const arr = [-1, -6, 2, 5, 8, -3];
+      const flexBox = document.querySelector(".flex-box");
+      const arr = [-1, -6, 2, 5, 8, -3]; // order this array
       arr.forEach((item, index) => {
-        const ele = document.createElement('div');
+        const ele = document.createElement("div");
         ele.innerText = item;
+
         flexBox.appendChild(ele);
         ele.style.order = item;
-        ele.className = 'flex-item';
-
-      })
+        ele.className = "flex-item";
+      });
     </script>
   </body>
 </html>
