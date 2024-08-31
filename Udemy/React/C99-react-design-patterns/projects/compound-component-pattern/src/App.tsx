@@ -5,6 +5,7 @@ import DropdownList from "./components/Dropdown-Select/DropdownList";
 import DropdownOption from "./components/Dropdown-Select/DropdownOption";
 import "./App.css";
 import CheckboxCardsDemo from "./components/CheckboxCards-Select";
+import MultiSelectPage from "./components/Multi-Select/page";
 
 const App: FunctionComponent = () => {
   return (
@@ -25,6 +26,10 @@ const App: FunctionComponent = () => {
 
       <div style={{ border: "1px solid black", marginTop: "40px" }}>
         <CheckboxCardsDemo />
+      </div>
+
+      <div style={{ border: "1px solid black", marginTop: "40px" }}>
+        <MultiSelectPage />
       </div>
     </div>
   );
