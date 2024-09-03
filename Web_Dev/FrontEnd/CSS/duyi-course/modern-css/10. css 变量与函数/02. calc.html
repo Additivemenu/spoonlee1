@@ -5,42 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      /* .box {
+      /* calc() 为css提供了动态性, 灵活性, 尤其js同时还可以控制css变量 */
+
+      .box {
+        width: calc(
+          100px + 100px
+        ); /* 加减中间得有空格, 不然不认识. 此外表达式里加减时单位得统一了 (js里倒没有单位的概念) */
+        height: 200px;
+        background-color: skyblue;
+      }
+      /*
+        单位统一且有效
+        1. 加减时单位必须一致
+            100px + 100px
+            100px - 100px
+        2. 乘除时单位必须一致
+            100px * 2
+            100px / 2
+        */
+
+      .box2 {
         display: flex;
         gap: 20px;
         width: 500px;
         height: 500px;
         background-color: yellowgreen;
-        position: absolute;
-        left: calc(50% - 250px);
-        top: calc(50% - 250px);
-      } */
-      .item {
+
+        position: absolute; /* 使得box2相对于浏览器定位 */
+        top: calc(50% - 250px); /*居中*/
+        left: calc(50% - 250px); /*居中*/
+      }
+      .box2 .item {
         height: 100px;
         background-color: skyblue;
-        flex-basis: calc((100% - 40px) / 3);
+        flex-basis: calc((100% - 40px) / 3); /* 加减符空格隔开, 不然不认识 */
       }
-      a::after{
-        content: '('attr(href)')'
+
+      a::after {
+        content: "(" attr(href) ")"; /* attr() 可以获取元素的属性值 */
       }
-      .box {
+
+      .box3 {
         height: 100px;
         background-color: #fac;
-        width: clamp(400px, 50%, 600px);
+        width: max(500px, 50%);
       }
     </style>
   </head>
   <body>
-    <!-- <div class="box">
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-    </div> -->
-    <!-- <a href="https://www.baidu.com">淘宝一下</a> -->
-    <!-- attr -->
-    <!-- min(num1, num2, num3 ....) max clamp -->
-    <!-- 10, 20, 30 -->
-    <!-- max(10, min(20, 30)) clamp(10, 20, 30)-->
     <div class="box"></div>
+    <div class="box2">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+
+    <!-- attr -->
+    <a href="https://www.google.com">google</a>
+
+    <!-- css 区间取值函数 -> 为responsive设计提供了更多可能性: 
+        min(num1, num2, num3 ...) 
+        max 
+        clamp(10, 20, 30)  相当于 max(10, min(20, 30)), 如果在10-30之间就取20, 否则取10或30; 更精确的描述是 clamp() 确保输出在 min 和 max 之间，并返回 value 或它的边界值
+    -->
+    <div class="box3"></div>
   </body>
 </html>

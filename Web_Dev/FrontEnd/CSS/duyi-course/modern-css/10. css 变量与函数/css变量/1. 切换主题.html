@@ -12,7 +12,7 @@
         text-align: center;
         color: var(--color);
         background-color: var(--bg);
-        transition: all .3s;
+        transition: all 0.3s;
       }
       .light-theme {
         --color: #fac;
@@ -26,9 +26,12 @@
   </head>
   <body>
     <div class="box dark-theme">主题</div>
+
     <script>
       const box = document.querySelector(".box");
+
       box.addEventListener("click", (e) => {
+        // class name 也代表一种状态
         box.classList.toggle("dark-theme");
         box.classList.toggle("light-theme");
       });

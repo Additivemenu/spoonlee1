@@ -8,25 +8,35 @@
       .box {
         width: 300px;
         height: 300px;
+
+        /* 居中 */
         position: absolute;
         left: calc(50% - 150px);
         top: calc(50% - 150px);
       }
       .item {
+        /* 时钟上的一个刻度的形状 */
         width: 8px;
         height: 25px;
         background-color: #000;
         border-radius: 8px;
+
+        /* 居中 */
         position: absolute;
         left: calc(50% - 4px);
+
         transform-origin: 0 150px;
-        transform: rotateZ(calc(var(--index) * var(--base-deg)));
-        animation: animate var(--time) linear infinite;
-        /* 利用延迟实现动画交替完成 */
-        animation-delay: calc(var(--index) * 0.05s - var(--time) / 2);
+        transform: rotateZ(
+          calc(var(--index) * var(--base-deg))
+        ); /* 决定一个刻度形状元素的位置 */
+
+        animation: light-on-off var(--time) linear infinite; /*一个刻度形状的亮灭动画*/
+        animation-delay: calc(
+          var(--index) * 0.05s - var(--time) / 2
+        ); /* 利用延迟实现动画交替完成, 实现亮灭的传递视觉效果 */
       }
 
-      @keyframes animate {
+      @keyframes light-on-off {
         0%,
         50% {
           background: #050c09;
@@ -45,12 +55,16 @@
     <div class="box">
       <div class="item"></div>
     </div>
+
     <script>
       const ITEM_NUM = 30;
       const baseDeg = 360 / ITEM_NUM;
+
       const box = document.querySelector(".box");
       box.style.setProperty("--time", `${ITEM_NUM * 0.1}s`);
       box.style.setProperty("--base-deg", `${baseDeg}deg`);
+
+      /* js 动态产生 刻度形状 元素*/
       for (let i = 0; i < ITEM_NUM; i++) {
         const div = document.createElement("div");
         div.classList.add("item");

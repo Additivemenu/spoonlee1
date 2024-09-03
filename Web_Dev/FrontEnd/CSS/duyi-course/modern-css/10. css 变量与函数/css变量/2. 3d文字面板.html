@@ -21,8 +21,9 @@
         padding: 20px 30px;
         color: #fff;
         background-image: linear-gradient(to right, skyblue, #e111ac);
+
         transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-        transition: transform .3s ease;
+        transition: transform 0.3s ease;
       }
     </style>
   </head>
@@ -33,16 +34,17 @@
     <script>
       const innerBox = document.querySelector(".inner");
       const rect = innerBox.getBoundingClientRect();
+
       innerBox.onmousemove = function (e) {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        innerBox.style.setProperty("--rx", `${-(y - rect.height / 2)}deg`);
-        innerBox.style.setProperty("--ry", `${(x - rect.width / 2)/15}deg`);
+        innerBox.style.setProperty("--rx", `${-(y - rect.height / 2)}deg`); // amazing! js 和 css variable 结合了, 通过js来控制css变量的值
+        innerBox.style.setProperty("--ry", `${(x - rect.width / 2) / 15}deg`);
       };
-      innerBox.onmouseleave = function(e) {
-        innerBox.style.setProperty('--rx', 0)
-        innerBox.style.setProperty('--ry', 0)
-      }
+      innerBox.onmouseleave = function (e) {
+        innerBox.style.setProperty("--rx", 0);
+        innerBox.style.setProperty("--ry", 0);
+      };
     </script>
   </body>
 </html>

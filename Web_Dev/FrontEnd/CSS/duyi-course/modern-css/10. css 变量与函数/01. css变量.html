@@ -6,30 +6,33 @@
     <title>Document</title>
     <style>
       .box {
-        --dir: to right;
+        --dir: to right; /* css 变量 (css 自定义变量). css没有数据类型 */
         --start-color: skyblue 50%;
         --end-color: #fac 50%;
 
-        color: var(--what, #0f0);
+        color: var(--what, #0f0); /* 使用css变量 */
         font-size: var(--what);
         width: 100px;
         height: 100px;
+
         background-image: linear-gradient(
           var(--dir),
           var(--start-color),
           var(--end-color)
         );
+
         --ab: 20px;
-        --abc: var(--ab);
+        --abc: var(--ab); /*将一个css变量赋值给另一个css变量*/
         font-size: var(--abc);
-        --color: red;
-        --size:30;
+        --color: red; /*!*/
+        --size: 30;
       }
       :root {
-        --color: #fac !important;
+        /* 在这里定义css全局变量, :root代指html */
+        --color: #fac !important; /*!*/
       }
       .bar {
-        color: var(--color);
+        color: var(--color); /*继承自父级html 选择器里的--color变量*/
         font-size: calc(var(--size) * 1px);
       }
     </style>
