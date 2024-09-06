@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-
 const content = [
   {
     title: "C1-framer-motion",
@@ -26,13 +25,16 @@ const content = [
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h2 className="text-red-500"> try to keep each page as independent as possible</h2>
+    <>
+      <h2 className="text-red-500">
+        {" "}
+        try to keep each page as independent as possible
+      </h2>
       {content.map((item) => (
         <Link key={item.title} href={item.path}>
           <h1 className="text-2xl font-bold">{item.title}</h1>
         </Link>
       ))}
-    </main>
+    </>
   );
 }
