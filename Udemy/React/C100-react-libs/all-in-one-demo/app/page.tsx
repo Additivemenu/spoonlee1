@@ -1,6 +1,17 @@
 import Link from "next/link";
 
-const content = [
+type ContentItem = {
+  title: string;
+  path: string;
+  style?: string;
+};
+
+const content: ContentItem[] = [
+  {
+    title: "C0: error boundary",
+    path: "/C0-error-boundary/",
+    style: "text-red-500 underline",
+  },
   {
     title: "C1-framer-motion",
     path: "/C1-framer-motion/",
@@ -20,6 +31,7 @@ const content = [
   {
     title: "C5-react-hook-form-zod",
     path: "/C5-react-hook-form-zod/",
+    style: "text-red-500 underline",
   },
 ];
 
@@ -32,7 +44,9 @@ export default function Home() {
       </h2>
       {content.map((item) => (
         <Link key={item.title} href={item.path}>
-          <h1 className="text-2xl font-bold">{item.title}</h1>
+          <h1 className={`text-2xl font-bold ${item.style ?? ""}`}>
+            {item.title}
+          </h1>
         </Link>
       ))}
     </>
