@@ -17,7 +17,10 @@ const ExcelSheetSplitter: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
+        const workbook = XLSX.read(data, {
+          type: "array",
+          cellDates: true, // ensure dates are parsed as dates, instead of reading it as serial number
+        });
 
         const sheetFilesArray: SheetFile[] = workbook.SheetNames.map(
           (sheetName) => {
