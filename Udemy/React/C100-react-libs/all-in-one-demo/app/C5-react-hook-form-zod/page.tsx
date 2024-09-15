@@ -13,6 +13,10 @@ const demos = [
     title: "Demo 2: Pagination + Filtering Form",
     path: "/demo2/",
   },
+  {
+    title: "Demo 3: recipe form", // https://claritydev.net/blog/managing-forms-with-react-hook-form
+    path: "/demo3/",
+  },
 ];
 
 export default function ComplexForm() {
