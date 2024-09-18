@@ -1,0 +1,13 @@
+"use strict";
+let width = 100;
+width = '100%';
+let color1 = 'red';
+let color2 = 'blue';
+let color3 = 'green';
+const person1 = { name: 'John', score: 100 };
+const person2 = { name: 'Jane', age: 35, subject: 'Math' };
+const person3 = { name: 'Tom', score: 90, age: 40, subject: 'Science' };
+// const person4: Person = { name: "jack" };
+console.log(person3.name);
+console.log(person3.age);
+console.log(person3.score);
