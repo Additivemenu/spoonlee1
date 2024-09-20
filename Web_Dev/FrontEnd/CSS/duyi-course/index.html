@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- overwriting default style of a checkbox input: mainly by css pseudo class-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .mycheckmark {
+        appearance: none; /* hide its default appearance*/
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #000;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .mycheckmark:checked {
+        background-color: #fff;
+      }
+
+      .mycheckmark::before,
+      .mycheckmark::after {
+        content: "";
+        position: absolute;
+        background-color: #000;
+        transition: all 0.3s ease;
+      }
+
+      /* Down arrow (unchecked state) */
+      .mycheckmark::before {
+        top: 2px;
+        left: 50%;
+        width: 2px;
+        height: 12px;
+        transform: translateX(-50%);
+      }
+
+      .mycheckmark::after {
+        bottom: 2px;
+        left: 4px;
+        width: 12px;
+        height: 2px;
+      }
+
+      /* Up arrow (checked state) */
+      .mycheckmark:checked::before {
+        top: 6px;
+        height: 8px;
+      }
+
+      .mycheckmark:checked::after {
+        bottom: 6px;
+        left: 4px;
+        width: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="checkbox" class="mycheckmark" />
+
+    <script>
+      const mycheckmark = document.querySelector(".mycheckmark");
+
+      mycheckmark.addEventListener("change", function () {
+        if (this.checked) {
+          this.style.borderColor = "red";
+          alert("checked");
+        } else {
+          this.style.borderColor = "black";
+        }
+      });
+    </script>
+  </body>
+</html>
