@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .app {
+        inset: 0;
+        width: 100vw;
+        height:100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .loading-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: rgba(240, 248, 255, 0.8);
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 8px solid #f2f6f8;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        width: fit-content;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top-color: #20b2aa; /* Turquoise color */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .loading-text {
+        color: #20b2aa;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div className="app">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <span class="loading-text">Loading .....</span>
+      </div>
+    </div>
+  </body>
+</html>

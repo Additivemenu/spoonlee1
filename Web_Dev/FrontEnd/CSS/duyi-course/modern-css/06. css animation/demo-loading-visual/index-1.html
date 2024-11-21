@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .loading-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: rgba(240, 248, 255, 0.8);
+        padding: 8px 16px;
+        border-radius: 999px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        width: fit-content;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+      }
+
+      .spinner-circle {
+        stroke-dasharray: 126; /* Circumference of the circle */
+        stroke-dashoffset: 85; /* Controls how much of the circle is shown */
+        transform-origin: center;
+        animation: spin 1s linear infinite;
+      }
+
+      .loading-text {
+        color: #20b2aa;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-container">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <defs>
+          <linearGradient id="spinnerGradient" gradientTransform="rotate(90)">
+            <stop offset="0%" stop-color="#20B2AA" stop-opacity="1" />
+            <stop offset="100%" stop-color="#20B2AA" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <circle
+          class="spinner-circle"
+          cx="25"
+          cy="25"
+          r="20"
+          stroke="url(#spinnerGradient)"
+          fill="none"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </svg>
+      <span class="loading-text">Loading .....</span>
+    </div>
+  </body>
+</html>

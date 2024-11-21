@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Worker Example</title>
+    <style>
+      .container {
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+
+      #spinner {
+        width: 50px;
+        height: 50px;
+        background-color: #3498db;
+        margin: 20px 0;
+        animation: rotate 2s linear infinite;
+      }
+
+      /* Animation will run continuously to show UI is responsive */
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #2ecc71;
+        border: none;
+        color: white;
+        border-radius: 4px;
+      }
+
+      button:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      .status {
+        margin-top: 10px;
+        color: #7f8c8d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Web Worker Demo</h2>
+      <button id="startButton" onclick="startCalculation()">
+        Start Heavy Calculation
+      </button>
+      <div class="status">Status: <span id="statusText">Ready</span></div>
+      <div id="spinner"></div>
+      <div id="result"></div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
