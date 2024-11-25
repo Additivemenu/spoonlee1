@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        var obj = {
-            a: 1,
-            b: 2,
-            [Symbol.iterator]() {
-                const keys = Object.keys(this);
-                let i = 0;
-                return {
-                    next: () => {
-                        const propName = keys[i];
-                        const propValue = this[propName];
-                        const result = {
-                            value: {
-                                propName,
-                                propValue
-                            },
-                            done: i >= keys.length
-                        }
-                        i++;
-                        return result;
-                    }
-                }
-            }
-        }
+      // 实现一个自定义的可迭代对象, 取出对象的key-value pair
+      let obj = {
+        a: 1,
+        b: 2,
+        // ! 可迭代协议(就像implements interface):
+        [Symbol.iterator]() {
+          const keys = Object.keys(this);
+          let i = 0;
+          return {
+            next: () => {
+              const propName = keys[i];
+              const propValue = this[propName];
+              const result = {
+                value: {
+                  propName,
+                  propValue,
+                },
+                done: i >= keys.length,
+              };
+              i++;
+              return result;
+            },
+          };
+        },
+      };
 
-        const arr = [...obj];
-        console.log(arr);
+      // for of loop, 本质也是调用迭代器对象的next方法
+      for (const item of obj) {
+        console.log(item);
+      }
 
-        function test(a, b) {
-            console.log(a, b)
-        }
+      // spread operator with iterator:
+      const arr = [...obj]; //解构iterable obj为数组
+      console.log(arr);
 
-        test(...obj);
+      function test(a, b) {
+        console.log(a, b);
+      }
+      test(...obj); // 感觉像python的写法 -> 解构obj为positional arguments
     </script>
-</body>
-
+  </body>
 </html>

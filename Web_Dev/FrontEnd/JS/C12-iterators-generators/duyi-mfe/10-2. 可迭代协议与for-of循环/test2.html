@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        const arr = [5, 7, 2, 3, 6];
-
-
-        // const iterator = arr[Symbol.iterator]();
-        // let result = iterator.next();
-        // while (!result.done) {
-        //     const item = result.value; //取出数据
-        //     console.log(item);
-        //     //下一次迭代
-        //     result = iterator.next();
-        // }
-
-        for (const item of arr) {
-            console.log(item)
+      {
+        const arr = [5, 7, 2, 3, 6]; // JS array 是可迭代对象, 满足可迭代协议
+        const iterator = arr[Symbol.iterator](); // 返回arr的迭代器对象;
+        let result = iterator.next();
+        while (!result.done) {
+          const item = result.value; //取出数据
+          console.log("array iterator: ", item);
+          //下一次迭代
+          result = iterator.next();
         }
-    </script>
-</body>
 
+        // for of 循环: ES6 syntactic sugar for iterator
+        for (const item of arr) {
+          console.log("for of: ", item);
+        }
+      }
+    </script>
+  </body>
 </html>
