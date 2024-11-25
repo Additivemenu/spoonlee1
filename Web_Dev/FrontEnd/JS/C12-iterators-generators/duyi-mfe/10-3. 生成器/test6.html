@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        function* t1(){
-            yield "a"
-            yield "b"
-        }
+      function* t1() {
+        yield "a";
+        yield "b";
+      }
 
-        function* test() {
-            yield* t1();
-            yield 1;
-            yield 2;
-            yield 3;
-        }
+      function* test() {
+        yield* t1(); // 调用其他生成器函数, 其内部的代码也会参与本生成器的迭代, 实现一个迭代的嵌套
 
-        const generator = test();
+        yield 1;
+        yield 2;
+        yield 3;
+      }
+
+      const generator = test();
+
+      /*
+      generator.next()
+    {value: 'a', done: false}
+    generator.next()
+    {value: 'b', done: false}
+    generator.next()
+    {value: 1, done: false}
+    generator.next()
+    {value: 2, done: false}
+    generator.next()
+    {value: 3, done: false}
+    generator.next()
+    {value: undefined, done: true}
+      
+      */
     </script>
-</body>
-
+  </body>
 </html>

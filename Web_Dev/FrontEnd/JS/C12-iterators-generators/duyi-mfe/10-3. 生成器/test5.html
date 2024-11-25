@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        function* test() {
-            console.log("函数开始")
+      function* test() {
+        console.log("函数开始");
 
-            let info = yield 1;
-            console.log(info)
-            info = yield 2 + info;
-            console.log(info)
-        }
+        let info = yield 1; // ! info不是1, 而是yield表达式的返回值, 这使得生成器和生成函数内部可以不断交互, 大大提高灵活性
+        console.log(info);
+        info = yield 2 + info;
+        console.log(info);
+      }
 
-        const generator = test();
+      const generator = test();
     </script>
-</body>
-
+  </body>
 </html>
