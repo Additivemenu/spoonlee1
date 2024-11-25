@@ -1,53 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        function* task() {
-            const d = yield 1;
-            console.log(d)
-            // //d : 1
-            const resp = yield fetch("http://101.132.72.36:5100/api/local")
-            const result = yield resp.json();
-            console.log(result);
-        }
+      // ! task generator
+      function* task() {
+        // 想要实现的结果, 有点像async/await (async/await其实也是基于类似的思路)
+        // 这个是有点用的, async/await发布于ES7, iterator/generator发布于ES6, 可以用generator在ES6中实现类似async/await的功能
 
-        run(task)
+        // 同步任务
+        const d = yield 1;
+        console.log(d); // //d : 1
 
-        function run(generatorFunc) {
-            const generator = generatorFunc();
-            let result = generator.next(); //启动任务（开始迭代）, 得到迭代数据
+        // 异步任务
+        const resp = yield fetch("http://101.132.72.36:5100/api/local");
+        const result = yield resp.json();
+        console.log(result);
+      }
+
+      run(task);
+
+      function run(generatorFunc) {
+        const generator = generatorFunc();
+
+        let result = generator.next(); //启动任务（开始迭代）, 得到迭代数据
+
+        handleResult();
+        //对result进行处理
+        function handleResult() {
+          if (result.done) {
+            return; //迭代完成，不处理
+          }
+
+          //迭代没有完成，分为两种情况
+          //1. 迭代的数据是一个Promise
+          //2. 迭代的数据是其他数据
+          if (typeof result.value.then === "function") {
+            //1. 迭代的数据是一个Promise
+            //等待Promise完成后，再进行下一次迭代
+            result.value.then((data) => {
+              result = generator.next(data);
+              handleResult();
+            });
+          } else {
+            //2. 迭代的数据是其他数据，直接进行下一次迭代
+            result = generator.next(result.value);
             handleResult();
-            //对result进行处理
-            function handleResult() {
-                if (result.done) {
-                    return; //迭代完成，不处理
-                }
-                //迭代没有完成，分为两种情况
-                //1. 迭代的数据是一个Promise
-                //2. 迭代的数据是其他数据
-                if (typeof result.value.then === "function") {
-                    //1. 迭代的数据是一个Promise
-                    //等待Promise完成后，再进行下一次迭代
-                    result.value.then(data => {
-                        result = generator.next(data)
-                        handleResult();
-                    })
-                } else {
-                    //2. 迭代的数据是其他数据，直接进行下一次迭代
-                    result = generator.next(result.value)
-                    handleResult();
-                }
-            }
+          }
         }
+      }
     </script>
-</body>
-
+  </body>
 </html>
