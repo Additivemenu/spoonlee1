@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MutationObserver Demo</title>
+  </head>
+  <body>
+    <div id="observed-element">Initial content</div>
+    <button id="change-content">Change Content</button>
+    <button id="add-child">Add Child</button>
+    <button id="change-attribute">Change Attribute</button>
+
+    <script>
+      // Select the target element that you want to observe
+      const targetElement = document.getElementById("observed-element");
+
+      // Create an instance of MutationObserver
+      const observer = new MutationObserver((mutationsList, observer) => {
+        console.log("Mutations observed:", mutationsList);
+
+        // Loop through the mutations that occurred
+        // https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord/target
+        for (let mutation of mutationsList) {
+          if (mutation.type === "childList") {
+            console.log("A child node has been added or removed.");
+          } else if (mutation.type === "characterData") {
+            console.log("The text content of a node has changed.");
+          } else if (mutation.type === "attributes") {
+            console.log(
+              `The ${mutation.attributeName} attribute was modified.`,
+            );
+          }
+        }
+      });
+
+      // Configuration of the observer
+      const config = {
+        childList: true, // Observe direct children
+        attributes: true, // Observe attribute changes
+        subtree: true, // Observe all descendants
+        characterData: true, // Observe changes to text nodes
+      };
+
+      // Start observing the target element with the configured settings
+      observer.observe(targetElement, config);
+
+      // Change content when button is clicked to trigger observer
+      document
+        .getElementById("change-content")
+        .addEventListener("click", () => {
+          targetElement.textContent = "The content has changed!";
+        });
+
+      // Add a child element when button is clicked to trigger observer
+      document.getElementById("add-child").addEventListener("click", () => {
+        const newChild = document.createElement("p");
+        newChild.textContent = "This is a new child element.";
+        targetElement.appendChild(newChild);
+      });
+
+      // Change an attribute when button is clicked to trigger observer
+      document
+        .getElementById("change-attribute")
+        .addEventListener("click", () => {
+          targetElement.setAttribute("data-example", "Attribute changed!");
+        });
+    </script>
+  </body>
+</html>
