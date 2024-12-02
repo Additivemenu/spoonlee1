@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      a {
+        color: inherit;
+        /*so in step2 层叠冲突时, 在比较重要性时会取这个作者stylesheet, 而决定下来 a tag的颜色 复制粘贴自其父元素*/
+      }
+      .container {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- a tag is colored in red -->
+      <a href="">baidu</a>
+      <!-- a paragraph is in red -->
+      <p>a paragraph</p>
+    </div>
+  </body>
+</html>
