@@ -13,10 +13,13 @@
     <script>
       const box = document.querySelector(".box");
       const son = document.querySelector(".son");
-      
+
       const mob = new MutationObserver((mutations) => {
+        // TODO: handle DOM mutation logic
         console.log(mutations);
       });
+
+      // ! register the observer
       mob.observe(box, {
         attributes: true,
         // attributeOldValue: true
@@ -25,13 +28,17 @@
         subtree: true,
       });
 
+      // ! when you run below function, it will trigger the observer and get 4 mutation records
       function changeBox() {
-        box.style.color = "red";
-        box.setAttribute("id", "demo");
+        // change attribute
+        box.style.color = "red"; // 1
+        box.setAttribute("id", "demo"); // 2
 
-        box.appendChild(document.createElement("div"));
+        // change childList
+        box.appendChild(document.createElement("div")); // 3
 
-        box.childNodes[0].data = 123;
+        // change characterData
+        box.childNodes[0].data = 123; // 4
       }
     </script>
   </body>

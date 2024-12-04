@@ -48,15 +48,17 @@
         table.tBodies[0].appendChild(tr);
       };
 
-      const mob = new MutationObserver((mutaions) => {
-        console.log("元素发生了变化");
+      // 由此可以实现一个类似reactive的效果, but everything is synchronous (as imperative) unlike in react
+      const mob = new MutationObserver((mutations) => {
+        console.log("元素发生了变化", mutations);
         // 谁变了
-        mutaions.forEach(mutation => {
+        mutations.forEach((mutation) => {
           const target = mutation.target;
-          const trParent=target.parentElement.parentElement;
-          const result = trParent.children[1].innerText * trParent.children[2].innerText;
+          const trParent = target.parentElement.parentElement;
+          const result =
+            trParent.children[1].innerText * trParent.children[2].innerText;
           trParent.children[3].innerText = result;
-        })
+        });
       });
 
       mob.observe(table, {
