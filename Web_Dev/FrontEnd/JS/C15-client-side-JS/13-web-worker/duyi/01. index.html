@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #fac;
+        position: absolute;
+        left: 100px;
+        top: 100px;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <button class="count">点击我进行复杂计算</button>
+
+    <!-- animate the box moving  -->
+    <script src="./assets/run.js"></script>
+
+    <script>
+      // declare a worker to do the heavy lifting
+      const worker = new Worker("./assets/mission.js", {
+        type: "module",
+        name: "worker1",
+      });
+
+      const div = document.querySelector(".count");
+      div.onclick = fn;
+      function fn(e) {
+        worker.postMessage(10); // 通知worker开始计算 10^10
+
+        // worker返回结果
+        worker.onmessage = function (e) {
+          console.log(e.data);
+        };
+
+        // worker 销毁
+        worker.terminate();
+      }
+    </script>
+  </body>
+</html>

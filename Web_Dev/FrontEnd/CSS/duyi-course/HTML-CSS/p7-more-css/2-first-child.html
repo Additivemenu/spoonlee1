@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /*是p element, 同时还是第一个child*/
+      p:first-child {
+        color: red;
+      }
+      p:last-child {
+        color: blue;
+      }
+
+      /*是p element, 同时还是第2n th 个child*/
+      p:nth-child(2n) {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>area</div>
+        <p>段落1</p>
+        <p>段落2</p>
+        <p>段落3</p>
+        <p>段落4</p>
+        <p>段落5</p>
+      </div>
+      <div>
+        <p>段落1</p>
+        <p>段落2</p>
+        <p>段落3</p>
+        <p>段落4</p>
+        <p>段落5</p>
+      </div>
+    </div>
+  </body>
+</html>

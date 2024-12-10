@@ -1,0 +1,11 @@
+/* 参考 demo3效果.html  */
+
+/*1, 5, 9, 13, 17... 左边距为0*/
+.item-list img:nth-child(4n + 1) {
+  margin-left: 0;
+}
+
+/*4, 8, 12, 16, ... 右边距为0*/
+.item-list img:nth-child(4n + 4) {
+  margin-right: 0;
+}

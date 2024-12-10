@@ -1,0 +1,30 @@
+/* 按照 demo2效果.html 实现
+涉及的颜色：
+1. 第一条新闻背景色：ccc，文字色4d2621
+2. 偶数新闻数字的背景色：e5a7b2
+3. 奇数新闻数字的背景色：e9d2da
+*/
+
+.nav a:first-child {
+  background: #ccc;
+  color: #4d2621;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.nav a:first-child span {
+  display: none;
+}
+
+/* 偶数 item */
+.nav a:nth-child(2n) span {
+  background: #e5a7b2;
+}
+
+/* 奇数  item */
+.nav a:nth-child(2n + 1) span {
+  background: #e9d2da;
+}
