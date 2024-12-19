@@ -1,0 +1,12 @@
+### Get all comments for a post
+GET http://localhost:4001/posts/76e33dec/comments
+Accept: application/json
+
+
+### Add a comment to a post
+POST http://localhost:4001/posts/76e33dec/comments
+Content-Type: application/json
+
+{
+  "content": "This is a comment 2 on post 1"
+}
