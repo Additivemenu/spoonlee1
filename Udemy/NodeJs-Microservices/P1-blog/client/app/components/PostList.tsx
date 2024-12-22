@@ -3,18 +3,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CommentCreate from "./comment-create";
-import CommentList from "./comment-list";
+import CommentList, { Comment } from "./comment-list";
 
 interface Post {
   id: string;
   title: string;
+  comments: Comment[];
 }
 
 const PostList = () => {
   const [posts, setPosts] = useState({});
 
   const fetchPost = async () => {
-    const res = await axios.get("http://localhost:4000/posts");
+    const res = await axios.get("http://localhost:4002/posts"); // query service
 
     setPosts(res.data);
   };
@@ -33,7 +34,7 @@ const PostList = () => {
         <div className="">
           <h3>{p.title}</h3>
 
-          <CommentList postId={p.id} />
+          <CommentList comments={p.comments} />
           <CommentCreate postId={p.id} />
         </div>
       </div>

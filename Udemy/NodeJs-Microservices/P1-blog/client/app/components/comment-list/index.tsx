@@ -1,32 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 
 interface CommentListProps {
-  postId: string;
+  comments: Comment[];
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   content: string;
 }
 
-const CommentList = ({ postId }: CommentListProps) => {
-  const [comments, setComments] = useState([]);
-
-  const fetchData = async () => {
-    const res = await axios.get(
-      `http://localhost:4001/posts/${postId}/comments`,
-    );
-
-    setComments(res.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+const CommentList = ({ comments }: CommentListProps) => {
   const renderedComments = comments.map((comment) => {
     const c = comment as Comment;
 
