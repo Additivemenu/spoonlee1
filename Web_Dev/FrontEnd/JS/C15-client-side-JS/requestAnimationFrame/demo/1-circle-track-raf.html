@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 50px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .center-circle {
+        width: 80px;
+        height: 80px;
+        background: #3498db;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .ring {
+        width: 160px;
+        height: 160px;
+        border: 40px solid #e74c3c;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .moving-circle {
+        width: 20px;
+        height: 20px;
+        background: #2ecc71;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="center-circle"></div>
+      <div class="ring"></div>
+      <div class="moving-circle"></div>
+    </div>
+
+    <script>
+      const movingCircle = document.querySelector(".moving-circle");
+      const radius = 100; // Distance from center to middle of the ring
+      let angle = 0;
+      let lastTime = 0;
+      const rotationSpeed = 120; // Degrees per second
+
+      function animate(currentTime) {
+        if (!lastTime) lastTime = currentTime;
+        const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+        lastTime = currentTime;
+
+        // Update angle based on time passed
+        angle += rotationSpeed * deltaTime;
+        if (angle >= 360) angle -= 360;
+
+        // Convert angle to radians for Math.sin/cos
+        const angleRad = (angle * Math.PI) / 180;
+
+        // Calculate new position
+        const x = radius * Math.cos(angleRad);
+        const y = radius * Math.sin(angleRad);
+
+        // TODO: !Apply transform
+        movingCircle.style.transform = `translate(${x}px, ${y}px)`;
+
+        // Request next frame
+        requestAnimationFrame(animate);
+      }
+
+      // Start the animation
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>

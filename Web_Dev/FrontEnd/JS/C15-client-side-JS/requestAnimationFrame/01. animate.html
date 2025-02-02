@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .box,
+      .box1 {
+        width: 100px;
+        height: 100px;
+        background-color: #fac;
+        position: absolute;
+        left: 0;
+      }
+      .box1 {
+        top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">interval</div>
+    <div class="box1">frame</div>
+    <script>
+      // !方式一: setInterval -> 但是callback执行频率和浏览器刷新频率并不总一致 -> 看起来卡顿 不丝滑
+      const box = document.querySelector(".box");
+      let d = 0;
+      const tid = setInterval(function () {
+        d++;
+        box.style.left = d + "px"; // move
+        if (d >= 300) {
+          clearInterval(tid); // close interval
+        }
+      }, 1000 / 60); // 60fps
+
+      // !方式二: requestAnimationFrame -> callback执行频率浏览器刷新频率一致 -> 看起来丝滑
+      const box1 = document.querySelector(".box1");
+      let rd = 0;
+      function run() {
+        rd++;
+        box1.style.left = rd + "px"; // move
+        if (rd === 300) {
+          cancelAnimationFrame(rid); // !close frame
+          return;  // crucial! otherwise, it will keep running
+        }
+        requestAnimationFrame(run); // !schedule next frame
+      }
+      const rid = requestAnimationFrame(run);
+
+  
+    </script>
+  </body>
+</html>

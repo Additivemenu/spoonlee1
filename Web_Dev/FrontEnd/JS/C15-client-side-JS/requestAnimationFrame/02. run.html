@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #fac;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      const box = document.querySelector(".box");
+      // 封装一个运动函数
+      // 动画本质：数据在一段时间内从A变为B
+
+      /**
+       *
+       * @param {number} from: state value starting value
+       * @param {number} to: state value ending value
+       * @param {number} duration: time duration
+       * @param {function} callback: callback function that updates the state value 
+       */
+      function animate(from, to, duration, callback) {
+        const speed = (to - from) / duration;
+        // Date.now();
+        const startTime = Date.now(); // context
+
+        function _run() {
+          const time = Date.now() - startTime; // current time
+
+          // stop condition
+          if (time >= duration) {
+            // box.style.left = to + "px";
+            if (typeof callback === "function") {
+              callback(to);
+            }
+            cancelAnimationFrame(rid);
+            return;
+          }
+
+          // update state value
+          let currentValue = from + speed * time; // state value at current time
+          if (typeof callback === "function") {
+            callback(currentValue); // update state value at current time
+          }
+          requestAnimationFrame(_run); // schedule next frame
+        }
+        const rid = requestAnimationFrame(_run);
+      }
+
+      animate(100, 200, 2000, function (val) {
+        box.style.left = val + "px";
+      });
+      animate(100, 200, 2000, function (val) {
+        box.style.height = val + "px";
+      });
+      animate(100, 200, 2000, function (val) {
+        box.style.top = val + "px";
+      });
+      animate(100, 200, 2000, function (val) {
+        box.style.width = val + "px";
+      });
+      animate(0.2, 1, 2000, function (val) {
+        box.style.opacity = val;
+      });
+    </script>
+  </body>
+</html>
