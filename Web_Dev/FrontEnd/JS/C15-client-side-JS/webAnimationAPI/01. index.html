@@ -16,20 +16,27 @@
     <div class="box"></div>
     <script>
       const box = document.querySelector(".box");
-      //
+
       // 0-9a-z随机数 6位
       // Number.prototype.toString()
       function getColor() {
         return "#" + Math.random().toString(16).slice(2, 8);
       }
       Math.random().toString(16);
+
+
       // Web Animation API
       box.animate(
-        [{ backgroundColor: getColor() }, { backgroundColor: getColor() }],
+        // key frames definition:
+        [
+          { backgroundColor: getColor(), offset: 0.5 },
+          { backgroundColor: getColor(), offset: 1 },
+        ],
+        // animation config:
         {
-          duration: 2000,
+          duration: 5000,
           fill: "forwards",
-        }
+        },
       );
     </script>
   </body>

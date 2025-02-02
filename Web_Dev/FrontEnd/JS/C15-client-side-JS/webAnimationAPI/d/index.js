@@ -8,6 +8,7 @@ function getRandom(max, min) {
 
 const cloudEle = document.querySelector(".cloud");
 
+// 生成 一个 textEle DOM, 且为其绑定animation
 function run() {
   const textEle = document.createElement("div");
   textEle.innerText = randomText();
@@ -19,14 +20,14 @@ function run() {
   const textAnimate = textEle.animate(
     [
       { transform: `translate(${x}px)` },
-      { transform: `translate(${x}px, 290px)`, offset: 0.7 },
-      { transform: `translate(${x}px, 290px)`, offset: 1 },
+      { transform: `translate(${x}px, 290px)`, offset: 0.7 }, // 落地
+      { transform: `translate(${x}px, 290px)`, offset: 1 }, // 再待会儿
     ],
     {
       fill: "forwards",
       duration: time,
       easing: "linear",
-    }
+    },
   );
   textAnimate.play();
   textAnimate.onfinish = function () {
@@ -38,5 +39,3 @@ function run() {
 }
 
 requestAnimationFrame(run);
-
-
