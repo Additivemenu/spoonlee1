@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+      <defs>
+        <!-- Define animations -->
+        <radialGradient id="ballGradient">
+          <stop offset="0%" stop-color="#ff6b6b" />
+          <stop offset="100%" stop-color="#ee5253" />
+        </radialGradient>
+
+        <!-- Bouncing animation -->
+        <animate
+          xlink:href="#ball"
+          attributeName="cy"
+          from="50"
+          to="150"
+          dur="1s"
+          repeatCount="indefinite"
+          values="50; 150; 50"
+          keyTimes="0; 0.5; 1"
+          keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"
+          calcMode="spline"
+        />
+
+        <!-- Shadow animation -->
+        <animate
+          xlink:href="#shadow"
+          attributeName="rx"
+          values="15; 25; 15"
+          dur="1s"
+          repeatCount="indefinite"
+          keyTimes="0; 0.5; 1"
+        />
+        <animate
+          xlink:href="#shadow"
+          attributeName="opacity"
+          values="0.2; 0.5; 0.2"
+          dur="1s"
+          repeatCount="indefinite"
+          keyTimes="0; 0.5; 1"
+        />
+      </defs>
+
+      <!-- Ball shadow -->
+      <ellipse
+        id="shadow"
+        cx="100"
+        cy="160"
+        rx="15"
+        ry="3"
+        fill="#000000"
+        opacity="0.2"
+      />
+
+      <!-- Bouncing ball -->
+      <circle id="ball" cx="100" cy="50" r="20" fill="url(#ballGradient)">
+        <!-- Pulsing animation -->
+        <animate
+          attributeName="r"
+          values="20; 22; 20"
+          dur="1s"
+          repeatCount="indefinite"
+          keyTimes="0; 0.5; 1"
+        />
+      </circle>
+    </svg>
+  </body>
+</html>
