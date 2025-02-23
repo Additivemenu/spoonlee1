@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,13 +9,7 @@ app.use(cors());
 
 const posts = {}; // contains a list of full post with all comments associated
 
-app.get("/posts", (req, res) => {
-  res.send(posts);
-});
-
-app.post("/events", (req, res) => {
-  const { type, data } = req.body;
-
+const handleEvent = (type, data) => {
   // assemble the data structure
   if (type === "PostCreated") {
     const { id, title } = data;
@@ -37,14 +32,31 @@ app.post("/events", (req, res) => {
     });
     comment.status = status;
     comment.content = content;
-
   }
+};
 
-  console.log("query service - current posts:", posts);
+app.get("/posts", (req, res) => {
+  res.send(posts);
+});
 
+app.post("/events", (req, res) => {
+  const { type, data } = req.body;
+
+  handleEvent(type, data);
   res.send({});
 });
 
-app.listen(4002, () => {
+app.listen(4002, async () => {
   console.log("Query Service listening on 4002");
+
+  try {
+    //! query the event bus to get all the events so that we can replay them in case of a failure
+    const res = await axios.get("http://localhost:4005/events");
+    for (let event of res.data) {
+      console.log("Processing event:", event.type);
+      handleEvent(event.type, event.data);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 });

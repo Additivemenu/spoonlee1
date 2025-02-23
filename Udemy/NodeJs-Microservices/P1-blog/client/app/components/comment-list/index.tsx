@@ -17,18 +17,28 @@ const CommentList = ({ comments }: CommentListProps) => {
     const c = comment as Comment;
 
     if (c.status === "pending") {
-      return <li key={c.id}>This comment is awaiting moderation</li>;
+      return (
+        <li className="border border-slate-400 p-2 rounded-md" key={c.id}>
+          This comment is awaiting moderation
+        </li>
+      );
     }
 
     if (c.status === "rejected") {
-      return <li key={c.id}>This comment has been rejected</li>;
+      return (
+        <li className="border border-slate-400 p-2 rounded-md" key={c.id}>
+          This comment has been rejected
+        </li>
+      );
     }
 
-    return (
-      <li key={c.id} className="border border-slate-400 p-2 rounded-md">
-        comment: {c.content}
-      </li>
-    );
+    if (c.status === "approved") {
+      return (
+        <li key={c.id} className="border border-slate-400 p-2 rounded-md">
+          comment: {c.content}
+        </li>
+      );
+    }
   });
 
   return <ul>{renderedComments}</ul>;
