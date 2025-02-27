@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiple Animated Sprites</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .sprite-item {
+        width: 85px;
+        height: 85px;
+        background: url(./img/sprite.jpg) no-repeat;
+        outline: 1px solid #ccc;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .sprite-item:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="sprite-container">
+      <!-- Sprites will be added here dynamically -->
+    </div>
+
+    <script>
+      // Define the sprite positions in a grid
+      // Each position is [x, y] coordinates
+      const spritePositions = [
+        // Row 1
+        [0, 0], // Frog
+        [85, 0], // Panda
+        [170, 0], // Tiger
+        [255, 0], // Bear
+        [340, 0], // Fish
+        [425, 0], // Duck
+
+        // Row 2
+        [0, 85], // Cow
+        [85, 85], // Mouse
+        [170, 85], // Pig
+        [255, 85], // Chicken
+        [340, 85], // Giraffe
+        [425, 85], // Cat
+
+        // Row 3
+        [0, 170], // Horse
+        [85, 170], // Sheep
+        [170, 170], // Cat
+        [255, 170], // Lion
+        [340, 170], // Penguin
+        [425, 170], // Monkey
+
+        // Row 4
+        [0, 255], // Rabbit
+        [85, 255], // Fox
+        [170, 255], // Elephant
+        [255, 255], // Dog
+        [340, 255], // Hippo
+        [425, 255], // Koala
+
+        // Row 5 (partial)
+        [0, 340], // Seal
+        [85, 340], // Hippo
+        [170, 340], // Deer
+      ];
+
+      // Number of sprites to create
+      const numberOfSprites = 6;
+
+      // Container for all sprites
+      const container = document.getElementById("sprite-container");
+
+      // Class to manage each sprite animation
+      class SpriteAnimator {
+        constructor(element, startIndex, speed) {
+          this.element = element;
+          this.currentIndex = startIndex;
+          this.lastFrameTime = 0;
+          this.frameDuration = speed; // milliseconds per frame
+          this.isPaused = false;
+
+          // Initialize with starting sprite
+          this.updateSpritePosition();
+
+          // Make sprite clickable to pause/resume
+          this.element.addEventListener("click", () => this.togglePause());
+        }
+
+        updateSpritePosition() {
+          const [x, y] = spritePositions[this.currentIndex];
+          this.element.style.backgroundPosition = `-${x}px -${y}px`;
+        }
+
+        animate(timestamp) {
+          if (this.isPaused) return;
+
+          // If first frame, just set the initial time
+          if (!this.lastFrameTime) {
+            this.lastFrameTime = timestamp;
+          }
+
+          // Calculate elapsed time since last frame
+          const elapsed = timestamp - this.lastFrameTime;
+
+          // If enough time has passed, update the sprite
+          if (elapsed >= this.frameDuration) {
+            // Move to the next sprite position, loop back to the beginning if at the end
+            this.currentIndex =
+              (this.currentIndex + 1) % spritePositions.length;
+            this.updateSpritePosition();
+
+            // Reset the time, accounting for any remainder
+            this.lastFrameTime = timestamp - (elapsed % this.frameDuration);
+          }
+        }
+
+        togglePause() {
+          this.isPaused = !this.isPaused;
+          this.element.style.opacity = this.isPaused ? "0.6" : "1";
+        }
+      }
+
+      // Create sprites and their animators
+      const spriteAnimators = [];
+
+      for (let i = 0; i < numberOfSprites; i++) {
+        // Create sprite element
+        const spriteElement = document.createElement("div");
+        spriteElement.className = "sprite-item";
+        spriteElement.title = "Click to pause/resume";
+        container.appendChild(spriteElement);
+
+        // Calculate a unique starting position and speed for each sprite
+        const startIndex = Math.floor(Math.random() * spritePositions.length);
+        // Randomize speeds between 800ms and 1500ms
+        const speed = 800 + Math.floor(Math.random() * 700);
+
+        // Create animator for this sprite
+        spriteAnimators.push(
+          new SpriteAnimator(spriteElement, startIndex, speed),
+        );
+      }
+
+      // Main animation loop
+      function animationLoop(timestamp) {
+        // Update each sprite
+        spriteAnimators.forEach((animator) => {
+          animator.animate(timestamp);
+        });
+
+        // Request next frame
+        requestAnimationFrame(animationLoop);
+      }
+
+      // Start the animation
+      requestAnimationFrame(animationLoop);
+    </script>
+  </body>
+</html>

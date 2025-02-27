@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Rhombus with Lighting Effects</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #000;
+        overflow: hidden;
+      }
+
+      .scene {
+        perspective: 1200px;
+        width: 300px;
+        height: 300px;
+      }
+
+      .rhombus-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        transform-style: preserve-3d;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .rhombus {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transform: rotateZ(45deg);
+      }
+
+      .face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: visible;
+        border-radius: 24px;
+      }
+
+      .front {
+        transform: translateZ(12px);
+        background: linear-gradient(135deg, #00e5ff 0%, #00a0b0 100%);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      }
+
+      .back {
+        transform: translateZ(-12px);
+        background: linear-gradient(135deg, #007a85 0%, #005a65 100%);
+      }
+
+      .side {
+        position: absolute;
+        background-color: #007a85;
+      }
+
+      .top,
+      .bottom {
+        width: 100%;
+        height: 24px;
+        left: 0;
+        transform-origin: center center;
+        background: linear-gradient(90deg, #009eb0 0%, #005a65 100%);
+      }
+
+      .top {
+        top: 0;
+        transform: rotateX(90deg) translateZ(12px);
+      }
+
+      .bottom {
+        bottom: 0;
+        transform: rotateX(90deg) translateZ(12px);
+      }
+
+      .left,
+      .right {
+        width: 24px;
+        height: 100%;
+        top: 0;
+        transform-origin: center center;
+        background: linear-gradient(180deg, #009eb0 0%, #005a65 100%);
+      }
+
+      .left {
+        left: 0;
+        transform: rotateY(90deg) translateZ(12px);
+      }
+
+      .right {
+        right: 0;
+        transform: rotateY(90deg) translateZ(12px);
+      }
+
+      .hole {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        top: 45%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        background-color: #000;
+        border-radius: 12px;
+        box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.3);
+      }
+
+      .side-hole-top,
+      .side-hole-bottom,
+      .side-hole-left,
+      .side-hole-right {
+        position: absolute;
+        background-color: #000;
+      }
+
+      .side-hole-top,
+      .side-hole-bottom {
+        width: 70px;
+        height: 24px;
+        left: 45px;
+      }
+
+      .side-hole-top {
+        top: 45px;
+      }
+
+      .side-hole-bottom {
+        bottom: 85px;
+      }
+
+      .side-hole-left,
+      .side-hole-right {
+        width: 24px;
+        height: 70px;
+        top: 45px;
+      }
+
+      .side-hole-left {
+        left: 45px;
+      }
+
+      .side-hole-right {
+        right: 85px;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotateX(15deg) rotateY(-15deg);
+        }
+        25% {
+          transform: translateY(-10px) rotateX(18deg) rotateY(-12deg);
+        }
+        50% {
+          transform: translateY(-15px) rotateX(15deg) rotateY(-9deg);
+        }
+        75% {
+          transform: translateY(-10px) rotateX(12deg) rotateY(-12deg);
+        }
+      }
+
+      .es {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #00bcd4;
+        font-family: Arial, sans-serif;
+        font-size: 64px;
+        font-weight: bold;
+        opacity: 0.8;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="es">es</div>
+    <div class="scene">
+      <div class="rhombus-container">
+        <div class="rhombus">
+          <!-- Main faces -->
+          <div class="face front">
+            <div class="hole"></div>
+          </div>
+          <div class="face back">
+            <div class="hole"></div>
+          </div>
+
+          <!-- Sides -->
+          <div class="side top"></div>
+          <div class="side bottom"></div>
+          <div class="side left"></div>
+          <div class="side right"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

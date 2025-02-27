@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Sprite</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+      }
+
+      .item {
+        width: 85px;
+        height: 85px;
+        background: url(./img/sprite.jpg) no-repeat;
+        outline: 1px solid #ccc;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item" id="sprite"></div>
+    </div>
+
+    <script>
+      // Define the sprite positions in a grid
+      // Each position is [x, y] coordinates
+      const spritePositions = [
+        // Row 1
+        [0, 0], // Frog
+        [85, 0], // Panda
+        [170, 0], // Tiger
+        [255, 0], // Bear
+        [340, 0], // Fish
+        [425, 0], // Duck
+
+        // Row 2
+        [0, 85], // Cow
+        [85, 85], // Mouse
+        [170, 85], // Pig
+        [255, 85], // Chicken
+        [340, 85], // Giraffe
+        [425, 85], // Cat
+
+        // Row 3
+        [0, 170], // Horse
+        [85, 170], // Sheep
+        [170, 170], // Cat
+        [255, 170], // Lion
+        [340, 170], // Penguin
+        [425, 170], // Monkey
+
+        // Row 4
+        [0, 255], // Rabbit
+        [85, 255], // Fox
+        [170, 255], // Elephant
+        [255, 255], // Dog
+        [340, 255], // Hippo
+        [425, 255], // Koala
+
+        // Row 5 (partial)
+        [0, 340], // Seal
+        [85, 340], // Hippo
+        [170, 340], // Deer
+      ];
+
+      const spriteElement = document.getElementById("sprite");
+      let currentIndex = 0;
+      let lastFrameTime = 0;
+      const frameDuration = 1000; // Change sprite every 1000ms (1 second)
+
+      // Function to update the sprite position using requestAnimationFrame
+      function animateSprite(timestamp) {
+        // If first frame, just set the initial time and request next frame
+        if (!lastFrameTime) {
+          lastFrameTime = timestamp;
+        }
+
+        // Calculate elapsed time since last frame
+        const elapsed = timestamp - lastFrameTime;
+
+        // If enough time has passed, update the sprite
+        if (elapsed >= frameDuration) {
+          // Update to the next sprite
+          const [x, y] = spritePositions[currentIndex];
+          spriteElement.style.backgroundPosition = `-${x}px -${y}px`;
+
+          // Move to the next sprite position, loop back to the beginning if at the end
+          currentIndex = (currentIndex + 1) % spritePositions.length;
+
+          // Reset the time, accounting for any remainder
+          lastFrameTime = timestamp - (elapsed % frameDuration);
+        }
+
+        // ! Request the next frame
+        requestAnimationFrame(animateSprite);
+      }
+
+      // Initialize with the first sprite
+      const [x, y] = spritePositions[0];
+      spriteElement.style.backgroundPosition = `-${x}px -${y}px`;
+
+      // Start the animation loop
+      requestAnimationFrame(animateSprite);
+    </script>
+  </body>
+</html>
