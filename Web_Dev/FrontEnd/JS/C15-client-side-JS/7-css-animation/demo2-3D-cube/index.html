@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>公众号关注: 前端Hardy</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #e8e8e8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      /*整个3D场景的容器, 用于设置透视效果 */
+      .scene {
+        width: 300px;
+        height: 300px;
+        margin: 100px auto 0;
+        perspective: 1200px;
+      }
+
+      /* 3D立方体, 用于设置3D变换效果, 包含4个侧面 */
+      .cube {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        transform-style: preserve-3d;
+        transform: translateZ(-150px) rotateX(0deg);
+        animation: example 15s linear infinite;
+      }
+
+      /* 立方体的每个侧面, 用于设置每个面的样式 */
+      .side {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        box-sizing: border-box;
+        background-color: #999;
+        background-size: 100%100%;
+        background-repeat: no-repeat;
+        padding: 120px0;
+        font: 60px/1 "Trebuchet MS", sans-serif;
+        color: #fff;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      /* 为每个侧面添加半透明的覆盖层, 增强视觉效果*/
+      .side::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      .sidespan {
+        position: relative;
+        display: block;
+      }
+
+      .backspan {
+        animation: back 15s linear infinite;
+      }
+
+      .topspan {
+        animation: top 15s linear infinite;
+      }
+
+      .bottomspan {
+        animation: bottom 15s linear infinite;
+      }
+
+      .frontspan {
+        animation: front 15s linear infinite;
+      }
+
+      /* 辅助线, 用于指示每个侧面的中心位置*/
+      .guides {
+        position: absolute;
+        top: 0;
+        left: 50px;
+        width: 200px;
+        height: 100%;
+        border-style: dotted;
+        border-width: 01px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .guides::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 0;
+        height: 100%;
+        border-left: 1px dotted;
+      }
+
+      .back {
+        transform: translateZ(-150px) rotateX(180deg);
+      }
+
+      .top {
+        transform: translateY(-150px) rotateX(90deg);
+      }
+
+      .bottom {
+        transform: translateY(150px) rotateX(270deg);
+      }
+
+      .front {
+        transform: translateZ(150px);
+      }
+
+      .back {
+        background-image: url(https://img.freepik.com/free-photo/spring-scene-with-flowers-butterfly_23-2150169990.jpg);
+      }
+
+      .top {
+        background-image: url(https://static.vecteezy.com/system/resources/thumbnails/012/400/885/small/tropical-sunset-beach-and-sky-background-as-exotic-summer-landscape-with-beach-swing-or-hammock-and-white-sand-and-calm-sea-beach-banner-paradise-island-beach-vacation-or-summer-holiday-destination-photo.jpg);
+      }
+
+      .bottom {
+        background-image: url(https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500);
+      }
+
+      .front {
+        background-image: url(https://t4.ftcdn.net/jpg/00/64/81/97/360_F_64819783_bO18d6WGTEmDreGV8kHJd1uQ0w7ALl9n.jpg);
+      }
+
+      /* 立方体旋转的动画效果, 使得立方体在x轴上循环旋转 */
+      @keyframes example {
+        0% {
+          transform: translateZ(-150px) rotateX(0deg);
+        }
+
+        15% {
+          transform: translateZ(-150px) rotateX(90deg);
+        }
+
+        25% {
+          transform: translateZ(-150px) rotateX(90deg);
+        }
+
+        40% {
+          transform: translateZ(-150px) rotateX(180deg);
+        }
+
+        50% {
+          transform: translateZ(-150px) rotateX(180deg);
+        }
+
+        65% {
+          transform: translateZ(-150px) rotateX(270deg);
+        }
+
+        75% {
+          transform: translateZ(-150px) rotateX(270deg);
+        }
+
+        90% {
+          transform: translateZ(-150px) rotateX(360deg);
+        }
+
+        100% {
+          transform: translateZ(-150px) rotateX(360deg);
+        }
+      }
+      /*分别为每个侧面的文字定义动画, 使其在立方体旋转时动态变化位置*/
+      @keyframes front {
+        0% {
+          transform: translateY(0px);
+        }
+
+        15% {
+          transform: translateY(-100px);
+        }
+
+        25% {
+          transform: translateY(-100px);
+        }
+
+        40% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(0px);
+        }
+
+        65% {
+          transform: translateY(100px);
+        }
+
+        75% {
+          transform: translateY(100px);
+        }
+
+        90% {
+          transform: translateY(0px);
+        }
+
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      @keyframes bottom {
+        0% {
+          transform: translateY(100px);
+        }
+
+        15% {
+          transform: translateY(0px);
+        }
+
+        25% {
+          transform: translateY(0px);
+        }
+
+        40% {
+          transform: translateY(-100px);
+        }
+
+        50% {
+          transform: translateY(-100px);
+        }
+
+        65% {
+          transform: translateY(0px);
+        }
+
+        75% {
+          transform: translateY(0px);
+        }
+
+        90% {
+          transform: translateY(100px);
+        }
+
+        100% {
+          transform: translateY(100px);
+        }
+      }
+
+      @keyframes back {
+        0% {
+          transform: translateY(0px);
+        }
+
+        15% {
+          transform: translateY(100px);
+        }
+
+        25% {
+          transform: translateY(100px);
+        }
+
+        40% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(0px);
+        }
+
+        65% {
+          transform: translateY(-100px);
+        }
+
+        75% {
+          transform: translateY(-100px);
+        }
+
+        90% {
+          transform: translateY(0px);
+        }
+
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      @keyframes top {
+        0% {
+          transform: translateY(-100px);
+        }
+
+        15% {
+          transform: translateY(0px);
+        }
+
+        25% {
+          transform: translateY(0px);
+        }
+
+        40% {
+          transform: translateY(100px);
+        }
+
+        50% {
+          transform: translateY(100px);
+        }
+
+        65% {
+          transform: translateY(0px);
+        }
+
+        75% {
+          transform: translateY(0px);
+        }
+
+        90% {
+          transform: translateY(-100px);
+        }
+
+        100% {
+          transform: translateY(-100px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="scene">
+      <div class="cube">
+        <div class="side back">
+          <div class="guides"></div>
+          <span>发</span>
+        </div>
+        <div class="side top">
+          <div class="guides"></div>
+          <span>财</span>
+        </div>
+        <div class="side bottom">
+          <div class="guides"></div>
+          <span>喜</span>
+        </div>
+        <div class="side front">
+          <div class="guides"></div>
+          <span>恭</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
