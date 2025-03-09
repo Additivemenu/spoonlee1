@@ -173,6 +173,16 @@ async function demo2() {
     "Try creating your own typing animations! ",
   ];
 
+  const incomingTexts = [
+    "New data arrived! ",
+    "More data! ",
+    "Even more data! ",
+    "Even more data! ",
+    "Even more data! ",
+    "Even more data! ",
+    "Even more data! ",
+  ];
+
   async function pollText(textsPool) {
     const text = textsPool.shift();
     if (!text) {
@@ -188,6 +198,14 @@ async function demo2() {
   }
 
   pollText(textsPool);
+
+  // Add new texts every 2 seconds, simulates incoming polling data from web server
+  setInterval(() => {
+    const newText = incomingTexts.shift();
+    if (newText) {
+      textsPool.push(newText);
+    }
+  }, 2000);
 }
 
 /**
