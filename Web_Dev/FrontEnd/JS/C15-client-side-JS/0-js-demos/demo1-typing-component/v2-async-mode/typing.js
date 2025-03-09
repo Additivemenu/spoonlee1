@@ -24,17 +24,19 @@ function typingComponent(containerId = "typing-container") {
   let isTyping = false;
   let currentTimeout = null;
 
-  // Function to type a single text
+  // the core function to type a single text
   const typeText = (text, typingSpeed, resolve) => {
     isTyping = true;
     let index = 0;
 
     const type = () => {
       if (index < text.length) {
+        // !handle current text
         textElement.textContent += text.charAt(index);
         index++;
         currentTimeout = setTimeout(type, typingSpeed);
       } else {
+        // !handle end of text, resolve the promise for this text and process next item in queue
         isTyping = false;
         if (resolve) resolve(); // Resolve the promise for this text
         processQueue(); // Process next item in queue
@@ -62,6 +64,7 @@ function typingComponent(containerId = "typing-container") {
      */
     addText: function (text, speed = 100) {
       return new Promise((resolve) => {
+        // !resolved when the text is fully typed on the screen
         queue.push({ text, speed, resolve });
 
         if (!isTyping) {
@@ -151,6 +154,40 @@ async function demo1() {
   // Fifth text
   await typer.addText("Try creating your own typing animations!", 40);
   console.log("All done!");
+}
+
+/**
+ * Demo function to showcase the typing component
+ */
+async function demo2() {
+  const typer = typingComponent();
+
+  // Clear the display
+  typer.clear();
+
+  const textsPool = [
+    "Hello! ",
+    "This is a typing component demonstration. ",
+    "Text appears character by character at a defined speed. ",
+    "You can queue multiple texts and await each one. ",
+    "Try creating your own typing animations! ",
+  ];
+
+  async function pollText(textsPool) {
+    const text = textsPool.shift();
+    if (!text) {
+      await typer.addText("No more texts to display.", 50);
+      return;
+    }
+
+    await typer.addText(text, 100); //! only resolves when text gets typed on screen!
+
+    setTimeout(() => {
+      pollText(textsPool);
+    }, 500);
+  }
+
+  pollText(textsPool);
 }
 
 /**
