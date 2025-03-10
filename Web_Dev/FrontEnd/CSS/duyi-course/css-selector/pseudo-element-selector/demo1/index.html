@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS 伪元素选择器演示</title>
+    <style>
+      body {
+        font-family: "Microsoft YaHei", sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 40px;
+      }
+
+      section {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #3498db;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 0;
+      }
+
+      .code {
+        background: #f1f1f1;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        margin: 10px 0;
+        overflow-x: auto;
+      }
+
+      /* ::before 演示 */
+      .before-demo {
+        position: relative;
+        padding: 15px;
+        background-color: #e8f4fc;
+        border-radius: 5px;
+      }
+
+      .before-demo::before {
+        content: "⚠️";
+        position: absolute;
+        left: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+      }
+
+      /* ::after 演示 */
+      .after-demo {
+        position: relative;
+        padding-right: 25px;
+        display: inline-block;
+        font-weight: bold;
+        color: #2980b9;
+      }
+
+      .after-demo::after {
+        content: "→";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+      }
+
+      /* ::first-line 演示 */
+      .first-line-demo::first-line {
+        font-weight: bold;
+        color: #e74c3c;
+        font-size: 1.2em;
+      }
+
+      /* ::first-letter 演示 */
+      .first-letter-demo::first-letter {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #9b59b6;
+        float: left;
+        line-height: 0.8;
+        margin-right: 5px;
+      }
+
+      /* ::selection 演示 */
+      .selection-demo::selection {
+        background-color: #f1c40f;
+        color: #2c3e50;
+      }
+
+      /* ::placeholder 演示 */
+      .placeholder-demo::placeholder {
+        color: #7f8c8d;
+        font-style: italic;
+      }
+
+      /* 额外的装饰性元素 */
+      .decorative-box {
+        position: relative;
+        padding: 15px;
+        border: 1px solid #ddd;
+        margin-top: 30px;
+      }
+
+      .decorative-box::before,
+      .decorative-box::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+      }
+
+      .decorative-box::before {
+        top: -10px;
+        left: -10px;
+        border-top: 3px solid #e74c3c;
+        border-left: 3px solid #e74c3c;
+      }
+
+      .decorative-box::after {
+        bottom: -10px;
+        right: -10px;
+        border-bottom: 3px solid #e74c3c;
+        border-right: 3px solid #e74c3c;
+      }
+
+      /* 引用样式 */
+      .quote {
+        font-style: italic;
+        position: relative;
+        padding: 0 20px;
+      }
+
+      .quote::before {
+        content: "";
+        font-size: 2em;
+        color: #3498db;
+        position: absolute;
+        left: -5px;
+        top: -10px;
+        }
+
+        .quote::after {
+            content: "
+          "";
+        font-size: 2em;
+        color: #3498db;
+        position: absolute;
+        right: -5px;
+        bottom: -20px;
+      }
+
+      /* 动态效果 */
+      .dynamic-link {
+        text-decoration: none;
+        color: #2980b9;
+        position: relative;
+        padding-bottom: 2px;
+      }
+
+      .dynamic-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #2980b9;
+        transition: width 0.3s ease;
+      }
+
+      .dynamic-link:hover::after {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS 伪元素选择器演示</h1>
+
+    <section>
+      <h2>::before 伪元素</h2>
+      <p>
+        伪元素 <code>::before</code> 用于在元素内容之前插入内容。通常使用
+        <code>content</code> 属性定义要插入的内容。
+      </p>
+      <div class="code">
+        .before-demo::before {<br />
+        &nbsp;&nbsp;content: "⚠️";<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;left: -15px;<br />
+        &nbsp;&nbsp;top: 50%;<br />
+        &nbsp;&nbsp;transform: translateY(-50%);<br />
+        &nbsp;&nbsp;font-size: 24px;<br />
+        }
+      </div>
+      <div class="before-demo">
+        这是一个使用 ::before 添加图标的示例，注意左侧的警告图标是通过 ::before
+        添加的。
+      </div>
+    </section>
+
+    <section>
+      <h2>::after 伪元素</h2>
+      <p>
+        伪元素 <code>::after</code> 用于在元素内容之后插入内容。与 ::before
+        类似，也使用 <code>content</code> 属性。
+      </p>
+      <div class="code">
+        .after-demo::after {<br />
+        &nbsp;&nbsp;content: "→";<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;right: 0;<br />
+        &nbsp;&nbsp;top: 50%;<br />
+        &nbsp;&nbsp;transform: translateY(-50%);<br />
+        &nbsp;&nbsp;font-size: 20px;<br />
+        }
+      </div>
+      <p>
+        <span class="after-demo">点击查看更多</span> (注意右侧的箭头是通过
+        ::after 添加的)
+      </p>
+    </section>
+
+    <section>
+      <h2>::first-line 伪元素</h2>
+      <p>
+        伪元素
+        <code>::first-line</code>
+        用于选择元素的第一行文本，即使文本换行，也只会影响第一行。
+      </p>
+      <div class="code">
+        .first-line-demo::first-line {<br />
+        &nbsp;&nbsp;font-weight: bold;<br />
+        &nbsp;&nbsp;color: #e74c3c;<br />
+        &nbsp;&nbsp;font-size: 1.2em;<br />
+        }
+      </div>
+      <p class="first-line-demo">
+        这是一段示例文本，可以看到第一行的样式与其他行不同。这段文字比较长，会自动换行，但只有第一行会应用特殊样式。不论屏幕大小如何变化，或者窗口大小如何调整，始终只有第一行会应用这个特殊样式。
+      </p>
+    </section>
+
+    <section>
+      <h2>::first-letter 伪元素</h2>
+      <p>伪元素 <code>::first-letter</code> 用于选择元素文本的第一个字母。</p>
+      <div class="code">
+        .first-letter-demo::first-letter {<br />
+        &nbsp;&nbsp;font-size: 2.5em;<br />
+        &nbsp;&nbsp;font-weight: bold;<br />
+        &nbsp;&nbsp;color: #9b59b6;<br />
+        &nbsp;&nbsp;float: left;<br />
+        &nbsp;&nbsp;line-height: 0.8;<br />
+        &nbsp;&nbsp;margin-right: 5px;<br />
+        }
+      </div>
+      <p class="first-letter-demo">
+        这个段落的第一个字母有特殊样式，就像书籍中常见的首字下沉效果一样。这种效果在杂志和网站中经常用于强调段落的开始。
+      </p>
+    </section>
+
+    <section>
+      <h2>::selection 伪元素</h2>
+      <p>伪元素 <code>::selection</code> 用于定义用户选中文本时的样式。</p>
+      <div class="code">
+        .selection-demo::selection {<br />
+        &nbsp;&nbsp;background-color: #f1c40f;<br />
+        &nbsp;&nbsp;color: #2c3e50;<br />
+        }
+      </div>
+      <p class="selection-demo">
+        试着用鼠标选中这段文字，你会看到自定义的选中效果 -
+        黄色背景和深色文字，而不是浏览器默认的蓝底白字。
+      </p>
+    </section>
+
+    <section>
+      <h2>::placeholder 伪元素</h2>
+      <p>
+        伪元素 <code>::placeholder</code> 用于设置表单元素的占位符文本样式。
+      </p>
+      <div class="code">
+        .placeholder-demo::placeholder {<br />
+        &nbsp;&nbsp;color: #7f8c8d;<br />
+        &nbsp;&nbsp;font-style: italic;<br />
+        }
+      </div>
+      <input
+        type="text"
+        class="placeholder-demo"
+        placeholder="请输入搜索内容..."
+        style="
+          width: 100%;
+          padding: 10px;
+          margin-top: 10px;
+          border-radius: 4px;
+          border: 1px solid #ddd;
+        "
+      />
+    </section>
+
+    <section>
+      <h2>组合应用示例</h2>
+
+      <h3>1. 装饰性角框</h3>
+      <div class="code">
+        .decorative-box::before,<br />
+        .decorative-box::after {<br />
+        &nbsp;&nbsp;content: "";<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;width: 20px;<br />
+        &nbsp;&nbsp;height: 20px;<br />
+        }<br /><br />
+        .decorative-box::before {<br />
+        &nbsp;&nbsp;top: -10px;<br />
+        &nbsp;&nbsp;left: -10px;<br />
+        &nbsp;&nbsp;border-top: 3px solid #e74c3c;<br />
+        &nbsp;&nbsp;border-left: 3px solid #e74c3c;<br />
+        }<br /><br />
+        .decorative-box::after {<br />
+        &nbsp;&nbsp;bottom: -10px;<br />
+        &nbsp;&nbsp;right: -10px;<br />
+        &nbsp;&nbsp;border-bottom: 3px solid #e74c3c;<br />
+        &nbsp;&nbsp;border-right: 3px solid #e74c3c;<br />
+        }
+      </div>
+      <div class="decorative-box">
+        这个盒子使用了 ::before 和 ::after
+        伪元素创建左上角和右下角的装饰性边框，无需添加额外的HTML元素。
+      </div>
+
+      <h3>2. 引用样式</h3>
+      <div class="code">
+        .quote::before {<br />
+        &nbsp;&nbsp;content: """;<br />
+        &nbsp;&nbsp;font-size: 2em;<br />
+        &nbsp;&nbsp;color: #3498db;<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;left: -5px;<br />
+        &nbsp;&nbsp;top: -10px;<br />
+        }<br /><br />
+        .quote::after {<br />
+        &nbsp;&nbsp;content: """;<br />
+        &nbsp;&nbsp;font-size: 2em;<br />
+        &nbsp;&nbsp;color: #3498db;<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;right: -5px;<br />
+        &nbsp;&nbsp;bottom: -20px;<br />
+        }
+      </div>
+      <blockquote class="quote">
+        伪元素是CSS中非常强大的功能，它可以让我们在不增加额外HTML元素的情况下，添加装饰性内容或实现特殊效果。
+      </blockquote>
+
+      <h3>3. 动态链接效果</h3>
+      <div class="code">
+        .dynamic-link::after {<br />
+        &nbsp;&nbsp;content: "";<br />
+        &nbsp;&nbsp;position: absolute;<br />
+        &nbsp;&nbsp;bottom: 0;<br />
+        &nbsp;&nbsp;left: 0;<br />
+        &nbsp;&nbsp;width: 0;<br />
+        &nbsp;&nbsp;height: 2px;<br />
+        &nbsp;&nbsp;background-color: #2980b9;<br />
+        &nbsp;&nbsp;transition: width 0.3s ease;<br />
+        }<br /><br />
+        .dynamic-link:hover::after {<br />
+        &nbsp;&nbsp;width: 100%;<br />
+        }
+      </div>
+      <p>
+        尝试将鼠标悬停在这个<a href="#" class="dynamic-link">动态链接</a
+        >上，观察下划线的动画效果。
+      </p>
+    </section>
+  </body>
+</html>

@@ -12,7 +12,6 @@
   position: relative;
 }
 
-
 .aside {
   position: absolute;
   bottom: 0;
@@ -28,18 +27,17 @@
   float: left;
 }
 .aside .number::before {
-  content: '';
+  content: "";
   /* outline: 1px solid; */
   width: 16px;
   height: 16px;
   display: inline-block;
-  background: url('../assets/icons.png') no-repeat -255px -63px;
+  background: url("../assets/icons.png") no-repeat -255px -63px;
   vertical-align: -5px;
 }
 .aside .date {
   float: right;
 }
-
 
 .modal {
   position: absolute;
@@ -54,7 +52,7 @@
   width: 44px;
   height: 50px;
   display: block;
-  background: url('../assets/icons.png') no-repeat -190px -60px;
+  background: url("../assets/icons.png") no-repeat -190px -60px;
   /* outline: 1px solid #fff; */
 
   position: absolute;
@@ -64,6 +62,12 @@
   margin-top: -25px;
 }
 
+/* 鼠标悬停显示 
+1. 选择器组合：.item:hover .modal 是一个组合选择器，它选择了当 .item 元素处于悬停状态时，其内部的 .modal 元素。
+2. 伪类选择器：:hover 是一个伪类选择器，它用于选择用户鼠标悬停在元素上的状态。
+3. 后代选择器：空格表示后代关系，即选择 .item 内部的 .modal 元素。
+4. 显示属性：display: block; 是CSS的显示属性，将元素的显示方式设置为块级元素。
+*/
 .item:hover .modal {
   display: block;
 }
