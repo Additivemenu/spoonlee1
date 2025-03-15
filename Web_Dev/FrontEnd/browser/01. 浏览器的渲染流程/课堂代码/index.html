@@ -24,10 +24,14 @@
     </p>
     <script>
         const op = document.querySelector(".test");
-        op.style.marginLeft = "100px";
-        op.style.marginLeft = "150px";
-        op.style.marginLeft
-        op.style.marginLeft = "200px";
+        op.style.marginLeft = "100px"; 
+        op.style.marginLeft = "150px"; // 和上面合并
+
+
+        op.style.marginLeft  // 会立即触发reflow 
+
+
+        op.style.marginLeft = "200px"; 
     </script>
 </body>
 </html>
