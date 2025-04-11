@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Event Attributes Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .demo-section {
+        margin-bottom: 25px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        color: #e67e22;
+        text-align: center;
+      }
+      h2 {
+        color: #3498db;
+        margin-top: 0;
+      }
+      .event-box {
+        padding: 20px;
+        border: 2px solid #bdc3c7;
+        border-radius: 5px;
+        margin: 10px 0;
+        background-color: white;
+        transition: all 0.3s;
+      }
+      .log-area {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        margin-top: 10px;
+        max-height: 100px;
+        overflow-y: auto;
+      }
+      button,
+      input[type="text"],
+      input[type="submit"] {
+        padding: 8px 15px;
+        margin: 5px;
+        border-radius: 4px;
+        border: 1px solid #bdc3c7;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      .highlight {
+        background-color: #fcf8e3;
+      }
+    </style>
+  </head>
+  <body onload="logEvent('onload', 'Body loaded')">
+    <h1>HTML Event Attributes Demo</h1>
+
+    <div class="demo-section">
+      <h2>onclick Event</h2>
+      <button onclick="logEvent('onclick', 'Button clicked')">Click Me</button>
+      <div class="log-area" id="onclick-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onchange vs oninput Events</h2>
+      <p>
+        onchange fires after focus is lost, oninput fires on each keystroke:
+      </p>
+      <input
+        type="text"
+        onchange="logEvent('onchange', 'Value changed to: ' + this.value)"
+        placeholder="Type and click elsewhere"
+      />
+      <input
+        type="text"
+        oninput="logEvent('oninput', 'Value changing to: ' + this.value)"
+        placeholder="Watch as you type"
+      />
+      <div class="log-area" id="change-input-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onsubmit Event</h2>
+      <form
+        onsubmit="event.preventDefault(); logEvent('onsubmit', 'Form submitted')"
+      >
+        <input type="text" placeholder="Type anything" />
+        <input type="submit" value="Submit Form" />
+      </form>
+      <div class="log-area" id="onsubmit-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onmouseover and onmouseout Events</h2>
+      <div
+        class="event-box"
+        onmouseover="this.style.backgroundColor = '#e74c3c'; logEvent('onmouseover', 'Mouse entered the box')"
+        onmouseout="this.style.backgroundColor = 'white'; logEvent('onmouseout', 'Mouse left the box')"
+      >
+        Move your mouse over this box
+      </div>
+      <div class="log-area" id="mouse-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onkeydown and onkeyup Events</h2>
+      <input
+        type="text"
+        onkeydown="logEvent('onkeydown', 'Key pressed: ' + event.key)"
+        onkeyup="logEvent('onkeyup', 'Key released: ' + event.key)"
+        placeholder="Press any key"
+      />
+      <div class="log-area" id="key-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onfocus and onblur Events</h2>
+      <input
+        type="text"
+        onfocus="this.style.boxShadow = '0 0 5px #3498db'; logEvent('onfocus', 'Input received focus')"
+        onblur="this.style.boxShadow = 'none'; logEvent('onblur', 'Input lost focus')"
+        placeholder="Click here then click elsewhere"
+      />
+      <div class="log-area" id="focus-blur-log"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>onerror Event</h2>
+      <img
+        src="non-existent-image.jpg"
+        onerror="this.src='/api/placeholder/200/100'; logEvent('onerror', 'Image failed to load, showing placeholder')"
+        alt="This image will fail to load"
+        width="200"
+      />
+      <div class="log-area" id="error-log"></div>
+    </div>
+
+    <script>
+      function logEvent(eventType, message) {
+        const timestamp = new Date().toLocaleTimeString();
+
+        // Determine which log area to update
+        let logAreaId;
+        if (eventType === "onclick") {
+          logAreaId = "onclick-log";
+        } else if (eventType === "onchange" || eventType === "oninput") {
+          logAreaId = "change-input-log";
+        } else if (eventType === "onsubmit") {
+          logAreaId = "onsubmit-log";
+        } else if (eventType === "onmouseover" || eventType === "onmouseout") {
+          logAreaId = "mouse-log";
+        } else if (eventType === "onkeydown" || eventType === "onkeyup") {
+          logAreaId = "key-log";
+        } else if (eventType === "onfocus" || eventType === "onblur") {
+          logAreaId = "focus-blur-log";
+        } else if (eventType === "onerror") {
+          logAreaId = "error-log";
+        } else if (eventType === "onload") {
+          // Create a general log for onload
+          const allLogs = document.querySelectorAll(".log-area");
+          allLogs.forEach((log) => {
+            log.innerHTML += `<div>[${timestamp}] <strong>${eventType}:</strong> ${message}</div>`;
+          });
+          return;
+        }
+
+        // Add the log entry
+        const logArea = document.getElementById(logAreaId);
+        if (logArea) {
+          logArea.innerHTML += `<div>[${timestamp}] <strong>${eventType}:</strong> ${message}</div>`;
+          // Auto-scroll to bottom
+          logArea.scrollTop = logArea.scrollHeight;
+        }
+      }
+    </script>
+  </body>
+</html>
