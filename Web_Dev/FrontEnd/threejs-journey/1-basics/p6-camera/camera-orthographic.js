@@ -17,7 +17,7 @@ const mesh = new THREE.Mesh(geometry, material);
 
 scene.add(mesh);
 
-// Sizes
+// Sizes: it might impact the fidelity with this aspect ratio
 const sizes = {
   width: 800,
   height: 600,
@@ -25,6 +25,7 @@ const sizes = {
 
 // Camera ==================================================================================================================
 /**
+ * ! 这6个参数实际上定义了一个空间中的长方体, 这个长方体决定了相机能够看到的空间范围. see concept of frustum https://threejs.org/docs/#api/en/math/Frustum
  * 1st argument: left
  * 2nd argument: right
  * 3rd argument: top
@@ -34,8 +35,8 @@ const sizes = {
  */
 const aspectRatio = sizes.width / sizes.height;
 const camera = new THREE.OrthographicCamera(
-  -1 * aspectRatio, // left - horizontal
-  1 * aspectRatio, // right - horizontal
+  -1 * aspectRatio, // left - horizontal -> aspectRatio 是为了补偿render size长宽比
+  1 * aspectRatio, // right - horizontal -> aspectRatio 是为了补偿render size长宽比
   1, // top - vertical
   -1, // bottom - vertical
   0.1, // near
@@ -50,7 +51,7 @@ scene.add(camera);
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 });
-renderer.setSize(sizes.width, sizes.height);
+renderer.setSize(sizes.width, sizes.height); //! this sets the size of the canvas
 /**
  * !instead of a single render, we use RAF to continuously render the scene with the camera
  *

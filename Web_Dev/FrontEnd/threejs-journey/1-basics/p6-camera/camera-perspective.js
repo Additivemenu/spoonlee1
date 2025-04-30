@@ -26,6 +26,8 @@ const sizes = {
 // Camera
 
 /**
+ * ! 这4个参数实际上定义了一个空间锥形, 这个锥形决定了相机能够看到的空间范围. see concept of frustum https://threejs.org/docs/#api/en/math/Frustum
+ *
  * 1st argument: Field of view (FOV) - how much of the scene is visible, recommended to use 45-75
  * 2nd argument: aspect ratio (width / height), usually we take the render size
  * 3rd argument: near clipping plane - the closest point that can be seen
