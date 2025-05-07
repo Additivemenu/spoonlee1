@@ -17,7 +17,7 @@ if (!window.myPlugin) {
 window.myPlugin.createWaterFall = function (option) {
   // ! 作为 plugin, 处理option输入
   var defaulOption = {
-    minGap: 10, //最小间隙
+    minGap: 10, //最小间隙 - 水平和垂直一样
     imgSrcs: [], //图片路径的数组
     imgWidth: 220, //单张图片的宽度
     container: document.body, //容器
@@ -35,20 +35,20 @@ window.myPlugin.createWaterFall = function (option) {
   window.onresize = debounce;
 
   /**
-   * ! core: 设置每一张图片的坐标
+   * ! 瀑布流布局核心算法: 设置每一张图片的坐标
    * 本质上是一种填充算法, 跟DEM里那种particle system很像
    */
   function setImgPosition() {
     var info = getHorizontalInfo();
     var arr = new Array(info.number); //存放每一列下一张图片的top值
     arr.fill(0);
-    
+
     imgs.forEach(function (img) {
       //设置图片的坐标
       var minTop = Math.min.apply(null, arr);
       img.style.top = minTop + "px";
       var index = arr.indexOf(minTop); //找到对应的列编号
-      arr[index] += img.clientHeight + info.gap;
+      arr[index] += img.clientHeight + info.gap; // 加载img 属性是异步的, 因为img是外部资源
       //横坐标
       img.style.left = index * (option.imgWidth + info.gap) + "px";
     });
@@ -64,7 +64,7 @@ window.myPlugin.createWaterFall = function (option) {
     var obj = {};
     //容器宽度
     obj.containerWidth = option.container.clientWidth;
-    //计算一行图片的数量
+    //计算一行图片的数量 (一元一次方程解出来的)
     obj.number =
       (obj.containerWidth + option.minGap) / (option.imgWidth + option.minGap);
     obj.number = Math.floor(obj.number); //每行的图片只能少，不能多
@@ -79,15 +79,17 @@ window.myPlugin.createWaterFall = function (option) {
    */
   function createImgs() {
     var debounce = myPlugin.debounce(setImgPosition, 30);
+
     //循环图片路径数组
     for (var i = 0; i < option.imgSrcs.length; i++) {
       var img = document.createElement("img");
       img.src = option.imgSrcs[i];
+      
       img.style.width = option.imgWidth + "px";
       img.style.position = "absolute"; //! 为了实现瀑布流，图片必须绝对定位以获取自由度 -> 同时必须确保父元素相对定位
       img.style.transition = ".5s"; //实现过渡
       imgs.push(img);
-      img.onload = debounce; //函数节流
+      img.onload = debounce; //! debounce优化(因为有可能多个img几乎同时加载完成) - 图片加载完成之后, 再进行瀑布流布局, 不然setImgPosition时读不到img的属性
       option.container.appendChild(img);
     }
   }
