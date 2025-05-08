@@ -4,9 +4,18 @@ import gsap from "gsap"; // for animation
 import GUI from "lil-gui"; // debug ui library
 
 /**
- * debug ui
+ * !debug ui
  */
-const gui = new GUI();
+const gui = new GUI({
+  width: 300,
+  title: "Nice debug UI",
+  closeFolders: false,
+});
+window.addEventListener("keydown", (e) => {
+  if (e.key === "h") {
+    gui.show(gui._hidden);
+  }
+});
 const debugObject = {}; // ! note lil-gui can only tweak objects, not primitives
 
 // Canvas
@@ -30,11 +39,13 @@ const material = new THREE.MeshBasicMaterial({
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
-// ! define gui tweakable parameters
-gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
-gui.add(mesh, "visible");
-gui.add(material, "wireframe");
-gui.addColor(debugObject, "color").onChange((value) => {
+// ! define gui tweakable parameters ------------------------------------------------------------------------------------------------
+const cubeTweaks = gui.addFolder("awesome_cube");
+
+cubeTweaks.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
+cubeTweaks.add(mesh, "visible");
+cubeTweaks.add(material, "wireframe");
+cubeTweaks.addColor(debugObject, "color").onChange((value) => {
   // 加了个中间变量debugObject来tweak material color (有点proxy的意思)
   // 不直接addColor(material, "color")是有原因的
   material.color.set(value);
@@ -46,7 +57,31 @@ debugObject.spin = () => {
     y: mesh.rotation.y + Math.PI * 2,
   });
 };
-gui.add(debugObject, "spin");
+cubeTweaks.add(debugObject, "spin");
+
+// tweak the geometry
+debugObject.subdivision = 2; // act as proxy
+cubeTweaks
+  .add(debugObject, "subdivision")
+  .min(1)
+  .max(10)
+  .step(1)
+  .name("subdivision")
+  .onFinishChange(() => {
+    // !onFinishChange is friendly to performance
+
+    mesh.geometry.dispose(); //! dispose the old geometry
+
+    // ! create new mesh geometry
+    mesh.geometry = new THREE.BoxGeometry(
+      1,
+      1,
+      1,
+      debugObject.subdivision,
+      debugObject.subdivision,
+      debugObject.subdivision,
+    );
+  });
 
 // Sizes
 const sizes = {
