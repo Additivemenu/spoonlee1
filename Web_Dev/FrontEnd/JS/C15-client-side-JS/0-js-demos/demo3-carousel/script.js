@@ -1,6 +1,14 @@
 const imageCount = 8;
 const slide = document.querySelector(".slide");
+
 for (let i = 0; i < imageCount; i++) {
+  // slide 
+  //   > item 
+  //      > content
+  //           > name
+  //           > description
+  //           > button
+
   const item = document.createElement("div");
   item.classList.add("item");
 
@@ -8,6 +16,7 @@ for (let i = 0; i < imageCount; i++) {
   item.style.backgroundImage = `url(./images/image-${paddingNumber}.jpg)`;
   slide.appendChild(item);
 
+  // content --------------------------------
   const content = document.createElement("div");
   content.classList.add("content");
   item.appendChild(content);
@@ -31,6 +40,7 @@ for (let i = 0; i < imageCount; i++) {
 const prev = document.querySelector(".prev");
 const next = document.querySelector(".next");
 
+// ! basically reorder the items inside the slide -> nth child selector will render the items accordingly
 next.addEventListener("click", () => {
   let items = document.querySelectorAll(".item");
   document.querySelector(".slide").appendChild(items[0]);
