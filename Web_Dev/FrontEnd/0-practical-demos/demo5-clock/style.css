@@ -3,6 +3,11 @@
   --clock-radius: 300px;
 }
 
+.container {
+  display: flex;
+  gap: 10px;
+}
+
 .clock {
   width: calc(var(--clock-radius) * 2);
   height: calc(var(--clock-radius) * 2);
@@ -45,7 +50,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  
+
   background-color: black;
 }
 
@@ -62,4 +67,11 @@
 .second {
   width: 2px;
   height: 200px;
+}
+
+.timezone-text {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

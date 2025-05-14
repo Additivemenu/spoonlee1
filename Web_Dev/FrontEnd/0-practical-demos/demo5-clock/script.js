@@ -1,3 +1,19 @@
+const createBaseDOM = (timezone, dateTimeText) => {
+  const container = document.querySelector(".container");
+  const clock = document.createElement("div");
+  clock.classList.add("clock", `clock-${timezone}`);
+  clock.innerHTML = `
+                    <div class="clock-hand">
+                      <div class="hand hour"></div>
+                      <div class="hand minute"></div>
+                      <div class="hand second"></div>
+                    </div>
+                    <div class="timezone-text">${timezone} ${dateTimeText}</div>
+                  `;
+  container.appendChild(clock);
+  return clock;
+};
+
 const drawMarkers = (clockBase) => {
   const bigMarkerMap = {
     12: 0,
@@ -62,10 +78,10 @@ function getTimeComponents(timezone) {
 
 const drawHands = (timezone, clockBase) => {
   // step1: get the current time as HH:MM:SS
-  // const hours = currentTime.getHours();
-  // const minutes = currentTime.getMinutes();
-  // const seconds = currentTime.getSeconds();
   const { hours, minutes, seconds } = getTimeComponents(timezone);
+  const dateTimeText = `${hours}:${minutes}:${seconds}`;
+  const dateTimeTextElement = clockBase.querySelector(".timezone-text");
+  dateTimeTextElement.textContent = timezone + " " + dateTimeText;
 
   // step2: parse the HH:MM:SS into angle information (in degrees)
   const hourAngle = (hours % 12) * 30 + minutes * 0.5;
@@ -87,17 +103,10 @@ const drawHands = (timezone, clockBase) => {
 };
 
 const generateClock = ({ timezone = "America/New_York" }) => {
-  const container = document.querySelector(".container");
-  const clock = document.createElement("div");
-  clock.classList.add("clock", `clock-${timezone}`);
-  clock.innerHTML = `
-                    <div class="clock-hand">
-                      <div class="hand hour"></div>
-                      <div class="hand minute"></div>
-                      <div class="hand second"></div>
-                    </div>
-                  `;
-  container.appendChild(clock);
+  const { hours, minutes, seconds } = getTimeComponents(timezone);
+  const dateTimeText = `${hours}:${minutes}:${seconds}`;
+
+  const clock = createBaseDOM(timezone, dateTimeText);
 
   drawMarkers(clock);
 
@@ -108,4 +117,3 @@ const generateClock = ({ timezone = "America/New_York" }) => {
 
 generateClock({ timezone: "Australia/Sydney" });
 generateClock({ timezone: "America/New_York" });
-
