@@ -1,6 +1,8 @@
-package behaviourPattern.state;
+package behaviourPattern.state.demo1_raffle;
 
 /**
+ * business logic design -> finite state machine design -> class design -> implementation
+ *
  * @author xueshuo
  * @create 2023-11-15 4:52 pm
  */

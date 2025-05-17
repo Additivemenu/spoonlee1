@@ -1,4 +1,6 @@
-package behaviourPattern.state;
+package behaviourPattern.state.demo1_raffle;
+
+import behaviourPattern.state.demo1_raffle.states.*;
 
 /**
  * @author xueshuo

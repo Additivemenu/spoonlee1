@@ -1,4 +1,4 @@
-package behaviourPattern.state;
+package behaviourPattern.state.demo1_raffle.states;
 
 /**
  * 状态抽象类

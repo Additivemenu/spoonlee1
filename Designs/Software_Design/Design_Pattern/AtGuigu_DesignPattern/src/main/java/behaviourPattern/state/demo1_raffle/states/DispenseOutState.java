@@ -1,4 +1,6 @@
-package behaviourPattern.state;
+package behaviourPattern.state.demo1_raffle.states;
+
+import behaviourPattern.state.demo1_raffle.RaffleActivity;
 
 /**
  * 奖品发放完毕的状态, 代表着activity的生命周期结束

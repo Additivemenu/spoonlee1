@@ -1,4 +1,6 @@
-package behaviourPattern.state;
+package behaviourPattern.state.demo1_raffle.states;
+
+import behaviourPattern.state.demo1_raffle.RaffleActivity;
 
 /**
  * 不能抽奖的状态
