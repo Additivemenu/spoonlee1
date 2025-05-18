@@ -1576,6 +1576,8 @@ https://refactoring.guru/design-patterns/chain-of-responsibility
 
 
 
+感觉像是一种heruistics的方法, 类似css属性的计算流程
+
 
 
 学校OA系统的采购审批项目:需求是
