@@ -17,6 +17,7 @@ h1 {
   height: 100%;
 
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
 
@@ -32,10 +33,10 @@ h1 {
 @keyframes scale {
   0% {
     font-size: 200vw;
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0);
   }
   100% {
     font-size: 20vw;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 1);
   }
 }
