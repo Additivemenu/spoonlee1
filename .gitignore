@@ -3,6 +3,8 @@ build/
 node_modules
 dist
 
+!Web_Dev/FrontEnd/3-webpack/**/dist/
+
 * .zip
 
 *.env
