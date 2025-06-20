@@ -2,7 +2,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 /**
- * !textures
+ * !===============================================
+ * !Textures
+ * !===============================================
  */
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = () => {
@@ -19,12 +21,12 @@ loadingManager.onError = () => {
 };
 const textureLoader = new THREE.TextureLoader(loadingManager);
 
-const colorTexture = textureLoader.load("/textures/door/color.jpg");
+//! load all the textures into memory
+const colorTexture = textureLoader.load("/textures/checkerboard-8x8.png");
 colorTexture.colorSpace = THREE.SRGBColorSpace; // Textures used as map and matcap are supposed to be encoded in sRGB.
 
 const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
 alphaTexture.colorSpace = THREE.SRGBColorSpace; // Textures used as map and matcap are supposed to be encoded in sRGB.
-
 
 const heightTexture = textureLoader.load("/textures/door/height.jpg");
 heightTexture.colorSpace = THREE.SRGBColorSpace; // Textures used as map and matcap are supposed to be encoded in sRGB.
@@ -43,13 +45,23 @@ metalnessTexture.colorSpace = THREE.SRGBColorSpace; // Textures used as map and 
 const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
 roughnessTexture.colorSpace = THREE.SRGBColorSpace; // Textures used as map and matcap are supposed to be encoded in sRGB.
 
+//! texture transformation (similar to background-image attr and transform() in css)
+// colorTexture.repeat.x = 2;
+// colorTexture.repeat.y = 3;
+// colorTexture.wrapS = THREE.RepeatWrapping;
+// colorTexture.wrapT = THREE.RepeatWrapping;
 
+// colorTexture.offset.x = 0.5;
+// colorTexture.offset.y = 0.5;
 
+// colorTexture.rotation = Math.PI * 0.25;
+// colorTexture.center.x = 0.5;
+// colorTexture.center.y = 0.5;
+// colorTexture.center.z = 0.5;
 
-
-
-
-
+//! filtering and mipmapping
+// colorTexture.minFilter = THREE.NearestFilter;
+colorTexture.magFilter = THREE.NearestFilter;  // checkerboard-8x8 is a small size file
 
 /**
  * Base
