@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Bubbling Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Event Bubbling 详细演示</h1>
+
+      <div class="explanation">
+        <h3>🎯 点击橙色按钮，观察事件的完整流程</h3>
+        <p>
+          <strong>捕获阶段（蓝色）：</strong>从document → html → body →
+          grandparent → parent → child → button
+        </p>
+        <p><strong>目标阶段（橙色）：</strong>在button上执行</p>
+        <p>
+          <strong>冒泡阶段（绿色）：</strong>从button → child → parent →
+          grandparent → body → html → document
+        </p>
+      </div>
+
+      <div class="demo-area">
+        <div class="grandparent" id="grandparent">
+          <div class="element-label">Grandparent (红色边框)</div>
+          <div class="parent" id="parent">
+            <div class="element-label">Parent (绿色边框)</div>
+            <div class="child" id="child">
+              <div class="element-label">Child (蓝色边框)</div>
+              <button class="target-button" id="target">🎯 点击我！</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control-button" onclick="clearLog()">清空日志</button>
+        <button class="control-button" onclick="toggleCapture()">
+          <span id="captureStatus">启用捕获监听</span>
+        </button>
+      </div>
+
+      <div class="phase-indicator" id="phaseIndicator">等待点击事件...</div>
+
+      <div class="log-section">
+        <h3>📋 事件执行日志</h3>
+        <div class="log-container" id="logContainer">
+          <div class="log-entry">日志将在这里显示...</div>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>

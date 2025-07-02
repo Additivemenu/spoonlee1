@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Events Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Input Events Demo</h1>
+
+      <div class="instructions">
+        <h3>Try these actions:</h3>
+        <ul>
+          <li><strong>Type normally</strong> - Watch input events fire</li>
+          <li>
+            <strong>Paste text</strong> - See paste → input event sequence
+          </li>
+          <li>
+            <strong>Click outside</strong> - Triggers change event if value
+            changed
+          </li>
+          <li>
+            <strong>Copy/paste same text</strong> - Paste fires, but input might
+            not if value doesn't change
+          </li>
+        </ul>
+      </div>
+
+      <div class="input-section">
+        <label for="demoInput">Test Input Field:</label>
+        <input
+          type="text"
+          id="demoInput"
+          placeholder="Type here or paste some text..."
+        />
+      </div>
+
+      <div class="log-section">
+        <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+        <div class="log-container" id="logContainer">
+          <div class="log-entry">Event log will appear here...</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
