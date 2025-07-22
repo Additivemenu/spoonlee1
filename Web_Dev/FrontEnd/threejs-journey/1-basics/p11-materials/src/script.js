@@ -1,5 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import GUI from "lil-gui";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+
+/**
+ * Debug GUI
+ */
+const gui = new GUI();
 
 /**
  * Base
@@ -54,13 +61,47 @@ matcapTexture.colorSpace = THREE.SRGBColorSpace;
 // const material = new THREE.MeshNormalMaterial();
 // material.flatShading = true;
 
-
-// 3. MeshMatcapMaterial ------------------------
+//! 3. MeshMatcapMaterial ------------------------
 // const material = new THREE.MeshMatcapMaterial();
 // material.matcap = matcapTexture;
 
 // 4. MeshDepthMaterial ------------------------
-const material = new THREE.MeshDepthMaterial();
+// const material = new THREE.MeshDepthMaterial();
+
+// 5. MeshLambertMaterial (need lights) ------------------------
+// const material = new THREE.MeshLambertMaterial();
+
+// 6. MeshPhongMaterial ------------------------
+// const material = new THREE.MeshPhongMaterial();
+// material.shininess = 100; // shininess of the material
+// material.specular = new THREE.Color("blue"); // specular color of the material
+
+// 7. MeshToonMaterial ------------------------
+// const material = new THREE.MeshToonMaterial();
+// gradientTexture.minFilter = THREE.NearestFilter; // no need to mipmap for toon shading
+// gradientTexture.magFilter = THREE.NearestFilter; // no need to mipmap for toon shading
+// gradientTexture.generateMipmaps = false; // no need to mipmap for toon shading
+// material.gradientMap = gradientTexture;
+
+//! 8. MeshStandardMaterial (physically based rendering (PBR)) ------------------------
+const material = new THREE.MeshStandardMaterial();
+material.metalness = 0.7;
+material.roughness = 0.2;
+material.map = doorColorTexture;
+material.aoMap = doorAmbientOcclusionTexture;
+material.aoMapIntensity = 1; // intensity of the ambient occlusion map
+// material.displacementMap = doorHeightTexture; // 这个texture会引起geometry displacement (形变了)
+material.metalnessMap = doorMetalnessTexture; // metalness map
+material.roughnessMap = doorRoughnessTexture; // roughness map
+material.normalMap = doorNormalTexture; // normal map
+material.transparent = true; // make the material transparent
+// material.alphaMap = doorAlphaTexture; // alpha map for transparency
+
+gui.add(material, "metalness", 0, 1, 0.01).name("Metalness");
+gui.add(material, "roughness", 0, 1, 0.01).name("Roughness");
+
+// 9. MeshPhysicalMaterial (PBR) ------------------------
+
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
 sphere.position.x = -1.5;
@@ -74,6 +115,28 @@ const torus = new THREE.Mesh(
 torus.position.x = 1.5;
 
 scene.add(sphere, plane, torus);
+
+/**
+ * lights
+ */
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 30);
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
+scene.add(pointLight);
+
+/**
+ * Environment map
+ */
+const rgbeLoader = new RGBELoader();
+rgbeLoader.load("./textures/environmentMap/2k.hdr", (environmentMap) => {
+  environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = environmentMap;
+  scene.environment = environmentMap; // materials that has a reflection will appear with this environment map
+});
 
 /**
  * Sizes
