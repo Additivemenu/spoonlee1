@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    platform: linux/arm64/v8 # Remove this line for Intel/AMD processors
+    container_name: mysql8-practice
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: practice_db
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql-scripts:/sql-scripts #! Mount SQL scripts directory
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
