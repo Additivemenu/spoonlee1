@@ -79,6 +79,9 @@ volumes:
   mysql_data:
 ```
 
+regarding ` - ./sql-scripts:/sql-scripts`, check [docker mount](./docker-mount.md)
+
+
 ## Step 3: Add Your SQL Script
 Save your practice SQL script as `sql-scripts/practice.sql` (copy the content from the previous SQL artifact).
 
