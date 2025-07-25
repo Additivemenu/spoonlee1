@@ -1,8 +1,9 @@
 # MySQL 8 Docker Setup and CRUD Tutorial
 
-all in cli, no SQL script
-
-- see [how to run sql using MySQL cli](./docs/sql.md)
+a few ways to interact with MySQL server:
+- this readme: mainly using MySQL cli and one-off SQL (not scripts)
+- see [how to run sql scripts using MySQL cli](./docs/sql.md)
+- or you can use any MySQL client (e.g. phpmyadmin, MySQLWorkbench) to run sql or sql scripts
 
 ## Step 1: Setting up MySQL 8 with Docker
 
