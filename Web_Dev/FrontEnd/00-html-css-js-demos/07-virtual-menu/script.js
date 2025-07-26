@@ -1,3 +1,14 @@
+/**
+ * VirtualMenu class for creating a virtual scrolling menu.
+ *
+ * Imperative programming style:
+ *  - bottom layer: state data and render()
+ *  - middle layer: event handlers (handleSearch, handleScroll, selectItem)
+ *  - top layer: bind the event handlers to the UI elements
+ *
+ * 不管是imperative还是declarative，都需要先搞清楚 state data 有哪些, 从data出发思考
+ * 然后再去写render方法，最后再去绑定事件处理函数。
+ */
 class VirtualMenu {
   constructor() {
     this.items = [];
@@ -21,7 +32,7 @@ class VirtualMenu {
   async init() {
     await this.generateItems();
     this.setupEventListeners();
-    this.render();
+    this.render(); //! see the render method is stateless, it relies on the current state
   }
 
   async generateItems() {
@@ -163,7 +174,7 @@ class VirtualMenu {
 
     this.startIndex = 0;
     this.container.scrollTop = 0;
-    this.render(); //!
+    this.render(); //! see the render method is stateless, it relies on the current state
   }
 
   /**
@@ -180,13 +191,13 @@ class VirtualMenu {
 
     if (newStartIndex !== this.startIndex) {
       this.startIndex = newStartIndex;
-      this.render(); //!
+      this.render(); //! see the render method is stateless, it relies on the current state
     }
   }
 
   selectItem(index) {
     this.selectedIndex = index;
-    this.render();
+    this.render(); //! see the render method is stateless, it relies on the current state
 
     const item = this.filteredItems[index];
     if (item) {
@@ -197,7 +208,7 @@ class VirtualMenu {
   /**
    *
    * @returns {void}
-   * Renders the visible items in the virtual menu.
+   * ! Renders the visible items in the virtual menu based on the current state of VirtualMenu
    * It calculates the total height of the items, determines which items to display based on the
    * current scroll position, and updates the container's inner HTML with the visible items.
    * It also measures the render time and updates the render time display.
@@ -215,6 +226,7 @@ class VirtualMenu {
       return;
     }
 
+    // firstly, get the data correct
     const totalHeight = this.filteredItems.length * this.itemHeight;
     const offsetY = this.startIndex * this.itemHeight;
     const endIndex = Math.min(
@@ -224,6 +236,7 @@ class VirtualMenu {
 
     const visibleItems = this.filteredItems.slice(this.startIndex, endIndex);
 
+    // then, render DOM based on the data
     const itemsHTML = visibleItems
       .map((item, index) => {
         const actualIndex = this.startIndex + index;
