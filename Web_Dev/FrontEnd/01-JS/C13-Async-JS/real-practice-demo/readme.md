@@ -1,0 +1,1 @@
+add tsconfig.json file so that `ts-node` will use the closest one --> more predictable than using default tsconfig
