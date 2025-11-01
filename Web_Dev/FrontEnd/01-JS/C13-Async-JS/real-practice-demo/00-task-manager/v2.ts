@@ -40,6 +40,7 @@
       if (!task) return;
 
       this.active++; // 单线程, 这个操作是安全的, 因为目前为止我们还没跑await
+      // ? why try finally here? 
       try {
         // Execute the task
         await task();
