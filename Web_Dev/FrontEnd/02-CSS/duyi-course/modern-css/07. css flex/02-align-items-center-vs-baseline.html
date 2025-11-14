@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flex align-items: center vs baseline</title>
+  <style>
+    .container {
+      display: flex;
+      border: 2px dashed #888;
+      gap: 10px;
+      height: 120px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    .box {
+      background-color: #cdeaff;
+      border: 1px solid #555;
+      padding: 8px 12px;
+    }
+    .small { font-size: 16px; }
+    .medium { font-size: 28px; }
+    .large { font-size: 42px; }
+  </style>
+</head>
+<body>
+  <h3>align-items: center</h3>
+  <div class="container" style="align-items: center;">
+    <div class="box small">small text</div>
+    <div class="box medium">medium text</div>
+    <div class="box large">LARGE text</div>
+  </div>
+
+  <h3>align-items: baseline</h3>
+  <div class="container" style="align-items: baseline;">
+    <div class="box small">small text</div>
+    <div class="box medium">medium text</div>
+    <div class="box large">LARGE text</div>
+  </div>
+</body>
+</html>

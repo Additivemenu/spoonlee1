@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center; /* 关键：优化超宽屏居中 */
+        min-height: 200px;
+        border: 1px solid #ccc;
+      }
+
+      .left,
+      .right {
+        width: 200px;
+        flex-shrink: 0; /* 关键：防止窄屏压缩 */
+        background-color: #f0f0f0;
+      }
+
+      .middle {
+        flex-grow: 1; /* 关键：占据剩余空间 */
+        max-width: 1000px; /* 关键：限制最大宽度 */
+        background-color: #e0e0e0;
+      }
+
+      /*优化: 小屏幕隐藏左右栏*/
+      @media (max-width: 600px) {
+        .left,
+        .right {
+          display: none; /* 隐藏左右栏 */
+        }
+
+        .container {
+          justify-content: center; /* 让中间栏居中 */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left">左侧边栏</div>
+      <div class="middle">
+        <h2>中间内容区</h2>
+        <p>自适应，且在任何屏幕尺寸下都表现良好。</p>
+      </div>
+      <div class="right">右侧边栏</div>
+    </div>
+  </body>
+</html>
