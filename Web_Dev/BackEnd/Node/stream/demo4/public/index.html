@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SSE Chat Chunk Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 1rem;
+      }
+      #log {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        max-height: 400px;
+        overflow-y: auto;
+        margin-top: 1rem;
+        font-family: monospace;
+        background: #f9f9f9;
+      }
+      .chunk {
+        padding: 2px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SSE Chat Chunk Demo</h1>
+
+    <p>
+      This page connects to <code>/stream</code> and receives chunks generated
+      on the server every 0.5s.
+    </p>
+
+    <p>
+      <button id="reconnectFromBeginning">Reconnect (from beginning)</button>
+      <button id="reconnectFromLast">Reconnect (from last index)</button>
+    </p>
+
+    <div>Last index: <span id="lastIndex">-1</span></div>
+
+    <div id="log"></div>
+
+    <script>
+      let eventSource = null;
+      let lastIndex = -1;
+
+      const lastIndexSpan = document.getElementById("lastIndex");
+      const logDiv = document.getElementById("log");
+
+      function appendChunk(index, chunk) {
+        const div = document.createElement("div");
+        div.className = "chunk";
+        div.textContent = `${index}: ${chunk}`;
+        logDiv.appendChild(div);
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+
+      function connect(offset) {
+        if (eventSource) {
+          eventSource.close();
+        }
+
+        console.log("Connecting with offset", offset);
+        eventSource = new EventSource(`/stream?offset=${offset}`);
+
+        eventSource.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          lastIndex = data.index;
+          lastIndexSpan.textContent = String(lastIndex);
+          appendChunk(data.index, data.chunk);
+        };
+
+        eventSource.onerror = (err) => {
+          console.log("SSE error, closing connection", err);
+          eventSource.close();
+          // auto-retry after 1 second, resuming from lastIndex + 1
+          setTimeout(() => connect(lastIndex + 1), 1000);
+        };
+      }
+
+      // Initial connect:
+      // - If you want "from the beginning" every time, use connect(0)
+      // - If you want resume behavior, you could persist lastIndex in sessionStorage, etc.
+      connect(0);
+
+      document
+        .getElementById("reconnectFromBeginning")
+        .addEventListener("click", () => {
+          // Clear UI and reconnect from index 0
+          logDiv.innerHTML = "";
+          lastIndex = -1;
+          lastIndexSpan.textContent = "-1";
+          connect(0);
+        });
+
+      document
+        .getElementById("reconnectFromLast")
+        .addEventListener("click", () => {
+          // Reconnect from the next index (resume mode)
+          connect(lastIndex + 1);
+        });
+    </script>
+  </body>
+</html>
