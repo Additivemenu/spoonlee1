@@ -27,7 +27,7 @@ async function main() {
   try {
     // Create a sample file if it doesn't exist
     if (!fs.existsSync(inputFile)) {
-      await createSampleFile(inputFile, 1000);
+      await createSampleFile(inputFile, 10000);
     }
 
     // Process the file

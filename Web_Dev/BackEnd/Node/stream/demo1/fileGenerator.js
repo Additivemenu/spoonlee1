@@ -7,6 +7,9 @@ const fs = require("fs");
 
 /**
  * Create a sample text file with specified number of lines
+ * - just use WriteStream to generate large files efficiently
+ * - returns promise that resolves when write stream is finished
+ *
  * @param {string} filename - Path to the file to create
  * @param {number} lines - Number of lines to generate
  * @returns {Promise<void>}

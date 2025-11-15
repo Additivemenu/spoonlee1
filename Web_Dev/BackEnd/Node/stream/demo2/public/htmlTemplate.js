@@ -50,11 +50,12 @@ function getHomepageHTML() {
   <div id="status"></div>
   <h3>Output:</h3>
   <div id="output"></div>
-
+  
   <script src="/client.js"></script>
 </body>
 </html>
   `;
 }
+// <script src="/client.js"></script> will fetch js file from server as well
 
 module.exports = { getHomepageHTML };

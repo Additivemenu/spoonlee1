@@ -13,6 +13,13 @@ class LineProcessor extends Transform {
     this.progressInterval = options.progressInterval || 100;
   }
 
+  /**
+   * Transforms incoming data chunks
+   * - must implement _transform method
+   * @param {*} chunk
+   * @param {*} encoding
+   * @param {*} callback
+   */
   _transform(chunk, encoding, callback) {
     // Add chunk to buffer
     this.buffer += chunk.toString();
@@ -28,7 +35,7 @@ class LineProcessor extends Transform {
       if (line.trim()) {
         this.lineCount++;
 
-        // Example processing: Convert to uppercase and add line number
+        //! Example processing: Convert to uppercase and add line number
         const processedLine = `[Line ${
           this.lineCount
         }] ${line.toUpperCase()}\n`;
@@ -44,6 +51,13 @@ class LineProcessor extends Transform {
     callback();
   }
 
+  /***
+   * Flushes remaining data in buffer
+   * must implement _flush method
+   * 
+   * @param {*} callback
+   *
+   */
   _flush(callback) {
     // Process any remaining data in buffer
     if (this.buffer.trim()) {

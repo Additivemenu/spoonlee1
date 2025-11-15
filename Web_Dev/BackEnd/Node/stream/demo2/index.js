@@ -9,15 +9,13 @@
  */
 
 const http = require("http");
-const fs = require("fs");
-const path = require("path");
 const { SERVER_CONFIG } = require("./config");
-const {
-  handleFileDownload,
-  handleRealtimeStream,
-  handleJsonStream,
-} = require("./routeHandlers");
-const { getHomepageHTML } = require("./htmlTemplate");
+const { handleFileDownload } = require("./handlers/fileDownloadHandler");
+const { handleRealtimeStream } = require("./handlers/realtimeStreamHandler");
+const { handleJsonStream } = require("./handlers/jsonStreamHandler");
+const { handleHomepage } = require("./handlers/homepageHandler");
+const { handleClientJs } = require("./handlers/clientJsHandler");
+const { handle404 } = require("./handlers/notFoundHandler");
 
 // Create HTTP server with routing
 const server = http.createServer((req, res) => {
@@ -49,32 +47,6 @@ const server = http.createServer((req, res) => {
       handle404(req, res);
   }
 });
-
-/**
- * Handle homepage
- */
-function handleHomepage(req, res) {
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.end(getHomepageHTML());
-}
-
-/**
- * Handle client.js request
- */
-function handleClientJs(req, res) {
-  const clientJsPath = path.join(__dirname, "client.js");
-  const clientJs = fs.readFileSync(clientJsPath, "utf8");
-  res.writeHead(200, { "Content-Type": "application/javascript" });
-  res.end(clientJs);
-}
-
-/**
- * Handle 404
- */
-function handle404(req, res) {
-  res.writeHead(404, { "Content-Type": "text/plain" });
-  res.end("404 Not Found");
-}
 
 // Start server
 function startServer() {

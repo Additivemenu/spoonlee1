@@ -26,7 +26,7 @@ async function processLargeFile(inputFile, outputFile, options = {}) {
   console.log(`📊 Input file size: ${fileSizeInMB} MB\n`);
 
   return new Promise((resolve, reject) => {
-    // Create streams
+    // step1: Create streams
     const readStream = fs.createReadStream(inputFile, {
       encoding: "utf8",
       highWaterMark: options.chunkSize || 64 * 1024, // Default 64KB chunks
@@ -38,7 +38,8 @@ async function processLargeFile(inputFile, outputFile, options = {}) {
 
     const writeStream = fs.createWriteStream(outputFile);
 
-    // Use pipeline for better error handling
+    //! step2: Use pipeline for better error handling
+    // pipeline here is a bit like ETL (Extract, Transform, Load) processing
     pipeline(readStream, lineProcessor, writeStream, (err) => {
       if (err) {
         console.error("❌ Pipeline error:", err);
@@ -65,7 +66,7 @@ async function processLargeFile(inputFile, outputFile, options = {}) {
       }
     });
 
-    // Monitor stream events
+    // step2.5: Monitor stream events
     readStream.on("error", (err) => {
       console.error("❌ Read stream error:", err);
       reject(err);
