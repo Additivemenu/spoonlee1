@@ -27,7 +27,7 @@ setInterval(() => {
   // 1. Append to the in-memory log
   conversation.chunks.push(newChunk);
 
-  // 2. Push to all currently connected clients
+  // 2. Push to all currently connected clients of new AI chat chunk
   for (const sub of conversation.subscribers) {
     const index = conversation.chunks.length - 1;
     sub.res.write(`data: ${JSON.stringify({ index, chunk: newChunk })}\n\n`);
@@ -54,7 +54,7 @@ app.get("/stream", (req, res) => {
 
   console.log("Client connected with offset", offset);
 
-  // 1. Replay existing chunks from the requested offset
+  //! 1. Replay existing chunks from the requested offset
   for (let i = offset; i < conversation.chunks.length; i++) {
     res.write(
       `data: ${JSON.stringify({
@@ -64,7 +64,7 @@ app.get("/stream", (req, res) => {
     );
   }
 
-  // 2. Subscribe this client for future chunks
+  //! 2. Subscribe this client for future chunks
   const subscriber = { res };
   conversation.subscribers.add(subscriber);
 
