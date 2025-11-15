@@ -7,13 +7,17 @@
  * Handle real-time data streaming (SSE)
  */
 function handleRealtimeStream(req, res) {
-  // Set headers for SSE
+  console.log("1. Headers sent?", res.headersSent); // false
+  //! send headers to client right away for SSE, note Headers Can Only Be Sent Once ⚠️
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
   });
-
+  console.log("2. Headers sent?", res.headersSent); // true ✅
+  // ↑ At this point, headers are already flushed to client!
+  // Now the SSE connection is established
+  // Client is waiting for data events
   console.log("🔴 Started real-time streaming");
 
   let counter = 0;
@@ -32,6 +36,7 @@ function handleRealtimeStream(req, res) {
 
     //! SSE format: data: {json}\n\n
     res.write(`data: ${JSON.stringify(data)}\n\n`);
+    // ↑ Body data follows in the established connection
     console.log(`📡 Sent update #${counter}`);
 
     // Stop after 20 updates (for demo purposes)
