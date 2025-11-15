@@ -10,31 +10,34 @@ app.use(express.static(path.join(__dirname, "public")));
 /**
  * Conversation state:
  * - chunks: all chunks in order (append-only "log")
- * - subscribers: active SSE connections
+ * - isStreamingComplete: flag to indicate if AI simulation is done
  */
 const conversation = {
   chunks: [], // append-only log of all chat chunks
-  subscribers: new Set(), // active SSE connections
+  isStreamingComplete: false, // flag to indicate if AI simulation is done
 };
 
 /**
- *! Simulate AI provider returning a new chat chunk every 0.5s
+ *! Simulate AI provider returning a new chat chunk every 0.5s for 20 seconds
  */
 let counter = 0;
-setInterval(() => {
+const startTime = Date.now();
+const DURATION = 20000; // 20 seconds
+
+const aiSimulation = setInterval(() => {
+  const elapsed = Date.now() - startTime;
+
+  if (elapsed >= DURATION) {
+    clearInterval(aiSimulation);
+    conversation.isStreamingComplete = true;
+    console.log("AI simulation complete - 20 seconds elapsed");
+    return;
+  }
+
   const newChunk = `chunk-${counter++} at ${new Date().toISOString()}`;
 
-  // 1. Append to the in-memory log
+  // Append to the in-memory log
   conversation.chunks.push(newChunk);
-
-  // 2. Push to all currently connected clients of new AI chat chunk
-  for (const sub of conversation.subscribers) {
-    // Skip subscribers that are still replaying old chunks
-    if (sub.isReplaying) continue;
-
-    const index = conversation.chunks.length - 1;
-    sub.res.write(`data: ${JSON.stringify({ index, chunk: newChunk })}\n\n`);
-  }
 
   console.log("Generated:", newChunk);
 }, 50);
@@ -43,7 +46,7 @@ setInterval(() => {
  * SSE endpoint
  *
  * Client connects to: GET /stream
- * On reconnection, server always replays all chunks from the beginning
+ * Streams all chunks from the array, keeps checking for new chunks
  */
 app.get("/stream", (req, res) => {
   // SSE headers
@@ -53,30 +56,35 @@ app.get("/stream", (req, res) => {
 
   console.log("Client connected");
 
-  // 1. Snapshot the current chunk count before subscribing
-  const replayUntil = conversation.chunks.length;
+  let lastSentIndex = -1;
 
-  // 2. Subscribe this client for future chunks (but mark as replaying)
-  const subscriber = { res, isReplaying: true };
-  conversation.subscribers.add(subscriber);
+  //! Stream all existing chunks and keep checking for new ones
+  // periodically check the append-only log for new chunks
+  const streamInterval = setInterval(() => {
+    // Send any new chunks that have been added to the array
+    for (let i = lastSentIndex + 1; i < conversation.chunks.length; i++) {
+      res.write(
+        `data: ${JSON.stringify({
+          index: i,
+          chunk: conversation.chunks[i],
+        })}\n\n`,
+      );
+      lastSentIndex = i;
+    }
 
-  // 3. Replay chunks that existed at connection time
-  // During replay, this subscriber won't receive broadcasts (isReplaying=true)
-  for (let i = 0; i < replayUntil; i++) {
-    res.write(
-      `data: ${JSON.stringify({
-        index: i,
-        chunk: conversation.chunks[i],
-      })}\n\n`,
-    );
-  }
+    // If streaming is complete and all chunks have been sent, clean up
+    if (
+      conversation.isStreamingComplete &&
+      lastSentIndex >= conversation.chunks.length - 1
+    ) {
+      clearInterval(streamInterval);
+      console.log("All chunks streamed, interval cleaned up");
+    }
+  }, 500); //! Check every 500ms for new chunks, it will be chunky if interval is too long
 
-  // 4. Mark replay as complete - now can receive broadcasts
-  subscriber.isReplaying = false;
-
-  // 5. Cleanup when client disconnects
+  // Cleanup when client disconnects
   req.on("close", () => {
-    conversation.subscribers.delete(subscriber);
+    clearInterval(streamInterval);
     console.log("Client disconnected");
   });
 });
