@@ -36,7 +36,7 @@ async function main() {
 
     const startTime = Date.now();
 
-    // Process the CSV data
+    //! Process the CSV data
     const results = await processCSVData(
       inputFile,
       outputJsonFile,

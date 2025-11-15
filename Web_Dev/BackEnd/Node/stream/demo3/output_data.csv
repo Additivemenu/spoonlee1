@@ -1,0 +1,13 @@
+name,email,age,city,ageGroup,emailDomain,processedAt,isAdult,nameLength
+John Doe,john@gmail.com,25,New York,Young Adult,gmail.com,2025-11-15T06:15:13.594Z,true,8
+Jane Smith,jane@yahoo.com,32,Los Angeles,Adult,yahoo.com,2025-11-15T06:15:13.600Z,true,10
+Bob Johnson,bob@company.com,45,Chicago,Adult,company.com,2025-11-15T06:15:13.600Z,true,11
+Alice Brown,alice@gmail.com,28,Houston,Young Adult,gmail.com,2025-11-15T06:15:13.600Z,true,11
+Charlie Wilson,charlie@hotmail.com,17,Phoenix,Minor,hotmail.com,2025-11-15T06:15:13.600Z,false,14
+Diana Moore,diana@gmail.com,55,Philadelphia,Senior,gmail.com,2025-11-15T06:15:13.600Z,true,11
+Grace Taylor,grace@gmail.com,29,Dallas,Young Adult,gmail.com,2025-11-15T06:15:13.600Z,true,12
+Henry Anderson,henry@company.com,41,San Jose,Adult,company.com,2025-11-15T06:15:13.600Z,true,14
+Ivy Thomas,ivy@hotmail.com,23,Austin,Young Adult,hotmail.com,2025-11-15T06:15:13.600Z,true,10
+Jack Jackson,jack@gmail.com,52,Jacksonville,Senior,gmail.com,2025-11-15T06:15:13.600Z,true,12
+Kate White,kate@yahoo.com,31,Fort Worth,Adult,yahoo.com,2025-11-15T06:15:13.600Z,true,10
+Leo Harris,leo@company.com,27,Columbus,Young Adult,company.com,2025-11-15T06:15:13.600Z,true,10

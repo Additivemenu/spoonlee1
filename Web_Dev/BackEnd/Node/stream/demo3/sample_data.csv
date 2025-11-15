@@ -1,0 +1,16 @@
+name,email,age,city
+John Doe,john@gmail.com,25,New York
+Jane Smith,jane@yahoo.com,32,Los Angeles
+Bob Johnson,bob@company.com,45,Chicago
+Alice Brown,alice@gmail.com,28,Houston
+Invalid User,,30,Boston
+Charlie Wilson,charlie@hotmail.com,17,Phoenix
+Diana Moore,diana@gmail.com,55,Philadelphia
+Eve Davis,eve@company.com,invalid,San Antonio
+Frank Miller,frank.yahoo.com,35,San Diego
+Grace Taylor,grace@gmail.com,29,Dallas
+Henry Anderson,henry@company.com,41,San Jose
+Ivy Thomas,ivy@hotmail.com,23,Austin
+Jack Jackson,jack@gmail.com,52,Jacksonville
+Kate White,kate@yahoo.com,31,Fort Worth
+Leo Harris,leo@company.com,27,Columbus

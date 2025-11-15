@@ -98,6 +98,153 @@ JSONFormatter  CSVFormatter
 output.json   output.csv
 ```
 
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          CSV TRANSFORMATION PIPELINE                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+INPUT FILE: employees.csv
+     │
+     │ (Raw CSV text)
+     ▼
+┌─────────────────────┐
+│  fs.createReadStream│  📄 Read file chunks
+│   (Readable Stream) │  
+└──────────┬──────────┘
+           │
+           │ Chunks: "name,age,department\nJohn,30,IT\n..."
+           ▼
+┌─────────────────────┐
+│    CSVParser        │  🔍 Parse CSV → Objects
+│ (Transform Stream)  │  Input:  "John,30,IT\n"
+└──────────┬──────────┘  Output: {name:"John", age:"30", dept:"IT"}
+           │
+           │ Objects: {name, age, department, ...}
+           ▼
+┌─────────────────────┐
+│   DataValidator     │  ✅ Validate data
+│ (Transform Stream)  │  - Check required fields
+└──────────┬──────────┘  - Validate data types
+           │              - Filter invalid records
+           │ Valid objects only
+           ▼
+┌─────────────────────┐
+│   DataEnricher      │  ✨ Enrich data
+│ (Transform Stream)  │  - Add fullName
+└──────────┬──────────┘  - Add ageGroup
+           │              - Add timestamp
+           │ Enriched objects
+           ▼
+┌─────────────────────┐
+│ StatisticsCollector │  📊 Collect stats
+│ (Transform Stream)  │  - Count records
+└──────────┬──────────┘  - Track departments
+           │              - Calculate averages
+           │ (Pass through + collect stats)
+           ▼
+┌─────────────────────┐
+│     Splitter        │  🔀 Split data flow
+│  (PassThrough)      │  Data goes to BOTH branches
+└──────────┬──────────┘
+           │
+           ├──────────────────────────┬──────────────────────────┐
+           │                          │                          │
+           │ Branch 1                 │ Branch 2                 │
+           ▼                          ▼                          │
+┌─────────────────────┐    ┌─────────────────────┐              │
+│   PassThrough       │    │   PassThrough       │              │
+│  (objectMode)       │    │  (objectMode)       │              │
+└──────────┬──────────┘    └──────────┬──────────┘              │
+           │                          │                          │
+           │ Objects                  │ Objects                  │
+           ▼                          ▼                          │
+┌─────────────────────┐    ┌─────────────────────┐              │
+│   JSONFormatter     │    │   CSVFormatter      │              │
+│ (Transform Stream)  │    │ (Transform Stream)  │              │
+└──────────┬──────────┘    └──────────┬──────────┘              │
+           │                          │                          │
+           │ JSON strings             │ CSV strings              │
+           │ "{"name":"John",...}\n"  │ "John,30,IT,...\n"      │
+           ▼                          ▼                          │
+┌─────────────────────┐    ┌─────────────────────┐              │
+│fs.createWriteStream │    │fs.createWriteStream │              │
+│ (Writable Stream)   │    │ (Writable Stream)   │              │
+└──────────┬──────────┘    └──────────┬──────────┘              │
+           │                          │                          │
+           ▼                          ▼                          │
+    OUTPUT FILE:             OUTPUT FILE:                        │
+  employees.json          employees.csv                          │
+                                                                  │
+                                                                  │
+                          ┌─────────────────────┐                │
+                          │   Statistics        │ ◄──────────────┘
+                          │   (Collected data)  │  getStats()
+                          └─────────────────────┘
+                          {
+                            totalRecords: 100,
+                            departments: {...},
+                            averageAge: 35.5
+                          }
+```
+
+
+
+```
+Step-by-step transformation of ONE record:
+
+1️⃣ Raw CSV Input:
+   "John Doe,30,IT,john@example.com,60000\n"
+   
+2️⃣ After CSVParser:
+   {
+     name: "John Doe",
+     age: "30",
+     department: "IT",
+     email: "john@example.com",
+     salary: "60000"
+   }
+   
+3️⃣ After DataValidator:
+   {
+     name: "John Doe",
+     age: 30,                    // ← Converted to number
+     department: "IT",
+     email: "john@example.com",
+     salary: 60000               // ← Converted to number
+   }
+   
+4️⃣ After DataEnricher:
+   {
+     name: "John Doe",
+     age: 30,
+     department: "IT",
+     email: "john@example.com",
+     salary: 60000,
+     fullName: "John Doe",       // ← Added
+     ageGroup: "adult",          // ← Added
+     processedAt: "2024-11-15"   // ← Added
+   }
+   
+5️⃣ After StatisticsCollector:
+   (Same object, but stats collected in background)
+   Stats: { totalRecords: 1, departments: {IT: 1}, ... }
+   
+6️⃣ At Splitter:
+   Object flows to BOTH branches simultaneously
+   
+7️⃣ Branch 1 - JSONFormatter:
+   '{"name":"John Doe","age":30,"department":"IT",...}\n'
+   
+8️⃣ Branch 2 - CSVFormatter:
+   'John Doe,30,IT,john@example.com,60000,John Doe,adult,2024-11-15\n'
+   
+9️⃣ Final Output:
+   - employees.json: Contains JSON formatted data
+   - employees.csv: Contains enriched CSV data
+
+```
+
+
 ## Customization
 
 ### Custom Validation Rules

@@ -1,0 +1,134 @@
+[
+{
+  "name": "John Doe",
+  "email": "john@gmail.com",
+  "age": 25,
+  "city": "New York",
+  "ageGroup": "Young Adult",
+  "emailDomain": "gmail.com",
+  "processedAt": "2025-11-15T06:15:13.594Z",
+  "isAdult": true,
+  "nameLength": 8
+},
+{
+  "name": "Jane Smith",
+  "email": "jane@yahoo.com",
+  "age": 32,
+  "city": "Los Angeles",
+  "ageGroup": "Adult",
+  "emailDomain": "yahoo.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 10
+},
+{
+  "name": "Bob Johnson",
+  "email": "bob@company.com",
+  "age": 45,
+  "city": "Chicago",
+  "ageGroup": "Adult",
+  "emailDomain": "company.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 11
+},
+{
+  "name": "Alice Brown",
+  "email": "alice@gmail.com",
+  "age": 28,
+  "city": "Houston",
+  "ageGroup": "Young Adult",
+  "emailDomain": "gmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 11
+},
+{
+  "name": "Charlie Wilson",
+  "email": "charlie@hotmail.com",
+  "age": 17,
+  "city": "Phoenix",
+  "ageGroup": "Minor",
+  "emailDomain": "hotmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": false,
+  "nameLength": 14
+},
+{
+  "name": "Diana Moore",
+  "email": "diana@gmail.com",
+  "age": 55,
+  "city": "Philadelphia",
+  "ageGroup": "Senior",
+  "emailDomain": "gmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 11
+},
+{
+  "name": "Grace Taylor",
+  "email": "grace@gmail.com",
+  "age": 29,
+  "city": "Dallas",
+  "ageGroup": "Young Adult",
+  "emailDomain": "gmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 12
+},
+{
+  "name": "Henry Anderson",
+  "email": "henry@company.com",
+  "age": 41,
+  "city": "San Jose",
+  "ageGroup": "Adult",
+  "emailDomain": "company.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 14
+},
+{
+  "name": "Ivy Thomas",
+  "email": "ivy@hotmail.com",
+  "age": 23,
+  "city": "Austin",
+  "ageGroup": "Young Adult",
+  "emailDomain": "hotmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 10
+},
+{
+  "name": "Jack Jackson",
+  "email": "jack@gmail.com",
+  "age": 52,
+  "city": "Jacksonville",
+  "ageGroup": "Senior",
+  "emailDomain": "gmail.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 12
+},
+{
+  "name": "Kate White",
+  "email": "kate@yahoo.com",
+  "age": 31,
+  "city": "Fort Worth",
+  "ageGroup": "Adult",
+  "emailDomain": "yahoo.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 10
+},
+{
+  "name": "Leo Harris",
+  "email": "leo@company.com",
+  "age": 27,
+  "city": "Columbus",
+  "ageGroup": "Young Adult",
+  "emailDomain": "company.com",
+  "processedAt": "2025-11-15T06:15:13.600Z",
+  "isAdult": true,
+  "nameLength": 10
+}
+]
