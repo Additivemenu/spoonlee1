@@ -100,7 +100,6 @@ node index.js
 - ✅ Backpressure handling
 - ✅ Client disconnect detection
 - ✅ Memory-efficient file serving
-- ✅ Modular server architecture
 
 ## Configuration
 

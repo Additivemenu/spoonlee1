@@ -5,6 +5,24 @@
 
 /**
  * Handle JSON array streaming
+ * 
+ * 
+ *! The Memory Leak Visualization 📊 (if we don't handle client disconnect)
+Time →
+Client disconnects at T=0
+
+T=0:    [Buffer: empty] ← disconnect happens
+T=50ms: [Buffer: item1] ← still writing
+T=100ms:[Buffer: item1, item2] ← buffer growing
+T=150ms:[Buffer: item1, item2, item3] ← still growing
+T=200ms:[Buffer: full! backpressure!] ← warning signs
+T=250ms:[Error or silent drop] ← problems!
+
+Without clearInterval:
+- setInterval callback keeps running
+- CPU cycles wasted generating data
+- Memory used for: interval closure, generated objects, buffer
+ * 
  */
 function handleJsonStream(req, res) {
   res.writeHead(200, {
@@ -32,7 +50,7 @@ function handleJsonStream(req, res) {
       timestamp: Date.now(),
     };
 
-    // Write item (with comma separator for valid JSON)
+    //! Write item (with comma separator for valid JSON)
     const itemJson = JSON.stringify(item);
     res.write(itemsSent === 1 ? itemJson : `,${itemJson}`);
 
@@ -40,7 +58,7 @@ function handleJsonStream(req, res) {
       console.log(`📊 Streamed ${itemsSent}/${totalItems} items`);
     }
 
-    // Complete the stream
+    //! Complete the stream
     if (itemsSent >= totalItems) {
       clearInterval(interval);
       res.write("]");
@@ -49,7 +67,7 @@ function handleJsonStream(req, res) {
     }
   }, 50); // Send item every 50ms
 
-  // Handle client disconnect
+  //! Handle client disconnect, important to prevent memory leaks
   req.on("close", () => {
     console.log("⚠️  Client disconnected from JSON stream");
     clearInterval(interval);

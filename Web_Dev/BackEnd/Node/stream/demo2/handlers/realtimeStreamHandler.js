@@ -43,7 +43,7 @@ function handleRealtimeStream(req, res) {
     }
   }, 1000);
 
-  // Handle client disconnect
+  //! Handle client disconnect, important to prevent memory leaks
   req.on("close", () => {
     console.log("⚠️  Client disconnected from real-time stream");
     clearInterval(interval);
