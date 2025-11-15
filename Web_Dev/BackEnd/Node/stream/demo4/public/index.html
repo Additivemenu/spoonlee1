@@ -27,23 +27,29 @@
 
     <p>
       This page connects to <code>/stream</code> and receives chunks generated
-      on the server every 0.5s.
+      on the server every 0.5s. On reconnection, all chunks are replayed from
+      the beginning.
     </p>
 
     <p>
-      <button id="reconnectFromBeginning">Reconnect (from beginning)</button>
-      <button id="reconnectFromLast">Reconnect (from last index)</button>
+      <button id="reconnect">Reconnect</button>
+      <button id="disconnect">Disconnect</button>
     </p>
 
-    <div>Last index: <span id="lastIndex">-1</span></div>
+    <div>
+      Status: <span id="status">Disconnected</span> | Last index:
+      <span id="lastIndex">-1</span>
+    </div>
 
     <div id="log"></div>
 
     <script>
       let eventSource = null;
       let lastIndex = -1;
+      let autoReconnect = true;
 
       const lastIndexSpan = document.getElementById("lastIndex");
+      const statusSpan = document.getElementById("status");
       const logDiv = document.getElementById("log");
 
       function appendChunk(index, chunk) {
@@ -54,13 +60,19 @@
         logDiv.scrollTop = logDiv.scrollHeight;
       }
 
-      function connect(offset) {
+      function connect() {
         if (eventSource) {
           eventSource.close();
         }
 
-        console.log("Connecting with offset", offset);
-        eventSource = new EventSource(`/stream?offset=${offset}`);
+        console.log("Connecting to stream...");
+        statusSpan.textContent = "Connecting...";
+        eventSource = new EventSource("/stream");
+
+        eventSource.onopen = () => {
+          console.log("Connected");
+          statusSpan.textContent = "Connected";
+        };
 
         eventSource.onmessage = (event) => {
           const data = JSON.parse(event.data);
@@ -71,33 +83,40 @@
 
         eventSource.onerror = (err) => {
           console.log("SSE error, closing connection", err);
+          statusSpan.textContent = "Error";
           eventSource.close();
-          // auto-retry after 1 second, resuming from lastIndex + 1
-          setTimeout(() => connect(lastIndex + 1), 1000);
+          // auto-retry after 1 second if autoReconnect is enabled
+          if (autoReconnect) {
+            setTimeout(() => connect(), 1000);
+          }
         };
       }
 
-      // Initial connect:
-      // - If you want "from the beginning" every time, use connect(0)
-      // - If you want resume behavior, you could persist lastIndex in sessionStorage, etc.
-      connect(0);
+      function disconnect() {
+        autoReconnect = false;
+        if (eventSource) {
+          eventSource.close();
+          eventSource = null;
+        }
+        statusSpan.textContent = "Disconnected";
+        console.log("Disconnected");
+      }
 
-      document
-        .getElementById("reconnectFromBeginning")
-        .addEventListener("click", () => {
-          // Clear UI and reconnect from index 0
-          logDiv.innerHTML = "";
-          lastIndex = -1;
-          lastIndexSpan.textContent = "-1";
-          connect(0);
-        });
+      // Initial connect
+      connect();
 
-      document
-        .getElementById("reconnectFromLast")
-        .addEventListener("click", () => {
-          // Reconnect from the next index (resume mode)
-          connect(lastIndex + 1);
-        });
+      document.getElementById("reconnect").addEventListener("click", () => {
+        // Clear UI and reconnect
+        logDiv.innerHTML = "";
+        lastIndex = -1;
+        lastIndexSpan.textContent = "-1";
+        autoReconnect = true;
+        connect();
+      });
+
+      document.getElementById("disconnect").addEventListener("click", () => {
+        disconnect();
+      });
     </script>
   </body>
 </html>

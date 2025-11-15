@@ -13,8 +13,8 @@ app.use(express.static(path.join(__dirname, "public")));
  * - subscribers: active SSE connections
  */
 const conversation = {
-  chunks: [],
-  subscribers: new Set(),
+  chunks: [], // append-only log of all chat chunks
+  subscribers: new Set(), // active SSE connections
 };
 
 /**
@@ -29,33 +29,40 @@ setInterval(() => {
 
   // 2. Push to all currently connected clients of new AI chat chunk
   for (const sub of conversation.subscribers) {
+    // Skip subscribers that are still replaying old chunks
+    if (sub.isReplaying) continue;
+
     const index = conversation.chunks.length - 1;
     sub.res.write(`data: ${JSON.stringify({ index, chunk: newChunk })}\n\n`);
   }
 
   console.log("Generated:", newChunk);
-}, 500);
+}, 50);
 
 /**
  * SSE endpoint
  *
- * Client can call: GET /stream?offset=NUMBER
- * - offset: the next chunk index the client wants
- *   e.g. if client last got index 5, they reconnect with offset=6
- *   If they want from the beginning, use offset=0.
+ * Client connects to: GET /stream
+ * On reconnection, server always replays all chunks from the beginning
  */
 app.get("/stream", (req, res) => {
-  const offset = Number(req.query.offset || "0");
-
   // SSE headers
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
 
-  console.log("Client connected with offset", offset);
+  console.log("Client connected");
 
-  //! 1. Replay existing chunks from the requested offset
-  for (let i = offset; i < conversation.chunks.length; i++) {
+  // 1. Snapshot the current chunk count before subscribing
+  const replayUntil = conversation.chunks.length;
+
+  // 2. Subscribe this client for future chunks (but mark as replaying)
+  const subscriber = { res, isReplaying: true };
+  conversation.subscribers.add(subscriber);
+
+  // 3. Replay chunks that existed at connection time
+  // During replay, this subscriber won't receive broadcasts (isReplaying=true)
+  for (let i = 0; i < replayUntil; i++) {
     res.write(
       `data: ${JSON.stringify({
         index: i,
@@ -64,11 +71,10 @@ app.get("/stream", (req, res) => {
     );
   }
 
-  //! 2. Subscribe this client for future chunks
-  const subscriber = { res };
-  conversation.subscribers.add(subscriber);
+  // 4. Mark replay as complete - now can receive broadcasts
+  subscriber.isReplaying = false;
 
-  // 3. Cleanup when client disconnects
+  // 5. Cleanup when client disconnects
   req.on("close", () => {
     conversation.subscribers.delete(subscriber);
     console.log("Client disconnected");
