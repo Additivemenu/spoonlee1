@@ -6,6 +6,7 @@ type EditorState =
   | "approved"
   | "rejected"
   | "published";
+
 type EditorEvent =
   | "EDIT"
   | "SUBMIT"
@@ -14,7 +15,15 @@ type EditorEvent =
   | "PUBLISH"
   | "RETURN";
 
-const editorFSM = new EnterpriseFSM<EditorState, EditorEvent>({
+// 定义类型安全的 Context
+interface EditorContext {
+  documentId: string;
+  version: number;
+  changes: string[];
+}
+
+// 现在 context 是类型安全的！
+const editorFSM = new EnterpriseFSM<EditorState, EditorEvent, EditorContext>({
   id: "document-editor",
   initial: "draft",
   context: {
@@ -30,12 +39,13 @@ const editorFSM = new EnterpriseFSM<EditorState, EditorEvent>({
         EDIT: { target: "editing" },
         SUBMIT: {
           target: "reviewing",
-          guard: (ctx) => ctx.changes.length > 0,
-          action: (ctx) => console.log("提交审核:", ctx.documentId),
+          // TypeScript 现在知道 ctx 的类型是 EditorContext！
+          guard: (ctx) => ctx.changes.length > 0, // ✅ 类型安全
+          action: (ctx) => console.log("提交审核:", ctx.documentId), // ✅ 类型安全
         },
       },
-      entry: (ctx) => console.log("进入草稿状态"),
-      exit: (ctx) => console.log("退出草稿状态"),
+      entry: (ctx) => console.log("进入草稿状态", ctx.documentId),
+      exit: (ctx) => console.log("退出草稿状态", ctx.version),
     },
     editing: {
       on: {

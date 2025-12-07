@@ -1,5 +1,9 @@
 // 类型安全的FSM实现
-interface FSMConfig<TState extends string, TEvent extends string> {
+interface FSMConfig<
+  TState extends string,
+  TEvent extends string,
+  TContext = any,
+> {
   id: string;
   initial: TState;
   states: Record<
@@ -10,13 +14,13 @@ interface FSMConfig<TState extends string, TEvent extends string> {
           TEvent,
           {
             target: TState;
-            action?: (context: any) => void;
-            guard?: (context: any) => boolean;
+            action?: (context: TContext) => void;
+            guard?: (context: TContext) => boolean;
           }
         >
       >;
-      entry?: (context: any) => void;
-      exit?: (context: any) => void;
+      entry?: (context: TContext) => void;
+      exit?: (context: TContext) => void;
     }
   >;
   /**
@@ -28,11 +32,11 @@ interface FSMConfig<TState extends string, TEvent extends string> {
    *              - 通过 send 方法的 payload 参数动态更新
    *              - 传递给所有监听器
    * 这种设计的好处是：
-   *  ✅ 数据集中管理 - 所有状态相关数据在一个地方 
-   *  ✅ 解耦状态和数据 - 状态转移逻辑和业务数据分离 
-   *  ✅ 灵活的条件判断 - guard 可以基于业务数据决定是否允许转移 
+   *  ✅ 数据集中管理 - 所有状态相关数据在一个地方
+   *  ✅ 解耦状态和数据 - 状态转移逻辑和业务数据分离
+   *  ✅ 灵活的条件判断 - guard 可以基于业务数据决定是否允许转移
    *  ✅ 便于调试和追踪 - context 的变化可以被监听和记录
-   * 
+   *
    * @example
    * ```ts
    * context: {
@@ -42,10 +46,14 @@ interface FSMConfig<TState extends string, TEvent extends string> {
    * }
    * ```
    */
-  context?: any;
+  context?: TContext;
 }
 
-class EnterpriseFSM<TState extends string, TEvent extends string> {
+class EnterpriseFSM<
+  TState extends string,
+  TEvent extends string,
+  TContext = any,
+> {
   private currentState: TState;
   /**
    * 状态机的共享上下文 - 存储业务相关数据
@@ -53,8 +61,8 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
    *              在所有 guard、action、entry、exit 函数中都可以访问
    *              通过 send 方法的 payload 可以动态更新此上下文
    */
-  private context: any;
-  private readonly config: FSMConfig<TState, TEvent>;
+  private context: TContext;
+  private readonly config: FSMConfig<TState, TEvent, TContext>;
   private stateHistory: Array<{
     state: TState;
     timestamp: number;
@@ -67,14 +75,14 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
       from: TState;
       to: TState;
       event: TEvent;
-      context: any;
+      context: TContext;
     }) => void
   > = [];
 
-  constructor(config: FSMConfig<TState, TEvent>) {
+  constructor(config: FSMConfig<TState, TEvent, TContext>) {
     this.config = config;
     this.currentState = config.initial;
-    this.context = config.context || {};
+    this.context = (config.context || {}) as TContext;
     this.recordState("INIT");
   }
 
@@ -195,7 +203,7 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
     from: TState;
     to: TState;
     event: TEvent | "TIME_TRAVEL";
-    context: any;
+    context: TContext;
   }) {
     this.listeners.forEach((listener) => {
       listener(transition as any);
