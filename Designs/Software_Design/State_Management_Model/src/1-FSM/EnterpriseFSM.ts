@@ -95,6 +95,12 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
     return true;
   }
 
+  /**
+   * 执行状态的进入或退出动作
+   * @param type - 动作类型: "entry" (进入) 或 "exit" (退出)
+   * @param state - 目标状态
+   * @description 在状态转移过程中自动调用，用于执行状态的生命周期钩子函数
+   */
   private async executeStateAction(type: "entry" | "exit", state: TState) {
     const action = this.config.states[state]?.[type];
     if (action) {
@@ -102,11 +108,18 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
     }
   }
 
-  private recordState(event?: TEvent) {
+  /**
+   * 记录状态历史
+   * @param event - 触发状态变化的事件 (可选)
+   * @description 将当前状态、时间戳和触发事件添加到历史记录中
+   *              自动维护历史记录大小，超过1000条时保留最近的500条
+   *              用于调试、审计和时间旅行功能
+   */
+  private recordState(event?: TEvent | "INIT") {
     this.stateHistory.push({
       state: this.currentState,
       timestamp: Date.now(),
-      event,
+      event: event as TEvent | undefined,
     });
 
     // 保持历史记录在合理范围内
@@ -115,11 +128,33 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
     }
   }
 
+  /**
+   * 通知所有已注册的监听器
+   * @param transition - 状态转移信息对象
+   * @param transition.from - 源状态
+   * @param transition.to - 目标状态
+   * @param transition.event - 触发事件
+   * @param transition.context - 当前上下文
+   * @description 在状态转移完成后调用，向所有监听器广播状态变化
+   *              用于实现观察者模式，允许外部代码响应状态变化
+   */
+  private notifyListeners(transition: {
+    from: TState;
+    to: TState;
+    event: TEvent | "TIME_TRAVEL";
+    context: any;
+  }) {
+    this.listeners.forEach((listener) => {
+      listener(transition as any);
+    });
+  }
+
   // 时间旅行调试
   timeTravelTo(index: number) {
     if (index >= 0 && index < this.stateHistory.length) {
       const targetState = this.stateHistory[index];
       this.currentState = targetState.state;
+
       this.notifyListeners({
         from: this.currentState,
         to: targetState.state,
@@ -143,8 +178,15 @@ class EnterpriseFSM<TState extends string, TEvent extends string> {
 
       if (stateConfig.on) {
         Object.values(stateConfig.on).forEach((transition) => {
-          if (!visited.has(transition.target)) {
-            queue.push(transition.target);
+          if (
+            transition &&
+            typeof transition === "object" &&
+            "target" in transition
+          ) {
+            const target = transition.target as TState;
+            if (!visited.has(target)) {
+              queue.push(target);
+            }
           }
         });
       }
