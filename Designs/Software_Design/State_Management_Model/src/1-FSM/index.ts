@@ -23,6 +23,7 @@ const editorFSM = new EnterpriseFSM<EditorState, EditorEvent>({
     changes: [],
   },
   // declarative state machine definition
+  // 这里就定义了各个状态及其转换规则 (state graph), 甚至还有状态的entry/exit hooks
   states: {
     draft: {
       on: {
