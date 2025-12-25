@@ -1,21 +1,17 @@
-import * as THREE from "three";
 import GUI from "lil-gui";
-import { createDonuts } from "./scenes/meshes/donuts.js";
-import { create3DText } from "./scenes/meshes/text3D.js";
 import { createRenderer } from "./infra/renderer";
 import { createCamera } from "./infra/camera";
 import { createControl } from "./infra/controls";
 import { createScene } from "./scenes/index.js";
 
-/**
- * Base
- */
 // Debug
 const gui = new GUI();
 
+//! setup scene
 const canvas = document.querySelector("canvas.webgl");
 const scene = createScene();
 
+// infra
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -42,6 +38,7 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+// put everything together and start animation
 const animator = new (await import("./animator/index.js")).Animator(
   scene,
   camera,
