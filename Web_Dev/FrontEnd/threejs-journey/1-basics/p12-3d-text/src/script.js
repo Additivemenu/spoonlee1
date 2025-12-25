@@ -1,8 +1,11 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js"; // three.js built-in font loader
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js"; // three.js built-in text geometry
+import { createDonuts } from "./scenes/meshes/donuts.js";
+import { create3DText } from "./scenes/meshes/text3D.js";
+import { createRenderer } from "./infra/renderer";
+import { createCamera } from "./infra/camera";
+import { createControl } from "./infra/controls";
+import { createScene } from "./scenes/index.js";
 
 /**
  * Base
@@ -10,96 +13,21 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js"; //
 // Debug
 const gui = new GUI();
 
-// Canvas
 const canvas = document.querySelector("canvas.webgl");
+const scene = createScene();
 
-// Scene
-const scene = new THREE.Scene();
-
-// axis helper
-const axesHelper = new THREE.AxesHelper();
-scene.add(axesHelper);
-
-/**
- * Textures
- */
-const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("/textures/matcaps/3.png");
-matcapTexture.encoding = THREE.sRGBEncoding;
-
-/**
- * load Fonts from local static file
- */
-const fontLoader = new FontLoader();
-fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
-  console.log("font loaded");
-  // canvas > scene >  Mesh = Geometry + Material
-  // https://threejs.org/docs/?q=Geometry#TextGeometry
-  const textGeometry = new TextGeometry("Hello Three.js", {
-    font: font,
-    size: 0.5,
-    depth: 0.2,
-    curveSegments: 5,
-    // bevel options, to make the text edges smoother
-    bevelEnabled: true,
-    bevelThickness: 0.03, // in depth direction
-    bevelSize: 0.02, // in size direction
-    bevelOffset: 0,
-    bevelSegments: 5,
-  });
-  textGeometry.center(); // center the geometry
-  //  alternative way to center the text geometry
-  // textGeometry.computeBoundingBox();
-  // // move the text to center (half of its size in each axis negatively)
-  // textGeometry.translate(
-  //   (textGeometry.boundingBox.max.x - 0.02) * -0.5, // bevelSize compensation
-  //   (textGeometry.boundingBox.max.y - 0.02) * -0.5,
-  //   (textGeometry.boundingBox.max.z - 0.03) * -0.5, // bevelThickness compensation
-  // );
-
-  const textMaterial = new THREE.MeshMatcapMaterial({
-    matcap: matcapTexture,
-  });
-  const text = new THREE.Mesh(textGeometry, textMaterial);
-  scene.add(text);
-
-  // create 100 donuts randomly around the text
-  // generate geometry and material first, then reuse them to create multiple meshes to improve performance
-  const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
-  const donutMaterial = new THREE.MeshMatcapMaterial({
-    matcap: matcapTexture,
-  });
-  for (let i = 0; i < 100; i++) {
-    const donut = new THREE.Mesh(donutGeometry, donutMaterial);
-
-    // random position [-5, 5, -5, 5, -5, 5]
-    donut.position.x = (Math.random() - 0.5) * 10;
-    donut.position.y = (Math.random() - 0.5) * 10;
-    donut.position.z = (Math.random() - 0.5) * 10;
-
-    donut.rotation.x = Math.random() * Math.PI;
-    donut.rotation.y = Math.random() * Math.PI;
-
-    const scale = Math.random();
-    donut.scale.set(scale, scale, scale);
-
-    scene.add(donut);
-  }
-});
-
-/**
- * ==============================
- * window, camera general config
- * =============================
- */
-/**
- * Sizes
- */
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
+const camera = createCamera({ scene, sizes });
+const controls = createControl({
+  camera,
+  canvas,
+});
+const renderer = createRenderer({ canvas, sizes });
 
+// listener
 window.addEventListener("resize", () => {
   // Update sizes
   sizes.width = window.innerWidth;
@@ -114,50 +42,10 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100,
+const animator = new (await import("./animator/index.js")).Animator(
+  scene,
+  camera,
+  renderer,
+  controls,
 );
-camera.position.x = 1;
-camera.position.y = 1;
-camera.position.z = 2;
-scene.add(camera);
-
-// Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
-});
-renderer.setSize(sizes.width, sizes.height);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-/**
- * Animate
- */
-const clock = new THREE.Clock();
-
-const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
-
-  // Update controls
-  controls.update();
-
-  // Render
-  renderer.render(scene, camera);
-
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
-};
-
-tick();
+animator.startAnimationLoop();
