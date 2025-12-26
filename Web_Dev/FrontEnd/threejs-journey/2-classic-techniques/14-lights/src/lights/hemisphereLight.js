@@ -7,6 +7,9 @@ import * as THREE from "three";
 export function createHemisphereLight(gui) {
   const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.9);
 
+  // Set default visibility
+  hemisphereLight.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Hemisphere Light");
 
@@ -32,9 +35,6 @@ export function createHemisphereLight(gui) {
       hemisphereLight.groundColor.set(value);
     })
     .name("Ground Color");
-
-  // Start with light disabled
-  hemisphereLight.visible = false;
 
   return hemisphereLight;
 }

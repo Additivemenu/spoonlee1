@@ -11,6 +11,9 @@ export function createRectAreaLight(gui) {
   rectAreaLight.position.set(-1.5, 0, 1.5);
   rectAreaLight.lookAt(new THREE.Vector3(0, 0, 0));
 
+  // Set default visibility
+  rectAreaLight.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("RectArea Light");
 
@@ -51,9 +54,6 @@ export function createRectAreaLight(gui) {
   folder.add(rectAreaLight, "width").min(0).max(5).step(0.01).name("Width");
 
   folder.add(rectAreaLight, "height").min(0).max(5).step(0.01).name("Height");
-
-  // Start with light disabled
-  rectAreaLight.visible = false;
 
   return rectAreaLight;
 }

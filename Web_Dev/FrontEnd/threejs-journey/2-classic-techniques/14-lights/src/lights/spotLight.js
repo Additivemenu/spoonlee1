@@ -13,6 +13,9 @@ export function createSpotLight(gui) {
   spotLight.decay = 2;
   spotLight.distance = 10;
 
+  // Set default visibility
+  spotLight.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Spot Light");
 
@@ -93,9 +96,6 @@ export function createSpotLight(gui) {
     .max(5)
     .step(0.01)
     .name("Target Z");
-
-  // Start with light disabled
-  spotLight.visible = false;
 
   return spotLight;
 }

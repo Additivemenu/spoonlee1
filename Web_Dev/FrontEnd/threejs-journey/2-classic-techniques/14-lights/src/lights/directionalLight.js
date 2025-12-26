@@ -8,6 +8,9 @@ export function createDirectionalLight(gui) {
   const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.9);
   directionalLight.position.set(1, 0.25, 0);
 
+  // Set default visibility
+  directionalLight.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Directional Light");
 
@@ -45,8 +48,9 @@ export function createDirectionalLight(gui) {
     .step(0.01)
     .name("Position Z");
 
-  // Start with light disabled
-  directionalLight.visible = false;
+  return directionalLight;
+
+  return directionalLight;
 
   return directionalLight;
 }

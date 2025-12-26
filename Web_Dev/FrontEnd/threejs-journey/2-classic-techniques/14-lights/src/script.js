@@ -31,7 +31,7 @@ scene.add(axesHelper);
 const ambientLight = createAmbientLight(gui);
 const directionalLight = createDirectionalLight(gui);
 const hemisphereLight = createHemisphereLight(gui);
-const pointLight = createPointLight(gui);
+const { light: pointLight, helper: pointHelper } = createPointLight(gui);
 const rectAreaLight = createRectAreaLight(gui);
 const spotLight = createSpotLight(gui);
 
@@ -43,6 +43,9 @@ scene.add(pointLight);
 scene.add(rectAreaLight);
 scene.add(spotLight);
 scene.add(spotLight.target); // spotlight needs target
+
+// Add point light helper
+if (pointHelper) scene.add(pointHelper);
 
 /**
  * Objects

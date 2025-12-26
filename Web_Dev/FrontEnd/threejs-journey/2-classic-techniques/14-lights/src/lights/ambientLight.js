@@ -7,6 +7,9 @@ import * as THREE from "three";
 export function createAmbientLight(gui) {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 
+  // Set default visibility
+  ambientLight.visible = true;
+
   // GUI controls
   const folder = gui.addFolder("Ambient Light");
 
@@ -22,9 +25,6 @@ export function createAmbientLight(gui) {
   folder.addColor({ color: 0xffffff }, "color").onChange((value) => {
     ambientLight.color.set(value);
   });
-
-  // Start with light disabled
-  ambientLight.visible = false;
 
   return ambientLight;
 }

@@ -8,6 +8,13 @@ export function createPointLight(gui) {
   const pointLight = new THREE.PointLight(0xff9000, 0.8, 10, 2);
   pointLight.position.set(1, 0.2, 0.5);
 
+  // Set default visibility
+  pointLight.visible = false;
+
+  // Helper - visualizes the light position and range
+  const helper = new THREE.PointLightHelper(pointLight, 0.2);
+  helper.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Point Light");
 
@@ -49,8 +56,7 @@ export function createPointLight(gui) {
 
   folder.add(pointLight, "decay").min(0).max(5).step(0.01).name("Decay");
 
-  // Start with light disabled
-  pointLight.visible = false;
+  folder.add(helper, "visible").name("Show Helper");
 
-  return pointLight;
+  return { light: pointLight, helper };
 }
