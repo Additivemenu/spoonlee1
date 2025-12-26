@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
 /**
  * RectArea Light Setup
@@ -13,6 +14,10 @@ export function createRectAreaLight(gui) {
 
   // Set default visibility
   rectAreaLight.visible = false;
+
+  // Helper - visualizes the rectangular light area
+  const helper = new RectAreaLightHelper(rectAreaLight);
+  helper.visible = false;
 
   // GUI controls
   const folder = gui.addFolder("RectArea Light");
@@ -55,5 +60,7 @@ export function createRectAreaLight(gui) {
 
   folder.add(rectAreaLight, "height").min(0).max(5).step(0.01).name("Height");
 
-  return rectAreaLight;
+  folder.add(helper, "visible").name("Show Helper");
+
+  return { light: rectAreaLight, helper };
 }

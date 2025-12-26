@@ -3,6 +3,7 @@ import * as THREE from "three";
 /**
  * Ambient Light Setup
  * Mini cost - illuminates all objects uniformly regardless of direction
+ * Note: Ambient light doesn't have a helper (no directional visualization needed)
  */
 export function createAmbientLight(gui) {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -26,5 +27,5 @@ export function createAmbientLight(gui) {
     ambientLight.color.set(value);
   });
 
-  return ambientLight;
+  return { light: ambientLight, helper: null };
 }

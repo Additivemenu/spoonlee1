@@ -16,6 +16,10 @@ export function createSpotLight(gui) {
   // Set default visibility
   spotLight.visible = false;
 
+  // Helper - visualizes the spotlight cone
+  const helper = new THREE.SpotLightHelper(spotLight);
+  helper.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Spot Light");
 
@@ -97,5 +101,7 @@ export function createSpotLight(gui) {
     .step(0.01)
     .name("Target Z");
 
-  return spotLight;
+  folder.add(helper, "visible").name("Show Helper");
+
+  return { light: spotLight, helper };
 }

@@ -28,12 +28,15 @@ scene.add(axesHelper);
  * Lights
  */
 // Create all lights with GUI controls
-const ambientLight = createAmbientLight(gui);
-const directionalLight = createDirectionalLight(gui);
-const hemisphereLight = createHemisphereLight(gui);
+const { light: ambientLight, helper: ambientHelper } = createAmbientLight(gui);
+const { light: directionalLight, helper: directionalHelper } =
+  createDirectionalLight(gui);
+const { light: hemisphereLight, helper: hemisphereHelper } =
+  createHemisphereLight(gui);
 const { light: pointLight, helper: pointHelper } = createPointLight(gui);
-const rectAreaLight = createRectAreaLight(gui);
-const spotLight = createSpotLight(gui);
+const { light: rectAreaLight, helper: rectAreaHelper } =
+  createRectAreaLight(gui);
+const { light: spotLight, helper: spotHelper } = createSpotLight(gui);
 
 // Add all lights to scene
 scene.add(ambientLight);
@@ -44,8 +47,12 @@ scene.add(rectAreaLight);
 scene.add(spotLight);
 scene.add(spotLight.target); // spotlight needs target
 
-// Add point light helper
+// Add all helpers to scene
+if (directionalHelper) scene.add(directionalHelper);
+if (hemisphereHelper) scene.add(hemisphereHelper);
 if (pointHelper) scene.add(pointHelper);
+if (rectAreaHelper) scene.add(rectAreaHelper);
+if (spotHelper) scene.add(spotHelper);
 
 /**
  * Objects
@@ -138,6 +145,11 @@ const tick = () => {
   sphere.rotation.x = 0.15 * elapsedTime;
   cube.rotation.x = 0.15 * elapsedTime;
   torus.rotation.x = 0.15 * elapsedTime;
+
+  // Update light helpers (some helpers need to be updated each frame)
+  if (spotHelper && spotHelper.visible) spotHelper.update();
+  if (directionalHelper && directionalHelper.visible)
+    directionalHelper.update();
 
   // Update controls
   controls.update();

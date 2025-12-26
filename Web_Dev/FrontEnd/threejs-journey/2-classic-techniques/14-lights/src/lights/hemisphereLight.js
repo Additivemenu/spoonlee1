@@ -10,6 +10,10 @@ export function createHemisphereLight(gui) {
   // Set default visibility
   hemisphereLight.visible = false;
 
+  // Helper - visualizes sky and ground colors
+  const helper = new THREE.HemisphereLightHelper(hemisphereLight, 0.2);
+  helper.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Hemisphere Light");
 
@@ -36,5 +40,7 @@ export function createHemisphereLight(gui) {
     })
     .name("Ground Color");
 
-  return hemisphereLight;
+  folder.add(helper, "visible").name("Show Helper");
+
+  return { light: hemisphereLight, helper };
 }

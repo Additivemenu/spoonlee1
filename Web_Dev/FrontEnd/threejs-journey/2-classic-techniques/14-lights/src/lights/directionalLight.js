@@ -11,6 +11,10 @@ export function createDirectionalLight(gui) {
   // Set default visibility
   directionalLight.visible = false;
 
+  // Helper - visualizes the light direction
+  const helper = new THREE.DirectionalLightHelper(directionalLight, 0.2);
+  helper.visible = false;
+
   // GUI controls
   const folder = gui.addFolder("Directional Light");
 
@@ -48,9 +52,7 @@ export function createDirectionalLight(gui) {
     .step(0.01)
     .name("Position Z");
 
-  return directionalLight;
+  folder.add(helper, "visible").name("Show Helper");
 
-  return directionalLight;
-
-  return directionalLight;
+  return { light: directionalLight, helper };
 }
