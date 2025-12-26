@@ -1,6 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
+import { createAmbientLight } from "./lights/ambientLight.js";
+import { createDirectionalLight } from "./lights/directionalLight.js";
+import { createHemisphereLight } from "./lights/hemisphereLight.js";
+import { createPointLight } from "./lights/pointLight.js";
+import { createRectAreaLight } from "./lights/rectAreaLight.js";
+import { createSpotLight } from "./lights/spotLight.js";
 
 /**
  * Base
@@ -16,65 +22,27 @@ const scene = new THREE.Scene();
 
 // axis helper (RGB = XYZ convention)
 const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper); 
+scene.add(axesHelper);
 
 /**
- *! Lights
+ * Lights
  */
-// //! Ambient light （mini cost） - 每个mesh 无论朝向哪里，都会被均匀照亮
-// const ambientLight = new THREE.AmbientLight(); // Ambient light is a light that globally illuminates all objects in the scene equally.
-// ambientLight.color = new THREE.Color(0xffffff);
-// ambientLight.intensity = 0.5;
-// scene.add(ambientLight);
-// gui
-//   .add(ambientLight, "intensity")
-//   .min(0)
-//   .max(3)
-//   .step(0.01)
-//   .name("Ambient Light Intensity");
+// Create all lights with GUI controls
+const ambientLight = createAmbientLight(gui);
+const directionalLight = createDirectionalLight(gui);
+const hemisphereLight = createHemisphereLight(gui);
+const pointLight = createPointLight(gui);
+const rectAreaLight = createRectAreaLight(gui);
+const spotLight = createSpotLight(gui);
 
-// //! directional lights (mid cost) are parallel and have a direction
-// const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.9);
-// directionalLight.position.set(1, 0.25, 0);
-// scene.add(directionalLight);
-
-// //! hemisphere light (mini cost) - 天地两色
-// // The HemisphereLight is similar to the AmbientLight but with a different color from the sky than the color coming from the ground. Faces facing the sky will be lit by one color while another color will lit faces facing the ground.
-// // The first parameter is the color corresponding to the sky color, the second parameter is the groundColor and the third parameter is the intensity:
-// const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.9);
-// scene.add(hemisphereLight);
-
-// //! point light (mid cost) - 点光源 (伟哥爱用这个)
-// // A PointLight gets emitted from a single point in all directions. A good example of a PointLight is a light bulb.
-// const pointLight = new THREE.PointLight(0xff9000, 0.8, 10, 2);
-// pointLight.position.set(1, 0.2, 0.5);
-// scene.add(pointLight);
-
-// //! rect area light (high cost) - 面光源 (只能照亮物体的一个面，不能投射阴影) - 黑暗房间中的显示屏光
-// // The RectAreaLight is a light that gets emitted from a rectangular plane in one direction. It can be used to simulate light sources such as windows or neon lights.
-// // Note: RectAreaLight only works with MeshStandardMaterial and MeshPhysicalMaterial.
-// const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 6, 1, 1);
-// rectAreaLight.position.set(-1.5, 0, 1.5); //
-// rectAreaLight.lookAt(new THREE.Vector3()); // looking at the center of the scene
-// scene.add(rectAreaLight);
-
-//! spot light (high cost) - 聚光灯 (能投射阴影)
-// A SpotLight is a light that gets emitted from a single point in one direction, along a cone that increases in size the further from the light it gets.
-// A good example of a SpotLight is a flashlight or a stage spotlight.
-const spotLight = new THREE.SpotLight(0xffffff, 10);
-spotLight.position.set(0, 2, 3);
-spotLight.angle = Math.PI * 0.2; // 光锥角度
-spotLight.penumbra = 0.25; // 光锥边缘的柔和度
-spotLight.decay = 2; // 衰减
-spotLight.distance = 10; // 有效距离
-// spotLight.castShadow = true; // 投射阴影
-// spotLight.shadow.mapSize.width = 1024; // 阴影贴图分辨率
-// spotLight.shadow.mapSize.height = 1024;
-// spotLight.shadow.camera.far = 15; // 阴影相机的远裁剪面
-// spotLight.shadow.camera.near = 1; // 阴影相机的近裁剪面
-// spotLight.shadow.camera.fov = 30; // 阴影相机的视野
+// Add all lights to scene
+scene.add(ambientLight);
+scene.add(directionalLight);
+scene.add(hemisphereLight);
+scene.add(pointLight);
+scene.add(rectAreaLight);
 scene.add(spotLight);
-scene.add(spotLight.target); // spotlight 需要一个 target 对象来指示照射方向
+scene.add(spotLight.target); // spotlight needs target
 
 /**
  * Objects
