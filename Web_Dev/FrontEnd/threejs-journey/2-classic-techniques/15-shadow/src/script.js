@@ -141,27 +141,74 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Enable shadow map
-renderer.shadowMap.enabled = false;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+// Enable shadow map - read from localStorage or use default
+const savedShadowMapEnabled = localStorage.getItem("rendererShadowMapEnabled");
+renderer.shadowMap.enabled =
+  savedShadowMapEnabled !== null ? JSON.parse(savedShadowMapEnabled) : false;
+
+const savedShadowMapType = localStorage.getItem("rendererShadowMapType");
+renderer.shadowMap.type =
+  savedShadowMapType !== null
+    ? parseInt(savedShadowMapType)
+    : THREE.PCFSoftShadowMap;
+
+gui
+  .add(renderer.shadowMap, "enabled")
+  .name("Shadow Map Enabled")
+  .onChange((value) => {
+    // Save to localStorage
+    localStorage.setItem("rendererShadowMapEnabled", JSON.stringify(value));
+    // Reload the page to reinitialize the renderer with new shadow settings
+    window.location.reload();
+  });
+gui
+  .add(renderer.shadowMap, "type", {
+    BasicShadowMap: THREE.BasicShadowMap,
+    PCFShadowMap: THREE.PCFShadowMap,
+    PCFSoftShadowMap: THREE.PCFSoftShadowMap,
+    VSMShadowMap: THREE.VSMShadowMap,
+  })
+  .name("Shadow Map Type")
+  .onChange((value) => {
+    // Save to localStorage
+    localStorage.setItem("rendererShadowMapType", value.toString());
+    // Reload the page to reinitialize the renderer with new shadow settings
+    window.location.reload();
+  });
 
 /**
  * Animate
  */
 const clock = new THREE.Clock();
+let sphereMovementEnabled = true;
+
+// Animation controls
+const animationControls = {
+  sphereMovement: true,
+};
+
+// Add animation controls to GUI
+gui
+  .add(animationControls, "sphereMovement")
+  .name("Sphere Movement")
+  .onChange((value) => {
+    sphereMovementEnabled = value;
+  });
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
-  // Update the sphere
-  sphere.position.x = Math.cos(elapsedTime) * 1.5;
-  sphere.position.z = Math.sin(elapsedTime) * 1.5;
-  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3));
+  // Update the sphere only if movement is enabled
+  if (sphereMovementEnabled) {
+    sphere.position.x = Math.cos(elapsedTime) * 1.5;
+    sphere.position.z = Math.sin(elapsedTime) * 1.5;
+    sphere.position.y = Math.abs(Math.sin(elapsedTime * 3));
 
-  // Update sphere shadow
-  sphereShadow.position.x = sphere.position.x;
-  sphereShadow.position.z = sphere.position.z;
-  sphereShadow.material.opacity = 1 - sphere.position.y;
+    // Update sphere shadow
+    sphereShadow.position.x = sphere.position.x;
+    sphereShadow.position.z = sphere.position.z;
+    sphereShadow.material.opacity = 1 - sphere.position.y;
+  }
 
   // Update controls
   controls.update();
