@@ -3,6 +3,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 
 /**
+ * texture
+ */
+const textureLoader = new THREE.TextureLoader();
+const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+bakedShadow.colorSpace = THREE.SRGBColorSpace; //Textures used as map and matcap are supposed to be encoded in sRGB.
+const simpleShadow = textureLoader.load("/textures/simpleShadow.jpg");
+
+/**
  * Base
  */
 // Debug
@@ -274,6 +282,8 @@ gui.add(material, "metalness").min(0).max(1).step(0.001);
 gui.add(material, "roughness").min(0).max(1).step(0.001);
 
 //  point light - threejs use perspective camera to render all 6 directions before every render to create shadow map
+// so basically it's like having 6 cameras for each point light to capture the scene from all directions
+// this is computationally expensive, so point lights with shadows should be used sparingly in a scene
 const pointLight = new THREE.PointLight(0xffffff, 2.7);
 pointLight.position.set(-1, 1, 0);
 
@@ -357,12 +367,30 @@ pointLightFolder
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
 sphere.castShadow = true; //! enable sphere to cast shadow
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+const plane = new THREE.Mesh(
+  new THREE.PlaneGeometry(5, 5),
+  material, // option1: use standard material - it will calculate shadow dynamically based on shadow map
+  //   new THREE.MeshBasicMaterial({ map: bakedShadow }), // option2: use baked shadow - but it's static
+);
 plane.rotation.x = -Math.PI * 0.5;
 plane.position.y = -0.5;
 plane.receiveShadow = true; //! enable plane to receive shadow
 
 scene.add(sphere, plane);
+
+//! simple fake shadow - a simple plane with a transparent shadow texture applied to it, always faces up
+const sphereShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1.5, 1.5),
+  new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    transparent: true,
+    alphaMap: simpleShadow,
+  }),
+);
+sphereShadow.rotation.x = -Math.PI * 0.5;
+sphereShadow.position.y = plane.position.y + 0.005; //! slightly above the plane to avoid z-fighting
+
+scene.add(sphereShadow);
 
 /**
  * Sizes
@@ -419,7 +447,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // 1. enable shadow map in the renderer
 // 2. define which lights will cast shadows
 // 3. define which objects will cast and receive shadows
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = false;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // shadow map algorithm type,  default THREE.PCFShadowMap
 
 /**
@@ -429,6 +457,17 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // update the sphere'
+  sphere.position.x = Math.cos(elapsedTime) * 1.5;
+  sphere.position.z = Math.sin(elapsedTime) * 1.5;
+  // jumping effect
+  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3)); // oscillate between 0 and 1
+
+  // update sphere shadow
+  sphereShadow.position.x = sphere.position.x;
+  sphereShadow.position.z = sphere.position.z;
+  sphereShadow.material.opacity = 1 - sphere.position.y; // fade out shadow when sphere is higher
 
   // Update controls
   controls.update();
