@@ -121,10 +121,11 @@ const clock = new THREE.Clock();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
-  // option1: update particles as a whole
+  //! option1: update particles as a whole
   // particleCloud.rotation.y = elapsedTime * 0.02;
 
-  // option2: update each particle position for wave effect individually
+  //! option2: update each particle position for wave effect individually
+  // yes, it's possible to directly manipulate buffer geometry attributes 
   const positions = particleDistributionGeometry.attributes.position.array;
   const count = particleDistributionGeometry.attributes.position.count;
   for (let i = 0; i < count; i++) {
