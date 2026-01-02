@@ -5,6 +5,7 @@ import { EnemyManager } from "./EnemyManager";
 import { CollisionManager } from "./CollisionManager";
 import { UIManager } from "./UIManager";
 import { InputManager } from "./InputManager";
+import { AudioManager } from "./AudioManager";
 import { GameState, GameConfig } from "./types";
 
 /**
@@ -18,6 +19,7 @@ class AAGame {
   private collisionManager: CollisionManager;
   private uiManager: UIManager;
   private inputManager: InputManager;
+  private audioManager: AudioManager;
 
   // Game state
   private gameState: GameState;
@@ -54,9 +56,22 @@ class AAGame {
     this.collisionManager = new CollisionManager(this.sceneManager.scene);
     this.uiManager = new UIManager();
     this.inputManager = new InputManager();
+    this.audioManager = new AudioManager();
 
     // Setup input callbacks
     this.inputManager.onShoot(() => this.handleShoot());
+    this.inputManager.onMuteToggle(() => this.handleMuteToggle());
+
+    // Setup mute button
+    const muteButton = document.getElementById("muteButton");
+    if (muteButton) {
+      muteButton.addEventListener("click", () => this.handleMuteToggle());
+    }
+
+    // Resume audio context on first user interaction (browser requirement)
+    window.addEventListener("click", () => this.audioManager.resume(), {
+      once: true,
+    });
 
     // Start game loop
     this.animate();
@@ -71,8 +86,22 @@ class AAGame {
     const bulletStartPos = this.weaponManager.getGunPosition();
 
     this.weaponManager.shoot(bulletStartPos, shootDirection);
+
+    // Play gun fire sound
+    this.audioManager.playGunFire();
   }
 
+  private handleMuteToggle(): void {
+    this.audioManager.toggleMute();
+
+    // Update button text
+    const muteButton = document.getElementById("muteButton");
+    if (muteButton) {
+      muteButton.textContent = this.audioManager.getMuted()
+        ? "🔇 Muted"
+        : "🔊 Sound";
+    }
+  }
   private update(deltaTime: number): void {
     if (!this.gameState.isRunning) return;
 
@@ -97,6 +126,10 @@ class AAGame {
         // Handle hit
         this.weaponManager.removeBullet(bullet);
         this.enemyManager.removePlane(plane);
+
+        // Play hit and explosion sounds
+        this.audioManager.playHit();
+        this.audioManager.playExplosion();
 
         // Update score
         this.gameState.score += 100;

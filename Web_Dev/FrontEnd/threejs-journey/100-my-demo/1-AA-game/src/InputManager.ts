@@ -7,6 +7,7 @@ export class InputManager {
   private mousePosition = new THREE.Vector2();
   private raycaster = new THREE.Raycaster();
   private shootCallbacks: Array<() => void> = [];
+  private muteToggleCallbacks: Array<() => void> = [];
 
   constructor() {
     this.setupEventListeners();
@@ -26,6 +27,9 @@ export class InputManager {
         event.preventDefault();
         this.handleShoot();
       }
+      if (event.code === "KeyM") {
+        this.handleMuteToggle();
+      }
     });
   }
 
@@ -33,8 +37,16 @@ export class InputManager {
     this.shootCallbacks.forEach((callback) => callback());
   }
 
+  private handleMuteToggle(): void {
+    this.muteToggleCallbacks.forEach((callback) => callback());
+  }
+
   public onShoot(callback: () => void): void {
     this.shootCallbacks.push(callback);
+  }
+
+  public onMuteToggle(callback: () => void): void {
+    this.muteToggleCallbacks.push(callback);
   }
 
   public getAimDirection(camera: THREE.PerspectiveCamera): THREE.Vector3 {
