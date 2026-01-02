@@ -8,6 +8,11 @@ export class SceneManager {
   public camera: THREE.PerspectiveCamera;
   public renderer: THREE.WebGLRenderer;
 
+  // Camera rotation state
+  private cameraRotationY = 0; // Horizontal rotation
+  private cameraRotationX = 0; // Vertical rotation
+  private cameraDistance = 15; // Distance from origin
+
   constructor(canvas: HTMLCanvasElement) {
     // Initialize scene
     this.scene = new THREE.Scene();
@@ -81,5 +86,39 @@ export class SceneManager {
 
   public render(): void {
     this.renderer.render(this.scene, this.camera);
+  }
+
+  /**
+   * Rotate camera based on mouse movement
+   * @param deltaX Horizontal mouse movement
+   * @param deltaY Vertical mouse movement
+   */
+  public rotateCamera(deltaX: number, deltaY: number): void {
+    // Sensitivity factor
+    const sensitivity = 0.003;
+
+    // Update rotation angles
+    this.cameraRotationY -= deltaX * sensitivity;
+    this.cameraRotationX -= deltaY * sensitivity;
+
+    // Limit vertical rotation to prevent camera flipping
+    this.cameraRotationX = Math.max(
+      -Math.PI / 3, // -60 degrees
+      Math.min(Math.PI / 3, this.cameraRotationX), // +60 degrees
+    );
+
+    // Calculate new camera position using spherical coordinates
+    const x =
+      this.cameraDistance *
+      Math.sin(this.cameraRotationY) *
+      Math.cos(this.cameraRotationX);
+    const y = 5 + this.cameraDistance * Math.sin(this.cameraRotationX);
+    const z =
+      this.cameraDistance *
+      Math.cos(this.cameraRotationY) *
+      Math.cos(this.cameraRotationX);
+
+    this.camera.position.set(x, y, z);
+    this.camera.lookAt(0, 5, 0);
   }
 }

@@ -61,6 +61,9 @@ class AAGame {
     // Setup input callbacks
     this.inputManager.onShoot(() => this.handleShoot());
     this.inputManager.onMuteToggle(() => this.handleMuteToggle());
+    this.inputManager.onCameraRotation((deltaX, deltaY) =>
+      this.sceneManager.rotateCamera(deltaX, deltaY),
+    );
 
     // Setup mute button
     const muteButton = document.getElementById("muteButton");
