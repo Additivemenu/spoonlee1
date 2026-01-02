@@ -8,8 +8,10 @@ export class InputManager {
   private raycaster = new THREE.Raycaster();
   private shootCallbacks: Array<() => void> = [];
   private muteToggleCallbacks: Array<() => void> = [];
+  private crosshairElement: HTMLElement | null = null;
 
   constructor() {
+    this.crosshairElement = document.getElementById("crosshair");
     this.setupEventListeners();
   }
 
@@ -18,6 +20,9 @@ export class InputManager {
     window.addEventListener("mousemove", (event) => {
       this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // Update crosshair position
+      this.updateCrosshairPosition(event.clientX, event.clientY);
     });
 
     // Shooting
@@ -39,6 +44,13 @@ export class InputManager {
 
   private handleMuteToggle(): void {
     this.muteToggleCallbacks.forEach((callback) => callback());
+  }
+
+  private updateCrosshairPosition(x: number, y: number): void {
+    if (this.crosshairElement) {
+      this.crosshairElement.style.left = `${x}px`;
+      this.crosshairElement.style.top = `${y}px`;
+    }
   }
 
   public onShoot(callback: () => void): void {

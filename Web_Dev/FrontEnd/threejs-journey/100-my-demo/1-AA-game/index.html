@@ -14,12 +14,14 @@
       body {
         overflow: hidden;
         font-family: "Arial", sans-serif;
+        cursor: none; /* Hide default cursor */
       }
 
       #gameCanvas {
         display: block;
         width: 100vw;
         height: 100vh;
+        cursor: none; /* Hide cursor on canvas */
       }
 
       #ui {
@@ -34,37 +36,146 @@
       }
 
       #crosshair {
-        position: absolute;
-        top: 50%;
-        left: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
         transform: translate(-50%, -50%);
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         pointer-events: none;
         z-index: 10;
+        border: 2px solid rgba(0, 255, 0, 0.6);
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3),
+          inset 0 0 10px rgba(0, 255, 0, 0.2);
+        transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out,
+          transform 0.15s ease-out;
       }
 
       #crosshair::before,
       #crosshair::after {
         content: "";
         position: absolute;
-        background-color: rgba(255, 0, 0, 0.7);
+        background-color: rgba(0, 255, 0, 0.8);
+        box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
       }
 
       #crosshair::before {
         top: 50%;
-        left: 0;
-        width: 100%;
+        left: 50%;
+        width: 16px;
         height: 2px;
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%);
       }
 
       #crosshair::after {
         left: 50%;
-        top: 0;
+        top: 50%;
         width: 2px;
-        height: 100%;
-        transform: translateX(-50%);
+        height: 16px;
+        transform: translate(-50%, -50%);
+      }
+
+      /* Corner brackets for tactical feel */
+      .crosshair-corner {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        pointer-events: none;
+      }
+
+      .crosshair-corner::before,
+      .crosshair-corner::after {
+        content: "";
+        position: absolute;
+        background-color: rgba(0, 255, 0, 0.7);
+      }
+
+      .crosshair-corner::before {
+        width: 12px;
+        height: 2px;
+      }
+
+      .crosshair-corner::after {
+        width: 2px;
+        height: 12px;
+      }
+
+      .corner-tl {
+        top: -2px;
+        left: -2px;
+      }
+
+      .corner-tl::before {
+        top: 0;
+        left: 0;
+      }
+
+      .corner-tl::after {
+        top: 0;
+        left: 0;
+      }
+
+      .corner-tr {
+        top: -2px;
+        right: -2px;
+      }
+
+      .corner-tr::before {
+        top: 0;
+        right: 0;
+      }
+
+      .corner-tr::after {
+        top: 0;
+        right: 0;
+      }
+
+      .corner-bl {
+        bottom: -2px;
+        left: -2px;
+      }
+
+      .corner-bl::before {
+        bottom: 0;
+        left: 0;
+      }
+
+      .corner-bl::after {
+        bottom: 0;
+        left: 0;
+      }
+
+      .corner-br {
+        bottom: -2px;
+        right: -2px;
+      }
+
+      .corner-br::before {
+        bottom: 0;
+        right: 0;
+      }
+
+      .corner-br::after {
+        bottom: 0;
+        right: 0;
+      }
+
+      /* Pulsing animation for crosshair */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+      }
+
+      #crosshair {
+        animation: pulse 2s ease-in-out infinite;
       }
 
       #instructions {
@@ -109,7 +220,12 @@
 
     <button id="muteButton">🔊 Sound</button>
 
-    <div id="crosshair"></div>
+    <div id="crosshair">
+      <div class="crosshair-corner corner-tl"></div>
+      <div class="crosshair-corner corner-tr"></div>
+      <div class="crosshair-corner corner-bl"></div>
+      <div class="crosshair-corner corner-br"></div>
+    </div>
 
     <div id="instructions">
       <div>🎮 Move Mouse: Aim | Left Click / Space: Shoot | M: Mute</div>

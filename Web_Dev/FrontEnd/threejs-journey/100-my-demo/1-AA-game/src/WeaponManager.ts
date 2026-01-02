@@ -50,7 +50,8 @@ export class WeaponManager {
 
   public updateGunRotation(targetPoint: THREE.Vector3): void {
     this.gun.lookAt(targetPoint);
-    // Limit vertical rotation
+
+    // Limit vertical rotation： -30 degrees to +60 degrees
     this.gun.rotation.x = Math.max(
       -Math.PI / 6,
       Math.min(Math.PI / 3, this.gun.rotation.x),

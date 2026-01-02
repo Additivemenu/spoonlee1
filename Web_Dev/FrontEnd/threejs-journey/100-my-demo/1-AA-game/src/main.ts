@@ -89,6 +89,24 @@ class AAGame {
 
     // Play gun fire sound
     this.audioManager.playGunFire();
+
+    // Visual feedback - crosshair flash
+    this.flashCrosshair();
+  }
+
+  private flashCrosshair(): void {
+    const crosshair = document.getElementById("crosshair");
+    if (crosshair) {
+      crosshair.style.borderColor = "rgba(255, 0, 0, 1)";
+      crosshair.style.boxShadow =
+        "0 0 20px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.5)";
+
+      setTimeout(() => {
+        crosshair.style.borderColor = "rgba(0, 255, 0, 0.6)";
+        crosshair.style.boxShadow =
+          "0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.2)";
+      }, 100);
+    }
   }
 
   private handleMuteToggle(): void {
@@ -102,6 +120,8 @@ class AAGame {
         : "🔊 Sound";
     }
   }
+
+  //! update data every frame
   private update(deltaTime: number): void {
     if (!this.gameState.isRunning) return;
 
@@ -131,12 +151,33 @@ class AAGame {
         this.audioManager.playHit();
         this.audioManager.playExplosion();
 
+        // Visual feedback - hit marker
+        this.showHitMarker();
+
         // Update score
         this.gameState.score += 100;
         this.gameState.planesDestroyed++;
         this.uiManager.updateScore(this.gameState);
       },
     );
+  }
+
+  private showHitMarker(): void {
+    const crosshair = document.getElementById("crosshair");
+    if (crosshair) {
+      // Temporarily enlarge crosshair to indicate hit
+      crosshair.style.transform = "translate(-50%, -50%) scale(1.3)";
+      crosshair.style.borderColor = "rgba(255, 255, 0, 1)";
+      crosshair.style.boxShadow =
+        "0 0 30px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 0, 0.8)";
+
+      setTimeout(() => {
+        crosshair.style.transform = "translate(-50%, -50%) scale(1)";
+        crosshair.style.borderColor = "rgba(0, 255, 0, 0.6)";
+        crosshair.style.boxShadow =
+          "0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.2)";
+      }, 150);
+    }
   }
 
   private animate = (): void => {
