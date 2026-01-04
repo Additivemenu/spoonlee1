@@ -83,10 +83,11 @@ class AAGame {
   private handleShoot(): void {
     if (!this.gameState.isRunning) return;
 
-    const shootDirection = this.inputManager.getAimDirection(
-      this.sceneManager.camera,
-    );
+    // Get bullet start position from gun barrel tip
     const bulletStartPos = this.weaponManager.getGunPosition();
+
+    // Get actual barrel direction (use barrel's actual pointing direction)
+    const shootDirection = this.weaponManager.getBarrelDirection();
 
     this.weaponManager.shoot(bulletStartPos, shootDirection);
 
