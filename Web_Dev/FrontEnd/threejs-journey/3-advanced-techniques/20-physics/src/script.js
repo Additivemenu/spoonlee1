@@ -33,8 +33,7 @@ const environmentMapTexture = cubeTextureLoader.load([
 ]);
 
 /**
- *! physics
-
+ *! physics world
  canno.js is the physics engine - it's like backend calculation for 3D physics simulation
  three.js is the rendering engine - it's like frontend rendering for 3D graphics display
  */
@@ -42,17 +41,41 @@ const world = new CANNO.World();
 // https://schteppe.github.io/cannon.js/docs/classes/Vec3.html
 world.gravity.set(0, -9.82, 0); // gravity vec defined in m/s²
 
+//! materials (material in physics engine, not threejs material)
+const concreteMaterial = new CANNO.Material("concrete");
+const plasticMaterial = new CANNO.Material("plastic");
+
+//! contact material - defines how two materials interact
+const concretePlasticContactMaterial = new CANNO.ContactMaterial(
+  concreteMaterial,
+  plasticMaterial,
+  {
+    friction: 0.1, // how much resistance when sliding against each other
+    restitution: 0.7, // bounciness
+  },
+);
+world.addContactMaterial(concretePlasticContactMaterial);
+// set as default contact material, if not specified otherwise:
+world.defaultContactMaterial = concretePlasticContactMaterial;
+
+// sphere
 const sphereBody = new CANNO.Body({
   mass: 1, // kg
   position: new CANNO.Vec3(0, 3, 0), // m
   shape: new CANNO.Sphere(0.5), // radius
+  material: plasticMaterial, // ! use plastic material
 });
+//! apply an initial force (only lasts for one frame (physics step)) to the sphere
+// this is like you kick on the sphere
+sphereBody.applyLocalForce(new CANNO.Vec3(150, 0, 0), new CANNO.Vec3(0, 0, 0));
 world.addBody(sphereBody);
 
+// floor
 const floorBody = new CANNO.Body({
   mass: 0, // mass = 0 makes the body static
   position: new CANNO.Vec3(0, 0, 0), //
   shape: new CANNO.Plane(), // cannojs plane is infinite
+  material: concreteMaterial, // ! use concrete material
 });
 // rotate the floor to be horizontal: axis, angle  - rotate around X axis by 90 degrees
 floorBody.quaternion.setFromAxisAngle(new CANNO.Vec3(-1, 0, 0), Math.PI * 0.5);
@@ -169,7 +192,13 @@ const tick = () => {
   const deltaTime = elapsedTime - oldElapsedTime;
   oldElapsedTime = elapsedTime;
 
-  //! Update physics world
+  //! Update physics world` (sync physics engine with rendering engine)
+  // before updating the physics world, apply wind force to the sphere
+  // the wind force here is a long lasting force applied on every frame (step), unlike the initial kick force applied earlier
+  sphereBody.applyForce(
+    new CANNO.Vec3(-0.5, 0, 0), // force = mass * acceleration
+    sphereBody.position, // apply force at center of sphere
+  );
   world.step(1 / 60, deltaTime, 3);
 
   // Update sphere based on physics
