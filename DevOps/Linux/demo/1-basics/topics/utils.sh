@@ -63,11 +63,12 @@ show_menu() {
     echo -e "  ${BOLD}4)${NC} Text Processing (grep, find, echo)"
     echo -e "  ${BOLD}5)${NC} File Permissions (chmod, chown)"
     echo -e "  ${BOLD}6)${NC} System Information (whoami, df, ps, top)"
-    echo -e "  ${BOLD}7)${NC} Complete Beginner's Path (All topics in order)"
+    echo -e "  ${BOLD}7)${NC} Network Commands (ping, curl, wget, ip)"
+    echo -e "  ${BOLD}8)${NC} Complete Beginner's Path (All topics in order)"
     echo ""
     echo -e "  ${BOLD}0)${NC} Exit Tutorial"
     echo ""
-    echo -n "Enter your choice (0-7): "
+    echo -n "Enter your choice (0-8): "
 }
 
 # Function to show completion message
@@ -90,6 +91,7 @@ show_completion() {
     echo -e "  ✓ Text processing"
     echo -e "  ✓ File permissions"
     echo -e "  ✓ System information"
+    echo -e "  ✓ Network commands"
     echo ""
     echo -e "${YELLOW}Keep practicing and you'll be a Linux pro in no time!${NC}"
     echo -e "${BLUE}Pro tip: Use 'man <command>' to learn more about any command.${NC}"

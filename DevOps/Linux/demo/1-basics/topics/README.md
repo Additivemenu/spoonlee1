@@ -12,7 +12,8 @@ topics/
 ├── 03-viewing-files.sh      # Viewing: cat, head, tail, less
 ├── 04-text-processing.sh    # Text: echo, grep, find, piping
 ├── 05-permissions.sh        # Permissions: chmod, rwx
-└── 06-system-info.sh        # System: whoami, df, ps, top
+├── 06-system-info.sh        # System: whoami, df, ps, top
+└── 07-network.sh            # Network: ping, curl, wget, ip, ss
 ```
 
 ## Benefits of Modular Design

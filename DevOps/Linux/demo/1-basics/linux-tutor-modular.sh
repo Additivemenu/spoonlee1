@@ -23,6 +23,7 @@ source "$TOPICS_DIR/03-viewing-files.sh"
 source "$TOPICS_DIR/04-text-processing.sh"
 source "$TOPICS_DIR/05-permissions.sh"
 source "$TOPICS_DIR/06-system-info.sh"
+source "$TOPICS_DIR/07-network.sh"
 
 # Complete beginner's path - runs all topics in order
 complete_path() {
@@ -36,6 +37,7 @@ complete_path() {
     topic_text_processing
     topic_permissions
     topic_system_info
+    topic_network
     
     show_completion
 }
@@ -69,6 +71,9 @@ while true; do
             topic_system_info
             ;;
         7)
+            topic_network
+            ;;
+        8)
             complete_path
             ;;
         0)

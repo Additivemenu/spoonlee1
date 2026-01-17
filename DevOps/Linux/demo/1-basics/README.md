@@ -32,7 +32,7 @@ tutor
 
 ## Tutorial Topics
 
-The interactive tutorial covers 6 essential topics:
+The interactive tutorial covers 7 essential topics:
 
 1. **Navigation Basics** - `pwd`, `ls`, `cd`, `tree`
 2. **File Operations** - `touch`, `mkdir`, `cp`, `mv`, `rm`
@@ -40,17 +40,20 @@ The interactive tutorial covers 6 essential topics:
 4. **Text Processing** - `echo`, `grep`, `find`, piping with `|`
 5. **File Permissions** - `chmod`, understanding `rwx` permissions
 6. **System Information** - `whoami`, `df`, `free`, `ps`, `top`
-7. **Complete Beginner's Path** - All topics in optimal learning order
+7. **Network Commands** - `ping`, `curl`, `wget`, `ip`, `ss`, `nslookup`
+8. **Complete Beginner's Path** - All topics in optimal learning order
 
 ## Features
 
 ### Interactive Learning
+
 - **Step-by-step guidance** - Each command is explained before you use it
 - **Hands-on practice** - Type commands yourself and see results instantly
 - **Safe environment** - Isolated Docker container, practice without fear
 - **Color-coded interface** - Easy-to-read prompts and instructions
 
 ### Modular Design
+
 - **Well-organized** - Each topic is a separate module
 - **Easy to extend** - Add new topics without modifying existing code
 - **Maintainable** - Clean structure with shared utilities
@@ -72,27 +75,32 @@ The interactive tutorial covers 6 essential topics:
     ├── 04-text-processing.sh   # Text processing
     ├── 05-permissions.sh       # File permissions
     ├── 06-system-info.sh       # System information
+    ├── 07-network.sh           # Network commands
     └── README.md                # Topics documentation
 ```
 
 ## Container Management
 
 ### Re-enter Existing Container
+
 ```bash
 docker start -i my-linux-practice
 ```
 
 ### Remove Container
+
 ```bash
 docker rm my-linux-practice
 ```
 
 ### Remove Image
+
 ```bash
 docker rmi linux-practice
 ```
 
 ### Start Fresh
+
 ```bash
 docker rm my-linux-practice  # Remove old container
 ./start.sh                    # Build and run new one
@@ -105,6 +113,7 @@ docker rm my-linux-practice  # Remove old container
 1. **Create a new topic file**: `topics/07-your-topic.sh`
 
 2. **Define the topic function**:
+
 ```bash
 #!/bin/bash
 
@@ -114,29 +123,32 @@ docker rm my-linux-practice  # Remove old container
 topic_your_topic() {
     clear
     show_header "Topic 7: Your Topic Name"
-    
+
     echo -e "${BLUE}Learn about...${NC}\n"
     wait_for_user
-    
+
     # Your tutorial content here
     # Use shared utilities: show_header, wait_for_user, check_command
-    
+
     echo -e "\n${GREEN}${BOLD}🎉 Well done!${NC}"
     wait_for_user
 }
 ```
 
 3. **Source in main script** (`linux-tutor-modular.sh`):
+
 ```bash
 source "$TOPICS_DIR/07-your-topic.sh"
 ```
 
 4. **Add to menu** (in `topics/utils.sh`):
+
 ```bash
 echo -e "  ${BOLD}7)${NC} Your Topic Name"
 ```
 
 5. **Add to switch statement** (in main script):
+
 ```bash
 7)
     topic_your_topic
@@ -161,17 +173,20 @@ topic_navigation
 ## Why This Tutorial?
 
 ### For Learners
+
 - ✅ **Beginner-friendly** - No prior Linux knowledge required
 - ✅ **Interactive** - Learn by doing, not just reading
 - ✅ **Safe** - Practice in isolated environment
 - ✅ **Comprehensive** - Covers essential commands
 
 ### For Educators
+
 - ✅ **Easy to deploy** - Just Docker and one command
 - ✅ **Customizable** - Modular design for easy modifications
 - ✅ **Trackable** - Step-by-step progression
 
 ### For Developers
+
 - ✅ **Modular** - Each topic is independent
 - ✅ **Maintainable** - Clean, organized code
 - ✅ **Extensible** - Easy to add new topics
@@ -188,6 +203,7 @@ topic_navigation
 ## Troubleshooting
 
 ### Docker not installed?
+
 ```bash
 # macOS with Homebrew
 brew install --cask docker
@@ -196,12 +212,15 @@ brew install --cask docker
 ```
 
 ### Container name already exists?
+
 The `start.sh` script will detect existing containers and offer to:
+
 1. Restart the existing container
 2. Remove and create a new one
 3. Cancel
 
 ### Want to exit the tutorial?
+
 Press `0` to exit the tutorial menu, or type `exit` to leave the container.
 
 ## Command Reference

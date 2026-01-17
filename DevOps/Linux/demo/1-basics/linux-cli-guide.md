@@ -340,6 +340,133 @@ sort fruits.txt
 
 ---
 
+## Network Commands
+
+### `hostname` - Show Computer Name
+
+```bash
+hostname              # Show hostname
+hostname -f          # Show fully qualified domain name
+hostname -i          # Show IP address
+```
+
+### `ip` - Network Interface Information
+
+```bash
+ip addr show         # Show all network interfaces and IPs
+ip a                 # Short version
+ip link show         # Show network interfaces only
+ip route             # Show routing table
+```
+
+### `ping` - Test Network Connectivity
+
+```bash
+ping -c 4 8.8.8.8           # Ping Google DNS (4 packets)
+ping -c 3 google.com        # Ping domain name
+ping -c 5 127.0.0.1         # Ping localhost
+```
+
+Flags:
+
+- `-c N`: Send N packets and stop
+- `-i N`: Wait N seconds between packets
+
+### `curl` - Transfer Data from URLs
+
+```bash
+curl https://api.github.com                    # Get content
+curl -I https://www.google.com                 # Show headers only
+curl -o output.html https://example.com        # Download to file
+curl -L https://github.com                     # Follow redirects
+curl -X POST -d "data=value" http://api.com    # POST request
+```
+
+Common flags:
+
+- `-I`: Show headers only
+- `-o`: Output to file
+- `-L`: Follow redirects
+- `-X`: Specify HTTP method
+- `-d`: Send data
+
+### `wget` - Download Files
+
+```bash
+wget https://example.com/file.txt              # Download file
+wget -O newname.txt https://example.com/file.txt  # Download with new name
+wget -c https://example.com/largefile.zip      # Continue interrupted download
+wget -q https://example.com/file.txt           # Quiet mode
+```
+
+### `ss` - Socket Statistics
+
+```bash
+ss -tuln                    # Show listening TCP/UDP ports
+ss -tulnp                   # Include process names
+ss -s                       # Show summary statistics
+ss -t state established     # Show established TCP connections
+```
+
+Flags:
+
+- `-t`: TCP sockets
+- `-u`: UDP sockets
+- `-l`: Listening sockets
+- `-n`: Show numbers instead of names
+- `-p`: Show process info
+
+### `netstat` - Network Statistics (Legacy)
+
+```bash
+netstat -tuln              # Show listening ports
+netstat -r                 # Show routing table
+netstat -i                 # Show network interfaces
+```
+
+Note: `ss` is the modern replacement for `netstat`
+
+### `nslookup` / `dig` - DNS Lookup
+
+```bash
+nslookup google.com        # Basic DNS lookup
+nslookup google.com 8.8.8.8  # Use specific DNS server
+
+dig google.com             # Detailed DNS info
+dig google.com +short      # Show just the IP
+dig google.com MX          # Show mail servers
+```
+
+### `traceroute` - Trace Network Path
+
+```bash
+traceroute google.com      # Show route to destination
+traceroute -n google.com   # Don't resolve hostnames
+```
+
+Note: May require installation or special permissions
+
+### Network Troubleshooting Examples
+
+```bash
+# Test internet connectivity
+ping -c 3 8.8.8.8
+
+# Check if a website is reachable
+curl -I https://www.google.com
+
+# Find your IP address
+ip addr show | grep inet
+
+# Check if a specific port is open
+ss -tuln | grep :80
+
+# DNS lookup
+nslookup github.com
+```
+
+---
+
 ## Additional Resources
 
 - **Manual Pages**: `man <command>` (e.g., `man ls`)
