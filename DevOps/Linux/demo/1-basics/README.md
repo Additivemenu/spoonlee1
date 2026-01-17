@@ -1,37 +1,34 @@
-# Linux CLI Interactive Tutorial - Docker Setup
+# Linux CLI Interactive Tutorial
 
-## 🎯 What's New!
+An interactive, hands-on Linux command-line tutorial running in Docker. Learn by doing with step-by-step guided exercises!
 
-This Docker environment now includes an **interactive tutorial system** that guides you through learning Linux commands step-by-step!
+## 🚀 Quick Start
 
-## 🚀 Getting Started
-
-### 1. Build the Docker Image
+### Option 1: Use the Start Script (Easiest!)
 
 ```bash
-cd /Users/lixueshuo/spoonlee/spoonlee1/DevOps/Linux/demo/1-basics/
-docker build -t linux-practice .
+./start.sh
 ```
 
-### 2. Run the Container
+That's it! The script will build the image and start the container for you.
+
+### Option 2: Manual Setup
 
 ```bash
+# Build the image
+docker build -t linux-practice .
+
+# Run the container
 docker run -it --name my-linux-practice linux-practice
 ```
 
-When you enter the container, you'll see a welcome message!
+### Inside the Container
 
-### 3. Start the Interactive Tutorial
-
-Simply type:
+When you enter, start the tutorial:
 
 ```bash
 linux-tutor
-```
-
-Or use the shortcut:
-
-```bash
+# or simply
 tutor
 ```
 
