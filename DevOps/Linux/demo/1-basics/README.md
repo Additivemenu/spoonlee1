@@ -1,30 +1,28 @@
 # Linux CLI Interactive Tutorial
 
-An interactive, hands-on Linux command-line tutorial running in Docker. Learn by doing with step-by-step guided exercises!
+An interactive, hands-on Docker-based tutorial for learning Linux command-line basics. Learn by doing with step-by-step guided exercises!
 
-## 🚀 Quick Start
+## Quick Start
 
-### Option 1: Use the Start Script (Easiest!)
+### Option 1: One-Click Start (Recommended)
 
 ```bash
 ./start.sh
 ```
 
-That's it! The script will build the image and start the container for you.
-
 ### Option 2: Manual Setup
 
 ```bash
-# Build the image
+# Build the Docker image
 docker build -t linux-practice .
 
 # Run the container
 docker run -it --name my-linux-practice linux-practice
 ```
 
-### Inside the Container
+### Start Learning
 
-When you enter, start the tutorial:
+Once inside the container, type:
 
 ```bash
 linux-tutor
@@ -32,153 +30,199 @@ linux-tutor
 tutor
 ```
 
-## 📚 Tutorial Topics
+## Tutorial Topics
 
-The interactive tutorial covers:
+The interactive tutorial covers 6 essential topics:
 
-1. **Navigation Basics** - pwd, ls, cd, tree
-2. **File Operations** - touch, mkdir, cp, mv, rm
-3. **Viewing Files** - cat, less, head, tail
-4. **Text Processing** - grep, find, echo, piping
-5. **File Permissions** - chmod, understanding rwx
-6. **System Information** - whoami, df, ps, top
-7. **Complete Beginner's Path** - All topics in order!
+1. **Navigation Basics** - `pwd`, `ls`, `cd`, `tree`
+2. **File Operations** - `touch`, `mkdir`, `cp`, `mv`, `rm`
+3. **Viewing Files** - `cat`, `less`, `head`, `tail`
+4. **Text Processing** - `echo`, `grep`, `find`, piping with `|`
+5. **File Permissions** - `chmod`, understanding `rwx` permissions
+6. **System Information** - `whoami`, `df`, `free`, `ps`, `top`
+7. **Complete Beginner's Path** - All topics in optimal learning order
 
-## ✨ Features
+## Features
 
 ### Interactive Learning
-
 - **Step-by-step guidance** - Each command is explained before you use it
-- **Hands-on practice** - Type commands yourself in real-time
-- **Immediate feedback** - See results instantly
-- **Color-coded interface** - Easy to read and follow
-- **Safe environment** - Practice without fear of breaking anything!
+- **Hands-on practice** - Type commands yourself and see results instantly
+- **Safe environment** - Isolated Docker container, practice without fear
+- **Color-coded interface** - Easy-to-read prompts and instructions
 
-### Tutorial Navigation
+### Modular Design
+- **Well-organized** - Each topic is a separate module
+- **Easy to extend** - Add new topics without modifying existing code
+- **Maintainable** - Clean structure with shared utilities
 
-- Choose specific topics or follow the complete path
-- Return to main menu anytime
-- Practice at your own pace
-
-### Example Session
+## Project Structure
 
 ```
-╔════════════════════════════════════════════════════════╗
-║           Linux CLI Tutorial Topics                   ║
-╚════════════════════════════════════════════════════════╝
-
-Choose a topic to learn:
-
-  1) Navigation Basics (pwd, ls, cd)
-  2) File Operations (touch, mkdir, cp, mv, rm)
-  3) Viewing Files (cat, less, head, tail)
-  4) Text Processing (grep, find, echo)
-  5) File Permissions (chmod, chown)
-  6) System Information (whoami, df, ps, top)
-  7) Complete Beginner's Path (All topics in order)
-
-  0) Exit Tutorial
-
-Enter your choice (0-7):
+1-basics/
+├── Dockerfile                    # Docker container configuration
+├── README.md                     # This file - complete documentation
+├── linux-cli-guide.md            # Quick reference for all commands
+├── linux-tutor-modular.sh       # Main tutorial script
+├── start.sh                      # Quick launch script
+└── topics/                       # Modular topic scripts
+    ├── utils.sh                 # Shared utilities & functions
+    ├── 01-navigation.sh        # Navigation commands
+    ├── 02-file-operations.sh   # File operations
+    ├── 03-viewing-files.sh     # Viewing files
+    ├── 04-text-processing.sh   # Text processing
+    ├── 05-permissions.sh       # File permissions
+    ├── 06-system-info.sh       # System information
+    └── README.md                # Topics documentation
 ```
 
-## 🎓 Learning Tips
+## Container Management
 
-1. **Start with Topic 7** if you're a complete beginner - it covers everything in the right order
-2. **Practice each command** as prompted - don't just read!
-3. **Take your time** - the tutorial waits for you to be ready
-4. **Experiment freely** - you can't break anything in this container
-5. **Revisit topics** - run the tutorial again to reinforce learning
-
-## 🔄 Container Management
-
-### Re-enter the Container
-
+### Re-enter Existing Container
 ```bash
 docker start -i my-linux-practice
 ```
 
-### Stop the Container
-
-```bash
-docker stop my-linux-practice
-```
-
-### Remove the Container
-
+### Remove Container
 ```bash
 docker rm my-linux-practice
 ```
 
-### Remove the Image (optional)
-
+### Remove Image
 ```bash
 docker rmi linux-practice
 ```
 
-## 💡 Additional Commands
-
-Even outside the tutorial, you can practice any Linux command:
-
+### Start Fresh
 ```bash
-# Practice on your own
-pwd
-ls -la
-cd documents
-cat hello.txt
-tree
-
-# Get help for any command
-man ls
-ls --help
+docker rm my-linux-practice  # Remove old container
+./start.sh                    # Build and run new one
 ```
 
-## 🎨 Tutorial Features Explained
+## For Developers
 
-### Color Coding
+### Adding a New Topic
 
-- **Green** - Headers, success messages, tips
-- **Blue** - Instructions and explanations
-- **Yellow** - Commands you should type
-- **Red** - Warnings and important notes
+1. **Create a new topic file**: `topics/07-your-topic.sh`
 
-### Interactive Prompts
+2. **Define the topic function**:
+```bash
+#!/bin/bash
 
-The tutorial will:
+# Topic 7: Your Topic Name
+# Teaches: command1, command2
 
-- Show you what command to type
-- Wait for you to type it
-- Execute it in real-time
-- Show you the results
-- Explain what happened
+topic_your_topic() {
+    clear
+    show_header "Topic 7: Your Topic Name"
+    
+    echo -e "${BLUE}Learn about...${NC}\n"
+    wait_for_user
+    
+    # Your tutorial content here
+    # Use shared utilities: show_header, wait_for_user, check_command
+    
+    echo -e "\n${GREEN}${BOLD}🎉 Well done!${NC}"
+    wait_for_user
+}
+```
 
-### Safe Learning
+3. **Source in main script** (`linux-tutor-modular.sh`):
+```bash
+source "$TOPICS_DIR/07-your-topic.sh"
+```
 
-- All practice happens in isolated `/home/practice` directory
-- Pre-created sample files and folders
-- No risk to your host system
-- Start fresh anytime by rebuilding the container
+4. **Add to menu** (in `topics/utils.sh`):
+```bash
+echo -e "  ${BOLD}7)${NC} Your Topic Name"
+```
 
-## 🏆 What You'll Learn
+5. **Add to switch statement** (in main script):
+```bash
+7)
+    topic_your_topic
+    ;;
+```
 
-By the end of the complete tutorial, you'll be able to:
+### Testing Locally
 
-- Navigate the Linux filesystem confidently
-- Create, copy, move, and delete files and directories
-- View and search file contents
-- Understand and modify file permissions
-- Monitor system resources
-- Use pipes and redirections
-- Chain commands together effectively
+```bash
+# Make scripts executable
+chmod +x linux-tutor-modular.sh topics/*.sh
 
-## 🤝 Need Help?
+# Test the tutorial locally
+./linux-tutor-modular.sh
 
-- Type `man <command>` to see detailed manual pages
-- Type `<command> --help` for quick help
-- Restart the tutorial anytime with `linux-tutor`
+# Or test individual topics
+source topics/utils.sh
+source topics/01-navigation.sh
+topic_navigation
+```
 
-## 🎉 Have Fun Learning!
+## Why This Tutorial?
 
-Remember: The best way to learn Linux is by doing. Take your time with each exercise, and don't be afraid to experiment!
+### For Learners
+- ✅ **Beginner-friendly** - No prior Linux knowledge required
+- ✅ **Interactive** - Learn by doing, not just reading
+- ✅ **Safe** - Practice in isolated environment
+- ✅ **Comprehensive** - Covers essential commands
 
-Happy Learning! 🐧
+### For Educators
+- ✅ **Easy to deploy** - Just Docker and one command
+- ✅ **Customizable** - Modular design for easy modifications
+- ✅ **Trackable** - Step-by-step progression
+
+### For Developers
+- ✅ **Modular** - Each topic is independent
+- ✅ **Maintainable** - Clean, organized code
+- ✅ **Extensible** - Easy to add new topics
+- ✅ **Well-documented** - Clear code and comments
+
+## Tips for Learning
+
+1. **Start with Topic 7** (Complete Beginner's Path) if you're new to Linux
+2. **Type commands yourself** - Don't just read, practice!
+3. **Take your time** - The tutorial waits for you
+4. **Experiment** - Try variations of commands
+5. **Use the reference** - Check `linux-cli-guide.md` for quick lookups
+
+## Troubleshooting
+
+### Docker not installed?
+```bash
+# macOS with Homebrew
+brew install --cask docker
+
+# Or download from https://www.docker.com/products/docker-desktop
+```
+
+### Container name already exists?
+The `start.sh` script will detect existing containers and offer to:
+1. Restart the existing container
+2. Remove and create a new one
+3. Cancel
+
+### Want to exit the tutorial?
+Press `0` to exit the tutorial menu, or type `exit` to leave the container.
+
+## Command Reference
+
+For a complete reference of all commands covered in this tutorial, see [`linux-cli-guide.md`](./linux-cli-guide.md).
+
+## Contributing
+
+Contributions are welcome! To add new topics:
+
+1. Fork the repository
+2. Create a new topic file in `topics/`
+3. Follow the existing pattern and use shared utilities
+4. Update the main script to include your topic
+5. Test thoroughly
+6. Submit a pull request
+
+## License
+
+This project is open source and available for educational purposes.
+
+---
+
+**Ready to learn Linux? Run `./start.sh` and start your journey! 🐧**
