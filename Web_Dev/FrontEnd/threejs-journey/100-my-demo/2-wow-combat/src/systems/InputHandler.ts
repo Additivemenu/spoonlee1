@@ -13,6 +13,17 @@ export class InputHandler {
   private raycaster: THREE.Raycaster;
   private mouse: THREE.Vector2;
 
+  // Camera rotation state
+  private isRightMouseDown: boolean = false;
+  private lastMouseX: number = 0;
+  private lastMouseY: number = 0;
+  private cameraYaw: number = 0; // Horizontal rotation
+  private cameraPitch: number = 0.3; // Vertical rotation (slight downward angle)
+  private cameraDistance: number = 10;
+  private readonly ROTATION_SPEED: number = 0.003;
+  private readonly MIN_PITCH: number = -0.5; // Look down limit
+  private readonly MAX_PITCH: number = 1.2; // Look up limit
+
   constructor(player: Player, camera: THREE.Camera) {
     this.player = player;
     this.camera = camera;
@@ -44,7 +55,50 @@ export class InputHandler {
       this.keys.delete(e.key.toLowerCase());
     });
 
-    // Mouse click for targeting
+    // Right mouse button for camera rotation
+    window.addEventListener("mousedown", (e) => {
+      if (e.button === 2) {
+        // Right mouse button
+        this.isRightMouseDown = true;
+        this.lastMouseX = e.clientX;
+        this.lastMouseY = e.clientY;
+        // Hide cursor during rotation for better UX
+        document.body.style.cursor = "grabbing";
+      }
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (e.button === 2) {
+        this.isRightMouseDown = false;
+        document.body.style.cursor = "default";
+      }
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (this.isRightMouseDown) {
+        const deltaX = e.clientX - this.lastMouseX;
+        const deltaY = e.clientY - this.lastMouseY;
+
+        this.cameraYaw -= deltaX * this.ROTATION_SPEED;
+        this.cameraPitch -= deltaY * this.ROTATION_SPEED;
+
+        // Clamp pitch to prevent camera flipping
+        this.cameraPitch = Math.max(
+          this.MIN_PITCH,
+          Math.min(this.MAX_PITCH, this.cameraPitch),
+        );
+
+        this.lastMouseX = e.clientX;
+        this.lastMouseY = e.clientY;
+      }
+    });
+
+    // Prevent context menu on right click
+    window.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+    });
+
+    // Mouse click for targeting (left button only)
     window.addEventListener("click", (e) => {
       if (!this.monster) return;
 
@@ -98,5 +152,16 @@ export class InputHandler {
     if (this.keys.has("d")) moveDirection.x += 1;
 
     this.player.setMoveDirection(moveDirection);
+  }
+
+  /**
+   * Get camera rotation parameters
+   */
+  getCameraRotation(): { yaw: number; pitch: number; distance: number } {
+    return {
+      yaw: this.cameraYaw,
+      pitch: this.cameraPitch,
+      distance: this.cameraDistance,
+    };
   }
 }

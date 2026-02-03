@@ -82,6 +82,7 @@ class Game {
     console.log("🎮 Game initialized!");
     console.log("📖 Controls:");
     console.log("  - WASD: Move player");
+    console.log("  - Right Mouse: Rotate camera");
     console.log("  - Click monster: Target");
     console.log("  - 1: Attack (15 energy)");
     console.log("  - 2: Heavy Strike (30 energy)");
@@ -216,9 +217,24 @@ class Game {
     this.player.update(deltaTime);
     this.monster.update(deltaTime);
 
-    // Update camera to follow player
-    const cameraOffset = new THREE.Vector3(0, 10, 15);
+    // Update camera to follow player with rotation control
+    const cameraRotation = this.inputHandler.getCameraRotation();
+
+    // Calculate camera position based on yaw, pitch, and distance
+    const offsetX =
+      Math.sin(cameraRotation.yaw) *
+      Math.cos(cameraRotation.pitch) *
+      cameraRotation.distance;
+    const offsetY = Math.sin(cameraRotation.pitch) * cameraRotation.distance;
+    const offsetZ =
+      Math.cos(cameraRotation.yaw) *
+      Math.cos(cameraRotation.pitch) *
+      cameraRotation.distance;
+
+    const cameraOffset = new THREE.Vector3(offsetX, offsetY, offsetZ);
     const targetPosition = this.player.position.clone().add(cameraOffset);
+
+    // Smooth camera movement
     this.camera.position.lerp(targetPosition, 0.1);
     this.camera.lookAt(this.player.position);
 
