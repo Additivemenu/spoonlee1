@@ -218,6 +218,7 @@ class Game {
     this.uiManager.updatePlayerStats(this.player);
     this.uiManager.updateSkillButtons(this.player);
     this.uiManager.updateMonsterState(this.monster);
+    this.uiManager.updateTargetFrame(this.player);
   }
 
   /**

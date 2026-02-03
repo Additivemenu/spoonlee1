@@ -11,6 +11,12 @@ export class UIManager {
   private playerEnergyBar: HTMLElement;
   private monsterStateText: HTMLElement;
 
+  // Target frame elements
+  private targetFrame: HTMLElement;
+  private targetNameText: HTMLElement;
+  private targetHealthText: HTMLElement;
+  private targetHealthBar: HTMLElement;
+
   private skillButtons: Map<string, HTMLElement> = new Map();
 
   constructor() {
@@ -20,6 +26,12 @@ export class UIManager {
     this.playerEnergyText = document.getElementById("player-energy")!;
     this.playerEnergyBar = document.getElementById("player-energy-bar")!;
     this.monsterStateText = document.getElementById("monster-state")!;
+
+    // Get target frame elements
+    this.targetFrame = document.getElementById("target-frame")!;
+    this.targetNameText = document.getElementById("target-name")!;
+    this.targetHealthText = document.getElementById("target-health")!;
+    this.targetHealthBar = document.getElementById("target-health-bar")!;
 
     // Get skill buttons
     this.skillButtons.set("attack", document.getElementById("skill-attack")!);
@@ -71,6 +83,31 @@ export class UIManager {
       this.monsterStateText.textContent = monster.getCurrentState();
     } else {
       this.monsterStateText.textContent = "No Monster";
+    }
+  }
+
+  /**
+   * Update target frame display
+   */
+  updateTargetFrame(player: Player): void {
+    const target = player.target;
+
+    if (target && !target.isDead) {
+      // Show target frame
+      this.targetFrame.classList.remove("hidden");
+
+      // Update target info
+      this.targetNameText.textContent = "Monster";
+      this.targetHealthText.textContent = Math.ceil(
+        target.currentHealth,
+      ).toString();
+
+      // Update health bar
+      const healthPercent = (target.currentHealth / target.maxHealth) * 100;
+      this.targetHealthBar.style.width = `${healthPercent}%`;
+    } else {
+      // Hide target frame
+      this.targetFrame.classList.add("hidden");
     }
   }
 }

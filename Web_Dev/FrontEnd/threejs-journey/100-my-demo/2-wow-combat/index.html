@@ -95,6 +95,27 @@
         opacity: 0.5;
         cursor: not-allowed;
       }
+
+      #target-frame {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        pointer-events: none;
+        min-width: 250px;
+      }
+
+      #target-frame.hidden {
+        display: none;
+      }
+
+      .target-health {
+        background: #c0392b;
+      }
     </style>
   </head>
   <body>
@@ -126,6 +147,24 @@
       <h3 style="margin-top: 20px">
         Monster State: <span id="monster-state">Idle</span>
       </h3>
+    </div>
+
+    <!-- Target Frame -->
+    <div id="target-frame" class="hidden">
+      <h2>Target</h2>
+      <div style="margin-top: 10px; font-weight: bold; color: #e74c3c">
+        <span id="target-name">Monster</span>
+      </div>
+      <div class="stat-bar">
+        <div>Health: <span id="target-health">80</span> / 80</div>
+        <div class="bar">
+          <div
+            class="bar-fill target-health"
+            id="target-health-bar"
+            style="width: 100%"
+          ></div>
+        </div>
+      </div>
     </div>
 
     <div id="controls">
