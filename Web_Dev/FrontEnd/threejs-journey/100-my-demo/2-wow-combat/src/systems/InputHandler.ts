@@ -56,7 +56,12 @@ export class InputHandler {
 
       if (intersects.length > 0) {
         this.player.target = this.monster;
+        this.monster.setSelected(true);
         console.log("🎯 Monster targeted!");
+      } else {
+        // Clicked elsewhere, deselect
+        this.player.target = null;
+        this.monster.setSelected(false);
       }
     });
 

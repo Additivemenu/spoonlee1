@@ -13,11 +13,14 @@ export class Monster extends Entity {
   private attackDamage: number = 15;
   private attackCooldown: number = 2; // seconds
   private lastAttackTime: number = 0;
+  private selectionRing: THREE.Mesh | null = null;
+  private isSelected: boolean = false;
 
   constructor(mesh: THREE.Mesh) {
     super(mesh, 80, 0); // Monsters don't use energy
     this.fsm = new StateMachine();
     this.initializeStates();
+    this.createSelectionRing();
   }
 
   /**
@@ -144,6 +147,8 @@ export class Monster extends Entity {
       color: 0x666666,
       emissive: 0x330000,
     });
+    // Clear selection on death
+    this.setSelected(false);
   }
 
   /**
@@ -152,5 +157,55 @@ export class Monster extends Entity {
   update(deltaTime: number): void {
     if (this.isDead) return;
     this.fsm.update(deltaTime);
+    this.updateSelectionRing();
+  }
+
+  /**
+   * Create selection ring indicator
+   */
+  private createSelectionRing(): void {
+    const ringGeometry = new THREE.RingGeometry(1.2, 1.4, 32);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.6,
+    });
+    this.selectionRing = new THREE.Mesh(ringGeometry, ringMaterial);
+    this.selectionRing.rotation.x = -Math.PI / 2; // Make it horizontal
+    this.selectionRing.position.y = -0.99; // At ground level
+    this.selectionRing.visible = false;
+    this.mesh.add(this.selectionRing);
+  }
+
+  /**
+   * Update selection ring animation
+   */
+  private updateSelectionRing(): void {
+    if (this.selectionRing && this.isSelected) {
+      // Rotate the ring for animation effect
+      this.selectionRing.rotation.z += 0.02;
+
+      // Pulse effect
+      const scale = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+      this.selectionRing.scale.set(scale, scale, 1);
+    }
+  }
+
+  /**
+   * Set selection state
+   */
+  setSelected(selected: boolean): void {
+    this.isSelected = selected;
+    if (this.selectionRing) {
+      this.selectionRing.visible = selected;
+    }
+  }
+
+  /**
+   * Get selection state
+   */
+  getSelected(): boolean {
+    return this.isSelected;
   }
 }
