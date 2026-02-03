@@ -1,286 +1,224 @@
-# WoW-Alike Combat System
+# WoW Combat System 🎮
 
-A World of Warcraft-inspired combat system built with **Three.js** and **TypeScript**, featuring:
+A WoW-inspired combat system with **Three.js** + **TypeScript**, featuring FSM and Behavior Tree patterns.
 
-- **Finite State Machine (FSM)** for Monster AI
-- **Behavior Tree** for Player Skill Management
-- Clean separation of rendering and game logic
+## 🚀 Quick Start
 
-## 🎮 Features
+```bash
+npm install
+npm run dev
+# Open http://localhost:3000
+```
 
-### Monster AI (FSM)
+**Controls:**
 
-The monster uses a Finite State Machine with three states:
-
-- **Idle**: Standing idle, monitoring for nearby players
-- **Chase**: Running towards the player when in range
-- **Attack**: Attacking the player when close enough
-
-### Player Skills (Behavior Tree)
-
-Each skill execution uses a **Sequence Node** behavior tree that validates:
-
-1. ✅ Is Global Cooldown (GCD) ready?
-2. ✅ Is the skill off cooldown?
-3. ✅ Does the player have enough energy?
-4. ✅ Is there a valid target?
-5. ✅ Is the target in range?
-
-All conditions must pass (SUCCESS) for the skill to execute!
-
-### Available Skills
-
-- **[1] Attack**: 15 energy, 20 damage, 3m range
-- **[2] Heavy Strike**: 30 energy, 40 damage, 3m range, 3s cooldown
-- **[3] Heal**: 40 energy, 30 healing, self-cast, 5s cooldown
+- `WASD` - Move | `Mouse` - Look | `Click` - Target monster
+- `1` Attack (15 energy) | `2` Heavy Strike (30 energy, 3s CD) | `3` Heal (40 energy, 5s CD)
 
 ## 🏗️ Architecture
 
 ```
 src/
 ├── core/
-│   ├── StateMachine.ts      # FSM implementation
-│   └── BehaviorTree.ts      # Behavior tree implementation
+│   ├── StateMachine.ts      # FSM (Monster AI)
+│   └── BehaviorTree.ts      # Behavior Tree (Player skills)
 ├── entities/
-│   ├── Entity.ts            # Base entity class
-│   ├── Player.ts            # Player entity
-│   └── Monster.ts           # Monster entity with FSM
-├── systems/
-│   ├── SkillManager.ts      # Skill system with behavior trees
-│   ├── InputHandler.ts      # Input handling
-│   └── UIManager.ts         # UI updates
-└── main.ts                  # Game initialization and loop
+│   ├── Entity.ts            # Base class
+│   ├── Player.ts            # Player logic
+│   └── Monster.ts           # Monster AI (FSM: Idle→Chase→Attack)
+└── systems/
+    ├── SkillManager.ts      # Skill validation (Behavior Tree)
+    ├── InputHandler.ts      # Input handling
+    └── UIManager.ts         # UI updates
 ```
 
-### Design Principles
+## 🎯 Core Systems
 
-#### 1. **Logic-Rendering Separation**
-
-- **Logic Layer**: State management, combat calculations, AI decisions
-- **Rendering Layer**: Three.js mesh animations, particle effects, UI
-
-#### 2. **Entity System**
-
-All game objects inherit from `Entity` base class with:
-
-- Position and mesh reference
-- Health and energy stats
-- Combat methods (takeDamage, heal)
-- Distance calculations (simplified 2D on XZ plane)
-
-#### 3. **Finite State Machine (Monster AI)**
+### 1. Monster AI - Finite State Machine
 
 ```typescript
-class Monster {
-  fsm: StateMachine;
-  states: [Idle, Chase, Attack];
-}
+States: Idle → Chase → Attack
+- Idle:   Monitor for players
+- Chase:  Move toward player (10m range)
+- Attack: Attack player (2m range, every 2s)
 ```
 
-Each state has:
+### 2. Player Skills - Behavior Tree
 
-- `enter()`: Called when entering the state
-- `update(deltaTime)`: Called every frame
-- `exit()`: Called when leaving the state
+**Why Behavior Tree over Decision Tree?**
 
-#### 4. **Behavior Tree (Player Skills)**
+- ✅ Modular & reusable (flat structure vs nested hell)
+- ✅ Industry standard for game AI
+- ✅ Supports async operations (RUNNING state)
+
+**Skill Validation (SequenceNode):**
 
 ```typescript
-useSkill(name) {
-  BehaviorTree(
-    SequenceNode([
-      ConditionNode(Check GCD),
-      ConditionNode(Check Cooldown),
-      ConditionNode(Check Energy),
-      ConditionNode(Check Target),
-      ConditionNode(Check Range),
-      ActionNode(Execute Skill)
-    ])
+[✓ GCD ready] → [✓ Skill off CD] → [✓ Has energy]
+  → [✓ Has target] → [✓ In range] → [Execute]
+```
+
+All conditions must succeed for skill to execute.
+
+### 3. Behavior Tree Node Types
+
+| Type              | Purpose                         | Example              |
+| ----------------- | ------------------------------- | -------------------- |
+| **SequenceNode**  | All children must succeed (AND) | Skill validation     |
+| **SelectorNode**  | Any child succeeds (OR)         | Try multiple options |
+| **ConditionNode** | Check condition                 | `energy >= 50`       |
+| **ActionNode**    | Execute action                  | `player.attack()`    |
+| **InverterNode**  | Invert result                   | `!isInRange()`       |
+
+**Node Status:**
+
+- `SUCCESS` ✅ - Operation succeeded
+- `FAILURE` ❌ - Operation failed
+- `RUNNING` ⏳ - Async operation in progress
+
+## 📖 Example Usage
+
+### Player Skill System
+
+```typescript
+// Old: Decision Tree (nested)
+DecisionTree.createCondition(
+  () => check1(),
+  DecisionTree.createCondition(
+    () => check2(), // Nested hell 😵
+    ...
   )
+)
+
+// New: Behavior Tree (flat)
+new BehaviorTree(
+  new SequenceNode([
+    new ConditionNode(() => checkGCD(), "GCD active"),
+    new ConditionNode(() => checkCooldown(), "On cooldown"),
+    new ConditionNode(() => checkEnergy(), "Not enough energy"),
+    new ConditionNode(() => checkTarget(), "No target"),
+    new ConditionNode(() => checkRange(), "Out of range"),
+    new ActionNode(() => executeSkill(), "Executing skill")
+  ])
+)
+```
+
+### Monster AI (FSM Alternative with Behavior Tree)
+
+```typescript
+// Current: FSM
+Monster uses state machine: Idle → Chase → Attack
+
+// Future: Behavior Tree (more flexible)
+new SelectorNode([
+  // Option 1: Attack
+  new SequenceNode([
+    new ConditionNode(() => hasTarget()),
+    new ConditionNode(() => isInAttackRange()),
+    new ActionNode(() => attack())
+  ]),
+  // Option 2: Chase
+  new SequenceNode([
+    new ConditionNode(() => hasTarget()),
+    new ActionNode(() => chase())
+  ]),
+  // Option 3: Patrol (fallback)
+  new ActionNode(() => patrol())
+])
+```
+
+## 🔧 Key Design Patterns
+
+### Logic-Rendering Separation
+
+| Layer                    | Responsibility                       |
+| ------------------------ | ------------------------------------ |
+| **Logic** (TypeScript)   | FSM, Behavior Tree, combat math, AI  |
+| **Rendering** (Three.js) | Meshes, camera, lighting, animations |
+
+**Benefits:** Testable, maintainable, extensible.
+
+### Entity Component System
+
+```typescript
+abstract class Entity {
+  mesh: THREE.Mesh
+  health, energy: number
+  target: Entity | null
+
+  takeDamage(amount)
+  heal(amount)
+  distanceTo(entity)  // 2D distance (XZ plane)
+  abstract update(deltaTime)
 }
 ```
 
-**Why Behavior Tree?**
+## 🎮 Testing
 
-- More modular and reusable than decision trees
-- Clearer structure with composite nodes (Sequence, Selector)
-- Supports complex AI logic
-- Industry-standard for game AI
+Open browser console (F12):
 
-See `BEHAVIOR_TREE.md` for detailed explanation!
+```javascript
+// ✅ Success
+1. Click monster → Press 1 → "✅ Executing Attack"
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-
-### Installation
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
+// ❌ Failure cases
+2. Press 1 (no target) → "❌ No target selected"
+3. Spam 1 → "❌ Global cooldown active"
+4. Low energy → "❌ Not enough energy"
 ```
 
-### Controls
+## 🚀 Extensions
 
-- **WASD**: Move player
-- **Mouse**: Look around
-- **Click Monster**: Target monster
-- **1**: Use Attack
-- **2**: Use Heavy Strike
-- **3**: Use Heal
-
-## 📖 How It Works
-
-### Game Loop
+### Add New Skill
 
 ```typescript
-function update(deltaTime) {
-  // 1. Process input
-  inputHandler.update();
-
-  // 2. Update game logic
-  player.update(deltaTime);
-  monster.update(deltaTime); // Runs FSM
-
-  // 3. Update UI
-  uiManager.updateAll();
-
-  // 4. Render
-  renderer.render(scene, camera);
-}
-```
-
-### Monster AI State Transitions
-
-```
-Idle → (player in range) → Chase
-Chase → (player too far) → Idle
-Chase → (player in attack range) → Attack
-Attack → (player out of range) → Chase
-Any → (player dead) → Idle
-```
-
-### Skill Execution Flow
-
-```
-Player presses [1]
-  → InputHandler captures key
-    → Player.useSkill('attack')
-      → SkillManager.useSkill('attack')
-        → DecisionTree.execute()
-          → All checks pass ✅
-            → Execute skill
-            → Consume energy
-            → Apply cooldowns
-```
-
-## 🎯 Key Implementation Details
-
-### 1. Coordinate System
-
-- Uses 2D distance calculation on XZ plane (ignoring Y axis)
-- Simplifies combat math while maintaining 3D visuals
-
-### 2. Animation Transitions
-
-- Ready for Three.js `AnimationMixer` integration
-- State changes should trigger `crossFadeTo()` for smooth transitions
-
-### 3. Energy System
-
-- Player: 100 max energy, regenerates 10/second
-- Skills consume energy on use
-- Must have enough energy to cast
-
-### 4. Cooldown System
-
-- **Global Cooldown (GCD)**: 1 second, affects all skills
-- **Individual Cooldowns**: Per-skill timers
-- Both must be ready to cast
-
-## 🔧 Extending the System
-
-### Adding a New Monster State
-
-```typescript
-fsm.addState({
-  name: "Patrol",
-  enter: () => {
-    /* Setup patrol route */
-  },
-  update: (dt) => {
-    /* Move along route */
-  },
-  exit: () => {
-    /* Cleanup */
-  },
-});
-```
-
-### Adding a New Skill
-
-```typescript
-skillManager.skills.set("fireball", {
+// src/systems/SkillManager.ts
+this.skills.set("fireball", {
   name: "Fireball",
   energyCost: 25,
   damage: 30,
   range: 10,
   cooldown: 2,
   execute: (player) => {
-    // Cast fireball logic
+    player.target?.takeDamage(30);
   },
 });
 ```
 
-### Adding New Decision Conditions
+### Add New Monster State
 
 ```typescript
-DecisionTree.createCondition(
-  () => player.hasBuff("buffName"),
-  trueNode,
-  falseNode,
-);
+// src/entities/Monster.ts
+this.fsm.addState({
+  name: "Flee",
+  enter: () => console.log("Fleeing!"),
+  update: (dt) => {
+    /* flee logic */
+  },
+  exit: () => {},
+});
 ```
 
-## 📝 Next Steps (MVP+)
+## 📚 Tech Stack
 
-- [ ] Add more monster types with different AI behaviors
-- [ ] Implement buff/debuff system
-- [ ] Add combo system for skill chains
+- **Three.js** (v0.160.0) - 3D rendering
+- **TypeScript** (v5.3.3) - Type safety
+- **Vite** (v5.0.11) - Build tool
+
+## 📝 TODO
+
+- [ ] Add AnimationMixer for smooth animations
 - [ ] Particle effects for skills
-- [ ] Sound effects and music
 - [ ] Multiple monsters with aggro system
-- [ ] Equipment system affecting stats
-- [ ] Skill tree progression
+- [ ] Buff/debuff system
+- [ ] Combo system
 
-## 🐛 Known Limitations
+## 📖 References
 
-- No animation system yet (placeholder meshes)
-- Simplified 2D movement
-- Single monster instance
-- Basic collision detection
-- No network/multiplayer support
-
-## 📚 References
-
-- [Three.js Documentation](https://threejs.org/docs/)
+- [Three.js Docs](https://threejs.org/docs/)
 - [FSM Pattern](https://gameprogrammingpatterns.com/state.html)
-- [Behavior Trees in Game AI](<https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)>)
-- See `BEHAVIOR_TREE.md` for detailed behavior tree explanation
-
-## 📄 License
-
-MIT License - Feel free to use this project for learning and development!
+- [Behavior Trees](<https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)>)
 
 ---
 
-Built with ❤️ using Three.js, TypeScript, and game design patterns
+**MIT License** | Built with ❤️ for game AI learning
