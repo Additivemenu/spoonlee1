@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WoW Combat System</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        overflow: hidden;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      #canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #ui {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      .stat-bar {
+        margin: 10px 0;
+      }
+
+      .bar {
+        width: 200px;
+        height: 20px;
+        background: #333;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
+
+      .bar-fill {
+        height: 100%;
+        transition: width 0.3s ease;
+      }
+
+      .health {
+        background: #e74c3c;
+      }
+      .energy {
+        background: #f39c12;
+      }
+
+      #controls {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px 30px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .skill-button {
+        display: inline-block;
+        margin: 5px;
+        padding: 10px 20px;
+        background: #3498db;
+        border: 2px solid #2980b9;
+        border-radius: 5px;
+        cursor: pointer;
+        pointer-events: all;
+        user-select: none;
+      }
+
+      .skill-button:hover {
+        background: #2980b9;
+      }
+
+      .skill-button:active {
+        transform: scale(0.95);
+      }
+
+      .skill-button.cooldown {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <div id="ui">
+      <h2>Player Stats</h2>
+      <div class="stat-bar">
+        <div>Health: <span id="player-health">100</span> / 100</div>
+        <div class="bar">
+          <div
+            class="bar-fill health"
+            id="player-health-bar"
+            style="width: 100%"
+          ></div>
+        </div>
+      </div>
+      <div class="stat-bar">
+        <div>Energy: <span id="player-energy">100</span> / 100</div>
+        <div class="bar">
+          <div
+            class="bar-fill energy"
+            id="player-energy-bar"
+            style="width: 100%"
+          ></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 20px">
+        Monster State: <span id="monster-state">Idle</span>
+      </h3>
+    </div>
+
+    <div id="controls">
+      <div>
+        <div class="skill-button" id="skill-attack" data-key="1">
+          [1] Attack (15 energy)
+        </div>
+        <div class="skill-button" id="skill-heavy" data-key="2">
+          [2] Heavy Strike (30 energy)
+        </div>
+        <div class="skill-button" id="skill-heal" data-key="3">
+          [3] Heal (40 energy)
+        </div>
+      </div>
+      <div style="margin-top: 10px; font-size: 12px">
+        WASD - Move | Mouse - Look | Click Monster - Target
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
