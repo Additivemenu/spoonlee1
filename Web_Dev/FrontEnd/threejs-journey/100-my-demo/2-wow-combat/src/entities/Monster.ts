@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Entity } from "./Entity";
 import { StateMachine, IState } from "../core/StateMachine";
+import { SoundManager } from "../systems/SoundManager";
 
 /**
  * Monster Entity with FSM-based AI
@@ -15,6 +16,7 @@ export class Monster extends Entity {
   private lastAttackTime: number = 0;
   private selectionRing: THREE.Mesh | null = null;
   private isSelected: boolean = false;
+  private soundManager: SoundManager | null = null;
 
   constructor(mesh: THREE.Mesh) {
     super(mesh, 80, 0); // Monsters don't use energy
@@ -122,6 +124,14 @@ export class Monster extends Entity {
 
     console.log("👹 Monster attacks!");
     this.target.takeDamage(this.attackDamage);
+    this.soundManager?.playMonsterAttack();
+  }
+
+  /**
+   * Set sound manager for audio feedback
+   */
+  setSoundManager(soundManager: SoundManager): void {
+    this.soundManager = soundManager;
   }
 
   /**

@@ -1,4 +1,5 @@
 import { Player } from "../entities/Player";
+import { SoundManager } from "./SoundManager";
 import {
   BehaviorTree,
   SequenceNode,
@@ -25,6 +26,7 @@ export interface Skill {
  */
 export class SkillManager {
   private player: Player;
+  private soundManager: SoundManager | null = null;
   private skills: Map<string, Skill> = new Map();
   private globalCooldown: number = 0;
   private readonly GCD_DURATION: number = 1.0; // Global cooldown in seconds
@@ -32,6 +34,13 @@ export class SkillManager {
   constructor(player: Player) {
     this.player = player;
     this.initializeSkills();
+  }
+
+  /**
+   * Set sound manager for audio feedback
+   */
+  setSoundManager(soundManager: SoundManager): void {
+    this.soundManager = soundManager;
   }
 
   /**
@@ -49,6 +58,7 @@ export class SkillManager {
       execute: (player: Player) => {
         if (player.target) {
           player.target.takeDamage(20);
+          this.soundManager?.playPlayerAttack();
           console.log("⚡ Player uses Attack!");
         }
       },
@@ -65,6 +75,7 @@ export class SkillManager {
       execute: (player: Player) => {
         if (player.target) {
           player.target.takeDamage(40);
+          this.soundManager?.playPlayerHeavyAttack();
           console.log("💥 Player uses Heavy Strike!");
         }
       },
@@ -80,6 +91,7 @@ export class SkillManager {
       currentCooldown: 0,
       execute: (player: Player) => {
         player.heal(30);
+        this.soundManager?.playHeal();
         console.log("✨ Player casts Heal!");
       },
     });

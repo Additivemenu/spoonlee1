@@ -3,6 +3,7 @@ import { Player } from "./entities/Player";
 import { Monster } from "./entities/Monster";
 import { InputHandler } from "./systems/InputHandler";
 import { UIManager } from "./systems/UIManager";
+import { SoundManager } from "./systems/SoundManager";
 
 /**
  * Main Game Class
@@ -17,6 +18,7 @@ class Game {
 
   private inputHandler: InputHandler;
   private uiManager: UIManager;
+  private soundManager: SoundManager;
 
   private clock: THREE.Clock;
 
@@ -64,6 +66,12 @@ class Game {
     this.inputHandler = new InputHandler(this.player, this.camera);
     this.inputHandler.setMonster(this.monster);
     this.uiManager = new UIManager();
+    this.soundManager = new SoundManager(this.camera);
+
+    // Connect sound manager to player's skill manager
+    this.player.getSkillManager().setSoundManager(this.soundManager);
+    // Connect sound manager to monster
+    this.monster.setSoundManager(this.soundManager);
 
     // Clock for delta time
     this.clock = new THREE.Clock();
