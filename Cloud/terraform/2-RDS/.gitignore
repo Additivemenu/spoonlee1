@@ -1,0 +1,18 @@
+# Ignore Terraform state files (may contain sensitive data)
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# Ignore the tfvars file — it contains your DB password and IP
+terraform.tfvars
+
+# Ignore any override files
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# macOS
+.DS_Store
