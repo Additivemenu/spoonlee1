@@ -133,3 +133,110 @@ Because `skip_final_snapshot = true`, no snapshot is created — all data is gon
 - **DB Subnet Group** — RDS needs to know which subnets it can use; requires subnets in ≥ 2 AZs.
 - **`skip_final_snapshot = true`** — skips the automated backup snapshot on destroy (fine for learning, not for production).
 - **`sensitive = true`** on `db_password` — prevents the password from leaking into Terraform logs.
+
+---
+
+# RDS Extra Features worth knowing
+
+## Parameter Groups
+
+A **Parameter Group** is a named collection of MySQL engine settings. RDS does not let you edit the default group, so you always create a custom one when you want to tune anything.
+
+This demo creates `aws_db_parameter_group.mysql` (family `mysql8.0`) and attaches it to the instance.
+
+### Parameters configured
+
+| Parameter              | Value                | Why                                                            |
+| ---------------------- | -------------------- | -------------------------------------------------------------- |
+| `slow_query_log`       | `1`                  | Enables logging of slow queries to CloudWatch                  |
+| `long_query_time`      | `2`                  | Queries taking > 2 seconds are flagged as slow                 |
+| `character_set_server` | `utf8mb4`            | Full Unicode support — handles emoji, CJK characters, etc.     |
+| `collation_server`     | `utf8mb4_unicode_ci` | Case-insensitive sorting that works correctly across languages |
+| `max_connections`      | `100`                | Max simultaneous DB connections (needs a reboot to apply)      |
+
+### How to verify in MySQL Workbench
+
+After connecting, run these queries to confirm the parameters are active:
+
+```sql
+-- check character encoding
+SHOW VARIABLES LIKE 'character_set_server';
+SHOW VARIABLES LIKE 'collation_server';
+
+-- check slow query logging
+SHOW VARIABLES LIKE 'slow_query_log';
+SHOW VARIABLES LIKE 'long_query_time';
+
+-- check max connections
+SHOW VARIABLES LIKE 'max_connections';
+```
+
+### How to add more parameters
+
+Just add another `parameter {}` block in `main.tf` and re-run `terraform apply`:
+
+```hcl
+parameter {
+  name  = "innodb_buffer_pool_size"   # cache size for InnoDB (performance tuning)
+  value = "134217728"                 # 128 MB in bytes
+  apply_method = "pending-reboot"
+}
+```
+
+> Parameters with `apply_method = "pending-reboot"` take effect after an RDS reboot.  
+> Parameters with `apply_method = "immediate"` (the default) apply without a reboot.
+
+---
+
+## Snapshots & Backups
+
+RDS has two types of backups:
+
+| Type                 | Trigger                 | Kept for                            | Use case                |
+| -------------------- | ----------------------- | ----------------------------------- | ----------------------- |
+| **Automated backup** | Daily, automatic        | `backup_retention_days` (1–35 days) | Point-in-time recovery  |
+| **Manual snapshot**  | On-demand or on destroy | Until you delete it                 | Long-term restore point |
+
+### Enable automated backups
+
+In `terraform.tfvars`, uncomment:
+
+```hcl
+backup_retention_days = 1   # keep 1 day of automated backups
+```
+
+Then re-apply:
+
+```bash
+terraform apply
+```
+
+With backups enabled, RDS runs a daily snapshot during the `backup_window` (`17:00–18:00 UTC`) and keeps transaction logs so you can restore to **any second** within the retention window — this is called **Point-in-Time Recovery (PITR)**.
+
+### Save a manual snapshot on destroy
+
+In `terraform.tfvars`, uncomment:
+
+```hcl
+skip_final_snapshot = false   # creates a snapshot before destroying
+```
+
+When you now run `terraform destroy`, RDS first saves a snapshot named `learning-mysql-final-snapshot` in your AWS account. You can later restore it:
+
+```text
+AWS Console → RDS → Snapshots → select snapshot → Restore snapshot
+```
+
+This creates a brand-new RDS instance from that snapshot with all your data intact.
+
+### Take a manual snapshot anytime (AWS Console)
+
+```text
+RDS → Databases → learning-mysql-db → Actions → Take snapshot
+```
+
+### Cost of snapshots
+
+- Automated backup storage up to the size of your DB = **free**
+- Manual snapshots beyond that = ~$0.095/GB/month
+- For a 20 GB learning DB with 1 day retention the backup cost is effectively **$0**

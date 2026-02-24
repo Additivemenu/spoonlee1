@@ -52,3 +52,27 @@ variable "db_password" {
   sensitive   = true # Prevents the value from appearing in Terraform output logs
   # No default — you MUST supply this via terraform.tfvars or TF_VAR_db_password
 }
+
+# ------------------------------------------------------------
+# Backups
+# ------------------------------------------------------------
+variable "backup_retention_days" {
+  description = <<EOT
+Number of days to keep automated backups (enables point-in-time recovery).
+  0 = backups disabled (cheapest, no recovery possible)
+  1-35 = days to retain (1 day is enough for learning; prod typically uses 7+)
+EOT
+  type    = number
+  default = 0 # disabled by default to save cost — set to 1 in tfvars to enable
+}
+
+variable "skip_final_snapshot" {
+  description = <<EOT
+When true  → terraform destroy deletes the DB immediately, no snapshot created.
+When false → terraform destroy first creates a manual snapshot, then deletes the DB.
+             Useful if you want to restore the DB later from that snapshot.
+Set to false before destroying if you care about keeping your data.
+EOT
+  type    = bool
+  default = true # convenient for learning; set to false in prod / when data matters
+}

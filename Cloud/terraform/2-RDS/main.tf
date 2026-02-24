@@ -133,32 +133,86 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 }
 
 # ------------------------------------------------------------
-# 6. RDS MySQL Instance
+# 6. Parameter Group
+# A Parameter Group is a named set of MySQL engine settings.
+# RDS won't let you edit the default group, so you always
+# create a custom one when you want to tune anything.
+# ------------------------------------------------------------
+resource "aws_db_parameter_group" "mysql" {
+  name        = "rds-learning-mysql8"
+  family      = "mysql8.0" # must match the engine_version major line below
+  description = "Custom parameter group for learning"
+
+  # --- Observability: log slow queries so you can spot bad SQL ---
+  parameter {
+    name  = "slow_query_log"
+    value = "1" # 0 = off, 1 = on
+  }
+  parameter {
+    name  = "long_query_time"
+    value = "2" # seconds — queries slower than this are logged
+  }
+
+  # --- Character encoding: use utf8mb4 (full Unicode, supports emoji) ---
+  parameter {
+    name  = "character_set_server"
+    value = "utf8mb4"
+  }
+  parameter {
+    name  = "collation_server"
+    value = "utf8mb4_unicode_ci"
+  }
+
+  # --- Connection limit: default is often too low for small instances ---
+  parameter {
+    name         = "max_connections"
+    value        = "100"
+    apply_method = "pending-reboot" # needs a reboot to take effect
+  }
+
+  tags = {
+    Name      = "rds-learning-mysql8"
+    ManagedBy = "Terraform"
+  }
+}
+
+# ------------------------------------------------------------
+# 7. RDS MySQL Instance
 # ------------------------------------------------------------
 resource "aws_db_instance" "mysql" {
   identifier        = "learning-mysql-db"
   engine            = "mysql"
   engine_version    = "8.0"
-  instance_class    = var.db_instance_class # db.t3.micro is free-tier eligible
-  allocated_storage = 20                    # GB — minimum for gp2
+  instance_class    = var.db_instance_class
+  allocated_storage = 20
   storage_type      = "gp2"
 
   db_name  = var.db_name
   username = var.db_username
   password = var.db_password
 
-  # Make it accessible from the internet (required to use MySQL Workbench locally)
+  # Attach our custom parameter group
+  parameter_group_name = aws_db_parameter_group.mysql.name
+
+  # Make it accessible from the internet (required for local MySQL Workbench)
   publicly_accessible    = true
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 
-  # Skip final snapshot when destroying (convenient for learning)
-  skip_final_snapshot = true
+  # --- Backups ---
+  # retention_period > 0 enables automated daily backups + point-in-time recovery.
+  # AWS keeps backup_retention_period days worth of transaction logs.
+  # Set to 0 to disable (saves cost, but no recovery possible).
+  backup_retention_period = var.backup_retention_days
+  backup_window           = "17:00-18:00" # UTC — when the daily backup runs (pick a quiet time)
+  maintenance_window      = "mon:18:00-mon:19:00" # UTC — when minor patches are applied
 
-  # Disable automated backups to minimise cost during learning
-  backup_retention_period = 0
+  # When true: terraform destroy creates a final snapshot before deleting.
+  # When false: data is gone immediately on destroy (fine for learning).
+  skip_final_snapshot       = var.skip_final_snapshot
+  final_snapshot_identifier = var.skip_final_snapshot ? null : "learning-mysql-final-snapshot"
 
-  # Disable minor version auto-upgrade (keep things predictable)
+  # Disable minor version auto-upgrade (keep things predictable while learning)
   auto_minor_version_upgrade = false
 
   tags = {
