@@ -240,3 +240,83 @@ RDS → Databases → learning-mysql-db → Actions → Take snapshot
 - Automated backup storage up to the size of your DB = **free**
 - Manual snapshots beyond that = ~$0.095/GB/month
 - For a 20 GB learning DB with 1 day retention the backup cost is effectively **$0**
+
+---
+
+## RDS Metrics (auto-collected, free)
+
+RDS pushes these to CloudWatch every 1 minute automatically:
+
+| Metric                                              | What it tells you                                                      |
+|-----------------------------------------------------|------------------------------------------------------------------------|
+| `CPUUtilization`                                    | % CPU used — high values mean the instance is overloaded              |
+| `DatabaseConnections`                               | Number of active connections — helps tune `max_connections`           |
+| `FreeStorageSpace`                                  | Bytes of storage left — alert before it hits 0                        |
+| `FreeableMemory`                                    | RAM available — low values cause swapping and slow queries            |
+| `ReadIOPS` / `WriteIOPS`                            | Disk read/write operations per second                                  |
+| `ReadLatency` / `WriteLatency`                      | How long disk operations take (ms)                                     |
+| `NetworkReceiveThroughput` / `NetworkTransmitThroughput` | Network traffic in/out                                         |
+
+
+Where to see them:
+```
+AWS Console → RDS → Databases → learning-mysql-db → Monitoring tab
+```
+
+## RDS --> CloudWatch Logs
+
+RDS can publish MySQL logs to CloudWatch Logs:
+
+| Log type        | What's in it                                   | How to enable in Terraform                                              |
+|-----------------|-----------------------------------------------|-------------------------------------------------------------------------|
+| Error log       | Crashes, startup errors                       | Enabled by default                                                      |
+| Slow query log  | Queries exceeding `long_query_time`           | `slow_query_log = 1` in parameter group ✅ (already done)              |
+| General log     | Every single query (very verbose)             | `general_log = 1` — only for debugging                                  |
+| Audit log       | Who connected, what they ran                  | Requires `MARIADB_AUDIT_PLUGIN` — MySQL only via option groups         |
+
+then view them:
+```
+AWS Console → CloudWatch → Log groups → /aws/rds/instance/learning-mysql-db/slowquery
+```
+
+---
+
+This setup ships two RDS log types to CloudWatch automatically via `enabled_cloudwatch_logs_exports`.
+
+### Log groups created
+
+After `terraform apply`, two CloudWatch Log Groups are created:
+
+| Log group                                       | What's in it                                            |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| `/aws/rds/instance/learning-mysql-db/error`     | RDS startup, shutdown, crash errors                     |
+| `/aws/rds/instance/learning-mysql-db/slowquery` | Queries that took longer than `long_query_time` (2 sec) |
+
+### How to view logs in the console
+
+```text
+AWS Console → CloudWatch → Log groups → search "learning-mysql-db"
+```
+
+Click a log group → click the latest log stream → browse individual log events.
+
+In addition, RDS UI also has logs:
+
+![](./img/RDS-logs.png)
+
+
+### Trigger a slow query to see it appear
+
+Run this in MySQL Workbench to produce a query that takes > 2 seconds:
+
+```sql
+-- forces MySQL to sleep for 3 seconds — will appear in the slowquery log
+SELECT SLEEP(3);
+```
+
+Wait ~1 minute, then check the `slowquery` log group in CloudWatch — you'll see the entry.
+
+### Cost
+
+- CloudWatch log ingestion: **$0.50/GB** (slow query logs for a learning DB are tiny — effectively free)
+- Log storage: first 5 GB/month free, then $0.03/GB/month

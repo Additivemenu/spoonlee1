@@ -133,7 +133,37 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 }
 
 # ------------------------------------------------------------
-# 6. Parameter Group
+# 6. IAM Role — allows RDS to write logs to CloudWatch Logs
+# RDS needs explicit permission to publish log streams;
+# this role + policy attachment grants that permission.
+# ------------------------------------------------------------
+data "aws_iam_policy_document" "rds_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["monitoring.rds.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "rds_cloudwatch" {
+  name               = "rds-cloudwatch-logs-role"
+  assume_role_policy = data.aws_iam_policy_document.rds_assume_role.json
+
+  tags = {
+    Name      = "rds-cloudwatch-logs-role"
+    ManagedBy = "Terraform"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "rds_cloudwatch" {
+  role       = aws_iam_role.rds_cloudwatch.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}
+
+# ------------------------------------------------------------
+# 7. Parameter Group
 # A Parameter Group is a named set of MySQL engine settings.
 # RDS won't let you edit the default group, so you always
 # create a custom one when you want to tune anything.
@@ -214,6 +244,13 @@ resource "aws_db_instance" "mysql" {
 
   # Disable minor version auto-upgrade (keep things predictable while learning)
   auto_minor_version_upgrade = false
+
+  # --- CloudWatch Logs exports ---
+  # Ships RDS logs to CloudWatch Log Groups so you can query them in the console.
+  # Log group paths created automatically:
+  #   /aws/rds/instance/learning-mysql-db/error
+  #   /aws/rds/instance/learning-mysql-db/slowquery
+  enabled_cloudwatch_logs_exports = ["error", "slowquery"]
 
   tags = {
     Name        = "learning-mysql-db"

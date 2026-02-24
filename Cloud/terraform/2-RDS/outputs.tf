@@ -37,3 +37,11 @@ output "mysql_workbench_connection_summary" {
   └─────────────────────────────────────────────────────────┘
 EOT
 }
+
+output "cloudwatch_log_groups" {
+  description = "CloudWatch Log Group paths where RDS logs are published"
+  value = {
+    error      = "/aws/rds/instance/${aws_db_instance.mysql.identifier}/error"
+    slow_query = "/aws/rds/instance/${aws_db_instance.mysql.identifier}/slowquery"
+  }
+}

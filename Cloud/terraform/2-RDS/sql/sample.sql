@@ -29,3 +29,7 @@ DELETE FROM users WHERE name = 'Charlie';
 
 -- 7. final check
 SELECT * FROM users;
+
+
+-- forces MySQL to sleep for 3 seconds — will appear in the slowquery log
+SELECT SLEEP(3);
