@@ -21,7 +21,7 @@ minikube addons enable ingress
 
 # need this to route request into minikube k8s cluster:
 minikube tunnel
-# need this because minikube tunnel only works with LoadBalancer type services
+# need this because minikube tunnel only works with LoadBalancer type services, while The ingress-nginx-controller service is of type NodePort, not LoadBalancer.
 kubectl patch svc ingress-nginx-controller -n ingress-nginx -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
@@ -38,7 +38,7 @@ echo "127.0.0.1  ticketing.dev" | sudo tee -a /etc/hosts
 # skaffold dev:
 #   - builds Docker image for each artifact (e.g. shawn/auth) locally
 #   - applies all k8s manifests in ./infra/k8s/* via kubectl
-#   - watches for file changes: syncs .ts files directly into the running container (no rebuild)
+#   - watches for file changes (including package.json): syncs .ts files directly into the running container (no rebuild)
 #   - streams logs from all pods to the terminal
 #   - tears everything down on Ctrl+C
 cd /Users/lixueshuo/spoonlee/spoonlee1/Udemy/NodeJs-Microservices/P2-ticket-sales
