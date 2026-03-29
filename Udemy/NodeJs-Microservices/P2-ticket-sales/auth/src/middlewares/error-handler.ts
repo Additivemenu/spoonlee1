@@ -1,6 +1,7 @@
 import e, { Request, Response, NextFunction } from "express";
 import { DatabaseConnectionError } from "../errors/database-connection-error";
 import { RequestValidationError } from "../errors/request-validation-error";
+import { CustomError } from "../errors/custom-error";
 
 /**
  * ! also error normaliser, so could have consistent error response format
@@ -11,16 +12,8 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (err instanceof RequestValidationError) {
-    const formattedErrors = err.errors.map((error) => {
-      if (error.type === "field") {
-        return { message: error.msg, field: error.path };
-      }
-    });
-    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
-  }
-
-  if (err instanceof DatabaseConnectionError) {
+  // all errors that we throw in our code should be instances of CustomError, so that we can handle them in a consistent way, and return a consistent error response format to the client
+  if (err instanceof CustomError) {
     return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
