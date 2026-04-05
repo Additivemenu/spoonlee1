@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Resume — Streaming Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* === CSS CUSTOM PROPERTIES === */
+:root {
+  --bg: #0d1b2a;
+  --bg-secondary: #0a1520;
+  --node-fill: #0f2a3d;
+  --node-stroke: #00b4ff;
+  --node-stroke-width: 1.5px;
+  --edge-color: #0078aa;
+  --edge-width: 1.5px;
+  --label-color: #cce8ff;
+  --label-dim: #7aabcc;
+  --accent: #00e5ff;
+  --accent2: #00ff9d;
+  --cluster-label: rgba(0,200,255,0.5);
+  --resume-stroke: #00ff9d;
+  --font: 'JetBrains Mono', monospace;
+  --transition: 0.2s ease;
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body { font-family: var(--font); background: var(--bg); color: var(--label-color); -webkit-font-smoothing: antialiased; }
+
+/* === DIAGRAM WRAPPER === */
+.diagram-wrapper {
+  width: 100vw; height: 100vh; height: 100dvh;
+  overflow: hidden; display: flex; flex-direction: column;
+  animation: wrapperFade 0.35s ease-out forwards;
+}
+@keyframes wrapperFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* === HEADER === */
+.diagram-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; height: clamp(42px,6vh,52px);
+  padding: 0 clamp(14px,2vw,24px);
+  border-bottom: 1px solid rgba(0,180,255,0.15);
+  background: var(--bg); z-index: 10; gap: 12px;
+  animation: headerSlide 0.4s ease-out 0.1s both;
+}
+@keyframes headerSlide { from { transform: translateY(-100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
+.diagram-title { font-size: clamp(10px,1.1vw,13px); font-weight: 700; letter-spacing: 0.08em; color: var(--label-color); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45vw; }
+.diagram-title span { color: var(--accent); }
+.diagram-controls { display: flex; align-items: center; gap: clamp(4px,0.6vw,10px); flex-shrink: 0; }
+.diagram-controls button {
+  background: rgba(0,180,255,0.06); border: 1px solid rgba(0,180,255,0.2); color: var(--label-color);
+  padding: clamp(3px,0.4vh,6px) clamp(8px,1.2vw,16px); border-radius: 2px; font-family: var(--font);
+  font-size: clamp(10px,1vw,12px); cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  letter-spacing: 0.06em; white-space: nowrap;
+}
+.diagram-controls button:hover { background: rgba(0,229,255,0.12); border-color: var(--accent); color: var(--accent); }
+.step-counter { font-size: clamp(10px,1vw,12px); color: var(--accent); opacity: 0.9; min-width: 48px; text-align: right; white-space: nowrap; letter-spacing: 0.04em; }
+
+/* === SVG CANVAS === */
+.svg-container { flex: 1 1 auto; position: relative; overflow: hidden; min-height: 0; cursor: grab; touch-action: none; }
+.svg-container:active { cursor: grabbing; }
+/* Blueprint grid background */
+.svg-container::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,180,255,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,255,0.07) 1px, transparent 1px),
+    linear-gradient(rgba(0,180,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,255,0.025) 1px, transparent 1px);
+  background-size: 150px 150px, 150px 150px, 30px 30px, 30px 30px;
+  animation: gridDrift 80s linear infinite;
+}
+@keyframes gridDrift { from { background-position: 0 0,0 0,0 0,0 0; } to { background-position: 30px 30px,30px 30px,30px 30px,30px 30px; } }
+#diagram-svg { display: block; width: 100%; height: 100%; }
+
+/* === BASE NODE STYLES === */
+.node-group {
+  cursor: pointer; opacity: 0;
+  transform-box: fill-box; transform-origin: center;
+  animation: nodeScaleIn 0.35s cubic-bezier(0.34,1.15,0.64,1) forwards;
+  animation-delay: calc(var(--node-index,0) * 55ms + 200ms);
+}
+@keyframes nodeScaleIn { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
+.node-shape {
+  fill: var(--node-fill); stroke: var(--node-stroke); stroke-width: var(--node-stroke-width);
+  transition: fill var(--transition), stroke var(--transition), filter var(--transition);
+}
+.node-group:hover .node-shape { stroke: var(--accent); stroke-width: 2px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.45)); }
+.node-group.active-step .node-shape { stroke: var(--accent); stroke-width: 2.5px; fill: #0d3a54; filter: drop-shadow(0 0 14px rgba(0,229,255,0.6)); animation: activePulse 0.5s ease-out; }
+@keyframes activePulse { 0% { stroke-width: 1.5px; } 40% { stroke-width: 4px; } 100% { stroke-width: 2.5px; } }
+.node-group.visited .node-shape { opacity: 0.35; }
+.node-group.selected .node-shape { stroke: var(--accent); stroke-width: 2.5px; filter: drop-shadow(0 0 12px rgba(0,229,255,0.5)); }
+
+.node-tag {
+  fill: var(--accent); font-family: var(--font); font-size: 8.5px;
+  text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none; letter-spacing: 0.1em; opacity: 0.85;
+}
+.node-label {
+  fill: var(--label-color); font-family: var(--font); font-size: 10.5px;
+  text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none; letter-spacing: 0.04em; text-transform: uppercase;
+}
+
+/* === CHUNK HERO NODE — the central streaming unit === */
+.node-chunk .node-shape {
+  fill: #071828;
+  stroke: var(--accent);
+  stroke-width: 2.5px;
+  filter: drop-shadow(0 0 12px rgba(0,229,255,0.5));
+}
+.node-chunk .node-label {
+  fill: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+.node-chunk .node-tag {
+  fill: var(--accent);
+  font-size: 9.5px;
+  opacity: 1;
+  letter-spacing: 0.14em;
+}
+.node-chunk:hover .node-shape {
+  stroke: #ffffff;
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 22px rgba(0,229,255,0.85));
+}
+.node-chunk.active-step .node-shape {
+  stroke: #ffffff;
+  fill: #0d3352;
+  filter: drop-shadow(0 0 26px rgba(0,229,255,0.98));
+}
+/* Persistent pulsing aura — starts after all entrance animations finish */
+.chunk-aura {
+  fill: none;
+  stroke: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  animation: chunkAuraPulse 3s ease-in-out 2s infinite;
+}
+@keyframes chunkAuraPulse {
+  0%, 100% { opacity: 0.12; stroke-width: 1px; }
+  50%       { opacity: 0.5;  stroke-width: 2px; }
+}
+
+/* === QUEUE (in-memory cache) NODE === */
+.node-queue .node-shape {
+  fill: var(--node-fill);
+  stroke: var(--accent);
+  stroke-width: 1.5px;
+  stroke-dasharray: 5 2;
+}
+.node-queue:hover .node-shape { stroke: var(--accent); stroke-dasharray: none; filter: drop-shadow(0 0 10px rgba(0,229,255,0.45)); }
+.node-queue.active-step .node-shape { stroke: var(--accent); stroke-dasharray: none; fill: #0d2c42; filter: drop-shadow(0 0 14px rgba(0,229,255,0.65)); }
+.node-queue .node-tag { fill: var(--accent); opacity: 0.8; }
+
+/* === EDGE STYLES === */
+.edge-path {
+  fill: none; stroke: var(--edge-color); stroke-width: var(--edge-width);
+  marker-end: url(#arrow-default);
+  stroke-dasharray: var(--path-length, 500);
+  stroke-dashoffset: var(--path-length, 500);
+  animation: edgeDraw 0.55s ease-out forwards;
+  animation-delay: calc(var(--edge-index,0) * 75ms + 500ms);
+}
+@keyframes edgeDraw { to { stroke-dashoffset: 0; } }
+.edge-path.resume-edge {
+  stroke: var(--resume-stroke); stroke-width: 1.5px;
+  stroke-dasharray: 5 3; stroke-dashoffset: 0;
+  animation: edgeFade 0.4s ease-out forwards;
+  animation-delay: calc(var(--edge-index,0) * 75ms + 500ms);
+  marker-end: url(#arrow-resume);
+}
+@keyframes edgeFade { from { opacity:0; } to { opacity:1; } }
+.edge-path.signal-edge {
+  stroke: rgba(0,180,255,0.35); stroke-width: 1.5px;
+  stroke-dasharray: 4 3; stroke-dashoffset: 0;
+  animation: edgeFade 0.4s ease-out forwards;
+  animation-delay: calc(var(--edge-index,0) * 75ms + 500ms);
+  marker-end: url(#arrow-signal);
+}
+.edge-path.active-step {
+  stroke: var(--accent); stroke-width: 2.5px;
+  marker-end: url(#arrow-active);
+  animation: edgeActivate 0.3s ease-out forwards;
+}
+@keyframes edgeActivate { 0% { stroke: #fff; stroke-width: 4px; } 50% { stroke: var(--accent); stroke-width: 3px; } 100% { stroke: var(--accent); stroke-width: 2.5px; } }
+.edge-path.visited { opacity: 0.22; }
+.edge-label { fill: var(--label-dim); font-family: var(--font); font-size: 9px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; letter-spacing: 0.04em; }
+.edge-label.resume-label { fill: var(--resume-stroke); font-style: italic; }
+.edge-label.signal-label { fill: rgba(0,200,255,0.5); font-style: italic; }
+.edge-label-bg { fill: var(--bg); opacity: 0.88; }
+
+/* === CLUSTER LABELS === */
+.cluster-label {
+  fill: var(--cluster-label); font-family: var(--font); font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  pointer-events: none; opacity: 0;
+  animation: edgeFade 0.5s ease-out 0.6s forwards;
+}
+
+/* === TOOLTIP === */
+.tooltip {
+  position: fixed; background: rgba(8,18,32,0.97);
+  color: var(--label-color); border: 1px solid var(--node-stroke);
+  border-radius: 2px;
+  padding: clamp(4px,0.6vh,8px) clamp(6px,0.8vw,12px);
+  font-family: var(--font); font-size: clamp(10px,0.9vw,11px);
+  max-width: min(240px,38vw); pointer-events: none;
+  display: none; z-index: 2000; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word;
+  animation: tooltipIn 0.1s ease-out;
+}
+@keyframes tooltipIn { from { opacity:0; transform:translateY(2px); } to { opacity:1; transform:translateY(0); } }
+
+/* === DETAIL PANEL === */
+.detail-panel {
+  position: absolute; right: 0; top: clamp(42px,6vh,52px);
+  width: clamp(220px,28vw,300px);
+  height: calc(100% - clamp(42px,6vh,52px));
+  background: rgba(5,14,26,0.97);
+  border-left: 1px solid rgba(0,180,255,0.2);
+  padding: clamp(14px,2vh,22px) clamp(12px,1.5vw,20px);
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  z-index: 200; overflow-y: auto;
+}
+.detail-panel.open { transform: translateX(0); }
+.panel-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--label-color); cursor: pointer; font-size: 16px; opacity: 0.5; transition: opacity var(--transition); }
+.panel-close:hover { opacity: 1; }
+.panel-tag { font-size: 9px; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 6px; text-transform: uppercase; }
+.panel-title { font-size: clamp(12px,1.3vw,15px); font-weight: 700; color: var(--accent); margin-bottom: clamp(8px,1.2vh,14px); line-height: 1.3; text-transform: uppercase; letter-spacing: 0.04em; padding-right: 24px; }
+.panel-divider { height: 1px; background: rgba(0,180,255,0.15); margin-bottom: 12px; }
+.panel-body { font-size: clamp(10px,0.95vw,12px); color: var(--label-color); opacity: 0.82; line-height: 1.75; }
+.panel-body code { color: var(--accent2); background: rgba(0,255,157,0.08); padding: 1px 4px; border-radius: 2px; font-size: 10px; }
+
+/* === LEGEND === */
+.diagram-legend {
+  display: flex; align-items: center; gap: clamp(8px,1.5vw,18px);
+  padding: 0 clamp(12px,2vw,24px);
+  flex-shrink: 0; height: clamp(28px,4vh,38px);
+  border-top: 1px solid rgba(0,180,255,0.08);
+  background: var(--bg); overflow: hidden;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: clamp(9px,0.8vw,10px); color: var(--label-color); opacity: 0.5; letter-spacing: 0.05em; white-space: nowrap; }
+.legend-swatch { width: 10px; height: 10px; border-radius: 1px; flex-shrink: 0; }
+
+/* === RESPONSIVE === */
+@media (max-height:700px) { .diagram-header{height:40px;} .diagram-legend{height:28px;} }
+@media (max-height:500px) { .diagram-header{height:36px;} .diagram-legend{display:none;} }
+@media (max-width:600px) { .diagram-title{max-width:28vw;font-size:10px;} .diagram-legend{display:none;} .detail-panel{width:90vw;} }
+@media (prefers-reduced-motion:reduce) {
+  .node-group,.edge-path,.diagram-header,.diagram-wrapper,.diagram-legend { animation:none !important; opacity:1 !important; stroke-dashoffset:0 !important; }
+  .detail-panel { transition:none !important; }
+  .svg-container::before { animation:none !important; }
+  .chunk-aura { animation:none !important; opacity:0 !important; }
+}
+</style>
+</head>
+<body>
+<div class="diagram-wrapper">
+
+  <!-- Header -->
+  <div class="diagram-header">
+    <span class="diagram-title">Chat Resume — <span>Streaming Architecture</span></span>
+    <div class="diagram-controls">
+      <button id="btn-play">▶ Play</button>
+      <button id="btn-reset">⟳ Reset</button>
+      <span class="step-counter" id="step-counter"></span>
+    </div>
+  </div>
+
+  <!-- SVG Canvas -->
+  <div class="svg-container">
+    <svg id="diagram-svg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow-default" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0078aa"/>
+        </marker>
+        <marker id="arrow-active" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#00e5ff"/>
+        </marker>
+        <marker id="arrow-resume" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 9 3, 0 6" fill="#00ff9d"/>
+        </marker>
+        <marker id="arrow-signal" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 9 3, 0 6" fill="rgba(0,200,255,0.5)"/>
+        </marker>
+        <filter id="node-glow" x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="zoom-layer">
+        <g id="clusters-layer"></g>
+        <g id="edges-layer"></g>
+        <g id="nodes-layer"></g>
+        <g id="labels-layer"></g>
+        <g id="annotations-layer"></g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Tooltip -->
+  <div class="tooltip" id="tooltip"></div>
+
+  <!-- Detail Panel -->
+  <div class="detail-panel" id="detail-panel">
+    <button class="panel-close" id="panel-close">✕</button>
+    <div class="panel-tag" id="panel-tag"></div>
+    <h3 class="panel-title" id="panel-title"></h3>
+    <div class="panel-divider"></div>
+    <p class="panel-body" id="panel-body"></p>
+  </div>
+
+  <!-- Legend -->
+  <div class="diagram-legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:#071828;border:2px solid #00e5ff;box-shadow:0 0 6px rgba(0,229,255,0.5);"></div>Chunk (hero)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#0f2a3d;border:1px solid #00b4ff;"></div>Component</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#0f2a3d;border:1px dashed #00e5ff;"></div>Cache Queue</div>
+    <div class="legend-item"><div class="legend-swatch" style="height:2px;width:18px;background:#0078aa;border-radius:0;"></div>Stream</div>
+    <div class="legend-item"><div class="legend-swatch" style="height:2px;width:18px;background:#00ff9d;border-radius:0;"></div>Resume Path</div>
+    <div class="legend-item"><div class="legend-swatch" style="height:2px;width:18px;background:rgba(0,200,255,0.4);border-radius:0;border-top:1px dashed rgba(0,200,255,0.4);"></div>Signal</div>
+  </div>
+
+</div>
+
+<script>
+/* === GRAPH DATA === */
+const graphData = {
+  title: "Chat Resume Streaming Architecture",
+
+  clusters: [
+    { id:'browser',  label:'BROWSER',        x:-15, y:20,  w:970, h:540, fill:'rgba(0,60,100,0.08)',  stroke:'rgba(0,140,200,0.2)',  dash:'' },
+    { id:'mt',       label:'MAIN THREAD',    x:10,  y:60,  w:270, h:390, fill:'rgba(0,100,160,0.1)',  stroke:'rgba(0,160,240,0.22)', dash:'6 3' },
+    { id:'sw',       label:'SERVICE WORKER', x:300, y:60,  w:650, h:490, fill:'rgba(0,60,110,0.09)', stroke:'rgba(0,140,200,0.18)', dash:'6 3' },
+    { id:'backend',  label:'BACKEND',        x:975, y:60,  w:210, h:210, fill:'rgba(0,40,80,0.12)',   stroke:'rgba(0,120,180,0.2)',  dash:'' },
+  ],
+
+  nodes: [
+    {
+      id:'n_ui', label:'UI Components', tag:'[UI]', type:'process',
+      cx:145, cy:165, w:155, h:50, step:7,
+      description:'React/Vue components that render chat messages.\n\nReceives <UIMessage> and <UIMessageChunk> objects from the Transport layer via streaming callbacks.\n\nOn stream resume: re-renders replayed chunks seamlessly — no visible gap to the user.'
+    },
+    {
+      id:'n_transport', label:'Transport', tag:'[TRANSPORT]', type:'process',
+      cx:145, cy:320, w:155, h:50, step:6,
+      description:'Main thread abstraction for chat I/O.\n\nMethods:\n• sendMessage() — initiates new chat\n• reconnectToStream() — signals SW to replay cached chunks\n\nOn page load / AIAgentChat mount:\n1. Checks if any session is still streaming\n2. Calls reconnectToStream() to trigger SW replay from in-memory queue'
+    },
+    {
+      id:'n_post', label:'postMessage()', tag:'[SW]', type:'process',
+      cx:440, cy:230, w:155, h:50, step:5,
+      description:'Cross-context bridge between Service Worker and Main Thread.\n\nUses the browser postMessage() API to forward UIMessageChunk objects from SW scope to the main thread window.\n\nAlso receives reconnect signals from the main thread on page load.'
+    },
+    {
+      id:'n_chunk', label:'UIMessageChunk', tag:'[CHUNK]', type:'chunk',
+      cx:620, cy:230, w:168, h:56, step:3,
+      description:'The central streaming unit — every token flows through here.\n\nLifecycle on each SSE event:\n1. Received as raw payload from streamText()\n2. Parsed and typed as UIMessageChunk\n3. Pushed onto the in-memory queue (for resume)\n4. Forwarded to Main Thread via postMessage()\n\nThis is the single point of control for both live streaming and chat resumption. All chunks are funneled here before reaching the UI.'
+    },
+    {
+      id:'n_streamtext', label:'streamText()', tag:'[SW]', type:'process',
+      cx:820, cy:230, w:155, h:50, step:2,
+      description:'SSE stream consumer running in Service Worker scope.\n\nOpens a fetch stream to api/chat, parses each chunk into UIMessageChunk objects, and pipes them downstream.\n\nRunning in SW means the stream stays alive even when:\n• User navigates to another page\n• User refreshes the current page\n• Main thread JS context is destroyed'
+    },
+    {
+      id:'n_queue', label:'In-Memory Queue', tag:'[CACHE]', type:'queue',
+      cx:620, cy:420, w:175, h:58,
+      description:'In-memory chunk cache living in Service Worker scope.\n\nStores UIMessageChunk[] for the active session as an ordered array.\n\nLifetime: as long as the Service Worker process — survives page refresh and navigation, but not a full SW restart.\n\nOn resume:\n  Transport sends reconnectToStream()\n  → SW replays all queued chunks from index 0\n  → then continues forwarding live chunks\n\nNo IndexedDB write latency — just an array push per chunk.'
+    },
+    {
+      id:'n_api', label:'api/chat', tag:'[SVC]', type:'process',
+      cx:1080, cy:175, w:155, h:50, step:1,
+      description:'Backend streaming endpoint.\n\nProxies the AI provider\'s SSE stream with:\n• Auth & session validation\n• Rate limiting\n• SSE framing (event: chunk, data: ...)\n• Error handling & reconnect logic\n\nThe Service Worker connects directly to this endpoint and manages the SSE lifecycle independently of the main thread.'
+    },
+    {
+      id:'n_ai', label:'AI Provider', tag:'[EXT]', type:'process',
+      cx:1310, cy:230, w:155, h:50, step:0,
+      description:'External LLM provider (e.g. OpenAI, Anthropic Claude, Gemini).\n\nGenerates the assistant response as a token stream via Server-Sent Events (SSE) protocol.\n\nEach SSE event contains a partial token or structured chunk — mapped to UIMessageChunk format by the backend before forwarding.'
+    },
+  ],
+
+  edges: [
+    { id:'e_ai_api',      from:'n_ai',        to:'n_api',        label:'streaming',           step:0,  type:'stream' },
+    { id:'e_api_st',      from:'n_api',        to:'n_streamtext', label:'SSE stream',          step:1,  type:'stream' },
+    { id:'e_st_chunk',    from:'n_streamtext', to:'n_chunk',      label:'<SSE Chunk>',         step:2,  type:'stream' },
+    { id:'e_chunk_post',  from:'n_chunk',      to:'n_post',       label:'<UIMessageChunk>',    step:4,  type:'stream' },
+    { id:'e_post_tr',     from:'n_post',       to:'n_transport',  label:'streaming',           step:5,  type:'stream' },
+    { id:'e_tr_ui',       from:'n_transport',  to:'n_ui',         label:'<UIMessage>',         step:6,  type:'stream' },
+    { id:'e_chunk_queue', from:'n_chunk',      to:'n_queue',      label:'enqueue',             step:3,  type:'stream' },
+    { id:'e_queue_chunk', from:'n_queue',      to:'n_chunk',      label:'replay on resume',    step:-1, type:'resume' },
+    { id:'e_tr_post',     from:'n_transport',  to:'n_post',       label:'reconnectToStream()', step:-1, type:'signal' },
+  ]
+};
+
+/* === RENDER HELPERS === */
+const NS = 'http://www.w3.org/2000/svg';
+const make = tag => document.createElementNS(NS, tag);
+
+function svgText(text, x, y, cls) {
+  const t = make('text');
+  t.setAttribute('x', x); t.setAttribute('y', y);
+  if (cls) t.className.baseVal = cls;
+  t.textContent = text;
+  return t;
+}
+
+function nodeAttach(node, dir) {
+  const hw = node.w / 2, hh = node.h / 2;
+  if (dir === 'left')   return { x: node.cx - hw, y: node.cy };
+  if (dir === 'right')  return { x: node.cx + hw, y: node.cy };
+  if (dir === 'top')    return { x: node.cx,       y: node.cy - hh };
+  if (dir === 'bottom') return { x: node.cx,       y: node.cy + hh };
+}
+
+/* Compute orthogonal or direct path between two nodes */
+function edgePath(from, to) {
+  // postMessage → Transport: exit left, L-path to transport right
+  if (from.id === 'n_post' && to.id === 'n_transport') {
+    const p1 = nodeAttach(from, 'left');
+    const p2 = nodeAttach(to, 'right');
+    const midX = 255;
+    return `M${p1.x},${p1.y} H${midX} V${p2.y} H${p2.x}`;
+  }
+  // Transport → UI Components: straight vertical
+  if (from.id === 'n_transport' && to.id === 'n_ui') {
+    const p1 = nodeAttach(from, 'top');
+    const p2 = nodeAttach(to, 'bottom');
+    return `M${p1.x},${p1.y} L${p2.x},${p2.y}`;
+  }
+  // UIMessageChunk → Queue: persist - offset right
+  if (from.id === 'n_chunk' && to.id === 'n_queue') {
+    const p1 = { x: from.cx + 22, y: from.cy + from.h / 2 };
+    const p2 = { x: to.cx + 22,   y: to.cy - to.h / 2 };
+    return `M${p1.x},${p1.y} L${p2.x},${p2.y}`;
+  }
+  // Queue → UIMessageChunk: replay - offset left
+  if (from.id === 'n_queue' && to.id === 'n_chunk') {
+    const p1 = { x: from.cx - 22, y: from.cy - from.h / 2 };
+    const p2 = { x: to.cx - 22,   y: to.cy + to.h / 2 };
+    return `M${p1.x},${p1.y} L${p2.x},${p2.y}`;
+  }
+  // Transport → postMessage (signal reverse): elbow path
+  if (from.id === 'n_transport' && to.id === 'n_post') {
+    const p1 = nodeAttach(from, 'right');
+    const p2 = nodeAttach(to, 'bottom');
+    return `M${p1.x},${p1.y} H${p1.x + 60} V${p2.y + 30} H${p2.x} V${p2.y}`;
+  }
+
+  // Default
+  let p1, p2;
+  if (Math.abs(from.cy - to.cy) < 20) {
+    if (from.cx > to.cx) { p1 = nodeAttach(from,'left'); p2 = nodeAttach(to,'right'); }
+    else                   { p1 = nodeAttach(from,'right'); p2 = nodeAttach(to,'left'); }
+    return `M${p1.x},${p1.y} L${p2.x},${p2.y}`;
+  } else {
+    if (from.cx > to.cx) { p1 = nodeAttach(from,'left'); p2 = nodeAttach(to,'right'); }
+    else                   { p1 = nodeAttach(from,'right'); p2 = nodeAttach(to,'left'); }
+    const midX = (p1.x + p2.x) / 2;
+    return `M${p1.x},${p1.y} H${midX} V${p2.y} H${p2.x}`;
+  }
+}
+
+/* Edge label midpoints */
+function getMidpoint(from, to) {
+  if (from.id === 'n_post' && to.id === 'n_transport')  return { x: 255, y: 230 };
+  if (from.id === 'n_transport' && to.id === 'n_ui')     return { x: from.cx - 20, y: (from.cy + to.cy) / 2 };
+  if (from.id === 'n_chunk' && to.id === 'n_queue')      return { x: from.cx + 45, y: (from.cy + to.cy) / 2 };
+  if (from.id === 'n_queue' && to.id === 'n_chunk')      return { x: from.cx - 45, y: (from.cy + to.cy) / 2 };
+  if (from.id === 'n_transport' && to.id === 'n_post')   return { x: (from.cx + to.cx) / 2 + 20, y: from.cy + 50 };
+  return { x: (from.cx + to.cx) / 2, y: (from.cy + to.cy) / 2 };
+}
+
+/* === RENDER === */
+function render(data) {
+  const clustersLayer    = document.getElementById('clusters-layer');
+  const edgesLayer       = document.getElementById('edges-layer');
+  const nodesLayer       = document.getElementById('nodes-layer');
+  const labelsLayer      = document.getElementById('labels-layer');
+  const annotationsLayer = document.getElementById('annotations-layer');
+
+  // --- Clusters ---
+  data.clusters.forEach(c => {
+    const rect = make('rect');
+    rect.setAttribute('x', c.x); rect.setAttribute('y', c.y);
+    rect.setAttribute('width', c.w); rect.setAttribute('height', c.h);
+    rect.setAttribute('rx', 2); rect.setAttribute('fill', c.fill);
+    rect.setAttribute('stroke', c.stroke); rect.setAttribute('stroke-width', '1');
+    if (c.dash) rect.setAttribute('stroke-dasharray', c.dash);
+    clustersLayer.appendChild(rect);
+    const lbl = svgText(c.label, c.x + 10, c.y + 14, 'cluster-label');
+    clustersLayer.appendChild(lbl);
+  });
+
+  // --- Annotation badge: SW stays alive ---
+  const badgeX = 310, badgeY = 25, badgeW = 330, badgeH = 22;
+  const badgeBg = make('rect');
+  badgeBg.setAttribute('x', badgeX); badgeBg.setAttribute('y', badgeY - 14);
+  badgeBg.setAttribute('width', badgeW); badgeBg.setAttribute('height', badgeH);
+  badgeBg.setAttribute('fill', 'rgba(0,229,255,0.06)');
+  badgeBg.setAttribute('stroke', 'rgba(0,229,255,0.25)');
+  badgeBg.setAttribute('stroke-width', '1'); badgeBg.setAttribute('rx', '2');
+  badgeBg.style.opacity = '0';
+  badgeBg.style.animation = 'edgeFade 0.5s ease-out 0.8s forwards';
+  annotationsLayer.appendChild(badgeBg);
+  const badgeTxt = svgText('★  live even during page refresh / navigation', badgeX + badgeW/2, badgeY, 'edge-label');
+  badgeTxt.setAttribute('text-anchor', 'middle');
+  badgeTxt.style.fill = 'rgba(0,229,255,0.7)';
+  badgeTxt.style.fontSize = '8.5px';
+  badgeTxt.style.letterSpacing = '0.08em';
+  badgeTxt.style.opacity = '0';
+  badgeTxt.style.animation = 'edgeFade 0.5s ease-out 0.9s forwards';
+  annotationsLayer.appendChild(badgeTxt);
+
+  // --- Resume scenario annotation ---
+  const resumeNoteX = 12, resumeNoteY = 502;
+  const rLines = [
+    'On page load / AIAgentChat mount:',
+    '1. Check if any session is streaming (in-memory queue)',
+    '2. Replay all queued chunks from index 0',
+    '3. Continue forwarding live stream chunks to resume'
+  ];
+  rLines.forEach((line, i) => {
+    const t = svgText(line, resumeNoteX, resumeNoteY + i * 14, 'edge-label');
+    t.style.fill = i === 0 ? 'rgba(0,255,157,0.65)' : 'rgba(0,200,200,0.45)';
+    t.style.fontSize = '8px';
+    t.setAttribute('text-anchor', 'start');
+    t.style.opacity = '0';
+    t.style.animation = `edgeFade 0.4s ease-out ${1.2 + i * 0.1}s forwards`;
+    annotationsLayer.appendChild(t);
+  });
+
+  // --- Edges ---
+  const nodeMap = {};
+  data.nodes.forEach(n => { nodeMap[n.id] = n; });
+
+  const streamEdges = data.edges.filter(e => e.type === 'stream');
+  const otherEdges  = data.edges.filter(e => e.type !== 'stream');
+
+  [...streamEdges, ...otherEdges].forEach((edge, i) => {
+    const fromNode = nodeMap[edge.from];
+    const toNode   = nodeMap[edge.to];
+    if (!fromNode || !toNode) return;
+
+    const g = make('g');
+    g.classList.add('edge-group');
+    g.dataset.edgeId = edge.id;
+    if (edge.step >= 0) g.dataset.step = edge.step + 20;
+
+    const path = make('path');
+    path.setAttribute('d', edgePath(fromNode, toNode));
+    path.classList.add('edge-path');
+    if (edge.type === 'resume') path.classList.add('resume-edge');
+    if (edge.type === 'signal') path.classList.add('signal-edge');
+
+    if (edge.type === 'stream') {
+      path.style.setProperty('--edge-index', streamEdges.indexOf(edge));
+    } else {
+      path.style.animationDelay = `${700 + i * 60}ms`;
+    }
+
+    edgesLayer.appendChild(g);
+    g.appendChild(path);
+    requestAnimationFrame(() => {
+      try {
+        const len = path.getTotalLength();
+        if (edge.type === 'stream') path.style.setProperty('--path-length', len);
+      } catch(e) {}
+    });
+
+    // Edge label
+    if (edge.label) {
+      const mid = getMidpoint(fromNode, toNode);
+      const lx = mid.x, ly = mid.y - 9;
+      const labelCls = edge.type === 'resume' ? 'edge-label resume-label' : edge.type === 'signal' ? 'edge-label signal-label' : 'edge-label';
+      const tw = edge.label.length * 5.5 + 10;
+      const bg = make('rect');
+      bg.setAttribute('x', lx - tw/2); bg.setAttribute('y', ly - 9);
+      bg.setAttribute('width', tw); bg.setAttribute('height', 13);
+      bg.classList.add('edge-label-bg'); bg.setAttribute('rx', '1');
+      labelsLayer.appendChild(bg);
+      const lbl = svgText(edge.label, lx, ly, labelCls);
+      labelsLayer.appendChild(lbl);
+    }
+  });
+
+  // --- Nodes ---
+  data.nodes.forEach((node, i) => {
+    const g = make('g');
+    g.classList.add('node-group');
+    g.style.setProperty('--node-index', i);
+    g.dataset.nodeId = node.id;
+    if (node.step !== undefined && node.step >= 0) g.dataset.step = node.step;
+
+    let shape;
+
+    if (node.type === 'chunk') {
+      // Hero node: rect with rounded corners + outer aura ring
+      g.classList.add('node-chunk');
+
+      // Aura ring (behind the main shape)
+      const aura = make('rect');
+      aura.setAttribute('x', node.cx - node.w / 2 - 8);
+      aura.setAttribute('y', node.cy - node.h / 2 - 8);
+      aura.setAttribute('width', node.w + 16);
+      aura.setAttribute('height', node.h + 16);
+      aura.setAttribute('rx', 6);
+      aura.classList.add('chunk-aura');
+      g.appendChild(aura);
+
+      shape = make('rect');
+      shape.setAttribute('x', node.cx - node.w / 2);
+      shape.setAttribute('y', node.cy - node.h / 2);
+      shape.setAttribute('width', node.w);
+      shape.setAttribute('height', node.h);
+      shape.setAttribute('rx', 3);
+      g.appendChild(shape);
+
+    } else if (node.type === 'queue') {
+      // Hexagon (flat-top)
+      g.classList.add('node-queue');
+      const rx = node.w / 2, ry = node.h / 2, qw = node.w / 4;
+      const pts = [
+        [node.cx + rx,  node.cy],
+        [node.cx + qw,  node.cy - ry],
+        [node.cx - qw,  node.cy - ry],
+        [node.cx - rx,  node.cy],
+        [node.cx - qw,  node.cy + ry],
+        [node.cx + qw,  node.cy + ry],
+      ].map(p => p.join(',')).join(' ');
+      shape = make('polygon');
+      shape.setAttribute('points', pts);
+      g.appendChild(shape);
+
+    } else {
+      shape = make('rect');
+      shape.setAttribute('x', node.cx - node.w / 2);
+      shape.setAttribute('y', node.cy - node.h / 2);
+      shape.setAttribute('width', node.w);
+      shape.setAttribute('height', node.h);
+      shape.setAttribute('rx', 0);
+      g.appendChild(shape);
+    }
+    shape.classList.add('node-shape');
+
+    // Tag (above label)
+    const tag = svgText(node.tag, node.cx, node.cy - (node.type === 'chunk' ? 13 : 11), 'node-tag');
+    g.appendChild(tag);
+
+    // Label
+    const label = svgText(node.label, node.cx, node.cy + (node.type === 'chunk' ? 10 : 8), 'node-label');
+    g.appendChild(label);
+
+    g.addEventListener('mouseenter', e => showTooltip(e, node));
+    g.addEventListener('mouseleave', hideTooltip);
+    g.addEventListener('mousemove', moveTooltip);
+    g.addEventListener('click', () => selectNode(node));
+
+    nodesLayer.appendChild(g);
+  });
+}
+
+/* === ZOOM & PAN === */
+let scale = 1, tx = 0, ty = 0, isDragging = false, dragStart = { x:0, y:0 };
+const svgEl   = document.getElementById('diagram-svg');
+const zoomLyr = document.getElementById('zoom-layer');
+
+function applyTransform(animate) {
+  if (animate) zoomLyr.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+  zoomLyr.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+  if (animate) setTimeout(() => { zoomLyr.style.transition = ''; }, 450);
+}
+
+svgEl.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = svgEl.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const delta = e.deltaY > 0 ? 0.88 : 1.14;
+  const ns = Math.min(Math.max(scale * delta, 0.1), 6);
+  tx = mx - (mx - tx) * (ns / scale);
+  ty = my - (my - ty) * (ns / scale);
+  scale = ns;
+  applyTransform();
+}, { passive: false });
+
+svgEl.addEventListener('mousedown', e => {
+  if (e.target.closest('.node-group')) return;
+  isDragging = true;
+  dragStart = { x: e.clientX - tx, y: e.clientY - ty };
+  e.preventDefault();
+});
+window.addEventListener('mousemove', e => { if (!isDragging) return; tx = e.clientX - dragStart.x; ty = e.clientY - dragStart.y; applyTransform(); });
+window.addEventListener('mouseup', () => { isDragging = false; });
+
+// Touch
+let touchStart = null, touchDist = 0;
+svgEl.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) touchStart = { x: e.touches[0].clientX - tx, y: e.touches[0].clientY - ty };
+  else if (e.touches.length === 2) touchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  e.preventDefault();
+}, { passive: false });
+svgEl.addEventListener('touchmove', e => {
+  if (e.touches.length === 1 && touchStart) { tx = e.touches[0].clientX - touchStart.x; ty = e.touches[0].clientY - touchStart.y; applyTransform(); }
+  else if (e.touches.length === 2) { const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); scale = Math.min(Math.max(scale * d / touchDist, 0.1), 6); touchDist = d; applyTransform(); }
+  e.preventDefault();
+}, { passive: false });
+svgEl.addEventListener('touchend', () => { touchStart = null; });
+
+function fitToView(animate) {
+  const bbox = zoomLyr.getBBox();
+  if (!bbox.width || !bbox.height) return;
+  const W = svgEl.clientWidth, H = svgEl.clientHeight, pad = 80;
+  scale = Math.min((W - pad) / bbox.width, (H - pad) / bbox.height) * 0.88;
+  tx = (W - bbox.width * scale) / 2 - bbox.x * scale;
+  ty = (H - bbox.height * scale) / 2 - bbox.y * scale;
+  applyTransform(animate);
+}
+
+/* === STEP-THROUGH === */
+const STEP_DELAY = window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 850;
+let stepIndex = 0, isPlaying = false, stepTimer = null;
+
+function stepElements() {
+  return [...document.querySelectorAll('[data-step]')].sort((a, b) => +a.dataset.step - +b.dataset.step);
+}
+function playThrough() { isPlaying = true; document.getElementById('btn-play').textContent = '⏸ Pause'; advanceStep(); }
+function pausePlaythrough() { isPlaying = false; clearTimeout(stepTimer); document.getElementById('btn-play').textContent = '▶ Play'; }
+function advanceStep() {
+  const steps = stepElements();
+  if (stepIndex >= steps.length) { pausePlaythrough(); return; }
+  const el = steps[stepIndex];
+  el.classList.add('active-step'); el.classList.remove('pending');
+  steps.slice(0, stepIndex).forEach(s => { s.classList.remove('active-step'); s.classList.add('visited'); });
+  updateCounter(stepIndex + 1, steps.length);
+  panToEl(el);
+  if (el.classList.contains('node-group')) spawnPulseRing(el);
+  stepIndex++;
+  if (isPlaying) stepTimer = setTimeout(advanceStep, STEP_DELAY);
+}
+function resetSteps() {
+  clearTimeout(stepTimer); isPlaying = false; stepIndex = 0;
+  document.getElementById('btn-play').textContent = '▶ Play';
+  stepElements().forEach(e => e.classList.remove('active-step','visited','pending'));
+  updateCounter(0, stepElements().length);
+  fitToView(true);
+}
+function updateCounter(cur, tot) {
+  const el = document.getElementById('step-counter');
+  if (el) el.textContent = tot > 0 ? `${cur} / ${tot}` : '';
+}
+function panToEl(el) {
+  try {
+    const b = el.getBBox ? el.getBBox() : null;
+    if (!b) return;
+    const nx = b.x + b.width/2, ny = b.y + b.height/2;
+    const W = svgEl.clientWidth, H = svgEl.clientHeight;
+    const targetTx = W/2 - nx*scale, targetTy = H/2 - ny*scale;
+    if (Math.abs(targetTx - tx) > W*0.3 || Math.abs(targetTy - ty) > H*0.3) { tx = targetTx; ty = targetTy; applyTransform(true); }
+  } catch(e) {}
+}
+
+function spawnPulseRing(nodeEl) {
+  try {
+    const b = nodeEl.getBBox();
+    const ring = make('circle');
+    ring.setAttribute('cx', b.x + b.width/2); ring.setAttribute('cy', b.y + b.height/2);
+    ring.setAttribute('r', Math.max(b.width, b.height)/2 + 4);
+    ring.setAttribute('fill', 'none');
+    ring.setAttribute('stroke', 'var(--accent)'); ring.setAttribute('stroke-width', '1.5');
+    ring.style.transformOrigin = `${b.x + b.width/2}px ${b.y + b.height/2}px`;
+    ring.style.animation = 'pulseRingAnim 0.8s ease-out forwards';
+    document.getElementById('nodes-layer').appendChild(ring);
+    ring.addEventListener('animationend', () => ring.remove());
+  } catch(e) {}
+}
+
+document.getElementById('btn-play').addEventListener('click', () => { if (isPlaying) pausePlaythrough(); else playThrough(); });
+document.getElementById('btn-reset').addEventListener('click', resetSteps);
+
+/* === TOOLTIP === */
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, node) { tooltip.textContent = node.tag + ' ' + node.label; tooltip.style.display = 'block'; moveTooltip(e); }
+function moveTooltip(e) { tooltip.style.left = (e.clientX + 16) + 'px'; tooltip.style.top = Math.max(0, e.clientY - 32) + 'px'; }
+function hideTooltip() { tooltip.style.display = 'none'; }
+
+/* === DETAIL PANEL === */
+let selectedNodeId = null;
+function selectNode(node) {
+  selectedNodeId = node.id;
+  document.getElementById('panel-tag').textContent = node.tag;
+  document.getElementById('panel-title').textContent = node.label;
+  const body = document.getElementById('panel-body');
+  body.innerHTML = '';
+  const text = node.description || 'No additional details.';
+  const parts = text.split(/(`[^`]+`|<[^>]+>)/g);
+  parts.forEach(part => {
+    if (/^`/.test(part)) { const c = document.createElement('code'); c.textContent = part.replace(/`/g,''); body.appendChild(c); }
+    else if (/^</.test(part)) { const c = document.createElement('code'); c.textContent = part; body.appendChild(c); }
+    else { body.appendChild(document.createTextNode(part)); }
+  });
+  document.getElementById('detail-panel').classList.add('open');
+  highlightConnections(node.id);
+}
+function highlightConnections(nodeId) {
+  document.querySelectorAll('.edge-path').forEach(p => p.classList.remove('active-step'));
+  document.querySelectorAll('.node-group').forEach(g => g.classList.remove('selected'));
+  const sel = document.querySelector(`[data-node-id="${nodeId}"]`);
+  if (sel) sel.classList.add('selected');
+  graphData.edges.forEach(e => {
+    if (e.from === nodeId || e.to === nodeId) {
+      const g = document.querySelector(`[data-edge-id="${e.id}"]`);
+      if (g) g.querySelector('.edge-path').classList.add('active-step');
+    }
+  });
+}
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.querySelectorAll('.edge-path').forEach(p => p.classList.remove('active-step'));
+  document.querySelectorAll('.node-group').forEach(g => g.classList.remove('selected'));
+  selectedNodeId = null;
+}
+document.getElementById('panel-close').addEventListener('click', closePanel);
+
+/* === KEYBOARD CONTROLS === */
+document.addEventListener('keydown', e => {
+  switch(e.key) {
+    case ' ': case 'Enter': e.preventDefault(); if (isPlaying) pausePlaythrough(); else playThrough(); break;
+    case 'r': case 'R': resetSteps(); fitToView(true); break;
+    case 'Escape': closePanel(); pausePlaythrough(); break;
+    case 'ArrowRight': case 'ArrowDown': e.preventDefault(); if (!isPlaying) advanceStep(); break;
+    case '+': case '=': scale = Math.min(scale*1.15,6); applyTransform(); break;
+    case '-': scale = Math.max(scale*0.85,0.1); applyTransform(); break;
+  }
+});
+
+/* === INIT === */
+const styleEl = document.createElement('style');
+styleEl.textContent = `@keyframes pulseRingAnim { from{transform:scale(1);opacity:0.7;} to{transform:scale(2.4);opacity:0;} }`;
+document.head.appendChild(styleEl);
+
+render(graphData);
+updateCounter(0, stepElements().length);
+requestAnimationFrame(() => requestAnimationFrame(fitToView));
+</script>
+</body>
+</html>

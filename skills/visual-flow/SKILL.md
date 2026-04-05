@@ -2,6 +2,8 @@
 
 Generate interactive, animated process flow diagrams from plain text descriptions or rough drafts — as self-contained, zero-dependency HTML files.
 
+inspired by https://github.com/zarazhangrui/frontend-slides
+
 ## Core Principles
 
 1. **Zero Dependencies** — Single HTML files with inline SVG, CSS, and JS. No Mermaid.js, no D3.js, no build tools.
