@@ -1,4 +1,4 @@
-POST ticketing.dev/api/users/signup222
+POST ticketing.dev/api/users/signup
 Content-Type: application/json
 
 {
