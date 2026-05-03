@@ -1,0 +1,5 @@
+- AI native的一种个人语言学习助手
+    - 知道你搜过哪些内容, 比如单词, 语法… 有自己的记忆 , 然后我可以让ai根据这些东西来定制复习方案, 让我真正用到他们
+    - desktop app / browser extension, 语音启动就像贾维斯一样 (其实感觉目前chatgpt已经可以做成那样了, 只是没有根据这个具体方向优化prompt...)
+    - integration with notion - so that memory and notes can be sync to cloud 
+    - 拓展下去, 可以做一种那种伴读的ai companion - 帮我读lords of rings 然后理解其中的背景文化...
